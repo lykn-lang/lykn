@@ -347,3 +347,12 @@ experiment or software acceptance is inferred. B2a is a separate usable
 checkpoint after accepted IC, not erasure/reset of prior refinement history;
 its own corrections remain bounded by the framework's five-pass loop. Root
 continues B2b preparation after independent lexical acceptance.
+
+B2b preparation now records the pending operator **B2-ID-NAME** language choice
+in [owner-unit preparation](artifacts/b2b-owner-unit-preparation.md): DD-49's
+module-scope collision rule does not settle distinct normalized spellings in
+nested lexical scopes. Source-exact identities with hygienic JS emission versus
+canonical normalized alias/shadow identity produce different semantics. Root
+requested a disposition; dependent B2b name/owner lookup is held pending it.
+B2a implementation and independent verification continue under their settled
+scope; this does not reopen or block accepted A/B1/IC.

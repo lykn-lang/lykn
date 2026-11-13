@@ -7,6 +7,27 @@ assignment or acceptance. No B2b source changes are authorized by iteration09.
 The operator's B2 authorization covers completing this design and later
 implementation/review; root retains consequential decisions.
 
+## Pending source-name identity decision (B2-ID-NAME)
+
+Root requested an actual operator language-design disposition on2026-11-12,
+while B2a continues independently. DD-49 Rule6 explicitly diagnoses distinct
+source names mapping to one JS identifier in module/export binding scope;
+it does not settle nested reference/alias semantics. Both `valid?` and
+`is-valid` map to `isValid`. With one as an outer owner/alias and the other
+as an inner parameter, source-exact lookup plus hygienic emission and canonical
+normalized-name lookup produce different owner queries and runtime shadowing.
+
+Root recommends distinct source binding identities with hygienic emission
+where required; same-scope normalized collision diagnostics remain. The
+alternative makes normalized spellings equivalent references and shadows,
+requiring consistent canonical dispatch across both compilers. Neither may
+be silently selected merely from the current emitted JS behavior. The question
+also used some-name/someName as a simpler spelling example. Operator response
+is pending; dependent B2b lookup/name-allocation implementation is held. This
+is a substantive language semantics choice, not a request to approve routine
+implementation or pause B2a. Source spelling/property-key normalization and
+public JS export-name mapping remain distinct concerns whatever the answer.
+
 ## Settled identity/query rules
 
 - ModuleIdentity is Named(LogicalModuleId) or fresh opaque AnonymousUnit.
@@ -150,6 +171,15 @@ need the accepted-B2a source-readiness pass.
 
 ## Preserved runtime and static distinctions
 
+Activation must co-deliver a coherent semantic/runtime boundary, not identify
+an owner statically while emitting only unrelated legacy flat constructors.
+Private metadata primitives may land first under focused tests, but no full
+qualified feature or B2 acceptance follows until actual consumers lower the
+same resolved unit. Minimum namespace/guard/pattern integration and necessary
+legacy migration therefore belong with owner activation; C still owns complete
+API/DTS consumer proof, private purity and the original full-slice obligations.
+No new public feature flag may disguise an unresolved emitter/model mismatch.
+
 Namespace declaration position and actual qualifier-before-argument/field
 reads are fixed by S01. Named type annotations are static queries, not ordinary
 namespace expressions; their runtime checks use the resolved owner token and
@@ -164,6 +194,27 @@ policy, runtime nominal tokens and public declaration types are separate proof
 obligations; a successful metadata query cannot close nominal runtime rows.
 
 ## Source-readiness work remaining before B2b issue
+
+Type declaration arguments are static data under S01. Native
+classify_type uses parse_simple_typed_params_with_capture: constructor fields
+are keyword/name pairs, not general parameter defaults/rest/destructuring.
+Public emitTypeMacro currently calls the broader parseTypedParams; nominal
+activation must narrow that producer to the agreed static field grammar, not
+accidentally import effectful function-parameter syntax into owned initialization.
+Native macro expansion must also preserve actual Type case/field grammar as
+structure instead of treating a constructor-shaped list as a macro call. This
+must happen at the real expanded Type producer, including macro-returned Type,
+without a separate eager macro phase. These inspected facts require explicit
+actual data-slot/macro-effect controls in the B2b recipe.
+
+The builtin metadata vocabulary is the existing union represented by DTS and
+runtime consumers: any, number, string, boolean, function, object, array,
+symbol, bigint, promise and void. Named-owner lookup is for non-builtin type
+spellings; ordinary value bindings do not redefine fixed builtin keywords.
+Runtime guard parity (native symbol/bigint and public promise) and valid void
+positions still require concrete migration decisions before a broad guard
+claim. Do not silently treat a known builtin as an unresolved ADT merely
+because one old runtime switch lacks its branch.
 
 Enumerate actual raw-header/nested-classification consumers and scoped unit
 API callers at the accepted B2a pin; settle error/report/signature migration,
