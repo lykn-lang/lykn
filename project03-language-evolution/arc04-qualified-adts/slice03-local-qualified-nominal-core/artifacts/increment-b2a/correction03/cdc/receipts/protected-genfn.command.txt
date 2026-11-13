@@ -1,0 +1,9 @@
+Source cwd; common environment.txt values.
+target/release/lykn compile <absolute CDC>/fixtures/genfn-protected-metadata.lykn -o <absolute CDC>/runtime/native-genfn-protected-metadata.mjs
+target/release/lykn compile <absolute CDC>/fixtures/genfn-protected-body.lykn -o <absolute CDC>/runtime/native-genfn-protected-body.mjs
+Outputs and immediate numeric status captured separately for each direct call.
+The initial keyword key is currently Unknown proof in record_symbol_write and
+public normalized-write logic, so both0 is NOT a rejection discriminator.
+Bounded supported string-key pair:
+target/release/lykn compile <absolute CDC>/fixtures/genfn-protected-string-metadata.lykn -o <absolute CDC>/runtime/native-genfn-protected-string-metadata.mjs
+target/release/lykn compile <absolute CDC>/fixtures/genfn-protected-string-body.lykn -o <absolute CDC>/runtime/native-genfn-protected-string-body.mjs

@@ -1,0 +1,1 @@
+1:46: error: host-contract v2: write to protected slot Array.isArray

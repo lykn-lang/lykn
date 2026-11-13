@@ -1,0 +1,1 @@
+host-contract v2: write to protected slot Array.isArray

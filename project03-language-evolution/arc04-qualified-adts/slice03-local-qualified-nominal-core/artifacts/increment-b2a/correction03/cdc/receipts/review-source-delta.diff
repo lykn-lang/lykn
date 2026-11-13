@@ -1,0 +1,256 @@
+diff --git a/crates/lykn-lang/src/classifier/forms.rs b/crates/lykn-lang/src/classifier/forms.rs
+index 640a9871..7aeb599d 100644
+--- a/crates/lykn-lang/src/classifier/forms.rs
++++ b/crates/lykn-lang/src/classifier/forms.rs
+@@ -834,6 +834,22 @@ pub fn classify_form(expr: &SExpr) -> Result<SurfaceForm, Diagnostic> {
+     classify_form_inner(expr, &mut None)
+ }
+ 
++/// Validate the selected typed-source function header without classifying or
++/// evaluating any executable defaults, contracts, or body expressions.
++pub(crate) fn validate_typed_source_function_header(expr: &SExpr) -> Result<(), Diagnostic> {
++    let SExpr::List { values, .. } = expr else {
++        return Ok(());
++    };
++    let Some(head) = values.first().and_then(SExpr::as_form_head) else {
++        return Ok(());
++    };
++    if matches!(head, "func" | "genfunc" | "fn" | "genfn" | "lambda") {
++        classify_form_inner(expr, &mut None).map(|_| ())
++    } else {
++        Ok(())
++    }
++}
++
+ pub(crate) fn classify_form_with_bindings<'tree>(
+     expr: &'tree SExpr,
+ ) -> Result<Vec<BindingOccurrence<'tree>>, Diagnostic> {
+@@ -1987,29 +2003,22 @@ fn classify_genfn<'tree>(
+         }
+     };
+ 
+-    // Check for :yields keyword after param list
+-    let mut yields = None;
+-    let mut body_start = 1;
+-    if args.len() >= 3
+-        && let SExpr::Keyword { value, .. } = &args[1]
+-        && value == "yields"
+-    {
+-        if args.len() < 4 {
+-            return Err(err("genfn: :yields requires a type keyword and body", span));
+-        }
+-        if let SExpr::Keyword { value, span: yspan } = &args[2] {
+-            yields = Some(TypeAnnotation {
++    let layout = crate::lexical_regions::genfn_body_layout(args)
++        .ok_or_else(|| err("genfn: :yields requires a type keyword and body", span))?;
++    let yields = layout
++        .yields_payload_index
++        .and_then(|index| match args.get(index) {
++            Some(SExpr::Keyword { value, span: yspan }) => Some(TypeAnnotation {
+                 name: value.clone(),
+                 span: *yspan,
+-            });
+-        }
+-        body_start = 3;
+-    }
++            }),
++            _ => None,
++        });
+ 
+     Ok(SurfaceForm::Genfn {
+         params,
+         yields,
+-        body: args[body_start..].to_vec(),
++        body: args[layout.body_start..].to_vec(),
+         span,
+     })
+ }
+diff --git a/crates/lykn-lang/src/expander/pass2.rs b/crates/lykn-lang/src/expander/pass2.rs
+index 7abe802e..274df32f 100644
+--- a/crates/lykn-lang/src/expander/pass2.rs
++++ b/crates/lykn-lang/src/expander/pass2.rs
+@@ -306,11 +306,15 @@ fn expand_children_scoped(
+             }
+             Ok(out)
+         }
+-        crate::resolver::ScopePlan::SourceFunction(Some(layout)) => {
+-            expand_source_function(form, values, &layout, deno, env, scope)
++        crate::resolver::ScopePlan::SourceFunction(layout) => {
++            crate::classifier::forms::validate_typed_source_function_header(form)
++                .map_err(LyknError::Classify)?;
++            match layout {
++                Some(layout) => expand_source_function(form, values, &layout, deno, env, scope),
++                None => Ok(values.to_vec()),
++            }
+         }
+-        crate::resolver::ScopePlan::SourceFunction(None)
+-        | crate::resolver::ScopePlan::Class(None) => Ok(values.to_vec()),
++        crate::resolver::ScopePlan::Class(None) => Ok(values.to_vec()),
+         crate::resolver::ScopePlan::Class(Some(layout)) => {
+             expand_class(form, values, &layout, deno, env, scope)
+         }
+diff --git a/crates/lykn-lang/src/lexical_regions.rs b/crates/lykn-lang/src/lexical_regions.rs
+index b32aa5f7..447c4482 100644
+--- a/crates/lykn-lang/src/lexical_regions.rs
++++ b/crates/lykn-lang/src/lexical_regions.rs
+@@ -68,6 +68,36 @@ pub(crate) struct KeywordRange<'a> {
+     pub(crate) value_end: usize,
+ }
+ 
++/// The authoritative slot selection for an anonymous source generator.
++/// Indexes are relative to the argument slice after the `genfn` head.
++#[derive(Clone, Copy, Debug, PartialEq, Eq)]
++pub(crate) struct GenfnBodyLayout {
++    pub(crate) body_start: usize,
++    pub(crate) yields_payload_index: Option<usize>,
++}
++
++/// Describe the existing `genfn` metadata/body slots. A recognized but
++/// incomplete `:yields` layout is absent so the classifier can retain its
++/// established diagnostic while lexical projectors safely decline it.
++pub(crate) fn genfn_body_layout(args: &[SExpr]) -> Option<GenfnBodyLayout> {
++    if args.len() < 2 {
++        return None;
++    }
++    if args.get(1).and_then(SExpr::as_keyword) == Some("yields") && args.len() >= 3 {
++        if args.len() < 4 {
++            return None;
++        }
++        return Some(GenfnBodyLayout {
++            body_start: 3,
++            yields_payload_index: Some(2),
++        });
++    }
++    Some(GenfnBodyLayout {
++        body_start: 1,
++        yields_payload_index: None,
++    })
++}
++
+ /// Retain each selected keyword group's original indexes, with last occurrence
+ /// winning just like `parse_keyword_clauses`.
+ pub(crate) fn keyword_group_ranges(args: &[SExpr]) -> Vec<KeywordRange<'_>> {
+@@ -214,7 +244,11 @@ pub(crate) fn function_regions(form: &SExpr) -> Option<FunctionRegions> {
+             }
+         })
+         .unwrap_or_default();
+-    let body_start = params_index + usize::from(params_path.is_some());
++    let body_start = if head == "genfn" {
++        1 + genfn_body_layout(&values[1..])?.body_start
++    } else {
++        params_index + usize::from(params_path.is_some())
++    };
+     let body_paths = (body_start..values.len())
+         .map(|index| OccurrencePath(vec![index]))
+         .collect();
+diff --git a/packages/lang/classifier.js b/packages/lang/classifier.js
+index ad0b752e..0212ed4b 100644
+--- a/packages/lang/classifier.js
++++ b/packages/lang/classifier.js
+@@ -58,8 +58,8 @@ import {
+ } from "./surface-helpers.js";
+ import { isKernel, markKernel } from "./kernel-mark.js";
+ import { isMatchGuardSlot } from "./binding.js";
+-import { FUNC_CLAUSE_KEYS, parseKeywordClauses } from "./function-clauses.js";
+-export { FUNC_CLAUSE_KEYS, parseKeywordClauses } from "./function-clauses.js";
++import { FUNC_CLAUSE_KEYS, genfnBodyLayout, parseKeywordClauses } from "./function-clauses.js";
++export { FUNC_CLAUSE_KEYS, genfnBodyLayout, parseKeywordClauses } from "./function-clauses.js";
+ 
+ /**
+  * Classify a surface form head atom. Returns a typed AST node if the
+@@ -780,15 +780,14 @@ export function emitSurfaceForm(node, h) {
+       return emitGenfuncMacro([node.nameNode, ...node.restArgs]);
+     case "GenFn": {
+       const a = node.args;
+-      let yieldsType = null, bodyStart = 1;
+-      if (a.length >= 3 && a[1].type === "keyword" && a[1].value === "yields") {
+-        if (a.length < 4) {
+-          throw new Error("genfn: :yields requires a type keyword and body");
+-        }
+-        yieldsType = a[2];
+-        bodyStart = 3;
+-      }
+-      const bodyForms = a.slice(bodyStart);
++      const layout = genfnBodyLayout(a);
++      if (!layout) {
++        throw new Error("genfn: :yields requires a type keyword and body");
++      }
++      const yieldsType = layout.yieldsPayloadIndex === null
++        ? null
++        : a[layout.yieldsPayloadIndex];
++      const bodyForms = a.slice(layout.bodyStart);
+       const params = parseTypedParams(node.paramList);
+       const pNames = params.flatMap((p) => paramNameNodes(p));
+       const typeChecks = [];
+diff --git a/packages/lang/function-clauses.js b/packages/lang/function-clauses.js
+index dc47dd65..df11dfd8 100644
+--- a/packages/lang/function-clauses.js
++++ b/packages/lang/function-clauses.js
+@@ -13,6 +13,22 @@ function parseKeywordClauses(args) {
+   return clauses;
+ }
+ 
++/**
++ * Describe the established anonymous genfn metadata/body slots.
++ * @param {object[]} args Arguments after the `genfn` head.
++ * @returns {{bodyStart: number, yieldsPayloadIndex: number|null}|null}
++ *   Selected argument indexes, or null when the classifier must diagnose an
++ *   incomplete parameter/body or `:yields` layout.
++ */
++function genfnBodyLayout(args) {
++  if (args.length < 2) return null;
++  if (args.length >= 3 && isKeyword(args[1]) && args[1].value === "yields") {
++    if (args.length < 4) return null;
++    return { bodyStart: 3, yieldsPayloadIndex: 2 };
++  }
++  return { bodyStart: 1, yieldsPayloadIndex: null };
++}
++
+ /** Preserve source indexes while retaining canonical last-group-wins semantics. */
+ function keywordGroupRanges(args) {
+   const clauses = new Map();
+@@ -32,4 +48,4 @@ function keywordGroupRanges(args) {
+   return clauses;
+ }
+ 
+-export { FUNC_CLAUSE_KEYS, parseKeywordClauses, keywordGroupRanges };
++export { FUNC_CLAUSE_KEYS, genfnBodyLayout, parseKeywordClauses, keywordGroupRanges };
+diff --git a/packages/lang/lexical-regions.js b/packages/lang/lexical-regions.js
+index 6802ff6d..6dacf7f4 100644
+--- a/packages/lang/lexical-regions.js
++++ b/packages/lang/lexical-regions.js
+@@ -3,7 +3,7 @@
+  * class members. Paths refer to positions in the original tree, never object
+  * identity, spans or owner identity.
+  */
+-import { FUNC_CLAUSE_KEYS, keywordGroupRanges } from "./function-clauses.js";
++import { FUNC_CLAUSE_KEYS, genfnBodyLayout, keywordGroupRanges } from "./function-clauses.js";
+ import { isKernel } from "./kernel-mark.js";
+ 
+ /** @typedef {"TypedParameter"|"BindingPattern"} ParameterGrammar */
+@@ -41,7 +41,10 @@ export function functionRegionLayout(form) {
+   const paramsPath = args[paramsIndex]?.type === "list" ? [1 + paramsIndex] : null;
+   const defaultPaths = paramsPath ? parameterDefaultPaths(atOccurrencePath(form, paramsPath), paramsPath, kernel ? "BindingPattern" : "TypedParameter") : [];
+   const namePath = namedFunction && args[0]?.type === "atom" ? [1] : null;
+-  return { grammar: kernel ? "Kernel" : "TypedSource", namePath, clauses: [{ grammar: head, clausePath: [], paramsPath, defaultPaths, prePaths: [], bodyPaths: args.slice(paramsIndex + 1).map((_, i) => [2 + paramsIndex + i]), postPaths: [] }] };
++  const bodyArgs = head === "genfn" ? genfnBodyLayout(args) : null;
++  if (head === "genfn" && !bodyArgs) return null;
++  const bodyStart = head === "genfn" ? bodyArgs.bodyStart : paramsIndex + 1;
++  return { grammar: kernel ? "Kernel" : "TypedSource", namePath, clauses: [{ grammar: head, clausePath: [], paramsPath, defaultPaths, prePaths: [], bodyPaths: args.slice(bodyStart).map((_, i) => [1 + bodyStart + i]), postPaths: [] }] };
+ }
+ 
+ /** @param {object[]} items @param {number[]} clausePath @param {number} rootOffset */
+diff --git a/packages/lang/surface-helpers.js b/packages/lang/surface-helpers.js
+index 272d4d26..afbc96f9 100644
+--- a/packages/lang/surface-helpers.js
++++ b/packages/lang/surface-helpers.js
+@@ -492,6 +492,9 @@ export function parseTypedParams(paramList) {
+           `type keyword :${values[i].value} has no parameter name`,
+         );
+       }
++      if (values[i + 1]?.type !== "atom") {
++        throw new Error("parameter name must be an atom");
++      }
+       params.push({ typeKw: values[i], name: values[i + 1] });
+       i += 2;
+     } else {

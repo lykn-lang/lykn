@@ -1,0 +1,1 @@
+genfn: :yields requires a type keyword and body

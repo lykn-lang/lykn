@@ -1,0 +1,10 @@
+Source cwd, read-only:
+git rev-parse HEAD HEAD^{tree}
+git status --short
+git show -s --format=fuller HEAD
+git show -s --format=%B HEAD | git interpret-trailers --parse
+git diff --name-only 595f672b..HEAD
+git diff 595f672b..HEAD -- [seven implementation source files]
+Evidence cwd after final source status:
+COPYFILE_DISABLE=1 tar -czf receipts-0e249caf.tar.gz README.md fixtures runtime receipts
+shasum -a 256 receipts-0e249caf.tar.gz > archive.sha256

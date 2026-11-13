@@ -3,7 +3,7 @@ project: project03-language-evolution
 arc: arc04-qualified-adts
 slice: slice03-local-qualified-nominal-core
 status: active
-version: "1.23"
+version: "1.24"
 depends-on: [slice01-contract-and-emission-design, slice02-existing-adt-correctness]
 ---
 
@@ -233,7 +233,8 @@ gates survive. No release edits/integration, remote CI, push or publication.
 | cc-prompt-iteration09.md | 2026-11-12 | iteration08 | B2a shared precise lexical regions, actual expanded visibility and explicit unsupported generator diagnostic | Independent HOLD bcb98482/tree72adf0ee; R01–03 and raw controls retained |
 | cc-prompt-iteration10.md | 2026-11-12 | iteration09 | B2a correction01: native redispatch/actual diagnostic gating, public class defaults, named kernel function scope | Independent HOLD804be5da/treed25f2b66 on R04; R01–03 focused replays pass |
 | cc-prompt-iteration11.md | 2026-11-13 | iteration10 | B2a correction02: shared actual enclosing-declaration sites across expansion/resolution/D2/shadow clients and real wrapper/default slots | Independent HOLD595f672b/treedd518b1b on R05; R01–04 focused controls pass |
-| cc-prompt-iteration12.md | 2026-11-13 | iteration11 | B2a correction03: pure typed-source header preflight and canonical genfn metadata/body slots in parser and walkers | Clean0e249caf/treee946afc2 returned; separate Sol software review active |
+| cc-prompt-iteration12.md | 2026-11-13 | iteration11 | B2a correction03: pure typed-source header preflight and canonical genfn metadata/body slots in parser and walkers | Independent HOLD0e249caf/treee946afc2: native protected-host client still visits ignored generator regions; exercised header/D2 controls green |
+| cc-prompt-iteration13.md | 2026-11-13 | iteration12 | B2a correction04: parsed native Surface function regions, ignored generator post excluded, actual parameter leaf scopes | Separate Sol source-readiness green; issued to Luna under existing authority; original B2-LX gates retained |
 
 The A correction loop used three refinement passes; B1 required no software
 correction. IC-01 is a distinct authorized usable prerequisite, not a retry
@@ -454,3 +455,17 @@ comparison/headroom against original raw logs, preserving both reports.
 Exclusive source/build ownership transfers to separate Sol6.1High for complete
 B2-LX verification; no row closes on CC attestation. B2-ID-NAME, LC-02–08 and
 all original nominal/API/purity/book/human obligations remain open.
+
+2026-11-13 v1.24: correction03 independent HOLD retains R05 in the native
+protected-host client: raw anonymous generator traversal includes consumed yields
+metadata and named generator traversal includes ignored post. Root verified
+archive91564bbcccc497e527aad1c6b82b08be28af609806c699ac1a2d0a339c3cbd82
+and clean0e249caf/treee946afc2 handback. Independent focused8native/85public
+plus10 diagnostic/5 runtime public replay pass; full gates remain unrun.
+Iteration13 corrects the remaining client with authoritative parsed source
+regions and actual leaf parameter names, preserving raw Kernel handling and
+the public validator's expanded/kernel input domain. Fourth formal B2a
+correction, no history reset; B2-LX, B2-ID-NAME, LC02–08 remain open.
+Separate Sol reviewed the complete draft against the pinned source and confirmed
+the parsed leaf projection/emitter agreement and public input-domain limit.
+Root issues iteration13; Luna takes exclusive source/build ownership.

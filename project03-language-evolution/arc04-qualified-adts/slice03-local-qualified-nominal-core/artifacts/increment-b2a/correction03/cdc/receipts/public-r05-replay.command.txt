@@ -1,0 +1,6 @@
+Source cwd; environment.txt values:
+target/release/lykn compile <absolute CDC>/fixtures/public-r05-replay.lykn -o <absolute CDC>/runtime/public-r05-replay.mjs
+Then canonical CDC cwd; environment.txt values:
+deno run --no-prompt --cached-only -A --config fixtures/canonical-public.json runtime/public-r05-replay.mjs
+Each per-case diagnostic or generated module and actual subprocess streams,
+command JSON/numeric status are saved by the Lykn replay; outer raw status too.

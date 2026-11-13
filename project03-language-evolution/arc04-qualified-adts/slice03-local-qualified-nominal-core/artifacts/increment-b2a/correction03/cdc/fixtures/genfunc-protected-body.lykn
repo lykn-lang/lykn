@@ -1,0 +1,2 @@
+(genfunc factory :args () :body (set-symbol! Array "isArray" 1) (yield 41))
+(console:log (Array:from (factory)))

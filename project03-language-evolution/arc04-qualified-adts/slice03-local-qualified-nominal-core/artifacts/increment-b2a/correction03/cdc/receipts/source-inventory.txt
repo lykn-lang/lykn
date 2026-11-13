@@ -1,0 +1,13 @@
+crates/lykn-cli/tests/macro_dependencies.rs
+crates/lykn-lang/embedded/packages/lang/classifier.js
+crates/lykn-lang/embedded/packages/lang/function-clauses.js
+crates/lykn-lang/embedded/packages/lang/lexical-regions.js
+crates/lykn-lang/embedded/packages/lang/surface-helpers.js
+crates/lykn-lang/src/classifier/forms.rs
+crates/lykn-lang/src/expander/pass2.rs
+crates/lykn-lang/src/lexical_regions.rs
+packages/lang/classifier.js
+packages/lang/function-clauses.js
+packages/lang/lexical-regions.js
+packages/lang/surface-helpers.js
+test/expander/lexical-regions.test.js

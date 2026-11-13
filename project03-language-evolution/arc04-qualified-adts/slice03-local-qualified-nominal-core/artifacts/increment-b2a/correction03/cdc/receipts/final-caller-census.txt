@@ -1,0 +1,43 @@
+packages/lang/lexical-regions.js:6:import { FUNC_CLAUSE_KEYS, genfnBodyLayout, keywordGroupRanges } from "./function-clauses.js";
+packages/lang/lexical-regions.js:44:  const bodyArgs = head === "genfn" ? genfnBodyLayout(args) : null;
+crates/lykn-lang/src/resolver.rs:148:    SourceFunction(Option<crate::lexical_regions::FunctionRegions>),
+crates/lykn-lang/src/resolver.rs:251:        return ScopePlan::SourceFunction(crate::lexical_regions::function_regions(form));
+crates/lykn-lang/src/resolver.rs:405:                ScopePlan::SourceFunction(Some(layout)) => {
+crates/lykn-lang/src/resolver.rs:408:                ScopePlan::SourceFunction(None) => values.to_vec(),
+crates/lykn-lang/src/resolver.rs:939:            ScopePlan::SourceFunction(Some(layout)) => {
+crates/lykn-lang/src/resolver.rs:942:            ScopePlan::SourceFunction(None) => {}
+crates/lykn-lang/src/resolver.rs:1515:        assert!(matches!(plan, ScopePlan::SourceFunction(_)));
+packages/lang/function-clauses.js:23:function genfnBodyLayout(args) {
+packages/lang/function-clauses.js:51:export { FUNC_CLAUSE_KEYS, genfnBodyLayout, parseKeywordClauses, keywordGroupRanges };
+packages/lang/classifier.js:61:import { FUNC_CLAUSE_KEYS, genfnBodyLayout, parseKeywordClauses } from "./function-clauses.js";
+packages/lang/classifier.js:62:export { FUNC_CLAUSE_KEYS, genfnBodyLayout, parseKeywordClauses } from "./function-clauses.js";
+packages/lang/classifier.js:783:      const layout = genfnBodyLayout(a);
+packages/lang/binding.js:156:    walkSourceFunction(form, out, inScope);
+packages/lang/binding.js:342:function walkSourceFunction(form, out, inScope) {
+crates/lykn-lang/embedded/packages/lang/function-clauses.js:23:function genfnBodyLayout(args) {
+crates/lykn-lang/embedded/packages/lang/function-clauses.js:51:export { FUNC_CLAUSE_KEYS, genfnBodyLayout, parseKeywordClauses, keywordGroupRanges };
+crates/lykn-lang/embedded/packages/lang/classifier.js:61:import { FUNC_CLAUSE_KEYS, genfnBodyLayout, parseKeywordClauses } from "./function-clauses.js";
+crates/lykn-lang/embedded/packages/lang/classifier.js:62:export { FUNC_CLAUSE_KEYS, genfnBodyLayout, parseKeywordClauses } from "./function-clauses.js";
+crates/lykn-lang/embedded/packages/lang/classifier.js:783:      const layout = genfnBodyLayout(a);
+crates/lykn-lang/src/expander/pass2.rs:108:                        crate::lexical_regions::source_function_regions(&current, true)
+crates/lykn-lang/src/expander/pass2.rs:309:        crate::resolver::ScopePlan::SourceFunction(layout) => {
+crates/lykn-lang/embedded/packages/lang/lexical-regions.js:6:import { FUNC_CLAUSE_KEYS, genfnBodyLayout, keywordGroupRanges } from "./function-clauses.js";
+crates/lykn-lang/embedded/packages/lang/lexical-regions.js:44:  const bodyArgs = head === "genfn" ? genfnBodyLayout(args) : null;
+crates/lykn-lang/embedded/packages/lang/binding.js:156:    walkSourceFunction(form, out, inScope);
+crates/lykn-lang/embedded/packages/lang/binding.js:342:function walkSourceFunction(form, out, inScope) {
+crates/lykn-lang/src/binding.rs:407:    ) && let Some(layout) = crate::lexical_regions::function_regions(form)
+crates/lykn-lang/src/binding.rs:525:    let Some(layout) = crate::lexical_regions::function_regions(form) else {
+crates/lykn-lang/src/binding.rs:585:    let Some(layout) = crate::lexical_regions::function_regions(form) else {
+crates/lykn-lang/src/binding.rs:798:            crate::classifier::forms::classify_form_with_bindings(form).unwrap_or_default()
+crates/lykn-lang/src/binding.rs:803:                crate::classifier::forms::classify_form_with_bindings(form).unwrap_or_default();
+crates/lykn-lang/src/lexical_regions.rs:74:pub(crate) struct GenfnBodyLayout {
+crates/lykn-lang/src/lexical_regions.rs:82:pub(crate) fn genfn_body_layout(args: &[SExpr]) -> Option<GenfnBodyLayout> {
+crates/lykn-lang/src/lexical_regions.rs:90:        return Some(GenfnBodyLayout {
+crates/lykn-lang/src/lexical_regions.rs:95:    Some(GenfnBodyLayout {
+crates/lykn-lang/src/lexical_regions.rs:152:pub(crate) fn source_function_regions(form: &SExpr, generator: bool) -> Option<FunctionRegions> {
+crates/lykn-lang/src/lexical_regions.rs:211:pub(crate) fn function_regions(form: &SExpr) -> Option<FunctionRegions> {
+crates/lykn-lang/src/lexical_regions.rs:217:        return source_function_regions(form, head == "genfunc");
+crates/lykn-lang/src/lexical_regions.rs:248:        1 + genfn_body_layout(&values[1..])?.body_start
+crates/lykn-lang/src/classifier/forms.rs:853:pub(crate) fn classify_form_with_bindings<'tree>(
+crates/lykn-lang/src/classifier/forms.rs:2006:    let layout = crate::lexical_regions::genfn_body_layout(args)
+crates/lykn-cli/tests/macro_dependencies.rs:560:fn b2a_native_preflights_typed_source_headers_before_region_macros() {

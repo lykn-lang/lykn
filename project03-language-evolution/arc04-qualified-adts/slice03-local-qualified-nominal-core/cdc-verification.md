@@ -893,3 +893,48 @@ Original archive SHA remains
 Final source pin/tree unchanged, final source status empty; source/build ownership
 returns clean to root. B2-LX remains HOLD R05; all wider owner/name/LC/S03 limits
 above remain open.
+
+## B2a correction03 candidate0e249caf — 2026-11-13 independent HOLD
+
+Separate Sol6.1High reviewed clean0e249cafb7d50ce45e00f7c7288249666fcc113f,
+treee946afc2283951fe11f2e9c7040a7f734dbf6d11,13 authorized paths and correct
+literal contiguous/parsed Codex+Billo trailers. Source was not edited.
+Source/build ownership returns clean to root, with no active build/test job.
+
+**B2-LX remains HOLD R05**, now in an adjacent actual native protected-host
+consumer. Native genfn metadata `(set-symbol! Array "isArray" 1)` consumed and
+ignored by the real parser is nevertheless visited by protected_host.rs735's
+raw args[1..] body walk; actual compile exits1 at1:46 with the protected-slot
+error. The paired actual-body write correctly exits1 at1:51. Native Genfunc
+Surface handling likewise visits ignored clause.post; its inert-post fixture
+and real-body negative both exit1. The established writer ignores generator
+post, so this is another same-causal structural/executable role mismatch.
+
+Actual canonical public genfn metadata compiles and actual emitted ESM prints41
+(exit0); the real-body write correctly rejects. Direct raw-source invocation of
+the deep public protected validator rejects metadata too, but its documented
+input is expanded/kernel units, so this is not claimed as a supported-public
+source API regression or a new source-validator requirement. The initial
+keyword-key pair is not a valid rejection oracle because current protected
+proof accepts literal string keys only; both preserved keyword attempts compile0.
+No protected-key policy expansion is inferred.
+
+R05's implemented header and D2 controls pass focused independent replay:
+8 native integration tests (6 filtered),85 canonical public tests, and a separate
+Lykn public replay with10 expected diagnostics plus5 actual ESM runtime positives.
+Fresh make fresh-artifacts passed. R01–04 exercised cases remain green.
+Helper isolation/oracle and missing-else attempts are preserved separately;
+no candidate product failure was hidden. Original HOLD archives remain intact.
+
+[Independent index](artifacts/increment-b2a/correction03/cdc/README.md) preserves
+source facts, exact route limits, commands/env/raw streams/statuses and all
+attempts. [Evidence archive](artifacts/increment-b2a/correction03/cdc/receipts-0e249caf.tar.gz)
+SHA-256 `91564bbcccc497e527aad1c6b82b08be28af609806c699ac1a2d0a339c3cbd82`.
+No full make check/docs/native1195/product1556/67steps, coldM6 fourteen/48,
+complete copiedCLI/private/Reflect/completion/browser-delivery, committed cites
+or gzip gate was independently run on known-bad software. CC's figures remain
+attestation. Its preserved size arithmetic is reconciled against correction02
+actual46503: current46600 would imply+97 and35320 headroom, not its prose values.
+No independent current gzip claim follows. Root owns the next repair recipe.
+A/B1/IC remain accepted within prior limits; B2b/pendingB2-ID-NAME,LC02–08 and
+S03 stay open. No release/integration/remote/dependency or source Git action.

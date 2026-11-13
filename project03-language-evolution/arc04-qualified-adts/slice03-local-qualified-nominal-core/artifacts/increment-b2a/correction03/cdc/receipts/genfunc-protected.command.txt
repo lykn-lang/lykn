@@ -1,0 +1,4 @@
+Source cwd/common environment.txt values, exact paired CLI calls:
+target/release/lykn compile <absolute CDC>/fixtures/genfunc-protected-post.lykn -o <absolute CDC>/runtime/native-genfunc-protected-post.mjs
+target/release/lykn compile <absolute CDC>/fixtures/genfunc-protected-body.lykn -o <absolute CDC>/runtime/native-genfunc-protected-body.mjs
+This tests existing ignored genfunc post, not new post execution support.

@@ -1,0 +1,6 @@
+DENO_DIR=/Users/oubiwann/Library/Caches/deno
+XDG_CACHE_HOME=/private/tmp/lykn-b2a-correction03-cdc/xdg
+NPM_CONFIG_CACHE=/private/tmp/lykn-b2a-correction03-cdc/npm
+TMPDIR=/private/tmp/lykn-b2a-correction03-cdc/tmp
+Owned paths created before first invocation outside all repo/config ancestors.
+Source cwd /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering

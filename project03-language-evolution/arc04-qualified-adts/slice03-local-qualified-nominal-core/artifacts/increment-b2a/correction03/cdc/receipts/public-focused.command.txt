@@ -1,0 +1,5 @@
+Source cwd; environment.txt values.
+deno test --no-prompt --config <absolute CDC>/fixtures/canonical-public.json -A test/expander/lexical-regions.test.js test/expander/resolution.test.js test/expander/quote.test.js test/expander/quasiquote.test.js test/forms/host-reference-lowering.test.js test/forms/protected-host-policy.test.js test/forms/reserved-binding-output.test.js test/forms/surface-type-context.test.js test/forms/browser-host-reference-compile.test.js
+Correction03 additionally selects completion/computed callee and existing
+private/Reflect fragment tests through their canonical product test files;
+actual expanded exact command is in public-focused-invocation.txt.

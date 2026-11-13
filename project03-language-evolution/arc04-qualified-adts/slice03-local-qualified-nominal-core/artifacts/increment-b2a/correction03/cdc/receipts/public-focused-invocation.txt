@@ -1,0 +1,2 @@
+Source cwd, all common environment.txt values:
+deno test --no-prompt --cached-only --config <absolute CDC>/fixtures/canonical-public.json -A test/expander/lexical-regions.test.js test/expander/resolution.test.js test/expander/quote.test.js test/expander/quasiquote.test.js test/forms/host-reference-lowering.test.js test/forms/protected-host-policy.test.js test/forms/reserved-binding-output.test.js test/forms/surface-type-context.test.js test/forms/browser-host-reference-compile.test.js

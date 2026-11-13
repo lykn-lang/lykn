@@ -1,0 +1,24 @@
+(import "/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/mod.js" (lykn read))
+(import "/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/protected-host.js" (validateProtectedHost))
+(import "/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/compiler.js" (toJsIdentifier formHead))
+(func direct-policy :args (:string stem) :body
+  (bind source (Deno:readTextFileSync (+ "fixtures/" stem ".lykn")))
+  (try
+    (validateProtectedHost (read source) (obj :toJsIdentifier toJsIdentifier :formHead formHead))
+    (Deno:writeTextFileSync (+ "receipts/public-direct-" stem ".txt") "accepted")
+    (console:log stem "direct-accepted")
+    (catch failure
+      (Deno:writeTextFileSync (+ "receipts/public-direct-" stem ".txt") failure:message)
+      (console:log stem failure:message))))
+(direct-policy "genfn-protected-string-metadata")
+(direct-policy "genfn-protected-string-body")
+(bind metadata (Deno:readTextFileSync "fixtures/genfn-protected-string-metadata.lykn"))
+(Deno:writeTextFileSync "runtime/public-genfn-protected-string-metadata.mjs" (lykn metadata))
+(console:log "public metadata compiled")
+(try
+  (lykn (Deno:readTextFileSync "fixtures/genfn-protected-string-body.lykn"))
+  (throw (new Error "unexpected actual body accepted"))
+  (catch failure
+    (Deno:writeTextFileSync "receipts/public-actual-genfn-protected-string-body.txt" failure:message)
+    (if (not (failure:message:includes "host-contract v2: write to protected slot Array.isArray")) (throw failure))
+    (console:log "public actual body rejected")))

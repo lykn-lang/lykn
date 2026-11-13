@@ -1,0 +1,16 @@
+commit 0e249cafb7d50ce45e00f7c7288249666fcc113f
+Author:     Duncan McGreggor <oubiwann@gmail.com>
+AuthorDate: Fri Nov 13 02:17:43 2026 -0600
+Commit:     Duncan McGreggor <oubiwann@gmail.com>
+CommitDate: Fri Nov 13 02:17:43 2026 -0600
+
+    fix: preflight typed source headers before macro regions
+    
+    Validate selected typed function headers with the existing classifier before
+    expanding defaults or bodies. Share the existing GenFn metadata/body slot
+    selection with native/public lexical projectors and reject non-atom typed
+    names in the public parser. Add native and public runtime, diagnostic, and
+    metadata-scope regressions; keep the embedded package mirrors aligned.
+    
+    Co-authored-by: Codex <noreply@openai.com>
+    Co-authored-by: Billo AI <ai-engineering@billo.systems>

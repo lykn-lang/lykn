@@ -1,0 +1,6 @@
+Source cwd/common env: target/release/lykn compile <absolute CDC>/fixtures/public-protected-replay.lykn -o <absolute CDC>/runtime/public-protected-replay.mjs
+CDC cwd/common env: deno run --no-prompt --cached-only -A --config fixtures/canonical-public.json runtime/public-protected-replay.mjs
+Then actual public metadata ESM: deno run --no-config --no-prompt --cached-only runtime/public-genfn-protected-string-metadata.mjs
+First helper compile1: if-expression requires else (helper grammar error, no
+public invocation occurred). Preserved original source; retry01 adds null else.
+Retry emits runtime/public-protected-replay-retry01.mjs with distinct raw files.

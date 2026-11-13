@@ -2,7 +2,7 @@
 project: project03-language-evolution
 arc: arc04-qualified-adts
 status: active
-version: "1.11"
+version: "1.12"
 related: [project07-core-library-research]
 ---
 
@@ -24,8 +24,10 @@ public class defaults and named kernel-function scopes. Its correction804be5da
 passes those focused controls but remains held on actual declaration visibility
 across resolver/validation and wrappers. Correction595f672b passes R01–04 focused
 controls but remains independently held on typed-header ordering and genfn
-metadata/body alignment. Source-ready iteration12 repairs those boundaries
-before B2b metadata transport. The pending
+metadata/body alignment. Iteration12 candidate0e249caf passes exercised header/
+D2 controls but remains held on native protected-host traversal of ignored
+generator regions. Iteration13 repairs this parsed-source client before B2b
+metadata transport. The pending
 operator source-name identity choice B2-ID-NAME remains explicit. The eight-row plan retains local ownership, nominal runtime/guards, APIs/DTS,
 private purity, migration and full consumer proof. S03 software is not yet
 accepted. [S02 release integration](slice02-existing-adt-correctness/artifacts/release-integration-0829e892.md)
@@ -120,6 +122,10 @@ Project07's original research evidence, final synthesis and library handoffs
 survive this detour, including every YAML and human-review obligation.
 
 ## Version history
+
+- 2026-11-13 v1.12. Preserve correction03 independent R05 HOLD and author bounded
+  correction04 for the remaining native source host-policy client. Actual public
+  compile is green; no unsupported raw-source validator API is introduced.
 
 - 2026-11-13 v1.11. Preserve R05 HOLD with supported header macro witnesses and
   native/public inert-metadata controls; issue correction03 after pure-parser

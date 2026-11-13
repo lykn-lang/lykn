@@ -22,8 +22,10 @@ iteration10's candidate804be5da/treed25f2b66 passes its focused repairs but is
 independently held on declaration transitions/wrappers. Iteration11 returns clean
 595f672b/treedd518b1b, independently held on typed-header ordering and genfn
 metadata/body alignment after R01–04 focused controls pass. Source-ready
-iteration12 returns clean0e249caf/treee946afc2 for separate Sol software review
-of the parser/traversal boundary. Typed metadata transport and private finalization
+iteration12 returns clean0e249caf/treee946afc2, independently held on the native
+protected-host client's ignored generator metadata/post traversal. Exercised
+headers/D2 and R01–04 controls pass; iteration13 addresses the remaining client.
+Typed metadata transport and private finalization
 follow under the preserved B2 design after lexical acceptance; source-name
 identity B2-ID-NAME remains an unanswered operator language-design choice. Local
 qualified nominal behavior, private purity and final consumer gates remain to

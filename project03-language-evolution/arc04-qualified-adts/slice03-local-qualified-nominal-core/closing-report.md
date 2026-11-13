@@ -532,3 +532,27 @@ that delta as182. Actual81920-budget headroom is35320, not35220. Preserve
 those original sentences with the reconciliation in the CC index. No rerun or
 source change follows merely from arithmetic correction; independent actual
 size and all other required gates remain Sol's responsibility.
+
+## Correction03 independent native traversal HOLD — 2026-11-13
+
+Separate Sol retains B2-LX HOLD at0e249caf/treee946afc2: the native source
+protected-host client visits consumed genfn yields metadata and ignored genfunc
+post, contrary to actual emission. Exercised header/D2/R01–04 controls pass
+8native/85public plus10 diagnostic/5 runtime public checks; full/cold/citation/
+size gates remain independently unrun. Root verified frozen archive SHA256
+91564bbcccc497e527aad1c6b82b08be28af609806c699ac1a2d0a339c3cbd82.
+
+The next recipe changes the remaining client to parsed source regions, excludes
+ignored post from scope and visiting, and uses actual typed leaf parameter names
+rather than external alias keys. Public normal compile already behaves correctly;
+raw direct validator input is documented expanded/kernel, so this is not grounds
+for inventing a public source validator. Native keyword property keys were an
+unsuitable rejection oracle; string-key pairs supply actual discrimination.
+
+Process observation for the eventual S03 retrospective: prior parser/projector
+repairs did not cover every consumer of executable roles. The changed method
+now audits native host-policy traversal against actual classifier/emitter shapes.
+Root also made several unsuccessful guessed-path read queries while preparing
+this recipe; these were read-only tool errors, not product failures. No claim
+of contributor/model efficacy follows from this history. All failed candidates,
+root count/trailer reconciliations and pending human/name/API/book gates remain.

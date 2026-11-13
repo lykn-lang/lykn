@@ -1,0 +1,4 @@
+genfn-protected-string-metadata host-contract v2: write to protected slot Array.isArray
+genfn-protected-string-body host-contract v2: write to protected slot Array.isArray
+public metadata compiled
+public actual body rejected

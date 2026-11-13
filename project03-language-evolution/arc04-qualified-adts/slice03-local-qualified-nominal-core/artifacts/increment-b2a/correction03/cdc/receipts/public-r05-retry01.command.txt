@@ -1,0 +1,4 @@
+Same source compile command and common environment as public-r05-replay,
+but fixtures/public-r05-replay.lykn -> runtime/public-r05-replay-retry01.mjs.
+Then canonical CDC cwd, common env:
+deno run --no-prompt --cached-only -A --config fixtures/canonical-public.json runtime/public-r05-replay-retry01.mjs
