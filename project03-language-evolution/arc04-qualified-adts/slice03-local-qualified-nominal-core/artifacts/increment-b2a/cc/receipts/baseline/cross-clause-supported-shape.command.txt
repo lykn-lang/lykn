@@ -1,0 +1,1 @@
+bin/lykn compile /private/tmp/b2a-baseline-e80f613b/cross-clause-supported-shape.lykn -o /private/tmp/b2a-baseline-e80f613b/cross-clause-supported-shape.js

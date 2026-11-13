@@ -1,0 +1,39 @@
+
+running 34 tests
+test compile::tests::compile_source_empty_input ... ok
+test compile::tests::compile_source_allows_no_else_if_in_statement_position ... ok
+test compile::tests::compile_source_allows_bound_fn_head_call ... ok
+test compile::tests::compile_source_cell_express ... ok
+test compile::tests::compile_source_allows_if_expression_with_else_branch ... ok
+test compile::tests::compile_source_bind_kernel_json ... ok
+test compile::tests::compile_source_context_path_synthetic_parent ... ok
+test compile::tests::compile_source_class_members_keep_independent_parameter_scope ... ok
+test compile::tests::compile_source_cond_expression ... ok
+test compile::tests::compile_source_exports_declaration ... ok
+test compile::tests::compile_source_grouped_bind_keeps_sequential_visibility ... ok
+test compile::tests::compile_source_invalid_syntax_errors ... ok
+test compile::tests::compile_source_lyk_exempt_from_strict ... ok
+test compile::tests::compile_source_malformed_class_field_reports_diagnostic ... ok
+test compile::tests::compile_source_func_kernel_json ... ok
+test compile::tests::compile_source_none_path_is_strict ... ok
+test compile::tests::compile_source_rejects_cond_expression_without_else ... ok
+test compile::tests::compile_source_func_post_uses_body_scope_before_or_after_textually ... ok
+test compile::tests::compile_source_multiple_binds ... ok
+test compile::tests::compile_source_rejects_duplicate_exports_name ... ok
+test compile::tests::compile_source_rejects_missing_exports_name ... ok
+test compile::tests::compile_source_obj_form ... ok
+test compile::tests::compile_source_rejects_nested_bare_parameter_fn ... ok
+test compile::tests::compile_source_rejects_no_else_if_in_expression_position ... ok
+test compile::tests::compile_source_rejects_multi_clause_genfunc_before_body ... ok
+test compile::tests::compile_source_strict_kernel_escape_compiles_in_lykn ... ok
+test compile::tests::compile_source_function_clauses_keep_independent_parameter_scope ... ok
+test compile::tests::compile_source_strict_rejects_bare_kernel_in_lykn ... ok
+test compile::tests::compile_source_strip_assertions_preserves_fn_implicit_return ... ok
+test compile::tests::compile_source_threading ... ok
+test compile::tests::compile_source_strict_allows_operators_and_surface ... ok
+test compile::tests::compile_source_strip_assertions ... ok
+test compile::tests::compile_source_type_and_match ... ok
+test compile::tests::compile_source_macro_returned_declaration_scopes_following_call ... ok
+
+test result: ok. 34 passed; 0 failed; 0 ignored; 0 measured; 156 filtered out; finished in 0.04s
+

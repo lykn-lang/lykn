@@ -1,0 +1,1 @@
+bin/lykn compile --strip-assertions /private/tmp/b2a-baseline-e80f613b/post-before-body-focused.lykn -o /private/tmp/b2a-baseline-e80f613b/post-before-body-focused-stripped.js

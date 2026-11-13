@@ -1,0 +1,1 @@
+DENO_DIR=/Users/oubiwann/Library/Caches/deno XDG_CACHE_HOME=/tmp/lykn-b2a-xdg-cache NPM_CONFIG_CACHE=/tmp/lykn-b2a-npm-cache TMPDIR=/tmp/lykn-b2a-tmp make bundle-size-check

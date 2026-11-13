@@ -1,0 +1,1 @@
+deno test --config /tmp/lykn-b2a-project.json -A test/expander/lexical-regions.test.js

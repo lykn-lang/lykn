@@ -1,0 +1,33 @@
+   Compiling lykn-lang v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang)
+   Compiling lykn-cli v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli)
+   Compiling lykn v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn)
+    Finished `release` profile [optimized] target(s) in 8.83s
+    Checking lykn-lang v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang)
+error: this `if` statement can be collapsed
+   --> crates/lykn-lang/src/binding.rs:414:5
+    |
+414 | /     if matches!(
+415 | |         name.strip_prefix("kernel:").unwrap_or(name),
+416 | |         "function" | "function*" | "=>" | "lambda"
+417 | |     ) {
+...   |
+441 | |     }
+    | |_____^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.97.0/index.html#collapsible_if
+    = note: `-D clippy::collapsible-if` implied by `-D warnings`
+    = help: to override `-D warnings` add `#[allow(clippy::collapsible_if)]`
+help: collapse nested if block
+    |
+417 ~     )
+418 ~         && let Some(layout) = crate::lexical_regions::function_regions(form) {
+419 |             let mut function_scope = scope.clone();
+...
+439 |             return;
+440 ~         }
+    |
+
+error: could not compile `lykn-lang` (lib) due to 1 previous error
+warning: build failed, waiting for other jobs to finish...
+error: could not compile `lykn-lang` (lib test) due to 1 previous error
+make: *** [lint] Error 101

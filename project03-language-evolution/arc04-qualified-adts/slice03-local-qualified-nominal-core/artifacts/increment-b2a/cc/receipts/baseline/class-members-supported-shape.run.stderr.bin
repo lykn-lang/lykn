@@ -1,0 +1,7 @@
+4:1: warning: unused binding 'probe'
+  suggestion: prefix with underscore: _probe
+error: Uncaught (in promise) ReferenceError: bind is not defined
+    bind(value, 1);
+    ^
+    at Probe.second (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/lykn/run/class-members-supported-shape.js:6:5)
+    at file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/lykn/run/class-members-supported-shape.js:11:19

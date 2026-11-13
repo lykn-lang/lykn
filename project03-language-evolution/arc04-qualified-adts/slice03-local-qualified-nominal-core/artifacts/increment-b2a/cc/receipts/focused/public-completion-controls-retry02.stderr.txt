@@ -1,0 +1,3 @@
+Check test/expander/lexical-regions.test.js
+Check test/forms/semantic-roles.test.js
+Check test/forms/dd-50.test.js

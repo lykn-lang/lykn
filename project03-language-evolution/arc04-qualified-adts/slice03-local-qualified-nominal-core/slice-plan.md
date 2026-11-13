@@ -3,7 +3,7 @@ project: project03-language-evolution
 arc: arc04-qualified-adts
 slice: slice03-local-qualified-nominal-core
 status: active
-version: "1.16"
+version: "1.17"
 depends-on: [slice01-contract-and-emission-design, slice02-existing-adt-correctness]
 ---
 
@@ -230,7 +230,7 @@ gates survive. No release edits/integration, remote CI, push or publication.
 | cc-prompt-iteration06.md | 2026-11-11 | iteration05 | Rename guide block34 public to public-user, preserve output, finish original repair/gates | HOLD at5bdbfe3c/treee0a95d74: IC-R01–04 correctness plus R05 oracle gap |
 | cc-prompt-iteration07.md | 2026-11-11 | iteration06 | Shared function group parsing, complete executable/default regions, restore public post scope and valid macro oracle | Independent HOLD atb8a1fa17/treed3e604b2: R01–05 repaired, new R06–08; three correction commits retained |
 | cc-prompt-iteration08.md | 2026-11-11 | iteration07 | Mandatory producer grammar, exactly-once function regions and ordinary malformed-header diagnostics | Independently accepted IC-01 at e80f613b/tree7376b33d; LC-02–08 remain open |
-| cc-prompt-iteration09.md | 2026-11-12 | iteration08 | B2a shared precise lexical regions, actual expanded visibility and explicit unsupported generator diagnostic | Active CC implementation after separate source-readiness acceptance |
+| cc-prompt-iteration09.md | 2026-11-12 | iteration08 | B2a shared precise lexical regions, actual expanded visibility and explicit unsupported generator diagnostic | CC returned clean bcb98482/tree72adf0ee; separate Sol software review active |
 
 The A correction loop used three refinement passes; B1 required no software
 correction. IC-01 is a distinct authorized usable prerequisite, not a retry
@@ -356,3 +356,14 @@ canonical normalized alias/shadow identity produce different semantics. Root
 requested a disposition; dependent B2b name/owner lookup is held pending it.
 B2a implementation and independent verification continue under their settled
 scope; this does not reopen or block accepted A/B1/IC.
+
+2026-11-12 v1.17: root verified the clean B2a handoff at
+bcb98482fa9b32aa6f58df3e2249123e16924271, tree
+72adf0ee9beb51eb6b0a9166ad9448b8103cfbb9, and its exact22-path implementation
+diff over e80f613b. Source implementation fbd1604d and two empty metadata
+follow-ups remain intact; the last carries the required contiguous trailers.
+Exclusive source/build ownership transfers to the separate Sol6.1High reviewer.
+The CC evidence is attested, not acceptance; B2-LX and LC-02–08 stay open.
+Root reconciled the raw final full-check denominator:1546 product cases/67 steps,
+not the1536 reported in CC's handoff;482 documentation cases passed once.
+The original attestation and raw streams are preserved with this correction.

@@ -1,0 +1,1 @@
+cp binding/expander mirrors; cargo fmt --all; deno test -A --no-prompt --config /tmp/lykn-b2a-project.json six focused public files

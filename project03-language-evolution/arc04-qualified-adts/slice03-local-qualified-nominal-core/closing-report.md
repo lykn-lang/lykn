@@ -229,3 +229,68 @@ mechanics, extra paths and tests in its existing index; the new deep-module
 export and expansion input-ownership behavior remain S06 audit inputs. No new
 public JSR entrypoint, permission or dependency is authorized. Source/build
 ownership remains Luna through clean handoff; no acceptance is claimed here.
+
+## B2a iteration09 — CC proposed-done handoff
+
+**Independent Sol CDC is pending; B2-LX/B2b, LC-02–08 and S03 remain open.**
+The 22-path source implementation is committed at
+`fbd1604d94b77a736a17572f27f06fac12b29553`, parent `e80f613b`, on
+`codex/qualified-adt-core`. Final HEAD is
+`bcb98482fa9b32aa6f58df3e2249123e16924271`, tree
+`72adf0ee9beb51eb6b0a9166ad9448b8103cfbb9`, with a clean source worktree.
+Final message inspection found the implementation command omitted co-author
+trailers. Preserving the no-amend rule, two empty metadata commits follow it:
+`5af6701a` has separated trailers, and `bcb98482` carries the correct
+contiguous Codex/Billo pair. The final commit chain and this correction are
+indexed with raw evidence in [`artifacts/increment-b2a/cc/index.md`](artifacts/increment-b2a/cc/index.md).
+Its exact 22-path source/test inventory, design
+choices, source anchors, raw failure/retry receipts and all final gates are
+indexed in [`artifacts/increment-b2a/cc/index.md`](artifacts/increment-b2a/cc/index.md).
+The source worktree is clean and source/build ownership returns to root for
+independent Sol review.
+
+Final `make check` passed numeric exit 0: release build, Clippy/format/syntax
+lint, citation scan, all Rust tests, 1,536 generated product cases, and 482
+documentation cases run once. The focused current-source Deno suite passed
+66/66; the Rust language library passed 1,191/1,191; native CLI compile
+fixtures passed. Cold M6 passed with fourteen canonical/embedded/materialized
+module comparisons and 38 strict public tests (11 retained, 17 IC-01, 10 B2a).
+Post-commit citation validation passed for 64 documents and 601 accepted
+historical citations. Browser gzip size is 45,457 bytes, +18,827 from the
+27,630-byte baseline and within 80 KiB. Raw commands, numeric exits and streams
+are retained in the canonical CC evidence home.
+
+Implementation adds occurrence-indexed private lexical layouts and canonical
+last-wins Func header ranges in both backends; resolver, D2 and pass2 consume
+per-clause/per-member regions. Public expansion uses actual expanded sibling
+results, explicit Single/Sequence result slots, per-step macro priority and
+occurrence-owned syntax copies that preserve compiler-private/kernel/host
+capabilities. The authorized host-invocation predicate and mirror preserve
+exact Reflect anchors. Native post-before-body now resolves in semantic order;
+ordinary call operands remain independent while true do/block/seq bodies retain
+sequential bindings. Supported multi-clause generators reject before body
+expansion; ignored generator post/returns remain inert.
+
+The first full check found one Clippy warning; its retry found ten regression
+failures, both attempts preserved. Review traced the completion issue to the
+new function walker bypassing existing `childRoles`, and bound-match runtime
+failures to public `do` being routed as an ordinary call. The final fixes
+reuse original completion roles and retain real sequence grammar. Two initial
+cold-M6 attempts (uncreated evidence directory, then wrong Deno cache fallback)
+are preserved; the final cold run used the existing Deno cache. No failed
+attempt was rewritten or hidden. The final candidate claims only B2-LX; no
+owner identity, nominal runtime, purity, LC closure, release integration, push
+or publication is claimed.
+
+## Root handoff reconciliation — B2a pending independent review
+
+Root inspected the final source Git pin, clean status,22-path diff and preserved
+metadata follow-ups, then transferred exclusive source/build ownership to the
+separate Sol6.1High context for independent software verification. No row closes
+on the CC report. The raw final `make check` stdout at
+`artifacts/increment-b2a/cc/receipts/full-make-check-retry02.stdout.txt:5128`
+reports **1546 passed (67 steps),0 failed**, while line5637 reports482 docs/0
+failed. CC's1536 count above is a reporting error; preserve the original report
+and use1546 for this run. This reconciliation does not turn attestation into
+independent evidence. B2-ID-NAME remains unanswered; dependent B2b owner/name
+lookup is held while B2a verification continues.

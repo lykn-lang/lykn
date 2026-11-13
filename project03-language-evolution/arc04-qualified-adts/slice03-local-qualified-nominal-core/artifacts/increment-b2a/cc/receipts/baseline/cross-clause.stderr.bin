@@ -1,0 +1,4 @@
+2:4: error: method call on a parenthesized expression is not supported (the receiver is an expression, not a name)
+  suggestion: thread the method call: (-> <expr> (:body …)); or bind first: (bind v <expr>) (v:body …). To pass a keyword as a string argument to a computed function, use a string literal: (<expr> "body" …)
+3:4: error: method call on a parenthesized expression is not supported (the receiver is an expression, not a name)
+  suggestion: thread the method call: (-> <expr> (:body …)); or bind first: (bind v <expr>) (v:body …). To pass a keyword as a string argument to a computed function, use a string literal: (<expr> "body" …)

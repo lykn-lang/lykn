@@ -1,0 +1,5 @@
+error: Uncaught (in promise) ReferenceError: bind is not defined
+    bind(total, a + b);
+    ^
+    at sample (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/lykn/run/cross-clause-focused.js:6:5)
+    at file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/lykn/run/cross-clause-focused.js:15:33

@@ -1,0 +1,8 @@
+   Compiling lykn-cli v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.25s
+     Running tests/macro_dependencies.rs (target/debug/deps/macro_dependencies-c2da4081568226dd)
+
+thread 'm6_embedded_compiler_payload_matches_canonical_and_runs_from_cold_cache' (106133933) panicked at crates/lykn-cli/tests/macro_dependencies.rs:49:5:
+evidence directory must be precreated
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+error: test failed, to rerun pass `-p lykn-cli --test macro_dependencies`

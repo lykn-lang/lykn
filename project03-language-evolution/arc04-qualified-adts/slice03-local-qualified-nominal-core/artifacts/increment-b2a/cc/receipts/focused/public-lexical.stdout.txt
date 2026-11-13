@@ -1,0 +1,70 @@
+running 6 tests from ./test/expander/lexical-regions.test.js
+B2a source clauses isolate parameter names and retain own body sequence ... FAILED (1ms)
+B2a class methods isolate their parameter lists ... FAILED (210µs)
+B2a source Func post sees body declaration independent of keyword order ... FAILED (202µs)
+B2a rejects multi-clause generators before body macro expansion ... FAILED (515µs)
+B2a macro result declaration controls following macro dispatch ... FAILED (155µs)
+B2a shared macro AST object keeps binder and head occurrences distinct ... FAILED (142µs)
+
+ ERRORS 
+
+B2a source clauses isolate parameter names and retain own body sequence => ./test/expander/lexical-regions.test.js:24:6
+error: ReferenceError: cloneOccurrenceSyntax is not defined
+  const ownedForms = cloneOccurrenceSyntax(forms);
+                     ^
+    at expandWithMacroImports (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander-core.js:2470:22)
+    at expand (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander.js:22:10)
+    at lykn (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/mod.js:24:18)
+    at file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/expander/lexical-regions.test.js:32:23
+
+B2a class methods isolate their parameter lists => ./test/expander/lexical-regions.test.js:35:6
+error: ReferenceError: cloneOccurrenceSyntax is not defined
+  const ownedForms = cloneOccurrenceSyntax(forms);
+                     ^
+    at expandWithMacroImports (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander-core.js:2470:22)
+    at expand (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander.js:22:10)
+    at lykn (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/mod.js:24:18)
+    at file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/expander/lexical-regions.test.js:44:23
+
+B2a source Func post sees body declaration independent of keyword order => ./test/expander/lexical-regions.test.js:47:6
+error: ReferenceError: cloneOccurrenceSyntax is not defined
+  const ownedForms = cloneOccurrenceSyntax(forms);
+                     ^
+    at expandWithMacroImports (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander-core.js:2470:22)
+    at expand (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander.js:22:10)
+    at lykn (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/mod.js:24:18)
+    at file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/expander/lexical-regions.test.js:49:23
+
+B2a rejects multi-clause generators before body macro expansion => ./test/expander/lexical-regions.test.js:52:6
+error: AssertionError: Expected error message to include "genfunc: multiple clauses are not supported", but got "cloneOccurrenceSyntax is not defined".
+    throw new AssertionError(msg);
+          ^
+    at assertIsError (https://jsr.io/@std/assert/1.0.19/is_error.ts:63:11)
+    at assertThrows (https://jsr.io/@std/assert/1.0.19/throws.ts:96:7)
+    at file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/expander/lexical-regions.test.js:60:5
+
+B2a macro result declaration controls following macro dispatch => ./test/expander/lexical-regions.test.js:71:6
+error: ReferenceError: cloneOccurrenceSyntax is not defined
+  const ownedForms = cloneOccurrenceSyntax(forms);
+                     ^
+    at expandWithMacroImports (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander-core.js:2470:22)
+    at file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/expander/lexical-regions.test.js:83:20
+
+B2a shared macro AST object keeps binder and head occurrences distinct => ./test/expander/lexical-regions.test.js:92:6
+error: ReferenceError: cloneOccurrenceSyntax is not defined
+  const ownedForms = cloneOccurrenceSyntax(forms);
+                     ^
+    at expandWithMacroImports (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander-core.js:2470:22)
+    at file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/expander/lexical-regions.test.js:102:20
+
+ FAILURES 
+
+B2a source clauses isolate parameter names and retain own body sequence => ./test/expander/lexical-regions.test.js:24:6
+B2a class methods isolate their parameter lists => ./test/expander/lexical-regions.test.js:35:6
+B2a source Func post sees body declaration independent of keyword order => ./test/expander/lexical-regions.test.js:47:6
+B2a rejects multi-clause generators before body macro expansion => ./test/expander/lexical-regions.test.js:52:6
+B2a macro result declaration controls following macro dispatch => ./test/expander/lexical-regions.test.js:71:6
+B2a shared macro AST object keeps binder and head occurrences distinct => ./test/expander/lexical-regions.test.js:92:6
+
+FAILED | 0 passed | 6 failed (4ms)
+

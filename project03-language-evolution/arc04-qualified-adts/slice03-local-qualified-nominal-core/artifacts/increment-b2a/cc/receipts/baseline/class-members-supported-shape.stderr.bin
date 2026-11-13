@@ -1,0 +1,2 @@
+4:1: warning: unused binding 'probe'
+  suggestion: prefix with underscore: _probe

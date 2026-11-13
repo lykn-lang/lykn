@@ -1,0 +1,1 @@
+bin/lykn compile /private/tmp/b2a-baseline-e80f613b/macro-result-chain.lykn -o /private/tmp/b2a-baseline-e80f613b/macro-result-chain.js

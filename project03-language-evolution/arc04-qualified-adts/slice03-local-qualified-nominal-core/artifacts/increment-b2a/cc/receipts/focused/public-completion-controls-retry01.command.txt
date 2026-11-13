@@ -1,0 +1,1 @@
+deno test -A --no-prompt --config /tmp/lykn-b2a-project.json test/forms/dd-50.test.js test/forms/semantic-roles.test.js test/expander/lexical-regions.test.js

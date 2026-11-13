@@ -106,6 +106,14 @@ requiring Keyword metadata, but confirmed these mandatory consumers:
   annotations all use their actual header context. ParamShape::typed_params()
   omits DestructuredField::Nested and ArrayParamElement::NestedWithAlias type
   annotations and therefore is not a complete annotation census.
+  Also distinguish their external alias key from a runtime value binding:
+  ParamShape::bound_names currently documents/includes alias names, while
+  classifier capture and IC's precise projector correctly bind only nested
+  leaves. Do not use that aggregate to reconstruct semantic bindings. Existing
+  nested-alias guard producers refer to the alias spelling as a value when its
+  annotation is not any; that needs a real value-projection/capture disposition
+  before claiming named guards there, not just a resolved type lookup. This is
+  a source-inspected integration concern, not a new executed runtime finding.
 - Native instrument_yields currently receives only yields_ann.name at
   emitter/forms.rs:4044/4090. It must consume the resolved header TypeRef,
   not reconstruct a name query in a yield body's potentially shadowed scope.

@@ -1,0 +1,2 @@
+0:0: warning: unused binding 'local-value'
+  suggestion: prefix with underscore: _local-value

@@ -1,0 +1,1 @@
+cargo test -p lykn-lang --lib

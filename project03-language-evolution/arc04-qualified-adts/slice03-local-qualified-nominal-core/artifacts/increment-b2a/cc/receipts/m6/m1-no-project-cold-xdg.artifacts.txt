@@ -1,0 +1,4 @@
+js_path="/tmp/lykn-b2a-tmp/.tmpGMeaXK/m1.js"
+js_exists=true
+dts_path="/tmp/lykn-b2a-tmp/.tmpGMeaXK/m1.d.ts"
+dts_exists=false

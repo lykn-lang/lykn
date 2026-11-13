@@ -1,0 +1,1 @@
+cargo fmt --all && DENO_DIR=/Users/oubiwann/Library/Caches/deno XDG_CACHE_HOME=/tmp/lykn-b2a-xdg-cache NPM_CONFIG_CACHE=/tmp/lykn-b2a-npm-cache TMPDIR=/tmp/lykn-b2a-tmp LYKN_MACRO_DEPENDENCIES_EVIDENCE_DIR=<canonical>/receipts/m6 make check

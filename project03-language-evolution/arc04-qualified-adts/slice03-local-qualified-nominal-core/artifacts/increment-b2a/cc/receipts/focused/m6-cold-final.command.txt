@@ -1,0 +1,1 @@
+DENO_DIR=/Users/oubiwann/Library/Caches/deno XDG_CACHE_HOME=/tmp/lykn-b2a-xdg-cache NPM_CONFIG_CACHE=/tmp/lykn-b2a-npm-cache TMPDIR=/tmp/lykn-b2a-tmp LYKN_MACRO_DEPENDENCIES_EVIDENCE_DIR=<canonical>/receipts/m6 cargo test -p lykn-cli --test macro_dependencies m6_embedded_compiler_payload_matches_canonical_and_runs_from_cold_cache -- --nocapture

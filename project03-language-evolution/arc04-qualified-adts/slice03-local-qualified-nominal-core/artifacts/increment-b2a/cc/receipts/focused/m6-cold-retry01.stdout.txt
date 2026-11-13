@@ -1,0 +1,11 @@
+
+running 1 test
+test m6_embedded_compiler_payload_matches_canonical_and_runs_from_cold_cache ... FAILED
+
+failures:
+
+failures:
+    m6_embedded_compiler_payload_matches_canonical_and_runs_from_cold_cache
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 5 filtered out; finished in 1.24s
+

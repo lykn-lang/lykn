@@ -1,0 +1,1 @@
+deno test -A --no-prompt --config /tmp/lykn-b2a-project.json test/forms/embedded-adt-pattern.test.js test/forms/surface-type-context.test.js test/forms/reserved-binding-output.test.js test/expander/lexical-regions.test.js

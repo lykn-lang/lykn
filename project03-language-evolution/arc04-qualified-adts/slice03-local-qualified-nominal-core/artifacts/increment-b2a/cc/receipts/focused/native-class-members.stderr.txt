@@ -1,0 +1,6 @@
+   Compiling lykn-lang v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang)
+   Compiling lykn-cli v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.88s
+     Running unittests src/main.rs (target/debug/deps/lykn-633f39fab2860422)
+1:110: warning: unused binding 'box'
+  suggestion: prefix with underscore: _box
