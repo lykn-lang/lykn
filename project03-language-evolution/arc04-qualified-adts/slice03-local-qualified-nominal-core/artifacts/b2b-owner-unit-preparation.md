@@ -8,10 +8,23 @@ The operator's B2 authorization covers completing this design and later
 implementation/review; root retains consequential decisions.
 
 2026-11-13 current foundation: B2-LX is independently accepted atf9be7cb8,
-tree0ea27d21. This preparation remains unissued pending B2-ID-NAME and final
-source-ready owner-unit APIs; lexical acceptance is not owner/case acceptance.
+tree0ea27d21. This preparation remains unissued pending final source-ready
+owner-unit APIs; lexical acceptance is not owner/case acceptance. B2-ID-NAME
+was resolved below.
 
-## Pending source-name identity decision (B2-ID-NAME)
+## Source-name identity decision (B2-ID-NAME)
+
+**Binding operator decision,2026-11-13:** “yes, distinct Lykn spellings should
+identify distinct bindings”. B2-ID-NAME is resolved. Exact source spelling is
+the binding/lookup key; JavaScript normalization cannot merge identities or
+create an alias. Hygienic allocation must preserve those identities through
+emission. The example below must return1. Existing same-scope normalized-binding
+and public export collision diagnostics remain under the previously stated
+recommendation/DD-49 contract; property keys and foreign/public names retain
+their separate normalization. Future work must distinguish binding identity
+from those data/API names. No implicit permission to change those contracts.
+
+The following records the question and alternatives before this decision.
 
 Root requested an actual operator language-design disposition on2026-11-12,
 while B2a continues independently. DD-49 Rule6 explicitly diagnoses distinct
@@ -47,7 +60,7 @@ recommends1: resolving a Lykn identifier should depend on Lykn's binding
 identity, with JavaScript name allocation preserving it. This retains the
 existing same-scope normalized collision diagnostic; it does not silently
 permit two colliding exported names or rename external property keys. The
-operator response remains required before either observable rule is implemented.
+operator response recorded above selects distinct identities and return1.
 
 ## Settled identity/query rules
 

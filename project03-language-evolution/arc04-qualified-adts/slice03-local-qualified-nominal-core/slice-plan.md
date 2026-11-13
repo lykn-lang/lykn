@@ -498,3 +498,12 @@ human obligations remain open. S06 should examine object-key normalization vs
 literal string lookup guidance based on the preserved helper assertion error;
 this is an audit input, not a proved documentation defect. Full S03 closing
 and CDC retrospective are still due when its original criteria are satisfied.
+
+2026-11-13 operator continuation: B2-ID-NAME is resolved explicitly: distinct
+Lykn spellings identify distinct bindings. The recorded example must return1,
+with exact source lookup and hygienic emitted names. Existing same-scope/public
+name diagnostics and property normalization remain separate contracts. Historical
+pending statements above describe their earlier checkpoints. Root resumes B2b
+source-readiness; no owner or naming implementation is yet accepted. Same
+Luna6High CC/separate Sol6.1High CDC, existing Autonomous authority and all
+original gates remain. No release or remote action is authorized here.
