@@ -3,7 +3,7 @@
  * class members. Paths refer to positions in the original tree, never object
  * identity, spans or owner identity.
  */
-import { FUNC_CLAUSE_KEYS, keywordGroupRanges } from "./function-clauses.js";
+import { FUNC_CLAUSE_KEYS, genfnBodyLayout, keywordGroupRanges } from "./function-clauses.js";
 import { isKernel } from "./kernel-mark.js";
 
 /** @typedef {"TypedParameter"|"BindingPattern"} ParameterGrammar */
@@ -41,7 +41,10 @@ export function functionRegionLayout(form) {
   const paramsPath = args[paramsIndex]?.type === "list" ? [1 + paramsIndex] : null;
   const defaultPaths = paramsPath ? parameterDefaultPaths(atOccurrencePath(form, paramsPath), paramsPath, kernel ? "BindingPattern" : "TypedParameter") : [];
   const namePath = namedFunction && args[0]?.type === "atom" ? [1] : null;
-  return { grammar: kernel ? "Kernel" : "TypedSource", namePath, clauses: [{ grammar: head, clausePath: [], paramsPath, defaultPaths, prePaths: [], bodyPaths: args.slice(paramsIndex + 1).map((_, i) => [2 + paramsIndex + i]), postPaths: [] }] };
+  const bodyArgs = head === "genfn" ? genfnBodyLayout(args) : null;
+  if (head === "genfn" && !bodyArgs) return null;
+  const bodyStart = head === "genfn" ? bodyArgs.bodyStart : paramsIndex + 1;
+  return { grammar: kernel ? "Kernel" : "TypedSource", namePath, clauses: [{ grammar: head, clausePath: [], paramsPath, defaultPaths, prePaths: [], bodyPaths: args.slice(bodyStart).map((_, i) => [1 + bodyStart + i]), postPaths: [] }] };
 }
 
 /** @param {object[]} items @param {number[]} clausePath @param {number} rootOffset */

@@ -492,6 +492,9 @@ export function parseTypedParams(paramList) {
           `type keyword :${values[i].value} has no parameter name`,
         );
       }
+      if (values[i + 1]?.type !== "atom") {
+        throw new Error("parameter name must be an atom");
+      }
       params.push({ typeKw: values[i], name: values[i + 1] });
       i += 2;
     } else {

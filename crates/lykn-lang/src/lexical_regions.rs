@@ -68,6 +68,36 @@ pub(crate) struct KeywordRange<'a> {
     pub(crate) value_end: usize,
 }
 
+/// The authoritative slot selection for an anonymous source generator.
+/// Indexes are relative to the argument slice after the `genfn` head.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub(crate) struct GenfnBodyLayout {
+    pub(crate) body_start: usize,
+    pub(crate) yields_payload_index: Option<usize>,
+}
+
+/// Describe the existing `genfn` metadata/body slots. A recognized but
+/// incomplete `:yields` layout is absent so the classifier can retain its
+/// established diagnostic while lexical projectors safely decline it.
+pub(crate) fn genfn_body_layout(args: &[SExpr]) -> Option<GenfnBodyLayout> {
+    if args.len() < 2 {
+        return None;
+    }
+    if args.get(1).and_then(SExpr::as_keyword) == Some("yields") && args.len() >= 3 {
+        if args.len() < 4 {
+            return None;
+        }
+        return Some(GenfnBodyLayout {
+            body_start: 3,
+            yields_payload_index: Some(2),
+        });
+    }
+    Some(GenfnBodyLayout {
+        body_start: 1,
+        yields_payload_index: None,
+    })
+}
+
 /// Retain each selected keyword group's original indexes, with last occurrence
 /// winning just like `parse_keyword_clauses`.
 pub(crate) fn keyword_group_ranges(args: &[SExpr]) -> Vec<KeywordRange<'_>> {
@@ -214,7 +244,11 @@ pub(crate) fn function_regions(form: &SExpr) -> Option<FunctionRegions> {
             }
         })
         .unwrap_or_default();
-    let body_start = params_index + usize::from(params_path.is_some());
+    let body_start = if head == "genfn" {
+        1 + genfn_body_layout(&values[1..])?.body_start
+    } else {
+        params_index + usize::from(params_path.is_some())
+    };
     let body_paths = (body_start..values.len())
         .map(|index| OccurrencePath(vec![index]))
         .collect();

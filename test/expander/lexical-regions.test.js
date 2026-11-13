@@ -39,6 +39,84 @@ Deno.test("B2a source clauses isolate parameter names and retain own body sequen
   await executeModule(lykn(source), "11\n42\n");
 });
 
+Deno.test("B2a public typed source headers reject non-atom parameter names", () => {
+  assertThrows(
+    () => lykn("(func invalid :args (:number 9) :body 41)"),
+    Error,
+    "parameter name must be an atom",
+  );
+  assertThrows(
+    () => lykn("(type InvalidField (InvalidField :number 9))"),
+    Error,
+    "parameter name must be an atom",
+  );
+  assertThrows(
+    () => lykn("(bind invalid (fn (:number 9) 41))"),
+    Error,
+    "parameter name must be an atom",
+  );
+  assertThrows(
+    () => lykn("(func invalid :args ((default :number 9 0)) :body 41)"),
+    Error,
+  );
+});
+
+Deno.test("B2a valid typed default and body macros still expand once", async () => {
+  resetMacros();
+  let defaults = 0;
+  let bodies = 0;
+  macroEnv.set("default-probe", () => {
+    defaults++;
+    return read("40")[0];
+  });
+  macroEnv.set("body-probe", () => {
+    bodies++;
+    return read("1")[0];
+  });
+  try {
+    const forms = read(`
+      (func valid :args ((default :number value (default-probe)))
+        :body (+ value (body-probe)))
+      (console:log (valid))
+    `);
+    const expanded = expandWithMacroImports(forms, {}, (result) => result);
+    const { compile } = await import("lang/compiler.js");
+    await executeModule(compile(expanded), "41\n");
+    assertEquals(defaults, 1);
+    assertEquals(bodies, 1);
+  } finally {
+    resetMacros();
+  }
+});
+
+Deno.test("B2a genfn metadata is inert and excluded from the body region", async () => {
+  resetMacros();
+  let calls = 0;
+  macroEnv.set("metadata-probe", () => {
+    calls++;
+    return read("41")[0];
+  });
+  try {
+    const forms = read(`
+      (bind gen (genfn () :yields (metadata-probe) (yield 41)))
+    `);
+    const expanded = expandWithMacroImports(forms, {}, (result) => result);
+    assertEquals(calls, 0);
+    const { compile } = await import("lang/compiler.js");
+    await executeModule(`${compile(expanded)}\nconsole.log([...gen()]);`, "[ 41 ]\n");
+    assertEquals(calls, 0);
+
+    validateReservedNames(read("(bind gen (genfn () :yields (bind ignored 1) (yield 41)))"));
+    assertThrows(
+      () => validateReservedNames(read("(bind gen (genfn () :yields :any (bind eval 1)))")),
+      Error,
+      "forbidden as a strict-mode binding identifier",
+    );
+  } finally {
+    resetMacros();
+  }
+});
+
 Deno.test("B2a class methods isolate their parameter lists", async () => {
   const source = `
     (class Box ()

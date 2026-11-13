@@ -557,6 +557,112 @@ fn b2a_native_pass1_does_not_promote_bound_call_operands_to_declarations() {
 }
 
 #[test]
+fn b2a_native_preflights_typed_source_headers_before_region_macros() {
+    let invalid_headers = [
+        (
+            "b2a-r05-invalid-func-header",
+            "(func invalid :args (:number 9) :body (header-probe))",
+            "parameter name must be an atom",
+        ),
+        (
+            "b2a-r05-invalid-default-header",
+            "(func invalid :args ((default :number 9 0)) :body (header-probe))",
+            "(default) expected :type name value",
+        ),
+        (
+            "b2a-r05-invalid-fn-header",
+            "(bind invalid (fn (:number 9) (header-probe)))",
+            "parameter name must be an atom",
+        ),
+        (
+            "b2a-r05-invalid-genfn-header",
+            "(bind invalid (genfn (:number 9) (header-probe)))",
+            "parameter name must be an atom",
+        ),
+        (
+            "b2a-r05-invalid-lambda-header",
+            "(bind invalid (lambda (:number 9) (header-probe)))",
+            "parameter name must be an atom",
+        ),
+        (
+            "b2a-r05-invalid-later-clause-header",
+            "(func invalid (:args (:number left) :body (header-probe)) (:args (:number 9 :number right) :body 41))",
+            "parameter name must be an atom",
+        ),
+    ];
+    for (name, declaration, diagnostic) in invalid_headers {
+        let fixture = TempDir::new().expect("create typed-header fixture");
+        let xdg = write_xdg(fixture.path());
+        let source = format!(
+            "(macro header-probe () (get null \"header-body-was-expanded\"))\n{declaration}\n"
+        );
+        let source_path = write_source(fixture.path(), "header.lykn", &source);
+        let output_path = fixture.path().join("header.mjs");
+        let (compiled, _, _) = compile_recorded(
+            name,
+            fixture.path(),
+            &source_path,
+            source.as_bytes(),
+            &output_path,
+            &xdg,
+        );
+        let stderr = String::from_utf8_lossy(&compiled.stderr);
+        assert_ne!(
+            compiled.status.code(),
+            Some(0),
+            "{name} unexpectedly compiled"
+        );
+        assert!(
+            stderr.contains(diagnostic),
+            "{name}: expected {diagnostic:?}, got {stderr}"
+        );
+        assert!(
+            !stderr.contains("header-body-was-expanded"),
+            "{name} expanded a body macro before reporting its header: {stderr}"
+        );
+    }
+    assert_scope_runtime(
+        "b2a-r05-valid-header-probe-runs",
+        "(macro header-probe () `41) (func valid :args (:number value) :body (header-probe)) (console:log (valid 1))",
+        b"41\n",
+    );
+    assert_scope_runtime(
+        "b2a-r05-valid-default-and-body-probes-run",
+        "(macro default-probe () `40) (macro body-probe () `1) (func valid :args ((default :number value (default-probe))) :body (+ value (body-probe))) (console:log (valid))",
+        b"41\n",
+    );
+    assert_scope_runtime(
+        "b2a-r05-genfn-metadata-probe-is-inert",
+        "(macro metadata-probe () (get null \"genfn-metadata-was-expanded\")) (bind gen (genfn () :yields (metadata-probe) (yield 41))) (console:log (Array:from (gen)))",
+        b"[ 41 ]\n",
+    );
+    assert_scope_runtime(
+        "b2a-r05-genfn-inert-eval-payload",
+        "(bind gen (genfn () :yields (bind eval 1) (yield 41))) (console:log (Array:from (gen)))",
+        b"[ 41 ]\n",
+    );
+    let fixture = TempDir::new().expect("create genfn body binding fixture");
+    let xdg = write_xdg(fixture.path());
+    let source = "(bind gen (genfn () :yields :any (bind eval 1)))";
+    let source_path = write_source(fixture.path(), "genfn-body.lykn", source);
+    let output_path = fixture.path().join("genfn-body.mjs");
+    let (compiled, _, _) = compile_recorded(
+        "b2a-r05-genfn-body-binding-is-visible",
+        fixture.path(),
+        &source_path,
+        source.as_bytes(),
+        &output_path,
+        &xdg,
+    );
+    let stderr = String::from_utf8_lossy(&compiled.stderr);
+    assert_ne!(compiled.status.code(), Some(0));
+    assert!(
+        stderr.contains("'eval' is forbidden as a strict-mode binding identifier"),
+        "{stderr}"
+    );
+}
+
+#[test]
 fn m1_no_project_cold_xdg_uses_compiler_owned_dependencies() {
     let fixture = TempDir::new().expect("create no-project macro fixture");
     let xdg = write_xdg(fixture.path());
@@ -1050,7 +1156,7 @@ fn m6_embedded_compiler_payload_matches_canonical_and_runs_from_cold_cache() {
         String::from_utf8_lossy(&public_result.stderr)
     );
     assert!(
-        public_output.contains("ok | 45 passed | 0 failed"),
-        "M6 must execute the derived 45-case retained, IC-01, and current B2a materialized population, output: {public_output}"
+        public_output.contains("ok | 48 passed | 0 failed"),
+        "M6 must execute the derived 48-case retained, IC-01, and current B2a materialized population, output: {public_output}"
     );
 }

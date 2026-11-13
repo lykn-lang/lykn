@@ -306,11 +306,15 @@ fn expand_children_scoped(
             }
             Ok(out)
         }
-        crate::resolver::ScopePlan::SourceFunction(Some(layout)) => {
-            expand_source_function(form, values, &layout, deno, env, scope)
+        crate::resolver::ScopePlan::SourceFunction(layout) => {
+            crate::classifier::forms::validate_typed_source_function_header(form)
+                .map_err(LyknError::Classify)?;
+            match layout {
+                Some(layout) => expand_source_function(form, values, &layout, deno, env, scope),
+                None => Ok(values.to_vec()),
+            }
         }
-        crate::resolver::ScopePlan::SourceFunction(None)
-        | crate::resolver::ScopePlan::Class(None) => Ok(values.to_vec()),
+        crate::resolver::ScopePlan::Class(None) => Ok(values.to_vec()),
         crate::resolver::ScopePlan::Class(Some(layout)) => {
             expand_class(form, values, &layout, deno, env, scope)
         }

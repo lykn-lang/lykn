@@ -58,8 +58,8 @@ import {
 } from "./surface-helpers.js";
 import { isKernel, markKernel } from "./kernel-mark.js";
 import { isMatchGuardSlot } from "./binding.js";
-import { FUNC_CLAUSE_KEYS, parseKeywordClauses } from "./function-clauses.js";
-export { FUNC_CLAUSE_KEYS, parseKeywordClauses } from "./function-clauses.js";
+import { FUNC_CLAUSE_KEYS, genfnBodyLayout, parseKeywordClauses } from "./function-clauses.js";
+export { FUNC_CLAUSE_KEYS, genfnBodyLayout, parseKeywordClauses } from "./function-clauses.js";
 
 /**
  * Classify a surface form head atom. Returns a typed AST node if the
@@ -780,15 +780,14 @@ export function emitSurfaceForm(node, h) {
       return emitGenfuncMacro([node.nameNode, ...node.restArgs]);
     case "GenFn": {
       const a = node.args;
-      let yieldsType = null, bodyStart = 1;
-      if (a.length >= 3 && a[1].type === "keyword" && a[1].value === "yields") {
-        if (a.length < 4) {
-          throw new Error("genfn: :yields requires a type keyword and body");
-        }
-        yieldsType = a[2];
-        bodyStart = 3;
+      const layout = genfnBodyLayout(a);
+      if (!layout) {
+        throw new Error("genfn: :yields requires a type keyword and body");
       }
-      const bodyForms = a.slice(bodyStart);
+      const yieldsType = layout.yieldsPayloadIndex === null
+        ? null
+        : a[layout.yieldsPayloadIndex];
+      const bodyForms = a.slice(layout.bodyStart);
       const params = parseTypedParams(node.paramList);
       const pNames = params.flatMap((p) => paramNameNodes(p));
       const typeChecks = [];

@@ -834,6 +834,22 @@ pub fn classify_form(expr: &SExpr) -> Result<SurfaceForm, Diagnostic> {
     classify_form_inner(expr, &mut None)
 }
 
+/// Validate the selected typed-source function header without classifying or
+/// evaluating any executable defaults, contracts, or body expressions.
+pub(crate) fn validate_typed_source_function_header(expr: &SExpr) -> Result<(), Diagnostic> {
+    let SExpr::List { values, .. } = expr else {
+        return Ok(());
+    };
+    let Some(head) = values.first().and_then(SExpr::as_form_head) else {
+        return Ok(());
+    };
+    if matches!(head, "func" | "genfunc" | "fn" | "genfn" | "lambda") {
+        classify_form_inner(expr, &mut None).map(|_| ())
+    } else {
+        Ok(())
+    }
+}
+
 pub(crate) fn classify_form_with_bindings<'tree>(
     expr: &'tree SExpr,
 ) -> Result<Vec<BindingOccurrence<'tree>>, Diagnostic> {
@@ -1987,29 +2003,22 @@ fn classify_genfn<'tree>(
         }
     };
 
-    // Check for :yields keyword after param list
-    let mut yields = None;
-    let mut body_start = 1;
-    if args.len() >= 3
-        && let SExpr::Keyword { value, .. } = &args[1]
-        && value == "yields"
-    {
-        if args.len() < 4 {
-            return Err(err("genfn: :yields requires a type keyword and body", span));
-        }
-        if let SExpr::Keyword { value, span: yspan } = &args[2] {
-            yields = Some(TypeAnnotation {
+    let layout = crate::lexical_regions::genfn_body_layout(args)
+        .ok_or_else(|| err("genfn: :yields requires a type keyword and body", span))?;
+    let yields = layout
+        .yields_payload_index
+        .and_then(|index| match args.get(index) {
+            Some(SExpr::Keyword { value, span: yspan }) => Some(TypeAnnotation {
                 name: value.clone(),
                 span: *yspan,
-            });
-        }
-        body_start = 3;
-    }
+            }),
+            _ => None,
+        });
 
     Ok(SurfaceForm::Genfn {
         params,
         yields,
-        body: args[body_start..].to_vec(),
+        body: args[layout.body_start..].to_vec(),
         span,
     })
 }
