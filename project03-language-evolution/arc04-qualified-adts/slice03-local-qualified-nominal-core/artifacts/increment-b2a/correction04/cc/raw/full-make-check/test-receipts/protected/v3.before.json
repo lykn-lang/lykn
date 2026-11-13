@@ -1,0 +1,27 @@
+{
+  "name": "v3",
+  "source": "(func normalized :args (:any Reflect!) :returns :any :body\n  (set! Reflect!:apply 9)\n  Reflect!:apply)\n(console:log (JSON:stringify (normalized (obj :apply 0))))",
+  "generated": "function normalized(Reflect) {\n  Reflect.apply = 9;\n  return Reflect.apply;\n}\nconsole.log(JSON.stringify(normalized({\n  apply: 0\n})));\n",
+  "command": {
+    "program": "/opt/homebrew/bin/deno",
+    "args": [
+      "run",
+      "--no-config",
+      "--cached-only",
+      "--no-npm",
+      "--no-remote",
+      "--deny-net",
+      "--no-prompt",
+      "/private/tmp/lykn-b2a-correction04-cc/tmp/54608d489c36ba5a/v3.js"
+    ],
+    "cwd": "/private/tmp/lykn-b2a-correction04-cc/tmp/54608d489c36ba5a",
+    "selectedEnv": {
+      "DENO_DIR": "/Users/oubiwann/Library/Caches/deno",
+      "LYKN_TEST_DENO": null,
+      "XDG_CACHE_HOME": "/private/tmp/lykn-b2a-correction04-cc/xdg",
+      "TMPDIR": "/private/tmp/lykn-b2a-correction04-cc/tmp",
+      "LYKN_PROTECTED_HOST_EVIDENCE_DIR": "/Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/arc04-qualified-adts/slice03-local-qualified-nominal-core/artifacts/increment-b2a/correction04/cc/raw/full-make-check/test-receipts/protected"
+    }
+  },
+  "runtime": null
+}

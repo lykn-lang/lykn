@@ -1,0 +1,11 @@
+program="/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/lykn"
+args=["compile", "/private/tmp/lykn-b2a-correction04-cc/tmp/.tmpYM5bnV/program.lykn", "-o", "/private/tmp/lykn-b2a-correction04-cc/tmp/.tmpYM5bnV/v4.js"]
+cwd=Some("/private/tmp/lykn-b2a-correction04-cc/tmp/.tmpYM5bnV")
+env_overrides=
+
+selected_inherited_env=
+DENO_DIR=Some("/Users/oubiwann/Library/Caches/deno")
+LYKN_TEST_DENO=None
+XDG_CACHE_HOME=Some("/private/tmp/lykn-b2a-correction04-cc/xdg")
+TMPDIR=Some("/private/tmp/lykn-b2a-correction04-cc/tmp")
+LYKN_PROTECTED_HOST_EVIDENCE_DIR=Some("/Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/arc04-qualified-adts/slice03-local-qualified-nominal-core/artifacts/increment-b2a/correction04/cc/raw/full-make-check/test-receipts/protected")

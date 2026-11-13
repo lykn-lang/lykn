@@ -1,0 +1,271 @@
+
+from /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/expander/lexical-regions.test.js:
+  1 | -import { assertEquals, assertStrictEquals, assertStringIncludes, assertThrows } from "jsr:@std/assert";
+  1 | +import {
+  2 | +  assertEquals,
+  3 | +  assertStrictEquals,
+  4 | +  assertStringIncludes,
+  5 | +  assertThrows,
+  6 | +} from "jsr:@std/assert";
+    | ...
+  3 | -import { expandWithMacroImports, macroEnv, resetMacros } from "lang/expander-core.js";
+  8 | +import {
+  9 | +  expandWithMacroImports,
+ 10 | +  macroEnv,
+ 11 | +  resetMacros,
+ 12 | +} from "lang/expander-core.js";
+    | ...
+  5 | -import { enclosingDeclarationSites, validateReservedNames } from "lang/binding.js";
+ 14 | +import {
+ 15 | +  enclosingDeclarationSites,
+ 16 | +  validateReservedNames,
+ 17 | +} from "lang/binding.js";
+    | ...
+ 18 | -      args: ["run", "--no-config", "--no-prompt", "--no-npm", "--cached-only", path],
+ 30 | +      args: [
+ 31 | +        "run",
+ 32 | +        "--no-config",
+ 33 | +        "--no-prompt",
+ 34 | +        "--no-npm",
+ 35 | +        "--cached-only",
+ 36 | +        path,
+ 37 | +      ],
+    | ...
+106 | -    await executeModule(`${compile(expanded)}\nconsole.log([...gen()]);`, "[ 41 ]\n");
+125 | +    await executeModule(
+126 | +      `${compile(expanded)}\nconsole.log([...gen()]);`,
+127 | +      "[ 41 ]\n",
+128 | +    );
+    | ...
+109 | -    validateReservedNames(read("(bind gen (genfn () :yields (bind ignored 1) (yield 41)))"));
+131 | +    validateReservedNames(
+132 | +      read("(bind gen (genfn () :yields (bind ignored 1) (yield 41)))"),
+133 | +    );
+    | ...
+111 | -      () => validateReservedNames(read("(bind gen (genfn () :yields :any (bind eval 1)))")),
+135 | +      () =>
+136 | +        validateReservedNames(
+137 | +          read("(bind gen (genfn () :yields :any (bind eval 1)))"),
+138 | +        ),
+    | ...
+140 | -    () => lykn(`
+167 | +    () =>
+168 | +      lykn(`
+    | ...
+148 | -    () => lykn(`
+176 | +    () =>
+177 | +      lykn(`
+    | ...
+209 | -  const source = `(func sample :args () :post (bind eval 1) :body (bind bind (fn (:any a :any b) (= a eval))) true) (console:log (sample))`;
+238 | +  const source =
+239 | +    `(func sample :args () :post (bind eval 1) :body (bind bind (fn (:any a :any b) (= a eval))) true) (console:log (sample))`;
+    | ...
+221 | -    assertThrows(() => expandWithMacroImports(read(`
+251 | +    assertThrows(
+252 | +      () =>
+253 | +        expandWithMacroImports(
+254 | +          read(`
+    | ...
+225 | -    `), { strict: false }, (forms) => forms), Error, "genfunc: multiple clauses are not supported");
+258 | +    `),
+259 | +          { strict: false },
+260 | +          (forms) => forms,
+261 | +        ),
+262 | +      Error,
+263 | +      "genfunc: multiple clauses are not supported",
+264 | +    );
+    | ...
+233 | -  const normal = read("(export (func local :args () :body 1) (func ignored :args () :body 2))")[0];
+272 | +  const normal =
+234 | -  assertEquals(enclosingDeclarationSites(normal, new Set()).map((site) => site.name), ["local"]);
+273 | +    read(
+274 | +      "(export (func local :args () :body 1) (func ignored :args () :body 2))",
+275 | +    )[0];
+276 | +  assertEquals(
+277 | +    enclosingDeclarationSites(normal, new Set()).map((site) => site.name),
+278 | +    ["local"],
+279 | +  );
+    | ...
+236 | -  const directDefault = read("(export default (func direct :args () :body 1))")[0];
+281 | +  const directDefault =
+237 | -  assertEquals(enclosingDeclarationSites(directDefault, new Set()).map((site) => site.name), ["direct"]);
+282 | +    read("(export default (func direct :args () :body 1))")[0];
+238 | -  const expressionDefault = read("(export default (? true (kernel:function local () (return 1)) undefined))")[0];
+283 | +  assertEquals(
+284 | +    enclosingDeclarationSites(directDefault, new Set()).map((site) =>
+285 | +      site.name
+286 | +    ),
+287 | +    ["direct"],
+288 | +  );
+289 | +  const expressionDefault =
+290 | +    read(
+291 | +      "(export default (? true (kernel:function local () (return 1)) undefined))",
+292 | +    )[0];
+    | ...
+243 | -  assertEquals(formHead({ type: "atom", value: "export", binding: "ref" }), null);
+297 | +  assertEquals(
+244 | -  const privateHead = markHostReference({ type: "atom", value: "Error" }, "Error");
+298 | +    formHead({ type: "atom", value: "export", binding: "ref" }),
+299 | +    null,
+300 | +  );
+301 | +  const privateHead = markHostReference(
+302 | +    { type: "atom", value: "Error" },
+303 | +    "Error",
+304 | +  );
+    | ...
+247 | -  validateReservedNames(read("(export (bind bind (fn (:any a :any b) (= a eval)))) (bind eval 1)"));
+307 | +  validateReservedNames(
+308 | +    read("(export (bind bind (fn (:any a :any b) (= a eval)))) (bind eval 1)"),
+309 | +  );
+    | ...
+249 | -    () => validateReservedNames(read("(export (bind unrelated 1)) (bind eval 1)")),
+311 | +    () =>
+312 | +      validateReservedNames(read("(export (bind unrelated 1)) (bind eval 1)")),
+    | ...
+256 | -  await executeModule(lykn(`
+319 | +  await executeModule(
+320 | +    lykn(`
+    | ...
+259 | -  `), "41\n");
+323 | +  `),
+260 | -  await executeModule(lykn(`
+324 | +    "41\n",
+325 | +  );
+326 | +  await executeModule(
+327 | +    lykn(`
+    | ...
+263 | -  `), "41\n");
+330 | +  `),
+264 | -  await executeModule(lykn(`
+331 | +    "41\n",
+332 | +  );
+333 | +  await executeModule(
+334 | +    lykn(`
+    | ...
+267 | -  `), "41\n");
+337 | +  `),
+268 | -  await executeModule(browserCompileLykn(`
+338 | +    "41\n",
+339 | +  );
+340 | +  await executeModule(
+341 | +    browserCompileLykn(`
+    | ...
+271 | -  `), "41\n");
+344 | +  `),
+272 | -  await executeModule(lykn(`
+345 | +    "41\n",
+346 | +  );
+347 | +  await executeModule(
+348 | +    lykn(`
+    | ...
+275 | -  `), "41\n");
+351 | +  `),
+276 | -  await executeModule(lykn(`
+352 | +    "41\n",
+353 | +  );
+354 | +  await executeModule(
+355 | +    lykn(`
+    | ...
+279 | -  `), "41\n");
+358 | +  `),
+280 | -  await executeModule(lykn(`
+359 | +    "41\n",
+360 | +  );
+361 | +  await executeModule(
+362 | +    lykn(`
+    | ...
+283 | -  `), "41\n");
+365 | +  `),
+284 | -  await executeModule(lykn(`
+366 | +    "41\n",
+367 | +  );
+368 | +  await executeModule(
+369 | +    lykn(`
+    | ...
+287 | -  `), "[ 1 ]\n");
+372 | +  `),
+373 | +    "[ 1 ]\n",
+374 | +  );
+    | ...
+292 | -  assertEquals(enclosingDeclarationSites(form, new Set()).map((site) => [site.name, site.kind]), [["array", "import-local"]]);
+379 | +  assertEquals(
+380 | +    enclosingDeclarationSites(form, new Set()).map((
+381 | +      site,
+382 | +    ) => [site.name, site.kind]),
+383 | +    [["array", "import-local"]],
+384 | +  );
+    | ...
+296 | -    { "dep.mjs": "export default function importedArray(value) { return 42; }" },
+388 | +    {
+389 | +      "dep.mjs": "export default function importedArray(value) { return 42; }",
+390 | +    },
+    | ...
+303 | -    await executeModule(lykn(`
+397 | +    await executeModule(
+398 | +      lykn(`
+    | ...
+309 | -    `), "41\n");
+404 | +    `),
+405 | +      "41\n",
+406 | +    );
+    | ...
+318 | -    await executeModule(lykn(`
+415 | +    await executeModule(
+416 | +      lykn(`
+    | ...
+321 | -    `), "41\n");
+419 | +    `),
+420 | +      "41\n",
+421 | +    );
+    | ...
+330 | -    await executeModule(lykn(`
+430 | +    await executeModule(
+431 | +      lykn(`
+    | ...
+335 | -    `), "42\n");
+436 | +    `),
+437 | +      "42\n",
+438 | +    );
+    | ...
+353 | -    const output = expandWithMacroImports(read("(make-local) (console:log (await (local-value)))"), {}, (forms) => forms);
+456 | +    const output = expandWithMacroImports(
+457 | +      read("(make-local) (console:log (await (local-value)))"),
+458 | +      {},
+459 | +      (forms) => forms,
+460 | +    );
+    | ...
+366 | -    { type: "list", values: [{ type: "atom", value: "fn" }, { type: "list", values: [
+473 | +    {
+367 | -      { type: "keyword", value: "any" }, shared,
+474 | +      type: "list",
+368 | -    ] }, { type: "number", value: 0 }] },
+475 | +      values: [{ type: "atom", value: "fn" }, {
+369 | -    { type: "list", values: [shared, { type: "atom", value: "value" }, { type: "number", value: 1 }] },
+476 | +        type: "list",
+477 | +        values: [
+478 | +          { type: "keyword", value: "any" },
+479 | +          shared,
+480 | +        ],
+481 | +      }, { type: "number", value: 0 }],
+482 | +    },
+483 | +    {
+484 | +      type: "list",
+485 | +      values: [shared, { type: "atom", value: "value" }, {
+486 | +        type: "number",
+487 | +        value: 1,
+488 | +      }],
+489 | +    },
+    | ...
+372 | -    const output = expandWithMacroImports(read("(shared-shape)"), { strict: false }, (forms) => forms);
+492 | +    const output = expandWithMacroImports(read("(shared-shape)"), {
+493 | +      strict: false,
+494 | +    }, (forms) => forms);
+    | ...
+387 | -    const output = expandWithMacroImports(read("(consume (bind local 1) (local))"), { strict: false }, (forms) => forms);
+509 | +    const output = expandWithMacroImports(
+510 | +      read("(consume (bind local 1) (local))"),
+511 | +      { strict: false },
+512 | +      (forms) => forms,
+513 | +    );
+
+error: Found 1 not formatted file in 1 file

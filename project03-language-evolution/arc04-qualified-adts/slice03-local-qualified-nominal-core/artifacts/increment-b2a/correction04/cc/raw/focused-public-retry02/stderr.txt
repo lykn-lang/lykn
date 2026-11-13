@@ -1,0 +1,1 @@
+Check test/expander/lexical-regions.test.js

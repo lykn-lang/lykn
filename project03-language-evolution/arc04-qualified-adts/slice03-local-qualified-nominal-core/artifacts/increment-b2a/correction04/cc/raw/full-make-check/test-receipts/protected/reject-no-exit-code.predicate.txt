@@ -1,0 +1,1 @@
+case=reject-no-exit-code matched=false expected=false

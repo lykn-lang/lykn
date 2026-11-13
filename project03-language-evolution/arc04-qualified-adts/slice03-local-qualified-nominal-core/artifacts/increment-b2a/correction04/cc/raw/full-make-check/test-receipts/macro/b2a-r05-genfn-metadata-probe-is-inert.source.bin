@@ -1,0 +1,1 @@
+(macro metadata-probe () (get null "genfn-metadata-was-expanded")) (bind gen (genfn () :yields (metadata-probe) (yield 41))) (console:log (Array:from (gen)))

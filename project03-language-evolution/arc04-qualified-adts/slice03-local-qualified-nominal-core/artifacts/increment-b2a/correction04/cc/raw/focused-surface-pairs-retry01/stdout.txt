@@ -1,0 +1,47 @@
+
+running 12 tests
+test classifier::forms::tests::test_classify_eq_is_surface_form_not_kernel ... ok
+test classifier::forms::tests::test_classify_ne_is_surface_form_not_kernel ... ok
+test classifier::forms::tests::test_strict_mode_accepts_surface_form ... ok
+test classifier::forms::tests::test_strict_mode_quasiquote_passes_as_surface_form ... ok
+test classifier::forms::tests::test_strict_mode_quote_passes_as_surface_form ... ok
+test classifier::forms::tests::test_unknown_surface_form_error ... ok
+test classifier::forms::tests::test_classify_and_or_not_are_surface_forms ... ok
+test classifier::forms::tests::test_classify_class_method_with_surface_forms ... ok
+test emitter::forms::tests::test_emit_expr_nested_surface_form_in_bind ... ok
+test emitter::forms::tests::test_emit_eq_with_nested_surface_form ... ok
+test protected_host::tests::surface_callable_boundaries_match_parsed_emitted_regions ... ok
+test protected_host::tests::surface_anonymous_defaults_and_nested_param_leaves_use_actual_bindings ... ok
+
+test result: ok. 12 passed; 0 failed; 0 ignored; 0 measured; 1185 filtered out; finished in 0.00s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 1 filtered out; finished in 0.00s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 22 filtered out; finished in 0.00s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 18 filtered out; finished in 0.00s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 8 filtered out; finished in 0.00s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 25 filtered out; finished in 0.00s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 5 filtered out; finished in 0.00s
+

@@ -1,0 +1,1 @@
+case=reject-wrong-severity matched=false expected=false

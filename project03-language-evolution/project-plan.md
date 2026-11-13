@@ -24,7 +24,8 @@ independently held on declaration transitions/wrappers. Iteration11 returns clea
 metadata/body alignment after R01–04 focused controls pass. Source-ready
 iteration12 returns clean0e249caf/treee946afc2, independently held on the native
 protected-host client's ignored generator metadata/post traversal. Exercised
-headers/D2 and R01–04 controls pass; iteration13 addresses the remaining client.
+headers/D2 and R01–04 controls pass; iteration13 returns cleanf9be7cb8/tree0ea27d21
+for separate independent software verification of the remaining client.
 Typed metadata transport and private finalization
 follow under the preserved B2 design after lexical acceptance; source-name
 identity B2-ID-NAME remains an unanswered operator language-design choice. Local

@@ -3,7 +3,7 @@ project: project03-language-evolution
 arc: arc04-qualified-adts
 slice: slice03-local-qualified-nominal-core
 status: active
-version: "1.24"
+version: "1.25"
 depends-on: [slice01-contract-and-emission-design, slice02-existing-adt-correctness]
 ---
 
@@ -234,7 +234,7 @@ gates survive. No release edits/integration, remote CI, push or publication.
 | cc-prompt-iteration10.md | 2026-11-12 | iteration09 | B2a correction01: native redispatch/actual diagnostic gating, public class defaults, named kernel function scope | Independent HOLD804be5da/treed25f2b66 on R04; R01–03 focused replays pass |
 | cc-prompt-iteration11.md | 2026-11-13 | iteration10 | B2a correction02: shared actual enclosing-declaration sites across expansion/resolution/D2/shadow clients and real wrapper/default slots | Independent HOLD595f672b/treedd518b1b on R05; R01–04 focused controls pass |
 | cc-prompt-iteration12.md | 2026-11-13 | iteration11 | B2a correction03: pure typed-source header preflight and canonical genfn metadata/body slots in parser and walkers | Independent HOLD0e249caf/treee946afc2: native protected-host client still visits ignored generator regions; exercised header/D2 controls green |
-| cc-prompt-iteration13.md | 2026-11-13 | iteration12 | B2a correction04: parsed native Surface function regions, ignored generator post excluded, actual parameter leaf scopes | Separate Sol source-readiness green; issued to Luna under existing authority; original B2-LX gates retained |
+| cc-prompt-iteration13.md | 2026-11-13 | iteration12 | B2a correction04: parsed native Surface function regions, ignored generator post excluded, actual parameter leaf scopes | Cleanf9be7cb8/tree0ea27d21 returned; separate Sol software verification active; original B2-LX gates retained |
 
 The A correction loop used three refinement passes; B1 required no software
 correction. IC-01 is a distinct authorized usable prerequisite, not a retry
@@ -469,3 +469,16 @@ correction, no history reset; B2-LX, B2-ID-NAME, LC02–08 remain open.
 Separate Sol reviewed the complete draft against the pinned source and confirmed
 the parsed leaf projection/emitter agreement and public input-domain limit.
 Root issues iteration13; Luna takes exclusive source/build ownership.
+
+2026-11-13 v1.25: correction04 returns clean
+f9be7cb85f62513f1624964fcc6773bffe4f66fe/tree0ea27d21f759e0c068e8f655b14f43a1a5f20452.
+Root verified four authorized paths and correct literal/Git-parsed trailers.
+CC full make check passes1197 native library/1556 product67steps/482 docs before
+the final public test/count-only delta; no later production change. Final public
+21/21 and cold M6 fourteen byte comparisons/49cases pass after that delta.
+CC postHEAD citations64/601 and46600-byte gzip pass. Original full-check snapshot
+and final test-only patch are separately preserved, not conflated. A test-only
+expected-leaf error and non-gating preexisting Deno-format observation survive.
+Separate Sol now exclusively owns source/build for complete original B2-LX
+verification, including fresh final-source full checks. Only independent
+acceptance may close B2-LX; B2b/name policy and LC02–08 remain open.

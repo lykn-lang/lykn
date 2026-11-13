@@ -1,0 +1,55 @@
+diff --git a/crates/lykn-cli/tests/macro_dependencies.rs b/crates/lykn-cli/tests/macro_dependencies.rs
+index 84d7ac62..1b3d7e84 100644
+--- a/crates/lykn-cli/tests/macro_dependencies.rs
++++ b/crates/lykn-cli/tests/macro_dependencies.rs
+@@ -1156,7 +1156,7 @@ fn m6_embedded_compiler_payload_matches_canonical_and_runs_from_cold_cache() {
+         String::from_utf8_lossy(&public_result.stderr)
+     );
+     assert!(
+-        public_output.contains("ok | 48 passed | 0 failed"),
+-        "M6 must execute the derived 48-case retained, IC-01, and current B2a materialized population, output: {public_output}"
++        public_output.contains("ok | 49 passed | 0 failed"),
++        "M6 must execute the derived 49-case retained, IC-01, and current B2a materialized population (5 + 6 + 17 + 21), output: {public_output}"
+     );
+ }
+diff --git a/test/expander/lexical-regions.test.js b/test/expander/lexical-regions.test.js
+index 04935b4c..c948d161 100644
+--- a/test/expander/lexical-regions.test.js
++++ b/test/expander/lexical-regions.test.js
+@@ -117,6 +117,36 @@ Deno.test("B2a genfn metadata is inert and excluded from the body region", async
+   }
+ });
+ 
++Deno.test("B2a public compiler follows emitted Genfn and Genfunc regions", async () => {
++  await executeModule(lykn(`
++    (bind factory (genfn () :yields (set-symbol! Array "isArray" 1) (yield 41)))
++    (bind stream (factory))
++    (console:log (get (stream:next) :value))
++  `), "41\n");
++
++  await executeModule(lykn(`
++    (genfunc factory :args () :post (set-symbol! Array "isArray" 1) :body (yield 41))
++    (bind stream (factory))
++    (console:log (get (stream:next) :value))
++  `), "41\n");
++
++  assertThrows(
++    () => lykn(`
++      (bind factory (genfn () :yields :any (set-symbol! Array "isArray" 1) (yield 41)))
++    `),
++    Error,
++    "protected slot Array.isArray",
++  );
++
++  assertThrows(
++    () => lykn(`
++      (genfunc factory :args () :body (set-symbol! Array "isArray" 1) (yield 41))
++    `),
++    Error,
++    "protected slot Array.isArray",
++  );
++});
++
+ Deno.test("B2a class methods isolate their parameter lists", async () => {
+   const source = `
+     (class Box ()

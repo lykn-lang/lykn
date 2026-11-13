@@ -1,0 +1,36 @@
+{
+  "name": "v4",
+  "source": "(bind action (fn (:number n) (+ n 1)))\n(set! action:call (fn (:number n) 99))\n(console:log (JSON:stringify (action:call 1)))",
+  "generated": "const lyknIntrinsicNumberIsNaN0 = Number.isNaN;\nconst lyknIntrinsicTypeError0 = TypeError;\nconst action = n => {\n  if (typeof n !== \"number\" || lyknIntrinsicNumberIsNaN0(n)) {\n    throw new lyknIntrinsicTypeError0(\"anonymous: arg 'n' expected number, got \" + typeof n);\n  }\n  return n + 1;\n};\naction.call = n => {\n  if (typeof n !== \"number\" || lyknIntrinsicNumberIsNaN0(n)) {\n    throw new lyknIntrinsicTypeError0(\"anonymous: arg 'n' expected number, got \" + typeof n);\n  }\n  return 99;\n};\nconsole.log(JSON.stringify(action.call(1)));\n",
+  "command": {
+    "program": "/opt/homebrew/bin/deno",
+    "args": [
+      "run",
+      "--no-config",
+      "--cached-only",
+      "--no-npm",
+      "--no-remote",
+      "--deny-net",
+      "--no-prompt",
+      "/private/tmp/lykn-b2a-correction04-cc/tmp/c2f159854d32355d/v4.js"
+    ],
+    "cwd": "/private/tmp/lykn-b2a-correction04-cc/tmp/c2f159854d32355d",
+    "selectedEnv": {
+      "DENO_DIR": "/Users/oubiwann/Library/Caches/deno",
+      "LYKN_TEST_DENO": null,
+      "XDG_CACHE_HOME": "/private/tmp/lykn-b2a-correction04-cc/xdg",
+      "TMPDIR": "/private/tmp/lykn-b2a-correction04-cc/tmp",
+      "LYKN_PROTECTED_HOST_EVIDENCE_DIR": "/Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/arc04-qualified-adts/slice03-local-qualified-nominal-core/artifacts/increment-b2a/correction04/cc/raw/full-make-check/test-receipts/protected"
+    }
+  },
+  "runtime": {
+    "success": true,
+    "code": 0,
+    "stdout": [
+      57,
+      57,
+      10
+    ],
+    "stderr": []
+  }
+}

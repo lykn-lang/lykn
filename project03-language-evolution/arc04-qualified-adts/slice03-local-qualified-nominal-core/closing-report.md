@@ -556,3 +556,27 @@ Root also made several unsuccessful guessed-path read queries while preparing
 this recipe; these were read-only tool errors, not product failures. No claim
 of contributor/model efficacy follows from this history. All failed candidates,
 root count/trailer reconciliations and pending human/name/API/book gates remain.
+
+## Correction04 clean candidate transfer — 2026-11-13
+
+Root verified candidatef9be7cb85f62513f1624964fcc6773bffe4f66fe,
+tree0ea27d21f759e0c068e8f655b14f43a1a5f20452, clean task source, four authorized
+paths and both literal and parsed contiguous co-author trailers. Native source
+host-policy traversal now uses parsed callable regions, actual typed leaves,
+and excludes ignored generator post; ordinary Func post stays checked.
+
+CC full make check was green1197 native library/1556 product67steps/482 docs
+before a final public regression/count-only change. Root inspected the actual
+raw summary/status. The production bytes stayed identical; the pre-test full
+snapshot and later test-only patch are preserved separately. Final public21/21
+and actual cold M6 fourteen comparisons/49public cases pass. CC postcommit
+citations64/601 and46600-byte gzip pass. The prior failed leaf expectation and
+baseline/current non-gating Deno-format comparison are preserved. No old full
+count is claimed to have executed the added test.
+
+Separate Sol receives exclusive source/build for the original twelve-row B2-LX
+matrix and fresh final-source full checks. This is proposed-done only. Root
+keeps B2-LX, LC02–08 and B2b open; source-name identity remains an unanswered
+language choice with a concrete example in b2b-owner-unit-preparation.md.
+Release0829 is not advanced. Original findings and all deferred obligations
+remain. No new implementation scope is inferred from the successful checkpoint.

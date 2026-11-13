@@ -1,0 +1,10 @@
+   Compiling lykn-lang v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.80s
+     Running unittests src/lib.rs (target/debug/deps/lykn_lang-660f810f98f77866)
+
+thread 'protected_host::tests::surface_anonymous_defaults_and_nested_param_leaves_use_actual_bindings' (106566624) panicked at crates/lykn-lang/src/protected_host.rs:1231:9:
+assertion `left == right` failed
+  left: ["wrapper", "leaf"]
+ right: ["leaf"]
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+error: test failed, to rerun pass `-p lykn-lang --lib`
