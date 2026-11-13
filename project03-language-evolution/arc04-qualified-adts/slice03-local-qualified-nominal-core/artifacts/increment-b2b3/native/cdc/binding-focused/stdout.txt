@@ -1,0 +1,42 @@
+
+running 37 tests
+test binding::tests::catch_binding_projection_keeps_legacy_expression_object_extent ... ok
+test binding::tests::bind_destructuring_array ... ok
+test binding::tests::bind_group ... ok
+test binding::tests::binding_pattern_projection_matches_consumed_spread_and_default_slots ... ok
+test binding::tests::d2_scope_uses_dispatched_export_sites_for_following_calls ... ok
+test binding::tests::bind_atom ... ok
+test binding::tests::emitted_kernel_parameter_and_role_projection_is_precise ... ok
+test binding::tests::bind_typed ... ok
+test binding::tests::class_method_params ... ok
+test binding::tests::catch_binding ... ok
+test binding::tests::empty_source_function_headers_do_not_invent_bindings ... ok
+test binding::tests::export_wrapped_binding_is_found ... ok
+test binding::tests::if_let_binding ... ok
+test binding::tests::import_default_named_and_alias_locals ... ok
+test binding::tests::kernel_decl_name_slot ... ok
+test binding::tests::fn_and_lambda_params ... ok
+test binding::tests::defaults_use_actual_typed_or_untyped_slots_and_visit_alias_expressions ... ok
+test binding::tests::kernel_import_projects_import_local_sites ... ok
+test binding::tests::label_is_its_own_namespace ... ok
+test binding::tests::kernel_lambda_parameters_are_validated_as_kernel_slots ... ok
+test binding::tests::func_params ... ok
+test binding::tests::genfunc_and_genfn_params ... ok
+test binding::tests::binding_patterns_use_their_producer_grammar ... ok
+test binding::tests::func_multi_clause_params ... ok
+test binding::tests::function_and_class_name_slots ... ok
+test binding::tests::loop_binding_atom_and_destructure ... ok
+test binding::tests::function_default_occurrences_are_walked_once_per_producer ... ok
+test binding::tests::match_clause_patterns_bind_constructor_vars ... ok
+test binding::tests::match_literal_and_wildcard_bind_nothing ... ok
+test binding::tests::nested_bindings_are_found ... ok
+test binding::tests::non_binding_forms_yield_nothing ... ok
+test binding::tests::correction07_walks_selected_function_regions_and_recursive_kernel_defaults ... ok
+test binding::tests::type_constructor_names_and_fields ... ok
+test binding::tests::underscore_is_not_a_binding ... ok
+test binding::tests::source_func_validation_scopes_each_clause_separately ... ok
+test binding::tests::when_let_binding ... ok
+test binding::tests::validates_emitted_names_and_keeps_strict_bindings_separate_from_labels ... ok
+
+test result: ok. 37 passed; 0 failed; 0 ignored; 0 measured; 1164 filtered out; finished in 0.01s
+

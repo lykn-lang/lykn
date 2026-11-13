@@ -1,0 +1,8 @@
+crates/lykn-lang/src/analysis/mod.rs
+crates/lykn-lang/src/binding.rs
+crates/lykn-lang/src/classifier/forms.rs
+crates/lykn-lang/src/codegen/emit.rs
+crates/lykn-lang/src/emitter/forms.rs
+crates/lykn-lang/src/emitter/type_checks.rs
+crates/lykn-lang/tests/discard_bindings.rs
+crates/lykn-lang/tests/e2e_tests.rs

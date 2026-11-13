@@ -1,0 +1,8 @@
+dfbf43adf440cc2d0b32a9f61a40e68056dc1624c81ad351a86bf28e926bef58  crates/lykn-lang/src/emitter/forms.rs
+d121c7e1d890aa768577dae831ca9fd30915881840c68dc8cdeb6cb3d044a3d4  crates/lykn-lang/src/emitter/type_checks.rs
+ed2a5a708a42a0819873b95fe304c3b917a596e1e1c288fec1a5b99d4936942c  crates/lykn-lang/src/analysis/mod.rs
+256af05072d7e64ad598c4f6b128f05de3a0db301e5f52c9b96669ef490de139  crates/lykn-lang/src/classifier/forms.rs
+f298d9469a2a0df55907dbd4aafae15352cdf9dd4a001f02c1b3bd8cdb97b402  crates/lykn-lang/src/codegen/emit.rs
+5a78c183fdb1b1510f6787f08e8c7ea2d3360e2bb8bc599a6ab621bd4163567e  crates/lykn-lang/src/binding.rs
+0c50ccbf53f04ce1e830f747043fb8c702d37e258f7b22f259b5eb89b20d83d2  crates/lykn-lang/tests/discard_bindings.rs
+78b73149a3c2c6170d20f4df84acb75c60376eb4912b818665811c98ff918034  crates/lykn-lang/tests/e2e_tests.rs

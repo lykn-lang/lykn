@@ -1369,3 +1369,62 @@ artifacts/increment-b2b3/root/native-whitespace-check.txt. These are captured
 stdout/stderr/M6 streams, not authored-source formatting errors; no historical
 bytes were cleaned to manufacture a zero result. Git inventory is eight paths
 (19seven+20one), despite one CC final sentence's cardinality slip.
+
+## Native discard checkpoint —759567f9 —2026-11-13
+
+Separate Sol6.1High CDC independently accepts **B2-DISCARD-N only** at
+759567f92bd145b5fbd0fbd4273aef368e52aeba,
+tree52dd6558eba4a5e9fe057dd03c368327ea578662 on codex/qualified-adt-core.
+Full committed eight-path diff, prepared private identity/guard/value roles,
+canonical spread/projector, source-only exports, preserved catch/typed grammar
+and the scoped e2e protocol/runtime migration were reviewed. All dirty pre-review
+gaps have final executable controls. Source remains clean with no reviewer edits
+or Git/index mutation; source/build returned after all owned jobs completed.
+
+[Independent packet/index](artifacts/increment-b2b3/native/cdc/README.md) records
+12 row dispositions, actual commands/env/status/streams and limits. Focused
+23 discard+18e2e and37binding pass. One fresh final-source make check passes
+1201 lykn-lang library,23discard,18e2e,1563product/67steps,482docs (15 generator
+blocks skipped; optional unreachable JSR probe disclosed). Actual full-hook
+cold delivery is55 mapped tests and14 byte comparisons, fresh staged browser
+and copied standalone CLI. Fresh/copied native CLI checked/strip prints99
+rather than old7; nonliteral bad input throws source-labelled TypeError;
+simple-default discard checked/strip outputs99,99,1. HEAD citations64/601,
+fresh46857gzip (35063 headroom) pass. Size fetched existing pinned esbuild;
+not wholly offline. Warm DENO_DIR and cold-owned-XDG distinction retained.
+
+No reviewer software/compile/capture/oracle failure. Read-only missing-path
+lookup and denied ps inventory are separately recorded, not product findings.
+Original CC failures/full01/full02, raw chronology and prior acceptance/HOLD
+packets remain intact. Final path scope is19's seven plus20's one, eight total.
+The frozen archive/digest is adjacent to the linked independent index.
+
+Both underscore/name policies are settled, but implementation is staged:
+public/raw scalar/kernel/catch/loop/class discard parity, grouped all-discard
+non-atom admission, top-level simple multi default/rest, ordinary source-name
+hygiene, typed owner/case activation, nominal/purity semantics, check semantic
+join, DTS/API/docs/book/human and LC02–08/B2b/S03 remain open. Existing finite
+host/private-fragment/browser/catch/alias limitations are retained. This review
+does not close a ledger/parent or authorize release integration.
+
+### Root final reconciliation — B2-DISCARD-N closed only
+
+Root independently verifies source759567f9/tree52dd6558 is clean, exact8path
+scope/trailers unchanged. Frozen archive SHA256 is
+b4c1ffb3fd4021968000556ade63bfd4b176172a3a8f7f1aa828d76fd5b1a05c;
+482entries and archived/current README cmp status0. The complete final matrix
+and committed-source review were read. Root accepts Sol's independently
+reproduced12DN dispositions and closes only B2-DISCARD-N in the ledger.
+Source/build returns to root with no owned jobs. No current implementation
+assignment follows20; public/raw/catch/name/owner/check/DTS/docs/book/human and
+all LC02–08/B2b/S03 obligations remain open. Policies are resolved, implementation
+staged. Warm-cache/cold-XDG distinctions, docs15skips/optional JSR, existing
+pinned tool network/warnings and all original failed attempts remain explicit.
+No release integration or publication follows this acceptance.
+
+Final authored plans/ledger/index/source-review whitespace checks pass0. The
+independent raw packet diff-check returns2 for original output EOF and captured
+Git commit/diff context whitespace. Exact diagnostics are retained in
+artifacts/increment-b2b3/root/native-cdc-whitespace-check.txt; these evidence
+bytes are preserved, not reformatted or described as a clean whole-packet
+diff. Frozen reviewer archive remains unchanged.

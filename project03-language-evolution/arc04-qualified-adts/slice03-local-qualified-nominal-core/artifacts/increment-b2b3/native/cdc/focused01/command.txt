@@ -1,0 +1,1 @@
+cargo test -p lykn-lang --test discard_bindings --test e2e_tests -- --nocapture

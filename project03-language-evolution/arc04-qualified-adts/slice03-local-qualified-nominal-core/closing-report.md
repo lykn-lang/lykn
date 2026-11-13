@@ -772,3 +772,36 @@ Root's inspected inventory is19seven+20one=8, correcting one CC cardinality
 sentence without rewriting it. All full S03 and downstream public/raw/catch/
 owner/name/check/DTS/docs/book/human obligations remain open. Sol now supplies
 independent software disposition before this bounded row can close.
+
+## Native discard checkpoint — independently accepted
+
+Separate Sol accepts only B2-DISCARD-N at759567f9/tree52dd6558. The final
+[index](artifacts/increment-b2b3/native/cdc/README.md) and committed-source
+review account for all12DN rows. Root verifies archive SHA256
+b4c1ffb3fd4021968000556ade63bfd4b176172a3a8f7f1aa828d76fd5b1a05c,
+482entries and exact archived/current README match0, source clean/pinned.
+Independent focused23+18/binding37, fresh full1201library/1563product67steps/
+482docs, actual cold55/14, copied CLI checked/strip99/typed failure/defaults,
+cites64/601 and fresh46857gzip pass. No reviewer software failure; read-only
+path misses and host-denied process inventory are separately qualified.
+Warm/cold/15doc-block skips/optional unreachable JSR/pinned-tool network limits
+remain. Source/build ownership returns to root; native row closes, S03 does not.
+
+The bounded engineering lesson is shared preparation and role-aware lowering:
+one private value feeds both definition and guard, while source data/API names
+remain explicit. Actual module namespaces prevented a private-export leak;
+runtime evidence separated malformed fixtures from compiler findings. The
+original false object-rest contradiction and bad span extractor are authoring
+mistakes, not proof of faulty language guides. One first CLI fixture text is
+explicitly reconstructed from its executed command; captured generated JS and
+runtime streams remain original, with no byte-preservation claim for the
+reconstructed text. Obsolete behavior is kept in planning/Git history, not
+asserted as desired product behavior. Full S03 retrospective and guide/book/
+human acceptance remain due at their actual gates.
+
+Next source-readiness covers public and remaining raw/catch/loop/class binding
+paths under the settled discard policy before returning to full exact-source
+identity/owner activation. No next prompt is issued or public parity claimed.
+The original scope, source-only user workflow, no-Python/helper boundary,
+optional-library/micro-deployment direction and all LC02–08/B2b/S03 obligations
+remain unchanged. This checkpoint grants no release integration authority.

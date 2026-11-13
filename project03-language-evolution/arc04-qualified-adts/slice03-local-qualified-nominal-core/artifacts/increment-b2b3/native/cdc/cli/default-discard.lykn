@@ -1,0 +1,9 @@
+(set! globalThis:_ 99)
+(set! globalThis:defaultCalls 0)
+(func provide :args () :returns :number :body
+  (set! globalThis:defaultCalls (+ globalThis:defaultCalls 1))
+  7)
+(func take :args ((default :number _ (provide))) :body _)
+(console:log (take))
+(console:log (take 8))
+(console:log globalThis:defaultCalls)

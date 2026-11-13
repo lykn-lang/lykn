@@ -1,0 +1,64 @@
+project03-language-evolution/arc04-qualified-adts/slice03-local-qualified-nominal-core/artifacts/increment-b2b3/native/cdc/binding-focused/stdout.txt:42: new blank line at EOF.
+project03-language-evolution/arc04-qualified-adts/slice03-local-qualified-nominal-core/artifacts/increment-b2b3/native/cdc/final/commit-message.txt:7: new blank line at EOF.
+project03-language-evolution/arc04-qualified-adts/slice03-local-qualified-nominal-core/artifacts/increment-b2b3/native/cdc/focused01/stdout.txt:51: new blank line at EOF.
+project03-language-evolution/arc04-qualified-adts/slice03-local-qualified-nominal-core/artifacts/increment-b2b3/native/cdc/full-check/m6/m6-embedded-public-strict.stdout.bin:63: new blank line at EOF.
+project03-language-evolution/arc04-qualified-adts/slice03-local-qualified-nominal-core/artifacts/increment-b2b3/native/cdc/full-check/stdout.txt:5722: new blank line at EOF.
+project03-language-evolution/arc04-qualified-adts/slice03-local-qualified-nominal-core/artifacts/increment-b2b3/native/cdc/intake/commit.txt:8: trailing whitespace.
++    
+project03-language-evolution/arc04-qualified-adts/slice03-local-qualified-nominal-core/artifacts/increment-b2b3/native/cdc/intake/commit.txt:10: trailing whitespace.
++    
+project03-language-evolution/arc04-qualified-adts/slice03-local-qualified-nominal-core/artifacts/increment-b2b3/native/cdc/intake/source.diff:151: trailing whitespace.
++ 
+project03-language-evolution/arc04-qualified-adts/slice03-local-qualified-nominal-core/artifacts/increment-b2b3/native/cdc/intake/source.diff:166: trailing whitespace.
++ 
+project03-language-evolution/arc04-qualified-adts/slice03-local-qualified-nominal-core/artifacts/increment-b2b3/native/cdc/intake/source.diff:245: trailing whitespace.
++ 
+project03-language-evolution/arc04-qualified-adts/slice03-local-qualified-nominal-core/artifacts/increment-b2b3/native/cdc/intake/source.diff:296: trailing whitespace.
++ 
+project03-language-evolution/arc04-qualified-adts/slice03-local-qualified-nominal-core/artifacts/increment-b2b3/native/cdc/intake/source.diff:299: trailing whitespace.
++ 
+project03-language-evolution/arc04-qualified-adts/slice03-local-qualified-nominal-core/artifacts/increment-b2b3/native/cdc/intake/source.diff:314: trailing whitespace.
++ 
+project03-language-evolution/arc04-qualified-adts/slice03-local-qualified-nominal-core/artifacts/increment-b2b3/native/cdc/intake/source.diff:437: trailing whitespace.
++ 
+project03-language-evolution/arc04-qualified-adts/slice03-local-qualified-nominal-core/artifacts/increment-b2b3/native/cdc/intake/source.diff:462: trailing whitespace.
++ 
+project03-language-evolution/arc04-qualified-adts/slice03-local-qualified-nominal-core/artifacts/increment-b2b3/native/cdc/intake/source.diff:756: trailing whitespace.
++ 
+project03-language-evolution/arc04-qualified-adts/slice03-local-qualified-nominal-core/artifacts/increment-b2b3/native/cdc/intake/source.diff:771: trailing whitespace.
++ 
+project03-language-evolution/arc04-qualified-adts/slice03-local-qualified-nominal-core/artifacts/increment-b2b3/native/cdc/intake/source.diff:773: trailing whitespace.
++ 
+project03-language-evolution/arc04-qualified-adts/slice03-local-qualified-nominal-core/artifacts/increment-b2b3/native/cdc/intake/source.diff:802: trailing whitespace.
++ 
+project03-language-evolution/arc04-qualified-adts/slice03-local-qualified-nominal-core/artifacts/increment-b2b3/native/cdc/intake/source.diff:804: trailing whitespace.
++ 
+project03-language-evolution/arc04-qualified-adts/slice03-local-qualified-nominal-core/artifacts/increment-b2b3/native/cdc/intake/source.diff:813: trailing whitespace.
++ 
+project03-language-evolution/arc04-qualified-adts/slice03-local-qualified-nominal-core/artifacts/increment-b2b3/native/cdc/intake/source.diff:815: trailing whitespace.
++ 
+project03-language-evolution/arc04-qualified-adts/slice03-local-qualified-nominal-core/artifacts/increment-b2b3/native/cdc/intake/source.diff:824: trailing whitespace.
++ 
+project03-language-evolution/arc04-qualified-adts/slice03-local-qualified-nominal-core/artifacts/increment-b2b3/native/cdc/intake/source.diff:828: trailing whitespace.
++ 
+project03-language-evolution/arc04-qualified-adts/slice03-local-qualified-nominal-core/artifacts/increment-b2b3/native/cdc/intake/source.diff:844: trailing whitespace.
++ 
+project03-language-evolution/arc04-qualified-adts/slice03-local-qualified-nominal-core/artifacts/increment-b2b3/native/cdc/intake/source.diff:853: trailing whitespace.
++ 
+project03-language-evolution/arc04-qualified-adts/slice03-local-qualified-nominal-core/artifacts/increment-b2b3/native/cdc/intake/source.diff:868: trailing whitespace.
++ 
+project03-language-evolution/arc04-qualified-adts/slice03-local-qualified-nominal-core/artifacts/increment-b2b3/native/cdc/intake/source.diff:870: trailing whitespace.
++ 
+project03-language-evolution/arc04-qualified-adts/slice03-local-qualified-nominal-core/artifacts/increment-b2b3/native/cdc/intake/source.diff:879: trailing whitespace.
++ 
+project03-language-evolution/arc04-qualified-adts/slice03-local-qualified-nominal-core/artifacts/increment-b2b3/native/cdc/intake/source.diff:893: trailing whitespace.
++ 
+project03-language-evolution/arc04-qualified-adts/slice03-local-qualified-nominal-core/artifacts/increment-b2b3/native/cdc/intake/source.diff:895: trailing whitespace.
++ 
+project03-language-evolution/arc04-qualified-adts/slice03-local-qualified-nominal-core/artifacts/increment-b2b3/native/cdc/intake/source.diff:904: trailing whitespace.
++ 
+project03-language-evolution/arc04-qualified-adts/slice03-local-qualified-nominal-core/artifacts/increment-b2b3/native/cdc/intake/source.diff:938: trailing whitespace.
++ 
+project03-language-evolution/arc04-qualified-adts/slice03-local-qualified-nominal-core/artifacts/increment-b2b3/native/cdc/intake/source.diff:1024: trailing whitespace.
++ 
+project03-language-evolution/arc04-qualified-adts/slice03-local-qualified-nominal-core/artifacts/increment-b2b3/native/cdc/size/stderr.txt:74: new blank line at EOF.

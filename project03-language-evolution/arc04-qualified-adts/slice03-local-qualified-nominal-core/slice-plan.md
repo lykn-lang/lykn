@@ -3,11 +3,27 @@ project: project03-language-evolution
 arc: arc04-qualified-adts
 slice: slice03-local-qualified-nominal-core
 status: active
-version: "1.37"
+version: "1.38"
 depends-on: [slice01-contract-and-emission-design, slice02-existing-adt-correctness]
 ---
 
 # Local qualified nominal core
+
+2026-11-13 v1.38: separate Sol independently accepts B2-DISCARD-N ONLY at
+759567f92bd145b5fbd0fbd4273aef368e52aeba/tree52dd6558eba4a5e9fe057dd03c368327ea578662.
+Root verifies clean source, frozen archive SHA256
+b4c1ffb3fd4021968000556ade63bfd4b176172a3a8f7f1aa828d76fd5b1a05c,
+482entries and exact archived/current README match0. Independent focused23+18,
+binding37, one fresh full1201library/1563product67steps/482docs, actual cold55/14,
+fresh/copied CLI checked/strip99 and source-labelled bad-TypeError, supplemental
+simple defaults99,99,1, HEADcites64/601 and46857gzip pass. No reviewer software
+failure. Warm DENO_DIR/cold-owned-XDG limits,15skipped doc blocks/optional JSR
+probe, existing pinned tool fetching/astring warnings and not-fully-offline
+measurement remain explicit. Root source/build ownership returns clean.
+Only the native row closes. No next CC prompt is issued: root resumes source-
+readiness for public and remaining raw binding paths, then the original exact
+source-name/typed-owner work. Both naming/discard policies stay resolved; full
+B2b/LC02–08/S03 and downstream gates stay open.
 
 2026-11-13 v1.37: combined18–20 returns clean759567f92bd145b5fbd0fbd4273aef368e52aeba,
 tree52dd6558eba4a5e9fe057dd03c368327ea578662, exact8source/test paths and
@@ -262,12 +278,13 @@ depth, supported native quotation paths, kernel-only D1 scope corrections and
 validation-only class-member queries. Existing source Func/class aggregate
 scope issues are explicit B2 inputs, not new IC-01 expansion claims.
 
-**Current assignment:** [iteration20](cc-prompt-iteration20.md), returned
-CC proposed-done at759567f9 for separate Sol software verification. Issued
+**Current assignment:** none issued after independent acceptance of
+[iteration20](cc-prompt-iteration20.md) at759567f9/tree52dd6558 for B2-DISCARD-N
+only. The20 assignment was issued
 2026-11-13 against accepted57c76c99cbed07ff992e78aac8afefa4bdf0b2ad/
 treef044d795e88c3dac8e84a73a557cf071edd5327c plus Luna's retained authorized18
-work, after independent export/pattern source-readiness. Sol now owns clean
-source/build for independent verification of the combined18–20 checkpoint under the
+work, after independent export/pattern source-readiness. Root now owns clean
+source/build after independent verification of the combined18–20 checkpoint under the
 operator's B2 design/implementation/independent-validation authorization and
 2026-11-13 source-name decision. B2-LX and B2-UNIT are independently accepted.
 [B2 architecture](artifacts/b2-owner-and-lexical-design.md) still governs typed
@@ -310,7 +327,7 @@ gates survive. No release edits/integration, remote CI, push or publication.
 | cc-prompt-iteration17.md | 2026-11-13 | iteration16 | B2b2 public ICU private allocator and actual mapped cold/browser/private runtime delivery | Independently accepted57c76c99/treef044d795, B2-ICU-P only |
 | cc-prompt-iteration18.md | 2026-11-13 | iteration17 | Operator discard policy, native Surface private values/guards and effects | Retained15-test/CLI checkpoint; refined by19 before full gate/commit, no independent acceptance |
 | cc-prompt-iteration19.md | 2026-11-13 | iteration18 | Source-only export names and canonical spread-pattern/projector parity, preserving catch extent | Retained23-test checkpoint; refined by20 after full01/02 oracle migrations, not accepted |
-| cc-prompt-iteration20.md | 2026-11-13 | iteration19 | Explicit native export JSON and actual public/native ESM parity oracle | CC proposed-done759567f9/tree52dd6558, exact8paths; separate Sol verification active |
+| cc-prompt-iteration20.md | 2026-11-13 | iteration19 | Explicit native export JSON and actual public/native ESM parity oracle | Independently accepted759567f9/tree52dd6558 for B2-DISCARD-N only; exact8paths, parent scope remains open |
 
 The A correction loop used three refinement passes; B1 required no software
 correction. IC-01 is a distinct authorized usable prerequisite, not a retry

@@ -1,0 +1,15 @@
+Setup: copied target/release/lykn after independent make check to
+/private/tmp/lykn-b2-discard-native-cdc/standalone/lykn.
+CWD=/private/tmp/lykn-b2-discard-native-cdc/standalone
+./lykn compile underscore.lykn -o /Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/arc04-qualified-adts/slice03-local-qualified-nominal-core/artifacts/increment-b2b3/native/cdc/cli/checked.mjs
+./lykn compile --strip-assertions underscore.lykn -o /Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/arc04-qualified-adts/slice03-local-qualified-nominal-core/artifacts/increment-b2b3/native/cdc/cli/stripped.mjs
+./lykn compile bad-type.lykn -o /Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/arc04-qualified-adts/slice03-local-qualified-nominal-core/artifacts/increment-b2b3/native/cdc/cli/bad-type.mjs
+deno run --no-config --cached-only --no-npm --no-remote --deny-net --no-prompt <absolute receipt path>/checked.mjs
+deno run --no-config --cached-only --no-npm --no-remote --deny-net --no-prompt <absolute receipt path>/stripped.mjs
+deno run --no-config --cached-only --no-npm --no-remote --deny-net --no-prompt <absolute receipt path>/bad-type.mjs
+<absolute receipt path>=/Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/arc04-qualified-adts/slice03-local-qualified-nominal-core/artifacts/increment-b2b3/native/cdc/cli
+Additional bounded simple-default discard control (same cwd/environment):
+./lykn compile default-discard.lykn -o <absolute receipt path>/default-checked.mjs
+./lykn compile --strip-assertions default-discard.lykn -o <absolute receipt path>/default-stripped.mjs
+deno run --no-config --cached-only --no-npm --no-remote --deny-net --no-prompt <absolute receipt path>/default-checked.mjs
+deno run --no-config --cached-only --no-npm --no-remote --deny-net --no-prompt <absolute receipt path>/default-stripped.mjs

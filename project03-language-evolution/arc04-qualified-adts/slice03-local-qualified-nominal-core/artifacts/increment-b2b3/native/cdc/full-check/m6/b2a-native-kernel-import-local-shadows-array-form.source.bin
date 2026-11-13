@@ -1,0 +1,1 @@
+(kernel:import "./dep.mjs" array) (console:log (array 1))

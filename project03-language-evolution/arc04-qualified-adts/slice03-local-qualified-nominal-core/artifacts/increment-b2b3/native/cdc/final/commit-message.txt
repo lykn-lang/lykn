@@ -1,0 +1,7 @@
+fix(native): add discard binding export parity test
+
+Assert native export JSON protocol and compare executable native/public ESM namespaces.
+
+Co-authored-by: Codex <noreply@openai.com>
+Co-authored-by: Billo AI <ai-engineering@billo.systems>
+

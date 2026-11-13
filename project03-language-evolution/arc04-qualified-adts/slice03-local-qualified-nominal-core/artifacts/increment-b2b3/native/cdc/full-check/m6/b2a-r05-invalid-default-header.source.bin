@@ -1,0 +1,2 @@
+(macro header-probe () (get null "header-body-was-expanded"))
+(func invalid :args ((default :number 9 0)) :body (header-probe))

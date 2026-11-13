@@ -1,0 +1,2023 @@
+diff --git a/crates/lykn-lang/src/analysis/mod.rs b/crates/lykn-lang/src/analysis/mod.rs
+index 162084e6..cbf9bd92 100644
+--- a/crates/lykn-lang/src/analysis/mod.rs
++++ b/crates/lykn-lang/src/analysis/mod.rs
+@@ -261,7 +261,7 @@ impl Analyze for SurfaceForm {
+                 // Walk the value expression first so references to earlier
+                 // bindings are recorded before we introduce this one.
+                 track_references_in_expr(value, scope);
+-                if let Some(atom) = name.as_atom() {
++                if let Some(atom) = name.as_atom().filter(|name| *name != "_") {
+                     scope.introduce(atom, *span, false, false);
+                 }
+             }
+@@ -291,7 +291,9 @@ impl Analyze for SurfaceForm {
+                     scope.enter_scope();
+                     for param in &clause.args {
+                         for tp in param.typed_params() {
+-                            scope.introduce(&tp.name, tp.name_span, false, false);
++                            if tp.name != "_" {
++                                scope.introduce(&tp.name, tp.name_span, false, false);
++                            }
+                         }
+                     }
+                     // Walk the body so references to params (and outer
+@@ -343,7 +345,9 @@ impl Analyze for SurfaceForm {
+                     scope.enter_scope();
+                     for param in &clause.args {
+                         for tp in param.typed_params() {
+-                            scope.introduce(&tp.name, tp.name_span, false, false);
++                            if tp.name != "_" {
++                                scope.introduce(&tp.name, tp.name_span, false, false);
++                            }
+                         }
+                     }
+                     for expr in &clause.body {
+@@ -362,7 +366,9 @@ impl Analyze for SurfaceForm {
+                 scope.enter_scope();
+                 for param in params {
+                     for tp in param.typed_params() {
+-                        scope.introduce(&tp.name, tp.name_span, false, false);
++                        if tp.name != "_" {
++                            scope.introduce(&tp.name, tp.name_span, false, false);
++                        }
+                     }
+                 }
+                 for expr in body {
+@@ -374,7 +380,9 @@ impl Analyze for SurfaceForm {
+                 scope.enter_scope();
+                 for param in params {
+                     for tp in param.typed_params() {
+-                        scope.introduce(&tp.name, tp.name_span, false, false);
++                        if tp.name != "_" {
++                            scope.introduce(&tp.name, tp.name_span, false, false);
++                        }
+                     }
+                 }
+                 for expr in body {
+diff --git a/crates/lykn-lang/src/binding.rs b/crates/lykn-lang/src/binding.rs
+index cf1f0bd1..477a0973 100644
+--- a/crates/lykn-lang/src/binding.rs
++++ b/crates/lykn-lang/src/binding.rs
+@@ -1151,13 +1151,24 @@ fn pattern_occurrences_with_grammar<'a>(
+                                             pattern_occurrences_with_grammar(n, kind, grammar, out);
+                                         }
+                                     }
++                                    "spread"
++                                        if grammar == PatternGrammar::BindingPattern
++                                            && kind != BindingKind::CatchBinding =>
++                                    {
++                                        if let Some(n) = inner.get(1) {
++                                            pattern_occurrences_with_grammar(n, kind, grammar, out);
++                                        }
++                                    }
+                                     "default" => {
+                                         let index = if grammar == PatternGrammar::TypedParameter {
+                                             2
+                                         } else {
+                                             1
+                                         };
+-                                        if let Some(n) = inner.get(index) {
++                                        let consumed = grammar != PatternGrammar::BindingPattern
++                                            || kind == BindingKind::CatchBinding
++                                            || inner.get(2).is_some();
++                                        if consumed && let Some(n) = inner.get(index) {
+                                             pattern_occurrences_with_grammar(n, kind, grammar, out);
+                                         }
+                                     }
+@@ -1660,4 +1671,46 @@ mod tests {
+                 .contains("strict-mode binding identifier")
+         );
+     }
++
++    #[test]
++    fn binding_pattern_projection_matches_consumed_spread_and_default_slots() {
++        let object = read("(object (spread rest) (default absent))").expect("parse object");
++        assert_eq!(
++            binding_names_in_pattern(&object[0], BindingKind::Bind)
++                .into_iter()
++                .map(|site| site.name)
++                .collect::<Vec<_>>(),
++            vec!["rest"]
++        );
++
++        let array = read("(array first (spread remaining))").expect("parse array");
++        assert_eq!(
++            binding_names_in_pattern(&array[0], BindingKind::Bind)
++                .into_iter()
++                .map(|site| site.name)
++                .collect::<Vec<_>>(),
++            vec!["first", "remaining"]
++        );
++
++        let default = read("(object (default present value))").expect("parse default");
++        assert_eq!(
++            binding_names_in_pattern(&default[0], BindingKind::Bind)
++                .into_iter()
++                .map(|site| site.name)
++                .collect::<Vec<_>>(),
++            vec!["present"]
++        );
++    }
++
++    #[test]
++    fn catch_binding_projection_keeps_legacy_expression_object_extent() {
++        let default = read("(object (default array))").expect("parse catch pattern");
++        assert_eq!(
++            binding_names_in_pattern(&default[0], BindingKind::CatchBinding)
++                .into_iter()
++                .map(|site| site.name)
++                .collect::<Vec<_>>(),
++            vec!["array"]
++        );
++    }
+ }
+diff --git a/crates/lykn-lang/src/classifier/forms.rs b/crates/lykn-lang/src/classifier/forms.rs
+index 7aeb599d..05431f3b 100644
+--- a/crates/lykn-lang/src/classifier/forms.rs
++++ b/crates/lykn-lang/src/classifier/forms.rs
+@@ -1241,7 +1241,7 @@ fn classify_bind(args: &[SExpr], span: Span) -> Result<SurfaceForm, Diagnostic>
+         }
+         len if len >= 4 => {
+             let bindings = parse_bind_group(args, span)?;
+-            validate_bind_group_duplicates(&bindings, span)?;
++            validate_bind_group_duplicates(&bindings)?;
+             Ok(SurfaceForm::BindGroup { bindings, span })
+         }
+         _ => Err(err(
+@@ -1429,7 +1429,7 @@ fn bind_binding_arg_slots(args: &[SExpr]) -> Vec<(usize, usize, Option<TypeAnnot
+     slots
+ }
+ 
+-fn validate_bind_group_duplicates(bindings: &[BindBinding], span: Span) -> Result<(), Diagnostic> {
++fn validate_bind_group_duplicates(bindings: &[BindBinding]) -> Result<(), Diagnostic> {
+     let mut seen: HashMap<String, Span> = HashMap::new();
+     for binding in bindings {
+         for site in binding_names_in_pattern(&binding.name, BindingKind::Bind) {
+@@ -1450,9 +1450,6 @@ fn validate_bind_group_duplicates(bindings: &[BindBinding], span: Span) -> Resul
+             seen.insert(site.name, site.span);
+         }
+     }
+-    if seen.is_empty() {
+-        return Err(err("bind group must declare at least one name", span));
+-    }
+     Ok(())
+ }
+ 
+diff --git a/crates/lykn-lang/src/codegen/emit.rs b/crates/lykn-lang/src/codegen/emit.rs
+index ceedf197..7513505a 100644
+--- a/crates/lykn-lang/src/codegen/emit.rs
++++ b/crates/lykn-lang/src/codegen/emit.rs
+@@ -392,6 +392,7 @@ fn emit_pattern(w: &mut JsWriter, expr: &SExpr) -> Result<(), LyknError> {
+             Some("array") => emit_array_pattern(w, &values[1..])?,
+             Some("default") => emit_default_pattern(w, &values[1..])?,
+             Some("rest") => emit_rest_pattern(w, &values[1..])?,
++            Some("spread") => emit_rest_pattern(w, &values[1..])?,
+             Some("alias") => emit_alias_pattern(w, &values[1..])?,
+             _ => emit_expr(w, expr, 0)?,
+         },
+@@ -408,9 +409,9 @@ fn emit_object_pattern(w: &mut JsWriter, members: &[SExpr]) -> Result<(), LyknEr
+         }
+         match member {
+             a @ SExpr::Atom { .. } => w.write(&to_js_identifier(a.as_atom().unwrap())),
+-            SExpr::List { values, .. } if !values.is_empty() => {
++            SExpr::List { values, .. } => {
+                 // A6-exempt: object-pattern member grammar, not a call head.
+-                match values[0].as_atom() {
++                match values.first().and_then(SExpr::as_atom) {
+                     Some("default") => {
+                         // (default name val)
+                         if values.len() >= 3 {
+@@ -426,12 +427,16 @@ fn emit_object_pattern(w: &mut JsWriter, members: &[SExpr]) -> Result<(), LyknEr
+                         emit_rest_pattern(w, &values[1..])?;
+                     }
+                     Some("spread") => {
+-                        w.write("...");
+-                        if values.len() >= 2 {
+-                            emit_expr(w, &values[1], 0)?;
+-                        }
++                        emit_rest_pattern(w, &values[1..])?;
++                    }
++                    _ => {
++                        return Err(LyknError::Codegen(Diagnostic {
++                            severity: Severity::Error,
++                            message: "object pattern member must use alias, default, rest, spread, or a shorthand field".to_string(),
++                            span: member.span(),
++                            suggestion: Some("use an alias form: (alias property local)".to_string()),
++                        }));
+                     }
+-                    _ => emit_pattern(w, member)?,
+                 }
+             }
+             _ => emit_pattern(w, member)?,
+@@ -460,6 +465,13 @@ fn emit_array_pattern(w: &mut JsWriter, elements: &[SExpr]) -> Result<(), LyknEr
+             _ => emit_pattern(w, elem)?,
+         }
+     }
++    if elements
++        .last()
++        .is_some_and(|element| element.as_atom() == Some("_"))
++    {
++        // Preserve the final elision's IteratorStep (without IteratorValue).
++        w.write(",");
++    }
+     w.write("]");
+     Ok(())
+ }
+diff --git a/crates/lykn-lang/src/emitter/forms.rs b/crates/lykn-lang/src/emitter/forms.rs
+index ea820873..2fbce6bb 100644
+--- a/crates/lykn-lang/src/emitter/forms.rs
++++ b/crates/lykn-lang/src/emitter/forms.rs
+@@ -5,6 +5,7 @@ use crate::ast::surface::{
+     FuncClause, GenfuncClause, MatchClause, ParamShape, Pattern, SurfaceForm, ThreadingStep,
+     TypeAnnotation,
+ };
++use crate::binding::{BindingKind, binding_names_in_pattern};
+ use crate::codegen::names::to_js_identifier;
+ use crate::diagnostics::{Diagnostic, Severity};
+ use crate::error::LyknError;
+@@ -19,7 +20,7 @@ use super::context::{EmitterContext, ExprContext};
+ use super::contracts::{
+     emit_post_check_with_predicate, emit_pre_check_with_predicate, replace_tilde,
+ };
+-use super::type_checks::{emit_return_type_check, emit_type_check};
++use super::type_checks::{emit_return_type_check, emit_type_check, emit_type_check_value};
+ 
+ fn codegen_error(message: impl Into<String>, span: Span) -> LyknError {
+     LyknError::Codegen(Diagnostic {
+@@ -534,16 +535,22 @@ fn emit_form_inner(
+         SurfaceForm::Export {
+             inner, extra_args, ..
+         } => {
+-            // Emit the inner surface form to kernel, then wrap in (export ...)
+-            let inner_kernel = emit_form_inner(inner, ctx, registry);
+-            inner_kernel
+-                .into_iter()
+-                .map(|k| {
+-                    let mut items = vec![atom("export"), k];
+-                    items.extend(extra_args.iter().cloned());
+-                    list(items)
+-                })
+-                .collect()
++            if let Some(names) = direct_bind_export_names(inner) {
++                let mut emitted = emit_form_inner(inner, ctx, registry);
++                emitted.push(emit_exports(&names));
++                emitted
++            } else {
++                // Preserve existing wrapper behavior for all other export forms.
++                let inner_kernel = emit_form_inner(inner, ctx, registry);
++                inner_kernel
++                    .into_iter()
++                    .map(|k| {
++                        let mut items = vec![atom("export"), k];
++                        items.extend(extra_args.iter().cloned());
++                        list(items)
++                    })
++                    .collect()
++            }
+         }
+         SurfaceForm::Class {
+             name,
+@@ -2819,6 +2826,7 @@ fn emit_bind(
+     registry: &TypeRegistry,
+ ) -> Vec<SExpr> {
+     let saved_ctx = ctx.expr_context;
++    let emitted_name = lower_discard_binding_pattern(name, ctx);
+     let mut prefix = Vec::new();
+     let emitted_value =
+         if ctx.direct_return_region && saved_ctx == ExprContext::Statement && name.is_atom() {
+@@ -2842,7 +2850,7 @@ fn emit_bind(
+             emitted
+         };
+     ctx.expr_context = saved_ctx;
+-    let const_form = list(vec![atom("const"), name.clone(), emitted_value]);
++    let const_form = list(vec![atom("const"), emitted_name.clone(), emitted_value]);
+     prefix.push(const_form);
+ 
+     let type_kw = match type_ann {
+@@ -2870,12 +2878,134 @@ fn emit_bind(
+ 
+     // Non-literal value: emit const + runtime type check
+     let name_str = name.as_atom().unwrap_or("<expr>");
+-    if let Some(check) = emit_type_check(name_str, type_kw, "bind", "binding", span) {
++    let check = if name.is_atom() {
++        emit_type_check_value(&emitted_name, name_str, type_kw, "bind", "binding", span)
++    } else {
++        // Preserve the existing unsupported typed-pattern check behavior.
++        emit_type_check(name_str, type_kw, "bind", "binding", span)
++    };
++    if let Some(check) = check {
+         prefix.push(check);
+     }
+     prefix
+ }
+ 
++/// Lower only actual binding-pattern positions; expressions and object keys stay data.
++fn lower_discard_binding_pattern(expr: &SExpr, ctx: &mut EmitterContext) -> SExpr {
++    match expr {
++        SExpr::Atom(_) if expr.as_atom() == Some("_") => {
++            SExpr::completion_value_atom(ctx.next_completion_value_id(), expr.span())
++        }
++        SExpr::List { values, span }
++            if values.first().and_then(SExpr::as_atom) == Some("object") =>
++        {
++            let mut lowered = Vec::with_capacity(values.len());
++            lowered.push(values[0].clone());
++            for member in &values[1..] {
++                match member {
++                    SExpr::Atom(_) if member.as_atom() == Some("_") => {
++                        lowered.push(list(vec![
++                            atom("alias"),
++                            atom("_"),
++                            lower_discard_binding_pattern(member, ctx),
++                        ]));
++                    }
++                    SExpr::List {
++                        values: parts,
++                        span: part_span,
++                    } if !parts.is_empty() => match parts[0].as_atom() {
++                        Some("default") if parts.len() >= 3 => {
++                            if parts[1].as_atom() == Some("_") {
++                                let local = SExpr::completion_value_atom(
++                                    ctx.next_completion_value_id(),
++                                    parts[1].span(),
++                                );
++                                lowered.push(list(vec![
++                                    atom("alias"),
++                                    atom("_"),
++                                    local,
++                                    parts[2].clone(),
++                                ]));
++                                continue;
++                            }
++                            let mut mapped = parts.clone();
++                            mapped[1] = lower_discard_binding_pattern(&parts[1], ctx);
++                            lowered.push(SExpr::List {
++                                values: mapped,
++                                span: *part_span,
++                            });
++                        }
++                        Some("alias") if parts.len() >= 3 => {
++                            let mut mapped = parts.clone();
++                            mapped[2] = lower_discard_binding_pattern(&parts[2], ctx);
++                            lowered.push(SExpr::List {
++                                values: mapped,
++                                span: *part_span,
++                            });
++                        }
++                        Some("rest" | "spread") if parts.len() >= 2 => {
++                            let mut mapped = parts.clone();
++                            mapped[1] = lower_discard_binding_pattern(&parts[1], ctx);
++                            lowered.push(SExpr::List {
++                                values: mapped,
++                                span: *part_span,
++                            });
++                        }
++                        _ => lowered.push(member.clone()),
++                    },
++                    _ => lowered.push(member.clone()),
++                }
++            }
++            SExpr::List {
++                values: lowered,
++                span: *span,
++            }
++        }
++        SExpr::List { values, span }
++            if values.first().and_then(SExpr::as_atom) == Some("array") =>
++        {
++            let mut lowered = Vec::with_capacity(values.len());
++            lowered.push(values[0].clone());
++            for member in &values[1..] {
++                match member {
++                    SExpr::List {
++                        values: parts,
++                        span: part_span,
++                    } if !parts.is_empty() => match parts[0].as_atom() {
++                        Some("default" | "rest" | "spread") if parts.len() >= 2 => {
++                            let mut mapped = parts.clone();
++                            mapped[1] = lower_discard_binding_pattern(&parts[1], ctx);
++                            lowered.push(SExpr::List {
++                                values: mapped,
++                                span: *part_span,
++                            });
++                        }
++                        Some("alias") if parts.len() >= 3 => {
++                            let mut mapped = parts.clone();
++                            mapped[2] = lower_discard_binding_pattern(&parts[2], ctx);
++                            lowered.push(SExpr::List {
++                                values: mapped,
++                                span: *part_span,
++                            });
++                        }
++                        Some("object" | "array") => {
++                            lowered.push(lower_discard_binding_pattern(member, ctx))
++                        }
++                        _ => lowered.push(member.clone()),
++                    },
++                    // A bare array `_` denotes a hole and consumes no value binding.
++                    _ => lowered.push(member.clone()),
++                }
++            }
++            SExpr::List {
++                values: lowered,
++                span: *span,
++            }
++        }
++        _ => expr.clone(),
++    }
++}
++
+ fn emit_bind_group(
+     bindings: &[BindBinding],
+     ctx: &mut EmitterContext,
+@@ -2901,6 +3031,24 @@ fn emit_exports(names: &[SExpr]) -> SExpr {
+     list(vec![atom("export"), list(name_list)])
+ }
+ 
++/// Project only original source binding names for an inline bind export.
++fn direct_bind_export_names(form: &SurfaceForm) -> Option<Vec<SExpr>> {
++    let patterns: Vec<&SExpr> = match form {
++        SurfaceForm::Bind { name, .. } => vec![name],
++        SurfaceForm::BindGroup { bindings, .. } => {
++            bindings.iter().map(|binding| &binding.name).collect()
++        }
++        _ => return None,
++    };
++    Some(
++        patterns
++            .into_iter()
++            .flat_map(|pattern| binding_names_in_pattern(pattern, BindingKind::Bind))
++            .map(|site| SExpr::atom(site.name, site.span))
++            .collect(),
++    )
++}
++
+ /// Return the JS type name for a literal `SExpr`, or `None` if it is not a
+ /// literal.
+ fn literal_type_name(expr: &SExpr) -> Option<&'static str> {
+@@ -3381,111 +3529,206 @@ fn emit_type(
+ // ParamShape helpers
+ // ---------------------------------------------------------------------------
+ 
+-/// Convert a ParamShape to kernel parameter name nodes.
+-fn param_to_kernel_names(p: &ParamShape) -> Vec<SExpr> {
+-    match p {
+-        ParamShape::Simple(tp) => {
+-            if tp.is_rest {
+-                vec![list(vec![atom("rest"), atom(&tp.name)])]
+-            } else if let Some(ref val) = tp.default_value {
+-                vec![list(vec![atom("default"), atom(&tp.name), val.clone()])]
++/// A parameter pattern and the guards that consume the same prepared values.
++struct PreparedParam {
++    pattern: Vec<SExpr>,
++    checks: Vec<SExpr>,
++}
++
++fn parameter_name(tp: &crate::ast::surface::TypedParam, ctx: &mut EmitterContext) -> SExpr {
++    if tp.name == "_" {
++        SExpr::completion_value_atom(ctx.next_completion_value_id(), tp.name_span)
++    } else {
++        SExpr::atom(&tp.name, tp.name_span)
++    }
++}
++
++fn prepare_typed_param(
++    tp: &crate::ast::surface::TypedParam,
++    ctx: &mut EmitterContext,
++    func_name: &str,
++    label: &str,
++) -> (SExpr, Vec<SExpr>) {
++    let is_discard = tp.name == "_";
++    let name = parameter_name(tp, ctx);
++    let pattern = if tp.is_rest {
++        list(vec![atom("rest"), name.clone()])
++    } else if let Some(default) = &tp.default_value {
++        list(vec![atom("default"), name.clone(), default.clone()])
++    } else {
++        name.clone()
++    };
++
++    let mut checks = Vec::new();
++    if tp.type_ann.name != "any" && !ctx.strip_assertions {
++        if tp.is_rest {
++            let element_name = format!("_el__{}", tp.name);
++            let element = if is_discard {
++                SExpr::completion_value_atom(ctx.next_completion_value_id(), tp.name_span)
+             } else {
+-                vec![atom(&tp.name)]
++                SExpr::atom(&element_name, tp.name_span)
++            };
++            if let Some(check) = emit_type_check_value(
++                &element,
++                if is_discard { &tp.name } else { &element_name },
++                &tp.type_ann.name,
++                func_name,
++                "rest arg",
++                tp.name_span,
++            ) {
++                checks.push(list(vec![atom("for-of"), element, name, check]));
++            }
++        } else if let Some(check) = emit_type_check_value(
++            &name,
++            &tp.name,
++            &tp.type_ann.name,
++            func_name,
++            label,
++            tp.name_span,
++        ) {
++            checks.push(check);
++        }
++    }
++    (pattern, checks)
++}
++
++fn param_pattern_node(prepared: PreparedParam) -> SExpr {
++    if prepared.pattern.len() == 1 {
++        prepared.pattern.into_iter().next().unwrap()
++    } else {
++        list(prepared.pattern)
++    }
++}
++
++/// Prepare each parsed leaf once so pattern storage and guards share identities.
++fn prepare_param(
++    param: &ParamShape,
++    ctx: &mut EmitterContext,
++    func_name: &str,
++    label: &str,
++) -> PreparedParam {
++    match param {
++        ParamShape::Simple(tp) => {
++            let (pattern, checks) = prepare_typed_param(tp, ctx, func_name, label);
++            PreparedParam {
++                pattern: vec![pattern],
++                checks,
+             }
+         }
+         ParamShape::DestructuredObject { fields, .. } => {
+-            let mut items = vec![atom("object")];
+-            items.extend(fields.iter().map(|f| match f {
+-                DestructuredField::Simple(tp) => {
+-                    if let Some(ref val) = tp.default_value {
+-                        list(vec![atom("default"), atom(&tp.name), val.clone()])
+-                    } else {
+-                        atom(&tp.name)
++            let mut pattern = vec![atom("object")];
++            let mut checks = Vec::new();
++            for field in fields {
++                match field {
++                    DestructuredField::Simple(tp) => {
++                        let (local, leaf_checks) = prepare_typed_param(tp, ctx, func_name, label);
++                        checks.extend(leaf_checks);
++                        if tp.name == "_" {
++                            if let Some(default) = &tp.default_value {
++                                let local_name = match &local {
++                                    SExpr::List { values, .. }
++                                        if values.first().and_then(SExpr::as_atom)
++                                            == Some("default") =>
++                                    {
++                                        values[1].clone()
++                                    }
++                                    _ => local.clone(),
++                                };
++                                pattern.push(list(vec![
++                                    atom("alias"),
++                                    atom("_"),
++                                    local_name,
++                                    default.clone(),
++                                ]));
++                            } else {
++                                pattern.push(list(vec![atom("alias"), atom("_"), local]));
++                            }
++                        } else {
++                            pattern.push(local);
++                        }
++                    }
++                    DestructuredField::Nested {
++                        alias_name,
++                        pattern: nested,
++                        ..
++                    } => {
++                        let prepared = prepare_param(nested, ctx, func_name, label);
++                        let PreparedParam {
++                            pattern: nested_pattern,
++                            checks: nested_checks,
++                        } = prepared;
++                        checks.extend(nested_checks);
++                        pattern.push(list(vec![
++                            atom("alias"),
++                            atom(alias_name),
++                            param_pattern_node(PreparedParam {
++                                pattern: nested_pattern,
++                                checks: Vec::new(),
++                            }),
++                        ]));
+                     }
+                 }
+-                DestructuredField::Nested {
+-                    alias_name,
+-                    pattern,
+-                    ..
+-                } => {
+-                    let inner = param_to_kernel_names(pattern);
+-                    let inner_node = if inner.len() == 1 {
+-                        inner.into_iter().next().unwrap()
+-                    } else {
+-                        list(inner)
+-                    };
+-                    list(vec![atom("alias"), atom(alias_name), inner_node])
+-                }
+-            }));
+-            vec![list(items)]
++            }
++            PreparedParam {
++                pattern: vec![list(pattern)],
++                checks,
++            }
+         }
+         ParamShape::DestructuredArray { elements, .. } => {
+-            let mut items = vec![atom("array")];
+-            items.extend(elements.iter().map(|e| match e {
+-                ArrayParamElement::Typed(tp) => {
+-                    if let Some(ref val) = tp.default_value {
+-                        list(vec![atom("default"), atom(&tp.name), val.clone()])
+-                    } else {
+-                        atom(&tp.name)
++            let mut pattern = vec![atom("array")];
++            let mut checks = Vec::new();
++            for element in elements {
++                match element {
++                    ArrayParamElement::Typed(tp) | ArrayParamElement::Rest(tp) => {
++                        let (local, leaf_checks) = prepare_typed_param(tp, ctx, func_name, label);
++                        checks.extend(leaf_checks);
++                        pattern.push(local);
+                     }
+-                }
+-                ArrayParamElement::Rest(tp) => list(vec![atom("rest"), atom(&tp.name)]),
+-                ArrayParamElement::Skip(_) => atom("_"),
+-                ArrayParamElement::Nested { pattern, .. } => {
+-                    let inner = param_to_kernel_names(pattern);
+-                    if inner.len() == 1 {
+-                        inner.into_iter().next().unwrap()
+-                    } else {
+-                        list(inner)
++                    ArrayParamElement::Skip(span) => {
++                        pattern.push(SExpr::atom("_", *span));
++                    }
++                    ArrayParamElement::Nested {
++                        pattern: nested, ..
++                    } => {
++                        let prepared = prepare_param(nested, ctx, func_name, label);
++                        let PreparedParam {
++                            pattern: nested_pattern,
++                            checks: nested_checks,
++                        } = prepared;
++                        checks.extend(nested_checks);
++                        pattern.push(param_pattern_node(PreparedParam {
++                            pattern: nested_pattern,
++                            checks: Vec::new(),
++                        }));
++                    }
++                    ArrayParamElement::NestedWithAlias {
++                        alias_name,
++                        pattern: nested,
++                        ..
++                    } => {
++                        let prepared = prepare_param(nested, ctx, func_name, label);
++                        let PreparedParam {
++                            pattern: nested_pattern,
++                            checks: nested_checks,
++                        } = prepared;
++                        checks.extend(nested_checks);
++                        pattern.push(list(vec![
++                            atom("alias"),
++                            atom(alias_name),
++                            param_pattern_node(PreparedParam {
++                                pattern: nested_pattern,
++                                checks: Vec::new(),
++                            }),
++                        ]));
+                     }
+                 }
+-                ArrayParamElement::NestedWithAlias {
+-                    alias_name,
+-                    pattern,
+-                    ..
+-                } => {
+-                    let inner = param_to_kernel_names(pattern);
+-                    let inner_node = if inner.len() == 1 {
+-                        inner.into_iter().next().unwrap()
+-                    } else {
+-                        list(inner)
+-                    };
+-                    list(vec![atom("alias"), atom(alias_name), inner_node])
+-                }
+-            }));
+-            vec![list(items)]
+-        }
+-    }
+-}
+-
+-/// Emit type checks for all typed fields in a ParamShape.
+-fn param_type_checks(p: &ParamShape, func_name: &str, label: &str) -> Vec<SExpr> {
+-    p.typed_params()
+-        .iter()
+-        .filter_map(|tp| {
+-            if tp.type_ann.name == "any" {
+-                return None;
+             }
+-            if tp.is_rest {
+-                // For rest params, emit a for-of loop that checks each element
+-                let el_var = format!("_el__{}", tp.name);
+-                let check = emit_type_check(
+-                    &el_var,
+-                    &tp.type_ann.name,
+-                    func_name,
+-                    "rest arg",
+-                    tp.name_span,
+-                )?;
+-                return Some(list(vec![
+-                    atom("for-of"),
+-                    atom(&el_var),
+-                    atom(&tp.name),
+-                    check,
+-                ]));
++            PreparedParam {
++                pattern: vec![list(pattern)],
++                checks,
+             }
+-            emit_type_check(&tp.name, &tp.type_ann.name, func_name, label, tp.name_span)
+-        })
+-        .collect()
++        }
++    }
+ }
+ 
+ // ---------------------------------------------------------------------------
+@@ -3500,18 +3743,24 @@ fn emit_fn_expr(
+ ) -> SExpr {
+     let saved_direct_region = ctx.direct_return_region;
+     ctx.direct_return_region = false;
+-    let param_names: Vec<SExpr> = params.iter().flat_map(param_to_kernel_names).collect();
++    let prepared: Vec<_> = params
++        .iter()
++        .map(|param| prepare_param(param, ctx, "anonymous", "arg"))
++        .collect();
++    let param_names: Vec<SExpr> = prepared
++        .iter()
++        .flat_map(|param| param.pattern.iter().cloned())
++        .collect();
+ 
+     let mut items = vec![atom("=>"), list(param_names)];
+ 
+     // Type checks
+     let mut has_type_checks = false;
+     if !ctx.strip_assertions {
+-        for param in params {
+-            let checks = param_type_checks(param, "anonymous", "arg");
+-            if !checks.is_empty() {
++        for param in &prepared {
++            if !param.checks.is_empty() {
+                 has_type_checks = true;
+-                items.extend(checks);
++                items.extend(param.checks.iter().cloned());
+             }
+         }
+     }
+@@ -3563,14 +3812,22 @@ fn emit_func_single(
+     ctx: &mut EmitterContext,
+     registry: &TypeRegistry,
+ ) -> SExpr {
+-    let param_names: Vec<SExpr> = clause.args.iter().flat_map(param_to_kernel_names).collect();
++    let prepared: Vec<_> = clause
++        .args
++        .iter()
++        .map(|param| prepare_param(param, ctx, name, "arg"))
++        .collect();
++    let param_names: Vec<SExpr> = prepared
++        .iter()
++        .flat_map(|param| param.pattern.iter().cloned())
++        .collect();
+ 
+     let mut items = vec![atom("function"), atom(name), list(param_names)];
+ 
+     // Type checks for parameters
+     if !ctx.strip_assertions {
+-        for param in &clause.args {
+-            items.extend(param_type_checks(param, name, "arg"));
++        for param in &prepared {
++            items.extend(param.checks.iter().cloned());
+         }
+     }
+ 
+@@ -3770,6 +4027,11 @@ fn emit_func_multi(
+ 
+     for &idx in &sorted_indices {
+         let clause = &clauses[idx];
++        let prepared: Vec<_> = clause
++            .args
++            .iter()
++            .map(|param| prepare_param(param, ctx, name, "arg"))
++            .collect();
+         let arity = clause.args.len();
+ 
+         // Build dispatch condition: (=== args:length N) && type dispatch checks
+@@ -3803,22 +4065,18 @@ fn emit_func_multi(
+         let mut block_items = vec![atom("block")];
+ 
+         // Bind parameters from args array
+-        for (i, param) in clause.args.iter().enumerate() {
++        for (i, _param) in clause.args.iter().enumerate() {
+             let arg_access = list(vec![atom("get"), atom("args"), num(i as f64)]);
+-            let binding = param_to_kernel_names(param);
++            let binding = &prepared[i].pattern;
+             if binding.len() == 1 {
+-                block_items.push(list(vec![
+-                    atom("const"),
+-                    binding.into_iter().next().unwrap(),
+-                    arg_access,
+-                ]));
++                block_items.push(list(vec![atom("const"), binding[0].clone(), arg_access]));
+             }
+         }
+ 
+         // Full type checks
+         if !ctx.strip_assertions {
+-            for param in &clause.args {
+-                block_items.extend(param_type_checks(param, name, "arg"));
++            for param in &prepared {
++                block_items.extend(param.checks.iter().cloned());
+             }
+         }
+ 
+@@ -4010,14 +4268,22 @@ fn emit_genfunc_single(
+ ) -> SExpr {
+     let saved_direct_region = ctx.direct_return_region;
+     ctx.direct_return_region = false;
+-    let param_names: Vec<SExpr> = clause.args.iter().flat_map(param_to_kernel_names).collect();
++    let prepared: Vec<_> = clause
++        .args
++        .iter()
++        .map(|param| prepare_param(param, ctx, name, "arg"))
++        .collect();
++    let param_names: Vec<SExpr> = prepared
++        .iter()
++        .flat_map(|param| param.pattern.iter().cloned())
++        .collect();
+ 
+     let mut items = vec![atom("function*"), atom(name), list(param_names)];
+ 
+     // Type checks for parameters
+     if !ctx.strip_assertions {
+-        for param in &clause.args {
+-            items.extend(param_type_checks(param, name, "arg"));
++        for param in &prepared {
++            items.extend(param.checks.iter().cloned());
+         }
+     }
+ 
+@@ -4068,14 +4334,21 @@ fn emit_genfn_expr(
+ ) -> SExpr {
+     let saved_direct_region = ctx.direct_return_region;
+     ctx.direct_return_region = false;
+-    let param_names: Vec<SExpr> = params.iter().flat_map(param_to_kernel_names).collect();
++    let prepared: Vec<_> = params
++        .iter()
++        .map(|param| prepare_param(param, ctx, "anonymous", "arg"))
++        .collect();
++    let param_names: Vec<SExpr> = prepared
++        .iter()
++        .flat_map(|param| param.pattern.iter().cloned())
++        .collect();
+ 
+     let mut items = vec![atom("function*"), list(param_names)];
+ 
+     // Type checks
+     if !ctx.strip_assertions {
+-        for param in params {
+-            items.extend(param_type_checks(param, "anonymous", "arg"));
++        for param in &prepared {
++            items.extend(param.checks.iter().cloned());
+         }
+     }
+ 
+@@ -10694,18 +10967,25 @@ mod tests {
+         let mut ctx = ctx();
+         let registry = TypeRegistry::default();
+         let result = emit_form(&form, &mut ctx, &registry).unwrap();
+-        // Should produce (export (const VERSION "0.4.0"))
+-        assert_eq!(result.len(), 1);
++        // The declaration remains ordinary; only its source binding is exported.
++        assert_eq!(result.len(), 2);
+         match &result[0] {
++            SExpr::List { values, .. } => {
++                assert_eq!(values[0].as_atom(), Some("const"));
++                assert_eq!(values[1].as_atom(), Some("VERSION"));
++            }
++            _ => panic!("expected binding declaration"),
++        }
++        match &result[1] {
+             SExpr::List { values, .. } => {
+                 assert_eq!(values[0].as_atom(), Some("export"));
+-                if let SExpr::List { values: inner, .. } = &values[1] {
+-                    assert_eq!(inner[0].as_atom(), Some("const"));
+-                } else {
+-                    panic!("expected list inside export");
+-                }
++                let SExpr::List { values: names, .. } = &values[1] else {
++                    panic!("expected source names list");
++                };
++                assert_eq!(names[0].as_atom(), Some("names"));
++                assert_eq!(names[1].as_atom(), Some("VERSION"));
+             }
+-            _ => panic!("expected list"),
++            _ => panic!("expected source-name export"),
+         }
+     }
+ 
+diff --git a/crates/lykn-lang/src/emitter/type_checks.rs b/crates/lykn-lang/src/emitter/type_checks.rs
+index be50549e..ee10f9e8 100644
+--- a/crates/lykn-lang/src/emitter/type_checks.rs
++++ b/crates/lykn-lang/src/emitter/type_checks.rs
+@@ -36,8 +36,28 @@ pub fn emit_type_check(
+     label: &str,
+     span: Span,
+ ) -> Option<SExpr> {
+-    let check = build_check(param_name, type_keyword, span)?;
+-    let message = build_error_message(param_name, type_keyword, func_name, label);
++    emit_type_check_value(
++        &SExpr::atom(param_name, span),
++        param_name,
++        type_keyword,
++        func_name,
++        label,
++        span,
++    )
++}
++
++/// Emit a runtime check against an actual compiler-prepared value while
++/// retaining the source spelling for the diagnostic label.
++pub(super) fn emit_type_check_value(
++    actual: &SExpr,
++    source_name: &str,
++    type_keyword: &str,
++    func_name: &str,
++    label: &str,
++    span: Span,
++) -> Option<SExpr> {
++    let check = build_check(actual, type_keyword, span)?;
++    let message = build_error_message(actual, source_name, type_keyword, func_name, label);
+     Some(list(vec![
+         atom("if"),
+         check,
+@@ -55,8 +75,8 @@ pub fn emit_type_check(
+ /// Build the negated type-check condition for the given type keyword.
+ ///
+ /// Returns `None` for `:any`.
+-fn build_check(param_name: &str, type_keyword: &str, span: Span) -> Option<SExpr> {
+-    let p = atom(param_name);
++fn build_check(actual: &SExpr, type_keyword: &str, span: Span) -> Option<SExpr> {
++    let p = actual.clone();
+     match type_keyword {
+         "any" => None,
+         "number" => Some(list(vec![
+@@ -145,14 +165,15 @@ pub fn emit_return_type_check(
+     func_name: &str,
+     span: Span,
+ ) -> Option<SExpr> {
+-    let check = build_check(result_var, type_keyword, span)?;
++    let value = atom(result_var);
++    let check = build_check(&value, type_keyword, span)?;
+     let message = list(vec![
+         atom("+"),
+         str_lit(&format!(
+             "{}: return value expected {type_keyword}, got ",
+             display_name(func_name)
+         )),
+-        list(vec![atom("typeof"), atom(result_var)]),
++        list(vec![atom("typeof"), value]),
+     ]);
+     Some(list(vec![
+         atom("if"),
+@@ -172,7 +193,8 @@ pub fn emit_return_type_check(
+ ///
+ /// Produces: `"funcName: label 'paramName' expected type, got " + (typeof param)`
+ fn build_error_message(
+-    param_name: &str,
++    actual: &SExpr,
++    source_name: &str,
+     type_keyword: &str,
+     func_name: &str,
+     label: &str,
+@@ -182,9 +204,9 @@ fn build_error_message(
+         str_lit(&format!(
+             "{}: {label} '{}' expected {type_keyword}, got ",
+             display_name(func_name),
+-            display_name(param_name)
++            display_name(source_name)
+         )),
+-        list(vec![atom("typeof"), atom(param_name)]),
++        list(vec![atom("typeof"), actual.clone()]),
+     ])
+ }
+ 
+diff --git a/crates/lykn-lang/tests/discard_bindings.rs b/crates/lykn-lang/tests/discard_bindings.rs
+new file mode 100644
+index 00000000..4af5449f
+--- /dev/null
++++ b/crates/lykn-lang/tests/discard_bindings.rs
+@@ -0,0 +1,901 @@
++use std::fs;
++use std::process::Command;
++use std::sync::atomic::{AtomicUsize, Ordering};
++
++use lykn_lang::{analysis, binding, classifier, codegen, emitter, reader, resolver};
++
++fn compile(source: &str, strip_assertions: bool) -> String {
++    let forms = reader::read(source).expect("fixture reads");
++    let resolved = resolver::resolve(&forms);
++    let classified = classifier::classify(&resolved).expect("fixture classifies");
++    let unit = analysis::analyze(classified).expect("fixture analyzes");
++    let kernel = emitter::emit(&unit, strip_assertions).expect("fixture emits");
++    codegen::emit_module_js(&kernel).expect("fixture generates JavaScript")
++}
++
++fn compile_through_json(source: &str) -> String {
++    let forms = reader::read(source).expect("fixture reads");
++    let resolved = resolver::resolve(&forms);
++    let classified = classifier::classify(&resolved).expect("fixture classifies");
++    let unit = analysis::analyze(classified).expect("fixture analyzes");
++    let json = emitter::emit_json(&unit, false).expect("whole-unit JSON emission succeeds");
++    let values: Vec<serde_json::Value> = serde_json::from_str(&json).expect("JSON parses");
++    let kernel = values
++        .iter()
++        .map(lykn_lang::expander::env::protocol_json_to_sexpr)
++        .collect::<Result<Vec<_>, _>>()
++        .expect("emitted JSON reads back");
++    codegen::emit_module_js(&kernel).expect("round-tripped JavaScript generates")
++}
++
++fn run(js: &str, prelude: &str, suffix: &str) -> std::process::Output {
++    let script = format!("{prelude}\n{js}\n{suffix}");
++    Command::new("deno")
++        .arg("eval")
++        .arg("--config")
++        .arg("project.json")
++        .arg("--ext=js")
++        .arg(script)
++        .current_dir(env!("CARGO_MANIFEST_DIR").to_string() + "/../..")
++        .output()
++        .expect("Deno is required for discard runtime evidence")
++}
++
++fn run_module(js: &str, prelude: &str, suffix: &str) -> std::process::Output {
++    static NEXT_MODULE: AtomicUsize = AtomicUsize::new(0);
++    let path = std::env::temp_dir().join(format!(
++        "lykn-discard-export-{}-{}.mjs",
++        std::process::id(),
++        NEXT_MODULE.fetch_add(1, Ordering::Relaxed)
++    ));
++    fs::write(&path, js).expect("write temporary ESM module");
++    let module_url = format!("file://{}", path.display());
++    let script = format!("{prelude}\nconst __module = await import({module_url:?});\n{suffix}");
++    let output = Command::new("deno")
++        .arg("eval")
++        .arg("--config")
++        .arg("project.json")
++        .arg("--ext=js")
++        .arg(script)
++        .current_dir(env!("CARGO_MANIFEST_DIR").to_string() + "/../..")
++        .output()
++        .expect("Deno is required for discard export runtime evidence");
++    fs::remove_file(path).expect("remove temporary ESM module");
++    output
++}
++
++fn stdout(output: &std::process::Output) -> String {
++    String::from_utf8(output.stdout.clone()).expect("Deno stdout is UTF-8")
++}
++
++#[test]
++fn repeated_bind_discards_evaluate_once_and_leave_source_underscore_alone() {
++    let js = compile(
++        "(bind _ (bump \"first\") _ (bump \"second\")) (bind _value 7) (console:log _value) (console:log _)",
++        false,
++    );
++    let output = run(
++        &js,
++        "globalThis._ = 99; globalThis.events = []; globalThis.bump = x => { events.push(x); return x; };",
++        "console.log(events.join(','));",
++    );
++    assert!(
++        output.status.success(),
++        "{}",
++        String::from_utf8_lossy(&output.stderr)
++    );
++    assert_eq!(stdout(&output), "7\n99\nfirst,second\n");
++}
++
++#[test]
++fn typed_scalar_discard_checks_the_actual_value_and_reports_source_name() {
++    let js = compile(
++        "(func check :args (:number _) :body 41) (console:log (check inputValue))",
++        false,
++    );
++    let good = run(
++        &js,
++        "globalThis._ = 99; globalThis.inputValue = 7;",
++        "console.log(_);",
++    );
++    assert!(
++        good.status.success(),
++        "{}",
++        String::from_utf8_lossy(&good.stderr)
++    );
++    assert_eq!(stdout(&good), "41\n99\n");
++
++    let bad = run(&js, "globalThis.inputValue = 'wrong';", "");
++    assert!(!bad.status.success(), "a bad :number discard must throw");
++    let stderr = String::from_utf8_lossy(&bad.stderr);
++    assert!(
++        stderr.contains("arg '_' expected number, got string"),
++        "{stderr}"
++    );
++
++    let bind = compile("(bind :number _ inputValue) (console:log _)", false);
++    let good = run(&bind, "globalThis._ = 99; globalThis.inputValue = 7;", "");
++    assert!(
++        good.status.success(),
++        "{}",
++        String::from_utf8_lossy(&good.stderr)
++    );
++    assert_eq!(stdout(&good), "99\n");
++    let bad = run(&bind, "globalThis.inputValue = 'wrong';", "");
++    assert!(!bad.status.success(), "a bad typed discard bind must throw");
++    assert!(
++        String::from_utf8_lossy(&bad.stderr)
++            .contains("bind: binding '_' expected number, got string")
++    );
++
++    let stripped = compile("(bind :number _ inputValue) (console:log _)", true);
++    let output = run(
++        &stripped,
++        "globalThis._ = 99; globalThis.inputValue = 'wrong';",
++        "",
++    );
++    assert!(
++        output.status.success(),
++        "{}",
++        String::from_utf8_lossy(&output.stderr)
++    );
++    assert_eq!(stdout(&output), "99\n");
++}
++
++#[test]
++fn typed_object_discard_preserves_property_key_and_optional_default() {
++    let js = compile(
++        "(func check :args ((object :number _)) :body 41) (console:log (check inputValue))",
++        false,
++    );
++    let good = run(
++        &js,
++        "globalThis._ = 99; globalThis.inputValue = {_: 7};",
++        "console.log(_);",
++    );
++    assert!(
++        good.status.success(),
++        "{}",
++        String::from_utf8_lossy(&good.stderr)
++    );
++    assert_eq!(stdout(&good), "41\n99\n");
++
++    let defaulted = compile(
++        "(func check :args ((object (default :number _ 8))) :body 41) (console:log (check {}))",
++        false,
++    );
++    let output = run(&defaulted, "globalThis._ = 99;", "console.log(_);");
++    assert!(
++        output.status.success(),
++        "{}",
++        String::from_utf8_lossy(&output.stderr)
++    );
++    assert_eq!(stdout(&output), "41\n99\n");
++
++    let bad = run(&js, "globalThis.inputValue = {_:'wrong'};", "");
++    assert!(!bad.status.success(), "a bad object discard must throw");
++    assert!(String::from_utf8_lossy(&bad.stderr).contains("arg '_' expected number, got string"));
++}
++
++#[test]
++fn typed_array_discard_reads_value_but_raw_trailing_holes_do_not() {
++    let typed = compile(
++        "(func check :args ((array :number _)) :body 41) (console:log (check iterable))",
++        false,
++    );
++    let output = run(
++        &typed,
++        "globalThis._ = 99; globalThis.reads = 0; globalThis.iterable = { [Symbol.iterator]() { let done = false; return { next() { return done ? {done:true} : {done:false, get value() { reads++; done = true; return 7; }}; } }; } };",
++        "console.log(reads); console.log(_);",
++    );
++    assert!(
++        output.status.success(),
++        "{}",
++        String::from_utf8_lossy(&output.stderr)
++    );
++    assert_eq!(stdout(&output), "41\n1\n99\n");
++
++    let holes = compile(
++        "(bind (array _ second _) iterable) (console:log second)",
++        false,
++    );
++    let output = run(
++        &holes,
++        "globalThis._ = 99; globalThis.steps = 0; globalThis.reads = 0; globalThis.closes = 0; globalThis.iterable = { [Symbol.iterator]() { let n = 0; return { next() { steps++; n++; return {done:false, get value() { reads++; return n; }}; }, return() { closes++; return {done:true}; } }; } };",
++        "console.log(`${steps}:${reads}:${closes}`); console.log(_);",
++    );
++    assert!(
++        output.status.success(),
++        "{}",
++        String::from_utf8_lossy(&output.stderr)
++    );
++    assert_eq!(stdout(&output), "2\n3:1:1\n99\n");
++
++    let single_hole = compile("(bind (array _) iterable)", false);
++    let output = run(
++        &single_hole,
++        "globalThis.steps = 0; globalThis.reads = 0; globalThis.closes = 0; globalThis.iterable = { [Symbol.iterator]() { return { next() { steps++; return {done:false, get value() { reads++; return 1; }}; }, return() { closes++; return {done:true}; } }; } };",
++        "console.log(`${steps}:${reads}:${closes}`);",
++    );
++    assert!(
++        output.status.success(),
++        "{}",
++        String::from_utf8_lossy(&output.stderr)
++    );
++    assert_eq!(stdout(&output), "1:0:1\n");
++
++    let many_holes = compile("(bind (array _ _ _) iterable)", false);
++    let output = run(
++        &many_holes,
++        "globalThis.steps = 0; globalThis.reads = 0; globalThis.closes = 0; globalThis.iterable = { [Symbol.iterator]() { return { next() { steps++; return {done:false, get value() { reads++; return 1; }}; }, return() { closes++; return {done:true}; } }; } };",
++        "console.log(`${steps}:${reads}:${closes}`);",
++    );
++    assert!(
++        output.status.success(),
++        "{}",
++        String::from_utf8_lossy(&output.stderr)
++    );
++    assert_eq!(stdout(&output), "3:0:1\n");
++
++    let bad = run(&typed, "globalThis.iterable = ['wrong'];", "");
++    assert!(
++        !bad.status.success(),
++        "a bad typed array discard must throw"
++    );
++    assert!(String::from_utf8_lossy(&bad.stderr).contains("arg '_' expected number, got string"));
++}
++
++#[test]
++fn fixed_multi_clause_discards_keep_dispatch_and_checked_stripped_binding() {
++    for strip_assertions in [false, true] {
++        let js = compile(
++            "(func choose-value (:args (:number _) :body 11) (:args (:string _) :body 22)) (console:log (choose-value inputValue))",
++            strip_assertions,
++        );
++        let output = run(&js, "globalThis.inputValue = 'text';", "");
++        assert!(
++            output.status.success(),
++            "{}",
++            String::from_utf8_lossy(&output.stderr)
++        );
++        assert_eq!(stdout(&output), "22\n");
++    }
++
++    let number = compile(
++        "(func choose-value (:args (:number _) :body 11) (:args (:string _) :body 22)) (console:log (choose-value NaN))",
++        false,
++    );
++    let output = run(&number, "", "");
++    assert!(
++        !output.status.success(),
++        "NaN must select the number clause and fail its full guard"
++    );
++    assert!(
++        String::from_utf8_lossy(&output.stderr).contains("arg '_' expected number, got number")
++    );
++}
++
++#[test]
++fn defaults_are_lazy_once_and_nested_array_rest_remains_valid_in_multi_clause() {
++    let source = "(func choose (:args ((array (default :number first (bump 8)) (rest :number _))) :body first) (:args (:string _) :body 99)) (console:log (choose inputValue))";
++    let js = compile(source, false);
++    let output = run(
++        &js,
++        "globalThis.defaultCalls = 0; globalThis.bump = value => { defaultCalls++; return value; }; globalThis.inputValue = [undefined, 2, 3];",
++        "console.log(defaultCalls);",
++    );
++    assert!(
++        output.status.success(),
++        "{}",
++        String::from_utf8_lossy(&output.stderr)
++    );
++    assert_eq!(stdout(&output), "8\n1\n");
++
++    let provided = run(
++        &js,
++        "globalThis.defaultCalls = 0; globalThis.bump = value => { defaultCalls++; return value; }; globalThis.inputValue = [4, 2, 3];",
++        "console.log(defaultCalls);",
++    );
++    assert!(
++        provided.status.success(),
++        "{}",
++        String::from_utf8_lossy(&provided.stderr)
++    );
++    assert_eq!(stdout(&provided), "4\n0\n");
++
++    let failing = run(
++        &js,
++        "globalThis.bump = () => { throw new Error('default-failure'); }; globalThis.inputValue = [undefined, 2];",
++        "",
++    );
++    assert!(
++        !failing.status.success(),
++        "default exceptions must propagate"
++    );
++    assert!(String::from_utf8_lossy(&failing.stderr).contains("default-failure"));
++}
++
++#[test]
++fn typed_object_field_getter_is_read_once() {
++    let js = compile(
++        "(func check :args ((object :number _)) :body 41) (console:log (check inputValue))",
++        false,
++    );
++    let output = run(
++        &js,
++        "globalThis.reads = 0; globalThis.inputValue = Object.defineProperty({}, '_', {get() { reads++; return 7; }});",
++        "console.log(reads);",
++    );
++    assert!(
++        output.status.success(),
++        "{}",
++        String::from_utf8_lossy(&output.stderr)
++    );
++    assert_eq!(stdout(&output), "41\n1\n");
++
++    let nested = compile(
++        "(func check :args ((object (alias :any child (object :number _)))) :body 41) (console:log (check inputValue))",
++        false,
++    );
++    let output = run(&nested, "globalThis.inputValue = {child: {_ : 7}};", "");
++    assert!(
++        output.status.success(),
++        "{}",
++        String::from_utf8_lossy(&output.stderr)
++    );
++    assert_eq!(stdout(&output), "41\n");
++}
++
++#[test]
++fn typed_generator_discard_checks_only_when_iteration_advances() {
++    let js = compile(
++        "(genfunc values :args (:number _) :yields :number :body (yield 3)) (bind iterator (values inputValue)) (console:log (iterator:next):value)",
++        false,
++    );
++    let output = run(&js, "globalThis.inputValue = 'bad';", "");
++    assert!(
++        !output.status.success(),
++        "advancing the generator must run its argument guard"
++    );
++    let stderr = String::from_utf8_lossy(&output.stderr);
++    assert!(
++        stderr.contains("arg '_' expected number, got string"),
++        "{stderr}"
++    );
++}
++
++#[test]
++fn rest_discard_checks_each_consumed_member_and_keeps_source_label() {
++    let js = compile(
++        "(func check :args ((rest :number _)) :body 41) (console:log (check 2 3))",
++        false,
++    );
++    let good = run(&js, "", "");
++    assert!(
++        good.status.success(),
++        "{}",
++        String::from_utf8_lossy(&good.stderr)
++    );
++    assert_eq!(stdout(&good), "41\n");
++
++    let bad = run(
++        &js,
++        "globalThis.badValue = 'wrong';",
++        "console.log(check(2, badValue));",
++    );
++    assert!(
++        !bad.status.success(),
++        "a bad rest discard member must throw"
++    );
++    assert!(
++        String::from_utf8_lossy(&bad.stderr).contains("rest arg '_' expected number, got string")
++    );
++}
++
++#[test]
++fn source_underscore_in_body_and_default_is_not_private_storage() {
++    let body = compile(
++        "(func take :args (:any _) :body _) (console:log (take 7))",
++        false,
++    );
++    let output = run(&body, "globalThis._ = 99;", "");
++    assert!(
++        output.status.success(),
++        "{}",
++        String::from_utf8_lossy(&output.stderr)
++    );
++    assert_eq!(stdout(&output), "99\n");
++
++    let default = compile(
++        "(func take :args ((default :any value _)) :body value) (console:log (take))",
++        false,
++    );
++    let output = run(&default, "globalThis._ = 99;", "");
++    assert!(
++        output.status.success(),
++        "{}",
++        String::from_utf8_lossy(&output.stderr)
++    );
++    assert_eq!(stdout(&output), "99\n");
++
++    let contracts = compile(
++        "(func take :args (:any _) :pre (= _ 99) :post (= _ 99) :body 7) (console:log (take 4))",
++        false,
++    );
++    let output = run(&contracts, "globalThis._ = 99;", "");
++    assert!(
++        output.status.success(),
++        "{}",
++        String::from_utf8_lossy(&output.stderr)
++    );
++    assert_eq!(stdout(&output), "7\n");
++}
++
++#[test]
++fn fn_lambda_genfn_and_schema_property_roles_keep_underscore_meaning() {
++    let functions = compile(
++        "(bind f (fn (:number _) 5)) (bind g (lambda (:number _) 6)) (bind a (f 1)) (console:log a) (console:log (g 2)) (bind iterator (genfn (:number _) :yields :number (yield 7))) (bind generator-value (iterator 3)) (bind generator-step (generator-value:next)) (console:log generator-step:value)",
++        false,
++    );
++    let output = run(&functions, "globalThis._ = 99;", "");
++    assert!(
++        output.status.success(),
++        "{}",
++        String::from_utf8_lossy(&output.stderr)
++    );
++    assert_eq!(stdout(&output), "5\n6\n7\n");
++
++    for source in [
++        "(bind f (fn (:number _) 5)) (console:log (f inputValue))",
++        "(bind f (lambda (:number _) 5)) (console:log (f inputValue))",
++        "(bind iterator (genfn (:number _) :yields :number (yield 7))) (bind step (iterator inputValue)) (bind next-result (step:next)) (console:log next-result:value)",
++    ] {
++        let js = compile(source, false);
++        let output = run(&js, "globalThis.inputValue = 'wrong';", "");
++        assert!(
++            !output.status.success(),
++            "typed callable discard must reject bad values: {source}"
++        );
++        assert!(
++            String::from_utf8_lossy(&output.stderr).contains("arg '_' expected number, got string")
++        );
++    }
++
++    let schema = compile(
++        "(type Box (Box :number _)) (bind box-value (Box 7)) (console:log box-value:_)",
++        false,
++    );
++    let output = run(&schema, "globalThis._ = 99;", "console.log(_);");
++    assert!(
++        output.status.success(),
++        "{}",
++        String::from_utf8_lossy(&output.stderr)
++    );
++    assert_eq!(stdout(&output), "7\n99\n");
++}
++
++#[test]
++fn distinct_generated_discard_names_do_not_capture_source_lookups() {
++    let js = compile(
++        "(bind _ (fn (:any value) value)) (console:log completionValue__gensym0)",
++        false,
++    );
++    let output = run(&js, "globalThis.completionValue__gensym0 = 99;", "");
++    assert!(
++        output.status.success(),
++        "{}",
++        String::from_utf8_lossy(&output.stderr)
++    );
++    assert_eq!(stdout(&output), "99\n");
++
++    let round_trip = compile_through_json(
++        "(func check :args (:number _) :body 41) (console:log (check inputValue))",
++    );
++    let output = run(&round_trip, "globalThis.inputValue = 7;", "");
++    assert!(
++        output.status.success(),
++        "{}",
++        String::from_utf8_lossy(&output.stderr)
++    );
++    assert_eq!(stdout(&output), "41\n");
++}
++
++#[test]
++fn direct_return_member_calls_keep_order_and_discard_storage_private() {
++    let js = compile(
++        "(func invoke :args (:any receiver) :body (bind _ (receiver:take)) (receiver:read)) (console:log (invoke target))",
++        false,
++    );
++    let output = run(
++        &js,
++        "globalThis.events = []; globalThis.target = {take() { events.push('take'); return 1; }, read() { events.push('read'); return 7; }};",
++        "console.log(events.join(','));",
++    );
++    assert!(
++        output.status.success(),
++        "{}",
++        String::from_utf8_lossy(&output.stderr)
++    );
++    assert_eq!(stdout(&output), "7\ntake,read\n");
++}
++
++#[test]
++fn failed_fragment_emission_does_not_poison_reused_context() {
++    let parsed = reader::read("(bind :number _ inputValue)").expect("fragment reads");
++    let resolved = resolver::resolve(&parsed);
++    let classified = classifier::classify(&resolved).expect("fragment classifies");
++    let registry = lykn_lang::analysis::type_registry::TypeRegistry::default();
++    let mut context = emitter::context::EmitterContext::new(false);
++    let error = emitter::forms::emit_form(&classified[0], &mut context, &registry)
++        .expect_err("fragment rejects unresolved compiler-owned host references");
++    assert!(matches!(error, lykn_lang::error::LyknError::Codegen(_)));
++
++    let next = reader::read("(bind _ 1)").expect("recovery fragment reads");
++    let next = resolver::resolve(&next);
++    let next = classifier::classify(&next).expect("recovery fragment classifies");
++    let emitted = emitter::forms::emit_form(&next[0], &mut context, &registry)
++        .expect("context recovers after fragment rejection");
++    let js = codegen::emit_module_js(&emitted).expect("recovered fragment generates");
++    let output = run(&js, "", "");
++    assert!(
++        output.status.success(),
++        "{}",
++        String::from_utf8_lossy(&output.stderr)
++    );
++}
++
++#[test]
++fn named_duplicate_diagnostic_is_retained_while_repeated_discard_group_is_valid() {
++    let repeated = reader::read("(bind _ 1 _ 2)").expect("repeated discard reads");
++    let resolved = resolver::resolve(&repeated);
++    let classified = classifier::classify(&resolved).expect("discard group classifies");
++    analysis::analyze(classified).expect("discard group has no source binding conflict");
++
++    let duplicate = reader::read("(bind _value 1 _value 2)").expect("named group reads");
++    let resolved = resolver::resolve(&duplicate);
++    let errors = classifier::classify(&resolved).expect_err("named duplicate is still rejected");
++    assert!(
++        errors
++            .iter()
++            .any(|error| error.message.contains("declares '_value' more than once"))
++    );
++}
++
++#[test]
++fn inline_discard_export_has_no_private_exports_and_runs_initializer_once() {
++    let js = compile("(export (bind _ (bump \"discard\")))", false);
++    assert!(js.contains("export {};"), "{js}");
++    let output = run_module(
++        &js,
++        "globalThis._ = 99; globalThis.events = []; globalThis.bump = value => { events.push(value); return value; };",
++        "console.log(`${Object.keys(__module).length}:${events.join(',')}:${_}`);",
++    );
++    assert!(
++        output.status.success(),
++        "{}",
++        String::from_utf8_lossy(&output.stderr)
++    );
++    assert_eq!(stdout(&output), "0:discard:99\n");
++}
++
++#[test]
++fn grouped_export_exposes_only_original_names_in_pair_order() {
++    let js = compile(
++        "(export (bind _ (bump \"discard\") publicValue (bump \"public\") _value (bump \"ordinary\")))",
++        false,
++    );
++    let output = run_module(
++        &js,
++        "globalThis.events = []; globalThis.bump = value => { events.push(value); return value; };",
++        "console.log(Object.keys(__module).sort().join(',')); console.log(`${__module.publicValue}:${__module._value}:${events.join(',')}`);",
++    );
++    assert!(
++        output.status.success(),
++        "{}\n{js}",
++        String::from_utf8_lossy(&output.stderr)
++    );
++    assert_eq!(
++        stdout(&output),
++        "_value,publicValue\npublic:ordinary:discard,public,ordinary\n"
++    );
++}
++
++#[test]
++fn discard_exports_keep_type_checks_effects_json_and_named_bindings() {
++    let checked = compile("(export (bind :number _ (bump value)))", false);
++    let output = run_module(
++        &checked,
++        "globalThis.calls = 0; globalThis.value = 7; globalThis.bump = x => { calls++; return x; };",
++        "console.log(`${Object.keys(__module).length}:${calls}`);",
++    );
++    assert!(
++        output.status.success(),
++        "{}",
++        String::from_utf8_lossy(&output.stderr)
++    );
++    assert_eq!(stdout(&output), "0:1\n");
++
++    let bad = run_module(
++        &checked,
++        "globalThis.value = 'wrong'; globalThis.bump = x => x;",
++        "",
++    );
++    assert!(
++        !bad.status.success(),
++        "bad typed discard export must reject"
++    );
++    let stderr = String::from_utf8_lossy(&bad.stderr);
++    assert!(
++        stderr.contains("bind: binding '_' expected number, got string"),
++        "{stderr}"
++    );
++
++    let stripped = compile("(export (bind :number _ (bump value)))", true);
++    let output = run_module(
++        &stripped,
++        "globalThis.calls = 0; globalThis.value = 'wrong'; globalThis.bump = x => { calls++; return x; };",
++        "console.log(`${Object.keys(__module).length}:${calls}`);",
++    );
++    assert!(
++        output.status.success(),
++        "{}",
++        String::from_utf8_lossy(&output.stderr)
++    );
++    assert_eq!(stdout(&output), "0:1\n");
++
++    let named = compile("(export (bind :number answer value))", false);
++    let output = run_module(
++        &named,
++        "globalThis.value = 42;",
++        "console.log(__module.answer);",
++    );
++    assert!(
++        output.status.success(),
++        "{}",
++        String::from_utf8_lossy(&output.stderr)
++    );
++    assert_eq!(stdout(&output), "42\n");
++
++    let through_json = compile_through_json("(export (bind _ (bump value)))");
++    let output = run_module(
++        &through_json,
++        "globalThis.calls = 0; globalThis.value = 7; globalThis.bump = x => { calls++; return x; };",
++        "console.log(`${Object.keys(__module).length}:${calls}`);",
++    );
++    assert!(
++        output.status.success(),
++        "{}",
++        String::from_utf8_lossy(&output.stderr)
++    );
++    assert_eq!(stdout(&output), "0:1\n");
++}
++
++#[test]
++fn exports_project_nested_alias_and_spread_bindings_but_not_empty_default_slots() {
++    let js = compile(
++        "(export (bind (object (alias _ local) _ (spread rest)) source)) (export (bind (array first (spread remaining)) values)) (export (bind (object (default absent)) {}))",
++        false,
++    );
++    let output = run_module(
++        &js,
++        "globalThis.source = {_: 3, extra: 4}; globalThis.values = [5, 6, 7];",
++        "console.log(Object.keys(__module).sort().join(',')); console.log(`${__module.local}:${JSON.stringify(__module.rest)}:${__module.first}:${__module.remaining.join(',')}`);",
++    );
++    assert!(
++        output.status.success(),
++        "{}\n{js}",
++        String::from_utf8_lossy(&output.stderr)
++    );
++    assert_eq!(
++        stdout(&output),
++        "first,local,remaining,rest\n3:{\"extra\":4}:5:6,7\n"
++    );
++}
++
++#[test]
++fn nested_spread_patterns_use_pattern_grammar_and_old_tuple_patterns_diagnose() {
++    let source = "(bind (array (spread (object (alias \"0\" named)))) input) (console:log named)";
++    let js = compile(source, false);
++    let output = run(&js, "globalThis.input = [17, 18];", "");
++    assert!(
++        output.status.success(),
++        "{}\n{js}",
++        String::from_utf8_lossy(&output.stderr)
++    );
++    assert_eq!(stdout(&output), "17\n", "{js}");
++
++    let nested_array = compile(
++        "(bind (array (spread (array named))) input) (console:log named)",
++        false,
++    );
++    let output = run(&nested_array, "globalThis.input = [17, 18];", "");
++    assert!(
++        output.status.success(),
++        "{}\n{nested_array}",
++        String::from_utf8_lossy(&output.stderr)
++    );
++    assert_eq!(stdout(&output), "17\n");
++
++    let exported = compile(
++        "(export (bind (array (spread (object (alias \"0\" named)))) input))",
++        false,
++    );
++    let output = run_module(
++        &exported,
++        "globalThis.input = [17, 18];",
++        "console.log(Object.keys(__module).join(',')); console.log(__module.named);",
++    );
++    assert!(
++        output.status.success(),
++        "{}\n{exported}",
++        String::from_utf8_lossy(&output.stderr)
++    );
++    assert_eq!(stdout(&output), "named\n17\n");
++
++    let source = "(bind (array (spread (object (source named)))) input)";
++    let forms = reader::read(source).expect("legacy pattern reads");
++    let member_span = forms[0].as_list().unwrap()[1].as_list().unwrap()[1]
++        .as_list()
++        .unwrap()[1]
++        .as_list()
++        .unwrap()[1]
++        .span();
++    let resolved = resolver::resolve(&forms);
++    let classified = classifier::classify(&resolved).expect("legacy pattern classifies");
++    let unit = analysis::analyze(classified).expect("legacy pattern analyzes");
++    let kernel = emitter::emit(&unit, false).expect("legacy pattern emits to kernel");
++    let error = codegen::emit_module_js(&kernel)
++        .expect_err("legacy object tuple gets migration diagnostic");
++    let lykn_lang::error::LyknError::Codegen(diagnostic) = error else {
++        panic!("expected typed codegen diagnostic");
++    };
++    assert_eq!(
++        diagnostic.message,
++        "object pattern member must use alias, default, rest, spread, or a shorthand field"
++    );
++    assert_eq!(diagnostic.span, member_span);
++    assert!(
++        diagnostic
++            .suggestion
++            .as_deref()
++            .is_some_and(|suggestion| suggestion.contains("(alias property local)"))
++    );
++
++    let value_spread = compile(
++        "(bind result (object (spread (object (source 23)))))",
++        false,
++    );
++    let output = run(&value_spread, "", "console.log(result.source);");
++    assert!(
++        output.status.success(),
++        "{}",
++        String::from_utf8_lossy(&output.stderr)
++    );
++    assert_eq!(stdout(&output), "23\n");
++}
++
++#[test]
++fn assignment_spread_patterns_keep_alias_bindings() {
++    let forms = reader::read("(= (array first (spread remaining)) target)")
++        .expect("assignment kernel reads");
++    let js = codegen::emit_module_js(&forms).expect("assignment pattern emits");
++    let output = run(
++        &js,
++        "let first; let remaining; const target = [31, 32];",
++        "console.log(`${first}:${remaining.join(',')}`);",
++    );
++    assert!(
++        output.status.success(),
++        "{}\n{js}",
++        String::from_utf8_lossy(&output.stderr)
++    );
++    assert_eq!(stdout(&output), "31:32\n", "{js}");
++
++    let forms = reader::read(
++        "(ignore (= (object (alias nested (array first (spread remaining)))) target))",
++    )
++    .expect("nested assignment kernel reads");
++    let js = codegen::emit_module_js(&forms).expect("nested assignment pattern emits");
++    let output = run(
++        &js,
++        "globalThis.ignore = () => {}; let first; let remaining; const target = {nested: [41, 42]};",
++        "console.log(`${first}:${remaining.join(',')}`);",
++    );
++    assert!(
++        output.status.success(),
++        "{}\n{js}",
++        String::from_utf8_lossy(&output.stderr)
++    );
++    assert_eq!(stdout(&output), "41:42\n");
++
++    let forms = reader::read("(ignore (= (object (alias field target:value)) source))")
++        .expect("member assignment kernel reads");
++    let js = codegen::emit_module_js(&forms).expect("member assignment pattern emits");
++    let output = run(
++        &js,
++        "globalThis.ignore = () => {}; const target = {}; const source = {field: 51};",
++        "console.log(target.value);",
++    );
++    assert!(
++        output.status.success(),
++        "{}\n{js}",
++        String::from_utf8_lossy(&output.stderr)
++    );
++    assert_eq!(stdout(&output), "51\n");
++}
++
++#[test]
++fn catch_default_callable_lookup_keeps_legacy_expression_pattern() {
++    let source =
++        "(try (throw errorValue) (catch (object (default array)) (console:log (array 7))))";
++    let js = compile(source, false);
++    let output = run(
++        &js,
++        "globalThis.errorValue = {default: value => value + 1};",
++        "",
++    );
++    assert!(
++        output.status.success(),
++        "{}\n{js}",
++        String::from_utf8_lossy(&output.stderr)
++    );
++    assert_eq!(stdout(&output), "8\n");
++
++    let source =
++        "(try (throw errorValue) (catch (object (entry caught)) (console:log (caught 7))))";
++    let js = compile(source, false);
++    let output = run(
++        &js,
++        "globalThis.errorValue = {entry: value => value + 1};",
++        "",
++    );
++    assert!(
++        output.status.success(),
++        "{}\n{js}",
++        String::from_utf8_lossy(&output.stderr)
++    );
++    assert_eq!(stdout(&output), "8\n");
++}
++
++#[test]
++fn spread_sites_feed_reserved_duplicate_and_lexical_binding_clients() {
++    let reserved =
++        reader::read("(bind (array (spread eval)) values)").expect("reserved spread binder reads");
++    let resolved = resolver::resolve(&reserved);
++    let diagnostic = binding::validate_reserved_names(&resolved)
++        .into_iter()
++        .next()
++        .expect("spread local is rejected by the real reserved-name validator");
++    assert!(
++        diagnostic.message.contains("eval")
++            && diagnostic
++                .message
++                .contains("strict-mode binding identifier"),
++        "{}",
++        diagnostic.message
++    );
++
++    let duplicate = reader::read("(bind (array (spread local)) values local 1)")
++        .expect("duplicate spread binder reads");
++    let resolved = resolver::resolve(&duplicate);
++    let diagnostics = classifier::classify(&resolved)
++        .expect_err("a spread-site duplicate remains a duplicate binding");
++    assert!(
++        diagnostics.iter().any(|diagnostic| diagnostic
++            .message
++            .contains("declares 'local' more than once")),
++        "{diagnostics:?}"
++    );
++
++    let js = compile(
++        "(bind (array (spread (object (alias \"0\" array)))) values) (console:log (array 7))",
++        false,
++    );
++    let output = run(&js, "globalThis.values = [value => value + 1];", "");
++    assert!(
++        output.status.success(),
++        "{}\n{js}",
++        String::from_utf8_lossy(&output.stderr)
++    );
++    assert_eq!(stdout(&output), "8\n");
++}
+diff --git a/crates/lykn-lang/tests/e2e_tests.rs b/crates/lykn-lang/tests/e2e_tests.rs
+index 5eb301de..eb5ddfca 100644
+--- a/crates/lykn-lang/tests/e2e_tests.rs
++++ b/crates/lykn-lang/tests/e2e_tests.rs
+@@ -217,7 +217,86 @@ fn e2e_export_func() {
+     assert_eq!(func_list[0]["value"], "function");
+     assert_eq!(func_list[1]["value"], "add");
+ }
+-e2e_test!(e2e_export_bind, r#"(export (bind VERSION "0.4.0"))"#);
++#[test]
++fn e2e_export_bind() {
++    let source = r#"(export (bind VERSION "0.4.0"))"#;
++    let json = rust_pipeline(source);
++    let native_protocol = normalize_json(&json);
++    let expected_protocol = serde_json::json!([
++        {
++            "type": "list",
++            "values": [
++                { "type": "atom", "value": "const" },
++                { "type": "atom", "value": "VERSION" },
++                { "type": "string", "value": "0.4.0" }
++            ]
++        },
++        {
++            "type": "list",
++            "values": [
++                { "type": "atom", "value": "export" },
++                {
++                    "type": "list",
++                    "values": [
++                        { "type": "atom", "value": "names" },
++                        { "type": "atom", "value": "VERSION" }
++                    ]
++                }
++            ]
++        }
++    ]);
++    assert_eq!(
++        native_protocol, expected_protocol,
++        "native export protocol must contain only the declaration and names export"
++    );
++
++    let native_forms = native_protocol
++        .as_array()
++        .expect("native protocol is a form array")
++        .iter()
++        .map(lykn_lang::expander::env::protocol_json_to_sexpr)
++        .collect::<Result<Vec<_>, _>>()
++        .expect("native protocol forms read back");
++    let native_js = lykn_lang::codegen::emit_module_js(&native_forms)
++        .expect("native protocol generates an ESM module");
++
++    let script = format!(
++        r#"
++import {{ lykn }} from "./packages/lang/mod.js";
++const source = {};
++const nativeSource = {};
++const publicSource = lykn(source);
++const native = await import(`data:text/javascript;charset=utf-8,${{encodeURIComponent(nativeSource)}}`);
++const publicModule = await import(`data:text/javascript;charset=utf-8,${{encodeURIComponent(publicSource)}}`);
++console.log(JSON.stringify({{
++    native: {{ keys: Object.keys(native).sort(), value: native.VERSION }},
++    public: {{ keys: Object.keys(publicModule).sort(), value: publicModule.VERSION }}
++}}));
++"#,
++        serde_json::to_string(source).expect("source serializes as a JS string"),
++        serde_json::to_string(&native_js).expect("native module serializes as a JS string"),
++    );
++    let output = Command::new("deno")
++        .arg("eval")
++        .arg("--config")
++        .arg("project.json")
++        .arg("--ext=js")
++        .arg(script)
++        .current_dir(env!("CARGO_MANIFEST_DIR").to_string() + "/../..")
++        .output()
++        .expect("Deno is required for native/public export runtime parity");
++    assert!(
++        output.status.success(),
++        "Deno export runtime failed:\n{}",
++        String::from_utf8_lossy(&output.stderr)
++    );
++    assert_eq!(
++        String::from_utf8(output.stdout).expect("Deno stdout is UTF-8"),
++        r#"{"native":{"keys":["VERSION"],"value":"0.4.0"},"public":{"keys":["VERSION"],"value":"0.4.0"}}"#
++            .to_string()
++            + "\n"
++    );
++}
+ e2e_test!(
+     e2e_export_func_destructured,
+     "(export (func connect :args ((object :string host :number port (default :boolean ssl true))) :body (open-connection host port ssl)))"

@@ -1,0 +1,5 @@
+PWD=/private/tmp/lykn-b2-discard-native-cdc/standalone
+DENO_DIR=/Users/oubiwann/Library/Caches/deno
+XDG_CACHE_HOME=/private/tmp/lykn-b2-discard-native-cdc/copied-xdg
+NPM_CONFIG_CACHE=/private/tmp/lykn-b2-discard-native-cdc/npm
+TMPDIR=/private/tmp/lykn-b2-discard-native-cdc/tmp

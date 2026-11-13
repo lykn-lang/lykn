@@ -1,0 +1,9 @@
+During read-only source review, an rg function-census command named nonexistent
+crates/lykn-lang/tests/host_references.rs and analysis_unit.rs. It returned2
+with those two missing-file diagnostics, after printing actual emission_results
+matches. No tests or source writes occurred. Corrected rg --files discovered
+actual existing emission_results.rs, test/forms/host-reference-lowering.test.js,
+protected-host/private/browser tests and semantic-role fixtures. This is a
+source-location miss only, not a failed software gate.
+A concurrent inventory query for M6 filenames before the running full gate
+reached M6 returned1 because no such receipts existed yet; not a test result.

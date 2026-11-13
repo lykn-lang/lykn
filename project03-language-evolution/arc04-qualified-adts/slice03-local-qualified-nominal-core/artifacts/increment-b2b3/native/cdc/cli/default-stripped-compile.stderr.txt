@@ -1,0 +1,2 @@
+3:7: warning: unused binding 'provide'
+  suggestion: prefix with underscore: _provide
