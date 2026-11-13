@@ -1,11 +1,18 @@
-import { assertEquals, assertStringIncludes, assertThrows } from "jsr:@std/assert";
+import { assertEquals, assertStrictEquals, assertStringIncludes, assertThrows } from "jsr:@std/assert";
 import { expandExpr, lykn, read } from "lang/mod.js";
 import { expandWithMacroImports, macroEnv, resetMacros } from "lang/expander-core.js";
+import { compileLykn as browserCompileLykn } from "browser/compiler.js";
+import { enclosingDeclarationSites, validateReservedNames } from "lang/binding.js";
+import { formHead as compilerFormHead } from "lang/compiler.js";
+import { formHead, markHostReference } from "lang/compiler-private-atoms.js";
 
-async function executeModule(source, expected) {
+async function executeModule(source, expected, files = {}) {
   const directory = await Deno.makeTempDir({ prefix: "lykn-b2a-lexical-" });
   const path = `${directory}/output.mjs`;
   try {
+    for (const [name, contents] of Object.entries(files)) {
+      await Deno.writeTextFile(`${directory}/${name}`, contents);
+    }
     await Deno.writeTextFile(path, `${source}\nexport {};\n`);
     const result = await new Deno.Command(Deno.execPath(), {
       args: ["run", "--no-config", "--no-prompt", "--no-npm", "--cached-only", path],
@@ -103,6 +110,115 @@ Deno.test("B2a rejects multi-clause generators before body macro expansion", () 
         (:args (:any value) :body (yield value)))
     `), { strict: false }, (forms) => forms), Error, "genfunc: multiple clauses are not supported");
     assertEquals(calls, 0);
+  } finally {
+    resetMacros();
+  }
+});
+
+Deno.test("B2a enclosing declaration sites follow dispatch and consumed export slots", () => {
+  const normal = read("(export (func local :args () :body 1) (func ignored :args () :body 2))")[0];
+  assertEquals(enclosingDeclarationSites(normal, new Set()).map((site) => site.name), ["local"]);
+
+  const directDefault = read("(export default (func direct :args () :body 1))")[0];
+  assertEquals(enclosingDeclarationSites(directDefault, new Set()).map((site) => site.name), ["direct"]);
+  const expressionDefault = read("(export default (? true (kernel:function local () (return 1)) undefined))")[0];
+  assertEquals(enclosingDeclarationSites(expressionDefault, new Set()), []);
+
+  assertEquals(enclosingDeclarationSites(normal, new Set(["export"])), []);
+  assertStrictEquals(compilerFormHead, formHead);
+  assertEquals(formHead({ type: "atom", value: "export", binding: "ref" }), null);
+  const privateHead = markHostReference({ type: "atom", value: "Error" }, "Error");
+  assertEquals(formHead(privateHead), null);
+
+  validateReservedNames(read("(export (bind bind (fn (:any a :any b) (= a eval)))) (bind eval 1)"));
+  assertThrows(
+    () => validateReservedNames(read("(export (bind unrelated 1)) (bind eval 1)")),
+    Error,
+    "forbidden as a strict-mode binding identifier",
+  );
+});
+
+Deno.test("B2a public export wrappers expose only their emitted declaration", async () => {
+  await executeModule(lykn(`
+    (export (func array :args (:number value) :body (+ value 40)))
+    (console:log (array 1))
+  `), "41\n");
+  await executeModule(lykn(`
+    (export (async (func array :args (:number value) :body (+ value 40))))
+    (console:log (await (array 1)))
+  `), "41\n");
+  await executeModule(lykn(`
+    (kernel:export (kernel:function array (value) (return (+ value 40))))
+    (console:log (array 1))
+  `), "41\n");
+  await executeModule(browserCompileLykn(`
+    (kernel:export (kernel:function array (value) (return (+ value 40))))
+    (console:log (array 1))
+  `), "41\n");
+  await executeModule(lykn(`
+    (export default (func array :args (:number value) :body (+ value 40)))
+    (console:log (array 1))
+  `), "41\n");
+  await executeModule(lykn(`
+    (export default (class array () (static (value () (return 41)))))
+    (console:log (array:value))
+  `), "41\n");
+  await executeModule(lykn(`
+    (export default (async (func array :args (:number value) :body (+ value 40))))
+    (console:log (await (array 1)))
+  `), "41\n");
+  await executeModule(lykn(`
+    (export default (? true (kernel:function array (value) (return (+ value 40))) undefined))
+    (console:log (array 1))
+  `), "[ 1 ]\n");
+});
+
+Deno.test("B2a kernel import locals participate in enclosing dispatch", async () => {
+  const form = read('(kernel:import "./dep.mjs" array)')[0];
+  assertEquals(enclosingDeclarationSites(form, new Set()).map((site) => [site.name, site.kind]), [["array", "import-local"]]);
+  await executeModule(
+    lykn('(kernel:import "./dep.mjs" array) (console:log (array 1))'),
+    "42\n",
+    { "dep.mjs": "export default function importedArray(value) { return 42; }" },
+  );
+});
+
+Deno.test("B2a public pass1 preserves a macro after a bound bind-shaped call", async () => {
+  resetMacros();
+  try {
+    await executeModule(lykn(`
+      (set-symbol! globalThis :macro 100)
+      (bind bind (fn (:any left :any right) left))
+      (bind macro 1)
+      (macro answer () \`41)
+      (console:log (answer))
+    `), "41\n");
+  } finally {
+    resetMacros();
+  }
+});
+
+Deno.test("B2a public pass1 retains real unbound macro registration", async () => {
+  resetMacros();
+  try {
+    await executeModule(lykn(`
+      (macro answer () \`41)
+      (console:log (answer))
+    `), "41\n");
+  } finally {
+    resetMacros();
+  }
+});
+
+Deno.test("B2a public pass1 honors a genuinely bound macro call", async () => {
+  resetMacros();
+  try {
+    await executeModule(lykn(`
+      (set-symbol! globalThis :answer 1)
+      (bind macro (fn (:any name :any params :any body) 42))
+      (macro answer 1 41)
+      (console:log (macro answer 1 41))
+    `), "42\n");
   } finally {
     resetMacros();
   }

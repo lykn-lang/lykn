@@ -27,7 +27,7 @@ import {
   bindingScopePlan,
   bodyScopeNames,
   extendBindingEnv,
-  hoistedNames,
+  enclosingDeclarationSites,
   validateReservedNames,
   bindingsIntroduced,
   bindingNamesInPattern,
@@ -1124,15 +1124,7 @@ function expandClassMember(root, layout, env, use) {
 /** Names introduced by actually expanded declarations under the incoming
  * dispatch environment. Raw invocation spelling never supplies visibility. */
 function actualExpandedHoists(form, env) {
-  if (form?.type !== "list" || form.values.length === 0) return [];
-  const head = form.values[0];
-  if (head?.type !== "atom" || formHead(head) === null) return [];
-  if (isKernel(form)) return hoistedNames(form);
-  if (env.bindings.has(head.value)) return [];
-  if (head.value === "export" || head.value === "async") {
-    return form.values.slice(1).flatMap((child) => actualExpandedHoists(child, env));
-  }
-  return hoistedNames(form);
+  return enclosingDeclarationSites(form, env.bindings).map((site) => site.name);
 }
 
 function expandConditionalChild(child, env, isCondition, use = "Legacy") {
@@ -2312,13 +2304,17 @@ function expandExprInner(form, env, use = "Legacy", computedMemberCallRequest = 
 function pass1RegisterMacros(forms) {
   const macroForms = [];
   const otherForms = [];
+  const sourceBindings = new Set();
 
   for (const form of forms) {
-    if (form.type === 'list' && form.values.length >= 3 &&
-        form.values[0].type === 'atom' && form.values[0].value === 'macro') {
+    const head = form?.type === "list" ? formHead(form.values[0]) : null;
+    if (head === "macro" && !sourceBindings.has("macro") && form.values.length >= 3) {
       macroForms.push(form);
     } else {
       otherForms.push(form);
+    }
+    for (const site of enclosingDeclarationSites(form, sourceBindings)) {
+      sourceBindings.add(site.name);
     }
   }
 

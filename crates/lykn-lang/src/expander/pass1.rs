@@ -38,7 +38,10 @@ pub fn compile_local_macros(
     for form in forms {
         let is_def = is_macro_def(&form) && !shadowed.iter().any(|n| n == "macro");
         // Names this top-level form declares for the siblings that follow it.
-        let hoist = crate::resolver::hoisted_names(&form);
+        let hoist = crate::resolver::enclosing_declaration_sites(&form, &shadowed)
+            .into_iter()
+            .map(|site| site.name)
+            .collect::<Vec<_>>();
         if is_def {
             macro_forms.push(form);
         } else {

@@ -229,16 +229,11 @@ fn walk_sequence(forms: &[SExpr], out: &mut Vec<BindingSite>, scope: &mut Vec<St
     let mark = scope.len();
     for form in forms {
         walk(form, out, scope);
-        let dispatches = match form {
-            SExpr::List { values, .. } => values
-                .first()
-                .and_then(SExpr::as_form_head)
-                .is_some_and(|head| !scope.iter().any(|bound| bound == head)),
-            _ => false,
-        };
-        if dispatches {
-            scope.extend(crate::resolver::hoisted_names(form));
-        }
+        let names = crate::resolver::enclosing_declaration_sites(form, scope)
+            .into_iter()
+            .map(|site| site.name)
+            .collect::<Vec<_>>();
+        scope.extend(names);
     }
     scope.truncate(mark);
 }
@@ -246,16 +241,11 @@ fn walk_sequence(forms: &[SExpr], out: &mut Vec<BindingSite>, scope: &mut Vec<St
 fn walk_sequence_refs(forms: &[&SExpr], out: &mut Vec<BindingSite>, scope: &mut Vec<String>) {
     for form in forms {
         walk(form, out, scope);
-        let dispatches = match form {
-            SExpr::List { values, .. } => values
-                .first()
-                .and_then(SExpr::as_form_head)
-                .is_some_and(|head| !scope.iter().any(|bound| bound == head)),
-            _ => false,
-        };
-        if dispatches {
-            scope.extend(crate::resolver::hoisted_names(form));
-        }
+        let names = crate::resolver::enclosing_declaration_sites(form, scope)
+            .into_iter()
+            .map(|site| site.name)
+            .collect::<Vec<_>>();
+        scope.extend(names);
     }
 }
 
@@ -832,7 +822,7 @@ pub(crate) fn binding_occurrences(form: &SExpr) -> Vec<BindingOccurrence<'_>> {
         "=>" | "kernel:=>" => args.first().map(kernel_param_names).unwrap_or_default(),
         "class" => class_names(args),
         "catch" => catch_names(args),
-        "import" => import_local_names(args),
+        "import" | "kernel:import" => import_local_names(args),
         "label" | "kernel:label" => label_names(args),
         // `kernel:` declaration escapes bind their name slot (D2 edge case 3).
         _ => {
@@ -1617,6 +1607,36 @@ mod tests {
                 .message
                 .contains("reserved word")
         );
+    }
+
+    #[test]
+    fn d2_scope_uses_dispatched_export_sites_for_following_calls() {
+        let callable_bind =
+            read("(export (bind bind (fn (:any left :any right) (= left eval)))) (bind eval 1)")
+                .expect("parse wrapped callable binding");
+        assert!(validate_reserved_names(&callable_bind).is_empty());
+
+        let real_binding =
+            read("(export (bind unrelated 1)) (bind eval 1)").expect("parse real strict binding");
+        assert!(
+            validate_reserved_names(&real_binding)
+                .iter()
+                .any(|diagnostic| {
+                    diagnostic.message.contains("eval")
+                        && diagnostic
+                            .message
+                            .contains("strict-mode binding identifier")
+                })
+        );
+    }
+
+    #[test]
+    fn kernel_import_projects_import_local_sites() {
+        let forms = read("(kernel:import \"./dep.mjs\" array)").expect("parse escaped import");
+        let sites = walk_bindings(&forms);
+        assert_eq!(sites.len(), 1);
+        assert_eq!(sites[0].name, "array");
+        assert_eq!(sites[0].kind, BindingKind::ImportLocal);
     }
 
     #[test]

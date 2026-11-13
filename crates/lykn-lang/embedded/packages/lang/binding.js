@@ -13,7 +13,7 @@
 
 import { RESERVED_WORDS } from "./reserved-words.js";
 import { toJsIdentifier } from "./identifier.js";
-import { isCompilerPrivateAtom } from "./compiler-private-atoms.js";
+import { formHead, isCompilerPrivateAtom } from "./compiler-private-atoms.js";
 import { isKernel } from "./kernel-mark.js";
 import { FUNC_CLAUSE_KEYS, parseKeywordClauses } from "./function-clauses.js";
 import { atOccurrencePath, classRegionLayout, functionRegionLayout } from "./lexical-regions.js";
@@ -61,11 +61,7 @@ function walkSequenceReturning(forms, out, inScope) {
   let current = new Set(inScope);
   for (const form of forms) {
     walk(form, out, current);
-    const head = form?.type === "list" ? form.values[0] : null;
-    const rawHead = head?.type === "atom" && head.binding === undefined ? head.value : null;
-    const dispatches = isKernel(form) || (rawHead !== null && !current.has(rawHead));
-    const hoisted = dispatches ? hoistedNames(form) : [];
-    current = extendNames(current, hoisted);
+    current = extendNames(current, enclosingDeclarationSites(form, current).map((site) => site.name));
   }
   return current;
 }
@@ -413,6 +409,51 @@ export function hoistedNames(form) {
 }
 
 /**
+ * Binding sites a dispatched form actually contributes to its sibling scope.
+ * Wrapper traversal follows the single payload slot consumed by export/async;
+ * default export accepts only a direct named declaration (or async wrapper).
+ */
+export function enclosingDeclarationSites(form, inScope) {
+  const head = form?.type === "list" ? formHead(form.values[0]) : null;
+  if (head === null || (inScope.has(head) && !isKernel(form))) return [];
+  const base = head.startsWith("kernel:") ? head.slice("kernel:".length) : head;
+  if (head.startsWith("kernel:") && !KERNEL_FORMS.has(base)) return [];
+
+  if (base === "export") {
+    const args = form.values.slice(1);
+    if (args[0]?.type === "atom" && args[0].value === "default") {
+      return args[1] ? defaultExportSites(args[1], inScope) : [];
+    }
+    return args[0] ? enclosingDeclarationSites(args[0], inScope) : [];
+  }
+  if (base === "async") {
+    return form.values[1]
+      ? enclosingDeclarationSites(form.values[1], inScope)
+      : [];
+  }
+  return directEnclosingSites(form);
+}
+
+function directEnclosingSites(form) {
+  return bindingsIntroduced(form)
+    .filter((site) => site.kind !== "label" && ENCLOSING_KINDS.has(site.kind));
+}
+
+function defaultExportSites(payload, inScope) {
+  const head = payload?.type === "list" ? formHead(payload.values[0]) : null;
+  if (head === null || (inScope.has(head) && !isKernel(payload))) return [];
+  const base = head.startsWith("kernel:") ? head.slice("kernel:".length) : head;
+  if (head.startsWith("kernel:") && !KERNEL_FORMS.has(base)) return [];
+  if (base === "async") {
+    return payload.values[1]
+      ? defaultExportSites(payload.values[1], inScope)
+      : [];
+  }
+  if (!["func", "genfunc", "class", "function", "function*"].includes(base)) return [];
+  return directEnclosingSites(payload);
+}
+
+/**
  * Describe the source binding scope for a form. The caller supplies the
  * already resolution-checked head name so this module stays independent of
  * compiler dispatch and tagged/bound heads can pass null.
@@ -522,6 +563,7 @@ export function bindingsIntroduced(form) {
     case "catch":
       return args.length > 0 ? patternNames(args[0], "catch-binding", PatternGrammar.BINDING_PATTERN) : [];
     case "import":
+    case "kernel:import":
       return importLocalNames(args);
     case "label":
     case "kernel:label":

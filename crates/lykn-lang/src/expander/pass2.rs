@@ -489,26 +489,10 @@ fn replace_at_path(root: &SExpr, path: &[usize], replacement: SExpr) -> SExpr {
 }
 
 fn actual_expanded_hoists(form: &SExpr, scope: &[String]) -> Vec<String> {
-    let Some(values) = form.as_list() else {
-        return Vec::new();
-    };
-    let Some(head) = values.first() else {
-        return Vec::new();
-    };
-    let Some(name) = head.as_form_head() else {
-        return Vec::new();
-    };
-    if scope.iter().any(|bound| bound == name) {
-        return Vec::new();
-    }
-    if matches!(name, "export" | "async") {
-        return values
-            .iter()
-            .skip(1)
-            .flat_map(|child| actual_expanded_hoists(child, scope))
-            .collect();
-    }
-    crate::resolver::hoisted_names(form)
+    crate::resolver::enclosing_declaration_sites(form, scope)
+        .into_iter()
+        .map(|site| site.name)
+        .collect()
 }
 
 fn expand_match_clause(

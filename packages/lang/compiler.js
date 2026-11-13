@@ -6,10 +6,11 @@ import { generate } from 'astring';
 import { parseIcu, collectSlotNames, IcuParseError } from './icu-parser.js';
 import { moduleBindsRoot, validateProtectedHost } from './protected-host.js';
 import { requestedHostCall, finalizeHostInvocations } from './host-invocation.js';
-import { clearHostReference, hostReferenceOf } from './compiler-private-atoms.js';
+import { clearHostReference, formHead, hostReferenceOf } from './compiler-private-atoms.js';
 import { toJsIdentifier } from './identifier.js';
 
 export { toJsIdentifier } from './identifier.js';
+export { formHead } from './compiler-private-atoms.js';
 
 const HOST_REFERENCE_DEFINITIONS = [
   ['Symbol', 'Symbol', null, 'symbol'],
@@ -83,23 +84,6 @@ export function lowerHostReferences(forms) {
   const directives = forms.findIndex((form) => form.type !== 'string');
   forms.splice(directives < 0 ? forms.length : directives, 0, ...localForms);
   return forms;
-}
-
-// DD-61 §A6 — the resolution-aware dispatch accessor (JS twin of Rust's
-// `SExpr::as_form_head`). Returns a head atom's name ONLY when the atom is
-// unresolved (`binding` absent); returns `null` for a resolved binding
-// definition (`def`) or reference (`ref`). A dispatch site that reads through
-// `formHead` therefore never receives the name of a lexically bound head — it
-// falls through to the plain-call path, which is DD-60 D1 ("lexical bindings
-// shadow macro/form dispatch"). Every FORM-HEAD dispatch read in this file must
-// go through `formHead`; raw `.value` reads survive only for STRUCTURAL grammar
-// markers (destructuring/pattern/param keywords, member-access names, known
-// kernel-form sub-structure), each marked `A6-exempt`. Enforced by the
-// `make check` static check `test/expander/a6-dispatch-conformance.test.js`.
-export function formHead(node) {
-  return node && node.type === 'atom' && hostReferenceOf(node) === undefined && node.binding === undefined
-    ? node.value
-    : null;
 }
 
 /** Build an ImportSpecifier from a reader node (atom or alias list). */

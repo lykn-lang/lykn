@@ -19,6 +19,13 @@ export function hostReferenceOf(atom) {
   return compilerHostReferences.get(atom);
 }
 
+/** Resolution-aware form-head accessor shared by compiler and binding walks. */
+export function formHead(node) {
+  return node && node.type === 'atom' && hostReferenceOf(node) === undefined && node.binding === undefined
+    ? node.value
+    : null;
+}
+
 export function clearHostReference(atom) {
   compilerHostReferences.delete(atom);
 }

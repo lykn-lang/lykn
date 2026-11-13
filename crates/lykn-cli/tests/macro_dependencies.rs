@@ -352,6 +352,82 @@ fn assert_scope_runtime(name: &str, source: &str, expected: &[u8]) -> Vec<u8> {
     generated
 }
 
+fn assert_export_scope_runtime(name: &str, source: &str, expected: &[u8]) -> Vec<u8> {
+    let fixture = TempDir::new().expect("create export scope regression fixture");
+    let xdg = write_xdg(fixture.path());
+    let source_path = write_source(fixture.path(), "export-scope.lykn", source);
+    let output_path = fixture.path().join("export-scope.mjs");
+    let source_bytes = fs::read(&source_path).expect("read export scope regression fixture");
+    let (compiled, generated, _declaration) = compile_recorded(
+        name,
+        fixture.path(),
+        &source_path,
+        &source_bytes,
+        &output_path,
+        &xdg,
+    );
+    assert_eq!(
+        compiled.status.code(),
+        Some(0),
+        "{name}: {:?}",
+        compiled.stderr
+    );
+    let generated = generated.expect("successful compile must produce ESM");
+    let runtime = run_strict_recorded(&format!("{name}-runtime"), fixture.path(), &output_path);
+    assert_eq!(
+        runtime.status.code(),
+        Some(0),
+        "{name}: {:?}",
+        runtime.stderr
+    );
+    assert_eq!(runtime.stdout, expected, "{name} runtime output");
+    assert!(runtime.stderr.is_empty(), "{name}: {:?}", runtime.stderr);
+    generated
+}
+
+fn assert_kernel_import_scope_runtime() {
+    let name = "b2a-native-kernel-import-local-shadows-array-form";
+    let fixture = TempDir::new().expect("create local import fixture");
+    let xdg = write_xdg(fixture.path());
+    fs::write(
+        fixture.path().join("dep.mjs"),
+        "export default function importedArray(value) { return 42; }\n",
+    )
+    .expect("write local import module");
+    let source_path = write_source(
+        fixture.path(),
+        "import-scope.lykn",
+        "(kernel:import \"./dep.mjs\" array) (console:log (array 1))",
+    );
+    let output_path = fixture.path().join("import-scope.mjs");
+    let source = fs::read(&source_path).expect("read local import source");
+    let (compiled, generated, _) = compile_recorded(
+        name,
+        fixture.path(),
+        &source_path,
+        &source,
+        &output_path,
+        &xdg,
+    );
+    assert_eq!(
+        compiled.status.code(),
+        Some(0),
+        "{name}: {:?}",
+        compiled.stderr
+    );
+    let generated = generated.expect("successful import compile emits ESM");
+    assert!(String::from_utf8_lossy(&generated).contains("import array"));
+    let runtime = run_strict_recorded(&format!("{name}-runtime"), fixture.path(), &output_path);
+    assert_eq!(
+        runtime.status.code(),
+        Some(0),
+        "{name}: {:?}",
+        runtime.stderr
+    );
+    assert_eq!(runtime.stdout, b"42\n");
+    assert!(runtime.stderr.is_empty());
+}
+
 #[test]
 fn b2a_native_macro_results_reenter_bound_and_sugar_priority() {
     let bound = assert_scope_runtime(
@@ -425,6 +501,59 @@ fn b2a_native_kernel_named_function_name_is_recursive_scope() {
         b"7\n",
     );
     assert!(String::from_utf8_lossy(&generated).contains("function array(n)"));
+}
+
+#[test]
+fn b2a_native_enclosing_declaration_sites_follow_export_dispatch() {
+    assert_scope_runtime(
+        "b2a-native-bound-export-call-does-not-hoist",
+        "(set-symbol! globalThis :array 100) (bind bind (fn (:any left :any right) left)) (bind array 1) (console:log (array 7))",
+        b"[ 7 ]\n",
+    );
+    assert_export_scope_runtime(
+        "b2a-native-normal-export-exposes-named-function",
+        "(export (func array :args (:number value) :body (+ value 40))) (console:log (array 1))",
+        b"41\n",
+    );
+    assert_export_scope_runtime(
+        "b2a-native-async-export-exposes-named-function",
+        "(export (async (func array :args (:number value) :body (+ value 40)))) (console:log (await (array 1)))",
+        b"41\n",
+    );
+    assert_export_scope_runtime(
+        "b2a-native-default-export-exposes-direct-function",
+        "(export default (func array :args (:number value) :body (+ value 40))) (console:log (array 1))",
+        b"41\n",
+    );
+    assert_export_scope_runtime(
+        "b2a-native-default-export-exposes-direct-class",
+        "(export default (class array () (static (value () (return 41))))) (console:log (array:value))",
+        b"41\n",
+    );
+    assert_export_scope_runtime(
+        "b2a-native-default-export-expression-does-not-hoist",
+        "(export default (? true (kernel:function array (value) (return (+ value 40))) undefined)) (console:log (array 1))",
+        b"[ 1 ]\n",
+    );
+}
+
+#[test]
+fn b2a_native_kernel_import_local_participates_in_enclosing_dispatch() {
+    assert_kernel_import_scope_runtime();
+}
+
+#[test]
+fn b2a_native_pass1_does_not_promote_bound_call_operands_to_declarations() {
+    assert_scope_runtime(
+        "b2a-native-pass1-bound-bind-call-does-not-shadow-macro",
+        "(set-symbol! globalThis :macro 100) (bind bind (fn (:any left :any right) left)) (bind macro 1) (macro answer () `41) (console:log (answer))",
+        b"41\n",
+    );
+    assert_scope_runtime(
+        "b2a-native-pass1-real-bound-macro-still-shadows",
+        "(set-symbol! globalThis :answer 0) (bind macro (fn (:any name :any params :any body) 42)) (macro answer 1 41) (console:log (macro answer 1 41))",
+        b"42\n",
+    );
 }
 
 #[test]
@@ -874,10 +1003,14 @@ fn m6_embedded_compiler_payload_matches_canonical_and_runs_from_cold_cache() {
             .expect("canonicalize materialized package")
             .display()
     );
+    let browser_url = format!(
+        "file://{}/",
+        repository.join("target/lykn/build/browser").display()
+    );
     fs::write(
         &config_path,
         serde_json::to_vec(&serde_json::json!({
-            "imports": { "lang/": materialized_url }
+            "imports": { "lang/": materialized_url, "browser/": browser_url }
         }))
         .expect("serialize materialized-package import map"),
     )
@@ -917,7 +1050,7 @@ fn m6_embedded_compiler_payload_matches_canonical_and_runs_from_cold_cache() {
         String::from_utf8_lossy(&public_result.stderr)
     );
     assert!(
-        public_output.contains("ok | 39 passed | 0 failed"),
-        "M6 must execute all eleven retained, seventeen IC-01, and eleven B2a lexical-region cases, output: {public_output}"
+        public_output.contains("ok | 45 passed | 0 failed"),
+        "M6 must execute the derived 45-case retained, IC-01, and current B2a materialized population, output: {public_output}"
     );
 }

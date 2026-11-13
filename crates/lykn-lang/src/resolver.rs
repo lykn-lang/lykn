@@ -45,14 +45,68 @@ fn declares_in_enclosing(kind: BindingKind) -> bool {
     matches!(kind, BindingKind::Bind | BindingKind::ImportLocal)
 }
 
-/// The names a form declares into the **enclosing** sibling scope — visible to
-/// the forms that come after it in the same sequence. Shared by the resolver
-/// and the expander's light binding-scan (DD-61 §A3) so the two never diverge.
-pub(crate) fn hoisted_names(form: &SExpr) -> Vec<String> {
+/// Binding sites a form actually declares into its enclosing sibling scope.
+/// Dispatch is decided here from the same incoming lexical scope used by the
+/// resolver; wrappers expose only the payload slot consumed by their writer.
+pub(crate) fn enclosing_declaration_sites(form: &SExpr, scope: &[String]) -> Vec<BindingSite> {
+    let Some(values) = form.as_list() else {
+        return Vec::new();
+    };
+    let Some(head) = values.first().and_then(SExpr::as_form_head) else {
+        return Vec::new();
+    };
+    if scope.iter().any(|bound| bound == head) {
+        return Vec::new();
+    }
+    let base = head.strip_prefix("kernel:").unwrap_or(head);
+    match base {
+        "export" => {
+            let args = &values[1..];
+            if args.first().and_then(SExpr::as_atom) == Some("default") {
+                return args
+                    .get(1)
+                    .map_or_else(Vec::new, |payload| default_export_sites(payload, scope));
+            }
+            args.first().map_or_else(Vec::new, |payload| {
+                enclosing_declaration_sites(payload, scope)
+            })
+        }
+        "async" => values.get(1).map_or_else(Vec::new, |payload| {
+            enclosing_declaration_sites(payload, scope)
+        }),
+        _ => direct_enclosing_sites(form),
+    }
+}
+
+fn default_export_sites(payload: &SExpr, scope: &[String]) -> Vec<BindingSite> {
+    let Some(values) = payload.as_list() else {
+        return Vec::new();
+    };
+    let Some(head) = values.first().and_then(SExpr::as_form_head) else {
+        return Vec::new();
+    };
+    if scope.iter().any(|bound| bound == head) {
+        return Vec::new();
+    }
+    let base = head.strip_prefix("kernel:").unwrap_or(head);
+    if base == "async" {
+        return values
+            .get(1)
+            .map_or_else(Vec::new, |child| default_export_sites(child, scope));
+    }
+    if !matches!(
+        base,
+        "func" | "genfunc" | "class" | "function" | "function*"
+    ) {
+        return Vec::new();
+    }
+    direct_enclosing_sites(payload)
+}
+
+fn direct_enclosing_sites(form: &SExpr) -> Vec<BindingSite> {
     bindings_introduced(form)
         .into_iter()
-        .filter(|s| s.kind.shadows_values() && declares_in_enclosing(s.kind))
-        .map(|s| s.name)
+        .filter(|site| site.kind.shadows_values() && declares_in_enclosing(site.kind))
         .collect()
 }
 
@@ -262,7 +316,11 @@ fn resolve_seq(
         out.push(resolve_form(form, scope, def_occurrences));
         // Hoist this form's enclosing-scope declarations to the following
         // siblings (function names, `bind`s, `import` locals, …).
-        scope.extend(hoisted_names(form));
+        let names = enclosing_declaration_sites(form, scope)
+            .into_iter()
+            .map(|site| site.name)
+            .collect::<Vec<_>>();
+        scope.extend(names);
     }
     scope.truncate(mark);
     out
@@ -448,7 +506,11 @@ fn resolve_source_function(
                 if let Some(head) = resolved.as_list().and_then(|values| values.first())
                     && head.as_form_head().is_some()
                 {
-                    clause_scope.extend(hoisted_names(&resolved));
+                    let names = enclosing_declaration_sites(&resolved, &clause_scope)
+                        .into_iter()
+                        .map(|site| site.name)
+                        .collect::<Vec<_>>();
+                    clause_scope.extend(names);
                 }
                 out = replace_at_path(&out, &path.0, resolved);
             }
@@ -564,7 +626,11 @@ fn resolve_class_member(
             .and_then(|values| values.first())
             .is_some_and(|head| head.as_form_head().is_some())
         {
-            method_scope.extend(hoisted_names(&resolved));
+            let names = enclosing_declaration_sites(&resolved, &method_scope)
+                .into_iter()
+                .map(|site| site.name)
+                .collect::<Vec<_>>();
+            method_scope.extend(names);
         }
         *out = replace_at_path(out, &path.0, resolved);
     }
@@ -769,15 +835,6 @@ pub fn shadowing_sites(forms: &[SExpr]) -> Vec<BindingSite> {
     out
 }
 
-/// The sites a form declares into the **enclosing** sibling scope (the
-/// site-level companion to [`hoisted_names`] — same filter, kept in lockstep).
-fn hoisted_sites(form: &SExpr) -> Vec<BindingSite> {
-    bindings_introduced(form)
-        .into_iter()
-        .filter(|s| s.kind.shadows_values() && declares_in_enclosing(s.kind))
-        .collect()
-}
-
 /// The **pure body-scoped** binding sites a form introduces (params, loop,
 /// pattern, catch, class-method params) — the complement of the enclosing-scope
 /// declarations. These enter a *deeper* frame, so any collision with the
@@ -801,7 +858,7 @@ fn shadow_seq(forms: &[SExpr], scope: &mut Vec<String>, out: &mut Vec<BindingSit
     let mark = scope.len();
     for form in forms {
         shadow_form(form, scope, out);
-        for site in hoisted_sites(form) {
+        for site in enclosing_declaration_sites(form, scope) {
             if scope[..mark].iter().any(|n| n == &site.name) {
                 out.push(site.clone());
             }
@@ -1020,16 +1077,7 @@ fn shadow_paths(
     for path in paths {
         if let Some(form) = crate::lexical_regions::at_path(root, path) {
             shadow_form(form, scope, out);
-            let dispatches = form
-                .as_list()
-                .and_then(|values| values.first())
-                .and_then(SExpr::as_form_head)
-                .is_some_and(|head| !scope.iter().any(|bound| bound == head));
-            for site in if dispatches {
-                hoisted_sites(form)
-            } else {
-                Vec::new()
-            } {
+            for site in enclosing_declaration_sites(form, scope) {
                 if scope[..mark].iter().any(|name| name == &site.name) {
                     out.push(site.clone());
                 }
@@ -1183,6 +1231,81 @@ mod tests {
         assert!(
             tags.iter()
                 .any(|(name, res)| name == "local" && *res == NameRes::BindingRef)
+        );
+    }
+
+    #[test]
+    fn enclosing_declaration_sites_follow_dispatch_and_consumed_export_slots() {
+        let normal = read("(export (func local :args () :body 1) (func ignored :args () :body 2))")
+            .expect("normal export");
+        let names = enclosing_declaration_sites(&normal[0], &[])
+            .into_iter()
+            .map(|site| site.name)
+            .collect::<Vec<_>>();
+        assert_eq!(names, ["local"]);
+
+        let escaped = read("(kernel:export (kernel:function escaped () (return 1)))")
+            .expect("escaped export");
+        assert_eq!(
+            enclosing_declaration_sites(&escaped[0], &[])
+                .into_iter()
+                .map(|site| site.name)
+                .collect::<Vec<_>>(),
+            ["escaped"]
+        );
+
+        let default =
+            read("(export default (func direct :args () :body 1))").expect("direct default");
+        assert_eq!(
+            enclosing_declaration_sites(&default[0], &[])
+                .into_iter()
+                .map(|site| site.name)
+                .collect::<Vec<_>>(),
+            ["direct"]
+        );
+
+        let expression =
+            read("(export default (? true (kernel:function local () (return 1)) undefined))")
+                .expect("default expression control");
+        assert!(enclosing_declaration_sites(&expression[0], &[]).is_empty());
+
+        assert!(enclosing_declaration_sites(&normal[0], &["export".into()]).is_empty());
+
+        let bound_call =
+            read("(bind export (fn (:any x) x)) (export (func leaked :args () :body 1)) (leaked)")
+                .expect("bound export call");
+        let resolved = resolve(&bound_call);
+        assert_eq!(
+            last_head(
+                &resolved
+                    .iter()
+                    .map(ToString::to_string)
+                    .collect::<Vec<_>>()
+                    .join("\n")
+            )
+            .1,
+            NameRes::Unresolved
+        );
+    }
+
+    #[test]
+    fn shadow_walk_does_not_promote_operands_of_a_bound_call() {
+        let callable = read(
+            "(func outer :args (:any eval) :body (export (bind bind (fn (:any left :any right) left))) (bind eval 1))",
+        )
+        .expect("parse wrapped callable");
+        assert!(
+            shadowing_sites(&callable)
+                .iter()
+                .all(|site| site.name != "eval")
+        );
+
+        let declaration = read("(func outer :args (:any eval) :body (bind eval 1))")
+            .expect("parse actual binding");
+        assert!(
+            shadowing_sites(&declaration)
+                .iter()
+                .any(|site| site.name == "eval")
         );
     }
 
@@ -1390,7 +1513,13 @@ mod tests {
         let function = values.get(2).expect("function initializer");
         let plan = scope_plan(function, &[]);
         assert!(matches!(plan, ScopePlan::SourceFunction(_)));
-        assert_eq!(hoisted_names(function), vec!["fn-local"]);
+        assert_eq!(
+            enclosing_declaration_sites(function, &[])
+                .into_iter()
+                .map(|site| site.name)
+                .collect::<Vec<_>>(),
+            ["fn-local"]
+        );
         let resolved = resolve(&forms);
         let rendered = resolved
             .iter()
