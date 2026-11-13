@@ -238,3 +238,17 @@ expansion-time dispatch visibility and eventual selected value-binding/name
 transport, with structural keys/API spellings preserved. This addendum does
 not decide which pass/storage or exact forward semantics should implement it.
 Original accepted prerequisites and LC02–08/S03 scope remain unchanged.
+
+## Two requested native author-readiness baselines at cf432622
+
+After explicit owner transfer/fresh CLI build during B2b1 review, root requested
+exactly two direct CLI+ESM baseline controls. Source pin
+cf4326224ccfd992cf9abf6f9f943375c5305fb0/tree27419cb322612374e036e14ea7e469243cf75eeb.
+The some-name1 / function parameter someName2 program compiles0 and executes0
+printing2; it demonstrates the known unimplemented emitted-name hygiene policy,
+not a B2-UNIT HOLD or acceptance. The exact entry body(helper), later helper41,
+console(entry) program compiles0 and executes0 printing41. Both raw runtime
+stderr streams are empty; commands/source/emitted output/statuses are retained
+under this index's fixtures/runtime/receipts. No new harness or broader naming
+experiment. Environment is the precreated B2b1 CDC outside-repo paths. No source
+edit/build beyond the already authorized fresh B2b1 CLI, no policy selection.

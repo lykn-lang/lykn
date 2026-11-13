@@ -1,0 +1,5 @@
+(macro three () `3)
+(type A (Entry :number left))
+(bind item (Entry (three)))
+(console:log (match item ((Entry value) value)))
+(exports Entry)

@@ -1,0 +1,2 @@
+2:7: warning: unused binding 'helper'
+  suggestion: prefix with underscore: _helper

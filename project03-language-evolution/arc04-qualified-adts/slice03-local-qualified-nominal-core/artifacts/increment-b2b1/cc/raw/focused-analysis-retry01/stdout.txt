@@ -1,0 +1,27 @@
+
+running 22 tests
+test analysis::tests::test_analyze_empty_forms ... ok
+test analysis::tests::test_bind_null_fails_number_annotation ... ok
+test analysis::tests::test_bind_nan_fails_number_annotation ... ok
+test analysis::tests::test_analyze_registers_user_type ... ok
+test analysis::tests::test_bind_any_annotation_accepts_any_literal ... ok
+test analysis::tests::test_bind_non_literal_no_static_check ... ok
+test analysis::tests::test_bind_bool_matches_boolean_annotation ... ok
+test analysis::tests::test_analyze_detects_non_exhaustive_match ... ok
+test analysis::tests::test_bind_number_literal_matches_number_annotation ... ok
+test analysis::tests::test_bind_string_literal_mismatches_number_annotation ... ok
+test analysis::tests::test_bind_then_function_call_no_unused_warning ... ok
+test analysis::tests::successful_analysis_retains_non_error_diagnostics_and_owned_forms ... ok
+test analysis::tests::test_bind_without_reference_warns_unused ... ok
+test analysis::tests::test_cell_express_swap_reset_track_references ... ok
+test analysis::tests::analysis_failure_retains_errors_warnings_spans_and_suggestions ... ok
+test analysis::tests::test_eq_tracks_references ... ok
+test analysis::tests::test_fn_params_tracked_in_scope ... ok
+test analysis::tests::test_func_params_referenced_in_body_no_unused_warning ... ok
+test analysis::tests::test_func_unused_param_still_warns ... ok
+test analysis::tests::test_if_let_introduces_pattern_bindings ... ok
+test analysis::tests::test_obj_tracks_value_references ... ok
+test analysis::tests::test_threading_tracks_references ... ok
+
+test result: ok. 22 passed; 0 failed; 0 ignored; 0 measured; 1177 filtered out; finished in 0.00s
+

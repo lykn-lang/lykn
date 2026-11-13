@@ -1,0 +1,2 @@
+Source cwd, all environment.txt values:
+cargo test -p lykn-lang --test emission_results --test cross_compiler --test e2e_tests -- --nocapture

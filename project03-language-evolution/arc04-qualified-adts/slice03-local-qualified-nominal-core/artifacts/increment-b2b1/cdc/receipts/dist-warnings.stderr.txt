@@ -1,0 +1,3 @@
+2:1: warning: exported function `loose` has no `:returns` annotation; .d.ts will use `unknown`
+  suggestion: add `:returns :type` to `loose`
+@lykn/unit-proof staged in target/lykn/dist/unit-proof/

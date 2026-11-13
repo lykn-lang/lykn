@@ -1,0 +1,12 @@
+Source cwd read-only final identity/metadata:
+git rev-parse HEAD HEAD^{tree}
+git status --short
+git show -s --format=fuller HEAD
+git show -s --format=fuller d787231a
+git show -s --format=%B HEAD | git interpret-trailers --parse
+git show -s --format=%B d787231a | git interpret-trailers --parse
+git diff --name-only f9be7cb8..HEAD
+git diff f9be7cb8..HEAD
+Evidence cwd after final pin/status saved:
+COPYFILE_DISABLE=1 tar -czf receipts-cf432622.tar.gz README.md fixtures runtime receipts
+shasum -a 256 receipts-cf432622.tar.gz > archive.sha256

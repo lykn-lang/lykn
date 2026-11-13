@@ -1,0 +1,12 @@
+
+running 7 tests
+test emitter::tests::test_emit_empty_input ... ok
+test emitter::tests::test_emit_multiple_forms ... ok
+test emitter::tests::test_emit_mixed_forms ... ok
+test emitter::tests::test_emit_preserves_form_order ... ok
+test emitter::tests::test_emit_json_produces_valid_json ... ok
+test emitter::tests::test_emit_json_strip_assertions ... ok
+test emitter::tests::checked_single_form_rejects_ordered_member_invocation_request ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 1192 filtered out; finished in 0.01s
+

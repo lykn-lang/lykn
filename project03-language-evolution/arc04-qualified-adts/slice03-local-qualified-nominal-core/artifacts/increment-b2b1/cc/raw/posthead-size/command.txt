@@ -1,0 +1,4 @@
+command: make bundle-size-check
+cwd: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+HEAD: d787231ae2f8b9dc9fabf347897b9551e0d161f0
+precondition: target/lykn/build/browser materialized by successful make check fresh-artifacts

@@ -1,0 +1,5 @@
+Source cwd/common environment.txt values:
+cargo test -p lykn-cli --bin lykn compile::tests:: -- --nocapture
+cargo test -p lykn-cli --test compile_validation_parity -- --nocapture
+Each has distinct contemporaneous stdout/stderr/numeric status. Fresh-artifacts
+already passed before running these CLI/materialized-artifact consumers.

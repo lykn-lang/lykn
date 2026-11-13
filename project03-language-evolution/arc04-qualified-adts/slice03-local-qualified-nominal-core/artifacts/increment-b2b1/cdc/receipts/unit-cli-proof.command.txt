@@ -1,0 +1,5 @@
+Source cwd/common environment: target/release/lykn compile <absolute CDC>/fixtures/unit-cli-proof.lykn -o <absolute CDC>/runtime/unit-cli-proof.mjs
+CDC cwd/common environment: deno run --no-prompt --cached-only -A --config fixtures/canonical-public.json runtime/unit-cli-proof.mjs
+Authored Lykn capture records exact commands/cwd/env before each invocation,
+raw streams/numeric status after. Package fixture inputs copied byte-preserving
+under /private/tmp before execution; build/cache outputs stay outside evidence.

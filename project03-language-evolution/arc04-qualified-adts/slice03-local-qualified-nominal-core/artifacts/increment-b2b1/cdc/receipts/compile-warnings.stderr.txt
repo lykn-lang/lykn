@@ -1,0 +1,4 @@
+1:1: warning: unused binding 'unused'
+  suggestion: prefix with underscore: _unused
+2:1: warning: exported function `loose` has no `:returns` annotation; .d.ts will use `unknown`
+  suggestion: add `:returns :type` to `loose`

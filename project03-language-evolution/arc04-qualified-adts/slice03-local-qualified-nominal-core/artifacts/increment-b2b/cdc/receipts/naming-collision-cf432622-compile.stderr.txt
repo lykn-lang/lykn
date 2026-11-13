@@ -1,0 +1,2 @@
+2:28: warning: unused binding 'someName'
+  suggestion: prefix with underscore: _someName

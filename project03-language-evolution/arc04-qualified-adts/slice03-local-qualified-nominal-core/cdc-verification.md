@@ -1047,3 +1047,94 @@ includes the qualified index and this correction's command record; SHA-256
 `a0e7b5673e31c18c5376418d646f60bf1e81d32f1a04cc98bc74d87addc90017`.
 The clean f9be7cb8/tree0ea27d21 source/build handback and B2-LX-only acceptance
 remain exactly as above.
+
+## B2b1 candidate cf432622 — 2026-11-13 independent validation HOLD
+
+**B2-UNIT remains HOLD U01**, despite passing compiled-code gates. Separate
+Sol6.1High reviewed cleancf4326224ccfd992cf9abf6f9f943375c5305fb0,
+tree27419cb322612374e036e14ea7e469243cf75eeb, oncodex/qualified-adt-core.
+Implementationd787231a (8authorized paths) and the distinct one-path match
+oracle followupcf432622 are preserved, with literal and Git-parsed contiguous
+Codex/Billo trailers. No source edit/index mutation or release/remote action.
+Source/build ownership returns clean to root; no active build/test remains.
+
+Production AnalyzedUnit privacy is correct, but its construction compile_fail
+uses `AnalyzedUnit {}`. That would still fail if public fields were omitted,
+so the negative does not discriminate the claimed privacy invariant. Current
+Rustdoc stderr reports private fields, yet the alternate missing-fields failure
+cause makes this oracle insufficient. The old separate forms/registry emitter
+arity negative is discriminating. Root accepted U01 as a bounded validation
+finding and prepared iteration15, not a runtime/API rewrite.
+
+Complete draft iteration15 is independently source-ready: its literal supplies
+all three actual fields—forms Vec, TypeRegistry::default(), diagnostics Vec—
+with existing valid public imports and inferable field types. Private fields
+are the only remaining rejection cause. No mutation test/source edit/build was
+performed for this readiness check. Root owns issue/design and planning Git.
+
+The current implementation otherwise preserves the original analysis algorithm
+and ordered diagnostics, owns the matching forms/registry in a success-only
+unit, and removes canonical unrelated registry/form pairing. Compile and dist
+retain their prior error filtering, spans/suggestions, filenames and warning
+asymmetry; module DTS borrows the same unit as JS/kernel/JSON. Existing raw
+fragment/leaf DTS/kernel-codegen contracts remain explicit. AnalyzedUnit means
+analysis success, not complete nested syntax/codegen success or a nominal graph.
+The strengthened Entry match fixture actually consumes registry field metadata
+and passes interleaved ESM3/three; constructor-only prior evidence is not treated
+as discriminating metadata proof.
+
+[Independent index](artifacts/increment-b2b1/cdc/README.md) preserves full
+source/caller review, U01, iteration15 readiness and exact observations:
+
+-22analysis tests;22cross-compiler+18e2e+9emission tests;2normal and2compile-fail
+Rustdoc examples pass (U01 qualification retained).53CLI API tests and3validation
+parity tests pass after fresh-artifacts0.
+-Reviewer Lykn CLI proof executes both different-field Entry units checked/
+stripped and JSON→actual public compiler→ESM (6runtimes), own DTS fields/types,
+analysis failure/suggestion filtering then recovery, compile analysis+DTS
+warnings versus dist DTS-only warnings, and dist analysis-error source path.
+-Public preservation54cases/43steps passes lexical/type-state/private/Reflect/
+completion/browser ESM controls. A/B1/IC/B2-LX remain applicable within prior
+limits; no public/embedded production module changed.
+-Single independent FINAL-cf **make check exits0**: **1199native library units,
+1557product cases/67steps,482docs once**. Full stderr176 records22generated doc
+files/482blocks/15skipped. It includes the final match-oracle delta; CC's earlier
+full snapshot remains separately pinned to d787.
+-Full gate's exact inner cold M6 receipts establish **14byte comparisons**,
+actual extracted lang mapping/fresh staged browser and **49materialized public
+cases**, copied CLI/no canonical cwd/absent compiler-XDG assertions. No duplicate
+M6 solely for command naming. Independent separate copied full-built CLI,
+absent owned delivery-XDG, macro→Entry match executes3 and emits own A/left:number
+DTS/exported Entry. Binary SHA256
+`0ff85708c7c8a51672e1891cad8cffe0215243586b945aa5c07ed9b60dce34f3`.
+-PostHEAD cites0=64documents/601historical. Browser gzip46600,baseline27630,
+delta18970,headroom35320 under81920. All raw streams/numeric statuses retained.
+
+[Evidence archive](artifacts/increment-b2b1/cdc/receipts-cf432622.tar.gz)
+SHA-256 `0864bc473e988c6d9c2cbe6c2cf490249d8a8aea5f524b880ba1ba1f5c1b660d`.
+No independent author/setup/product test failed; expected negatives remain
+explicit. Truncated combined reads were recovered before tests. CC's earlier
+span-method/stale-bin/format/status-file provenance remains unchanged in CC
+records. All owned XDG/npm/TMP dirs were precreated outside repos/config
+ancestors; existing DENO_DIR reused; no caches/copied executable in archive or
+forbidden helper/dependency/remote action.
+
+Root permits conditional retention of this compiled-code/runtime/CLI/full/cold/
+size evidence only after actual successor diff is verified strictly Rustdoc-only.
+Corrected Rustdoc and finalHEAD provenance/citations must be independently
+rerun; no advance acceptance or semantic validation bypass is inferred. Full
+repetition solely for a new comment-only commit name is unnecessary absent a
+new concern. B2-UNIT cannot close until U01 is resolved.
+
+Two requested naming-author baselines are separate in increment-b2b/cdc at cf:
+outer some-name1/parameter someName2 prints2 (known unimplemented hygiene, not a
+unit HOLD); exact entry→later helper program prints41. Both direct CLI/ESM
+routes exit0. They do not implement or accept the resolved name policy.
+
+B2-ID-NAME is resolved as policy; binding allocation/hygiene, OwnerRef/CaseRef/
+field TypeRef, nested transport/private public requests/nominal activation,
+check_strict/dev semantic join, DTS/API/purity/S06/consumer/book/human and
+LC02–08/S03 remain open. Accepted A/B1/IC/B2-LX limits persist, including fixed-
+nine layout, I4, legacy fallback, warm cache, catch-emitter, multi-clause defaults,
+nested alias runtime/annotation guards and browser eval run/load limitations.
+No source integration or subsequent implementation follows automatically.

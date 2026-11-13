@@ -1,0 +1,175 @@
+Diff in /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli/src/dist.rs:249:
+                     source: std::io::Error::new(std::io::ErrorKind::InvalidData, msg),
+                 }
+             })?;
+-            let kernel = lykn_lang::emitter::emit(&unit, false).map_err(|source| {
+-                DistError::Language {
++            let kernel =
++                lykn_lang::emitter::emit(&unit, false).map_err(|source| DistError::Language {
+                     path: path.clone(),
+                     source,
+-                }
+-            })?;
++                })?;
+             let js = lykn_lang::codegen::emit_module_js(&kernel).map_err(|e| DistError::Io {
+                 path: js_path.clone(),
+                 source: std::io::Error::new(std::io::ErrorKind::InvalidData, e.to_string()),
+Diff in /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang/src/analysis/mod.rs:11:
+ use crate::binding::{BindingKind, binding_names_in_pattern};
+ use crate::diagnostics::{Diagnostic, Severity};
+ use crate::reader::source_loc::Span;
+-use std::fmt;
+ use scope::ScopeTracker;
++use std::fmt;
+ use type_registry::TypeRegistry;
+ 
+ /// A surface program and the registry produced by successful semantic analysis.
+Diff in /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang/src/analysis/mod.rs:1083:
+             span: span(),
+         }];
+         let result = analyze(forms).expect_err("NaN should fail :number annotation");
+-        assert!(result.diagnostics().iter().any(|d| d.severity == Severity::Error));
++        assert!(
++            result
++                .diagnostics()
++                .iter()
++                .any(|d| d.severity == Severity::Error)
++        );
+     }
+ 
+     #[test]
+Diff in /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang/src/analysis/mod.rs:1125:
+             span: span(),
+         }];
+         let result = analyze(forms).expect_err("null should fail :number annotation");
+-        assert!(result.diagnostics().iter().any(|d| d.severity == Severity::Error));
++        assert!(
++            result
++                .diagnostics()
++                .iter()
++                .any(|d| d.severity == Severity::Error)
++        );
+     }
+ 
+     // --- Scope tracking for additional form variants ---
+Diff in /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang/src/analysis/mod.rs:1331:
+ 
+     #[test]
+     fn analysis_failure_retains_errors_warnings_spans_and_suggestions() {
+-        let parsed = crate::reader::read("(bind :number age \"wrong\")")
+-            .expect("mismatch source reads");
++        let parsed =
++            crate::reader::read("(bind :number age \"wrong\")").expect("mismatch source reads");
+         let expected_span = parsed[0].span();
+         let resolved = crate::resolver::resolve(&parsed);
+         let forms = crate::classifier::classify(&resolved).expect("mismatch source classifies");
+Diff in /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang/src/analysis/mod.rs:1349:
+             error.suggestion.as_deref(),
+             Some("change the type annotation to :string or use a different value")
+         );
+-        assert!(diagnostics
+-            .iter()
+-            .any(|diagnostic| diagnostic.severity == Severity::Warning));
+-        assert!(failure.to_string().contains("suggestion: change the type annotation"));
++        assert!(
++            diagnostics
++                .iter()
++                .any(|diagnostic| diagnostic.severity == Severity::Warning)
++        );
++        assert!(
++            failure
++                .to_string()
++                .contains("suggestion: change the type annotation")
++        );
+         assert!(!failure.to_string().contains("warning:"));
+     }
+ 
+Diff in /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang/src/analysis/mod.rs:1364:
+         let unit = analyze(forms).expect("unused binding is a warning");
+ 
+         assert_eq!(unit.forms().len(), 1);
+-        assert!(unit
+-            .diagnostics()
+-            .iter()
+-            .any(|diagnostic| diagnostic.severity == Severity::Warning));
+-        assert!(unit
+-            .diagnostics()
+-            .iter()
+-            .all(|diagnostic| diagnostic.severity != Severity::Error));
++        assert!(
++            unit.diagnostics()
++                .iter()
++                .any(|diagnostic| diagnostic.severity == Severity::Warning)
++        );
++        assert!(
++            unit.diagnostics()
++                .iter()
++                .all(|diagnostic| diagnostic.severity != Severity::Error)
++        );
+     }
+ }
+ 
+Diff in /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang/src/emitter/dts.rs:202:
+ ///
+ /// Returns declaration text and any warnings generated while interpreting the
+ /// file path and exported callable contracts.
+-pub fn emit_dts_module(
+-    unit: &AnalyzedUnit,
+-    file_path: &str,
+-) -> (String, Vec<Diagnostic>) {
++pub fn emit_dts_module(unit: &AnalyzedUnit, file_path: &str) -> (String, Vec<Diagnostic>) {
+     let forms = unit.forms();
+     let registry = unit.type_registry();
+     let mut out = String::new();
+Diff in /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang/src/emitter/mod.rs:221:
+ #[cfg(test)]
+ mod tests {
+     use super::*;
+-    use crate::analysis::type_registry::TypeRegistry;
+     use crate::analysis::analyze;
++    use crate::analysis::type_registry::TypeRegistry;
+     use crate::ast::surface::SurfaceForm;
+     use crate::reader::source_loc::Span;
+ 
+Diff in /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang/tests/emission_results.rs:145:
+     let nested_span = nested_assign.span();
+     assert_ne!(nested_span, Default::default());
+     let nested_forms = classify(nested_source);
+-    let nested_error = codegen_diagnostic(emitter::emit(&analyzed(nested_forms), false).unwrap_err());
++    let nested_error =
++        codegen_diagnostic(emitter::emit(&analyzed(nested_forms), false).unwrap_err());
+     assert_eq!(nested_error.span, nested_span);
+ 
+     let mismatch_source = "(func broken :args () :returns :number :post true :body (while false (console:log \"never\")))";
+Diff in /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang/tests/emission_results.rs:166:
+ 
+ #[test]
+ fn valid_empty_and_literal_emission_remain_checked_successes() {
+-    assert!(emitter::emit(&analyzed(Vec::new()), false).unwrap().is_empty());
++    assert!(
++        emitter::emit(&analyzed(Vec::new()), false)
++            .unwrap()
++            .is_empty()
++    );
+     let forms = classify("(bind answer 42)");
+     assert!(!emitter::emit(&analyzed(forms), false).unwrap().is_empty());
+ }
+Diff in /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang/tests/emission_results.rs:193:
+     assert!(js_b.contains("right"), "B ESM retains its field: {js_b}");
+     assert!(!js_b.contains("left"), "B ESM excludes A's field: {js_b}");
+     assert!(dts_a.contains("type A"), "A declarations retain A: {dts_a}");
+-    assert!(dts_a.contains("left: number"), "A declarations retain field type: {dts_a}");
++    assert!(
++        dts_a.contains("left: number"),
++        "A declarations retain field type: {dts_a}"
++    );
+     assert!(!dts_a.contains("type B") && !dts_a.contains("right"));
+     assert!(dts_b.contains("type B"), "B declarations retain B: {dts_b}");
+-    assert!(dts_b.contains("right: string"), "B declarations retain field type: {dts_b}");
++    assert!(
++        dts_b.contains("right: string"),
++        "B declarations retain field type: {dts_b}"
++    );
+     assert!(!dts_b.contains("type A") && !dts_b.contains("left"));
+     assert!(json_a.contains("left"));
+     assert!(!json_a.contains("right"));

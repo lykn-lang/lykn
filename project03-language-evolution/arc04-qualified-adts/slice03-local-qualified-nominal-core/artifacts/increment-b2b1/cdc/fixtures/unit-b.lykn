@@ -1,0 +1,3 @@
+(type B (Entry :string right))
+(bind item (Entry "three"))
+(console:log (match item ((Entry value) value)))

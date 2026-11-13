@@ -1,0 +1,4 @@
+command: make bundle-size-check
+cwd: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+HEAD: cf4326224ccfd992cf9abf6f9f943375c5305fb0
+precondition: target/lykn/build/browser materialized by successful make check at production source commit d787231a; only test fixture changed in follow-up

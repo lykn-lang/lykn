@@ -1,0 +1,2 @@
+command: cargo fmt --all -- --check
+cwd: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering

@@ -1,0 +1,15 @@
+commit d787231ae2f8b9dc9fabf347897b9551e0d161f0
+Author:     Duncan McGreggor <oubiwann@gmail.com>
+AuthorDate: Fri Nov 13 09:26:29 2026 -0600
+Commit:     Duncan McGreggor <oubiwann@gmail.com>
+CommitDate: Fri Nov 13 09:26:29 2026 -0600
+
+    B2b1: bind native emission to analyzed units
+    
+    Replace the freely pairable analysis result and registry with an owned,
+    immutable analyzed unit. Make canonical JavaScript, JSON and DTS emission use
+    the same borrowed unit, preserve diagnostic adapters and migrate Rust
+    pipeline fixtures to analyze their forms.
+    
+    Co-authored-by: Codex <noreply@openai.com>
+    Co-authored-by: Billo AI <ai-engineering@billo.systems>

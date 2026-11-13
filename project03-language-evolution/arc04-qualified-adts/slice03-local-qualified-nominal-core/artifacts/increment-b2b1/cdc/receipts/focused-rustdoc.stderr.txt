@@ -1,0 +1,37 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.02s
+   Doc-tests lykn_lang
+error[E0061]: this function takes 2 arguments but 3 arguments were supplied
+   --> crates/lykn-lang/src/analysis/mod.rs:118:9
+    |
+118 | let _ = emitter::emit(&forms, &registry, false);
+    |         ^^^^^^^^^^^^^         --------- unexpected argument #2 of type `&TypeRegistry`
+    |
+note: expected `&AnalyzedUnit`, found `&Vec<SurfaceForm>`
+   --> crates/lykn-lang/src/analysis/mod.rs:118:23
+    |
+118 | let _ = emitter::emit(&forms, &registry, false);
+    |                       ^^^^^^
+    = note: expected reference `&AnalyzedUnit`
+               found reference `&Vec<SurfaceForm>`
+note: function defined here
+   --> crates/lykn-lang/src/emitter/mod.rs:32:8
+    |
+ 32 | pub fn emit(
+    |        ^^^^
+help: remove the extra argument
+    |
+118 - let _ = emitter::emit(&forms, &registry, false);
+118 + let _ = emitter::emit(/* &AnalyzedUnit */, false);
+    |
+
+error: aborting due to 1 previous error
+
+For more information about this error, try `rustc --explain E0061`.
+error: cannot construct `AnalyzedUnit` with struct literal syntax due to private fields
+  --> crates/lykn-lang/src/analysis/mod.rs:42:12
+   |
+42 | let unit = AnalyzedUnit {};
+   |            ^^^^^^^^^^^^
+
+error: aborting due to 1 previous error
+

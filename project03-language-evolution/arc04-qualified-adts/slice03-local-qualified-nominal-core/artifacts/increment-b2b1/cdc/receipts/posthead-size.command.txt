@@ -1,0 +1,2 @@
+Source cwd/common environment.txt values: make bundle-size-check
+Fresh full-built browser, committed cf432622;81920-byte budget.

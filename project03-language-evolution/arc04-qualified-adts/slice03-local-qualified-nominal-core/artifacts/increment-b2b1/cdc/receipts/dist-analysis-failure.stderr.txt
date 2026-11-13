@@ -1,0 +1,2 @@
+error: error at ./packages/unit/mod.lykn: 1:1: error: bind 'age': type annotation :number is incompatible with string literal
+  suggestion: change the type annotation to :string or use a different value

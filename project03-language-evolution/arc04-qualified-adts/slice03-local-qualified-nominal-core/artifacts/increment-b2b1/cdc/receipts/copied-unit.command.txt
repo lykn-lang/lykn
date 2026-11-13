@@ -1,0 +1,7 @@
+AFTER full gate: copy source bin/lykn -> /private/tmp/lykn-b2b1-cdc/standalone/lykn.
+Standalone cwd, absent owned delivery-XDG, no packages/lang fallback.
+Override only XDG_CACHE_HOME=/private/tmp/lykn-b2b1-cdc/delivery-xdg;
+other environment.txt values unchanged.
+./lykn compile <absolute CDC>/fixtures/copied-unit.lykn -o <absolute CDC>/runtime/copied-unit.mjs
+Then CDC cwd/common env: deno run --no-config --no-prompt --cached-only runtime/copied-unit.mjs
+Expected runtime3 and sibling DTS own A/Entry left:number; record exact bytes.

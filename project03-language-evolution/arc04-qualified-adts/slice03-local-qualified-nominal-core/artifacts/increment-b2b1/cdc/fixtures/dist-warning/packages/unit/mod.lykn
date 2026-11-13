@@ -1,0 +1,3 @@
+(bind unused 1)
+(func loose :args (:number value) :body value)
+(exports loose)

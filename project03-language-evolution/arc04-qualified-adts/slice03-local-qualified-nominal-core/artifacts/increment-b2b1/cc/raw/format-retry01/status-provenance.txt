@@ -1,0 +1,1 @@
+Record note: status 0 is retrospective from exact command output printed before status-path typo.

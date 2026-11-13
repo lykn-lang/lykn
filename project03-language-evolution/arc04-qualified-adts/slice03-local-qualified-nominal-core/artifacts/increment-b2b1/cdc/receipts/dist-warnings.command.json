@@ -1,0 +1,13 @@
+{
+  "program": "/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/release/lykn",
+  "args": [
+    "dist"
+  ],
+  "cwd": "/private/tmp/lykn-b2b1-cdc/dist-warning",
+  "env": {
+    "DENO_DIR": "/Users/oubiwann/Library/Caches/deno",
+    "XDG_CACHE_HOME": "/private/tmp/lykn-b2b1-cdc/xdg",
+    "NPM_CONFIG_CACHE": "/private/tmp/lykn-b2b1-cdc/npm",
+    "TMPDIR": "/private/tmp/lykn-b2b1-cdc/tmp"
+  }
+}

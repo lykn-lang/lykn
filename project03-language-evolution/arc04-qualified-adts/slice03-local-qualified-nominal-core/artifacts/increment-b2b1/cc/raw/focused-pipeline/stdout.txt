@@ -1,0 +1,50 @@
+
+running 22 tests
+test cross_and_binary ... ok
+test cross_bind_string ... ok
+test cross_cell ... ok
+test cross_eq_binary ... ok
+test cross_bind_typed ... ok
+test cross_bind_simple ... ok
+test cross_js_bind ... ok
+test cross_eq_variadic ... ok
+test cross_and_variadic ... ok
+test cross_fn_typed_return ... ok
+test cross_js_typeof ... ok
+test cross_js_eval ... ok
+test cross_js_eq ... ok
+test cross_obj_simple ... ok
+test cross_or_binary ... ok
+test cross_neq_binary ... ok
+test cross_not_unary ... ok
+test cross_js_call ... ok
+test cross_not_nested ... ok
+test cross_or_variadic ... ok
+test cross_thread_first ... ok
+test cross_thread_last ... ok
+
+test result: ok. 22 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.41s
+
+
+running 18 tests
+test e2e_analysis_catches_errors ... ok
+test e2e_bind_obj_produces_valid_kernel ... ok
+test e2e_cells_produces_valid_kernel ... ok
+test e2e_async_func ... ok
+test e2e_export_async_func ... ok
+test e2e_kernel_json_is_valid ... ok
+test e2e_export_func ... ok
+test e2e_contracts_produces_valid_kernel ... ok
+test e2e_threading_produces_valid_kernel ... ok
+test e2e_kernel_json_contracts ... ok
+test e2e_bind_number ... ok
+test e2e_obj ... ok
+test e2e_export_bind ... ok
+test e2e_thread_first ... ok
+test e2e_bind_string ... ok
+test e2e_cell ... ok
+test e2e_thread_last ... ok
+test e2e_export_func_destructured ... ok
+
+test result: ok. 18 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.07s
+

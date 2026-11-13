@@ -1,0 +1,2 @@
+command: cargo test -p lykn-cli --test macro_dependencies m6_embedded_compiler_payload_matches_canonical_and_runs_from_cold_cache -- --exact --nocapture
+cwd: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering

@@ -1,0 +1,13 @@
+commit cf4326224ccfd992cf9abf6f9f943375c5305fb0
+Author:     Duncan McGreggor <oubiwann@gmail.com>
+AuthorDate: Fri Nov 13 09:28:49 2026 -0600
+Commit:     Duncan McGreggor <oubiwann@gmail.com>
+CommitDate: Fri Nov 13 09:28:49 2026 -0600
+
+    B2b1: prove matched type isolation across units
+    
+    Extend the independent Entry unit oracle to pattern-match through the
+    analyzed registry before checking each generated ESM result.
+    
+    Co-authored-by: Codex <noreply@openai.com>
+    Co-authored-by: Billo AI <ai-engineering@billo.systems>

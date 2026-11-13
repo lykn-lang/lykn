@@ -1,0 +1,38 @@
+{
+  "version": "5",
+  "specifiers": {
+    "jsr:@std/assert@*": "1.0.19",
+    "jsr:@std/internal@^1.0.12": "1.0.12",
+    "npm:astring@^1.9.0": "1.9.0"
+  },
+  "jsr": {
+    "@std/assert@1.0.19": {
+      "integrity": "eaada96ee120cb980bc47e040f82814d786fe8162ecc53c91d8df60b8755991e",
+      "dependencies": [
+        "jsr:@std/internal"
+      ]
+    },
+    "@std/internal@1.0.12": {
+      "integrity": "972a634fd5bc34b242024402972cd5143eac68d8dffaca5eaa4dba30ce17b027"
+    }
+  },
+  "npm": {
+    "astring@1.9.0": {
+      "integrity": "sha512-LElXdjswlqjWrPpJFg1Fx4wpkOCxj1TDHlSV4PlaRxHGWko024xICaa97ZkMfs6DRKlCguiAI+rbXv5GWwXIkg==",
+      "bin": true
+    }
+  },
+  "workspace": {
+    "dependencies": [
+      "npm:astring@^1.9.0"
+    ],
+    "links": {
+      "jsr:@lykn/lang@0.6.0": {
+        "dependencies": [
+          "npm:astring@^1.9.0"
+        ]
+      },
+      "jsr:@lykn/testing@0.6.0": {}
+    }
+  }
+}

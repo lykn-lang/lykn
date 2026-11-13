@@ -1,0 +1,2 @@
+command: cargo test -p lykn-lang --test emission_results -- --nocapture
+cwd: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering

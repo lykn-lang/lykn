@@ -3,7 +3,7 @@ project: project03-language-evolution
 arc: arc04-qualified-adts
 slice: slice03-local-qualified-nominal-core
 status: active
-version: "1.27"
+version: "1.28"
 depends-on: [slice01-contract-and-emission-design, slice02-existing-adt-correctness]
 ---
 
@@ -235,7 +235,8 @@ gates survive. No release edits/integration, remote CI, push or publication.
 | cc-prompt-iteration11.md | 2026-11-13 | iteration10 | B2a correction02: shared actual enclosing-declaration sites across expansion/resolution/D2/shadow clients and real wrapper/default slots | Independent HOLD595f672b/treedd518b1b on R05; R01–04 focused controls pass |
 | cc-prompt-iteration12.md | 2026-11-13 | iteration11 | B2a correction03: pure typed-source header preflight and canonical genfn metadata/body slots in parser and walkers | Independent HOLD0e249caf/treee946afc2: native protected-host client still visits ignored generator regions; exercised header/D2 controls green |
 | cc-prompt-iteration13.md | 2026-11-13 | iteration12 | B2a correction04: parsed native Surface function regions, ignored generator post excluded, actual parameter leaf scopes | Independently acceptedf9be7cb8/tree0ea27d21 for B2-LX only; full S03 and B2b/name decision remain open |
-| cc-prompt-iteration14.md | 2026-11-13 | iteration13 | B2b1 owned native analysis unit and canonical JS/JSON/DTS consumer pairing | Separate Sol source-readiness green; issued to Luna; source-name policy resolved, naming/owner implementation remains open |
+| cc-prompt-iteration14.md | 2026-11-13 | iteration13 | B2b1 owned native analysis unit and canonical JS/JSON/DTS consumer pairing | Candidatecf432622/tree27419cb3 software/full gates green independently; validation HOLD on empty-literal privacy oracle |
+| cc-prompt-iteration15.md | 2026-11-13 | iteration14 | B2b1 correction01: complete-field private-construction Rustdoc discriminator | Separate Sol source-readiness/clean handback green; issued to Luna under existing authority |
 
 The A correction loop used three refinement passes; B1 required no software
 correction. IC-01 is a distinct authorized usable prerequisite, not a retry
@@ -524,3 +525,29 @@ source contradiction. Root clarified that compile prints successful analysis
 warnings, whereas dist currently prints no analysis warnings and only its DTS
 warnings. Old negative emission cases remain analysis-valid and retain channels.
 Root issues iteration14 against cleanf9; Luna takes exclusive source/build.
+
+2026-11-13 v1.28: iteration14 returns production/API commitd787231a plus
+test-only oracle followupcf432622/tree27419cb3. Root refined the independent
+Entry unit test to actually pattern-match via registry metadata; constructor/
+DTS field rendering alone was not a discriminating registry consumer. Both
+commits and their successful full/focused chronology remain. CC full1199native/
+1557product67steps/482docs preceded that final test-only change; separate Sol
+ran final-source full once and actual metadata-sensitive CLI/JSON/DTS/runtime,
+warning/error/recovery and cold gates green. B2-UNIT remains validation HOLD:
+the empty AnalyzedUnit literal compile_fail also rejects from missing fields.
+Actual fields/accessors are private/immutable and no runtime defect was found.
+Iteration15's full-field literal isolates privacy as the actual rejection;
+source-ready with separate Sol, then source/build transfers back to Luna on
+clean handback. Compiled-code evidence may be retained only if the actual diff
+is strictly doctest-only; corrected Rustdoc needs independent rerun. All
+name/owner/nominal/LC02–08/S03 obligations remain open; source-name policy is
+resolved but not implemented. Root's original proof choice/refinement and all
+author/setup errors are retrospective inputs, not claims about model efficacy.
+
+Root verified the independent cf HOLD archive SHA256
+0864bc473e988c6d9c2cbe6c2cf490249d8a8aea5f524b880ba1ba1f5c1b660d and clean
+source/build handback. Sol confirmed complete draft15 source-readiness. Root
+issues the strictly one-file Rustdoc correction; Luna owns source/build until
+clean committed handback, then Sol independently verifies the new discriminator
+and evidence applicability. Old successful compiled-code gates remain evidence,
+not a claim the empty literal proved privacy. No ledger row closes yet.

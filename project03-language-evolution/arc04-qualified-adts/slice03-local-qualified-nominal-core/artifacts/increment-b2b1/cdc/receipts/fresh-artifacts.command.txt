@@ -1,0 +1,2 @@
+Source cwd/common environment.txt values: make fresh-artifacts
+Before any CLI/browser-staging tests, avoiding CC's stale-bin setup failure.

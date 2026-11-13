@@ -1,0 +1,424 @@
+[
+  {
+    "type": "list",
+    "values": [
+      {
+        "type": "atom",
+        "value": "const"
+      },
+      {
+        "type": "atom",
+        "value": "lyknIntrinsicTypeError0"
+      },
+      {
+        "type": "atom",
+        "value": "TypeError"
+      }
+    ]
+  },
+  {
+    "type": "list",
+    "values": [
+      {
+        "type": "atom",
+        "value": "const"
+      },
+      {
+        "type": "atom",
+        "value": "lyknIntrinsicError0"
+      },
+      {
+        "type": "atom",
+        "value": "Error"
+      }
+    ]
+  },
+  {
+    "type": "list",
+    "values": [
+      {
+        "type": "atom",
+        "value": "function"
+      },
+      {
+        "type": "atom",
+        "value": "Entry"
+      },
+      {
+        "type": "list",
+        "values": [
+          {
+            "type": "atom",
+            "value": "right"
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "values": [
+          {
+            "type": "atom",
+            "value": "if"
+          },
+          {
+            "type": "list",
+            "values": [
+              {
+                "type": "atom",
+                "value": "!=="
+              },
+              {
+                "type": "list",
+                "values": [
+                  {
+                    "type": "atom",
+                    "value": "typeof"
+                  },
+                  {
+                    "type": "atom",
+                    "value": "right"
+                  }
+                ]
+              },
+              {
+                "type": "string",
+                "value": "string"
+              }
+            ]
+          },
+          {
+            "type": "list",
+            "values": [
+              {
+                "type": "atom",
+                "value": "throw"
+              },
+              {
+                "type": "list",
+                "values": [
+                  {
+                    "type": "atom",
+                    "value": "new"
+                  },
+                  {
+                    "type": "atom",
+                    "value": "lyknIntrinsicTypeError0"
+                  },
+                  {
+                    "type": "list",
+                    "values": [
+                      {
+                        "type": "atom",
+                        "value": "+"
+                      },
+                      {
+                        "type": "string",
+                        "value": "Entry: field 'right' expected string, got "
+                      },
+                      {
+                        "type": "list",
+                        "values": [
+                          {
+                            "type": "atom",
+                            "value": "typeof"
+                          },
+                          {
+                            "type": "atom",
+                            "value": "right"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "values": [
+          {
+            "type": "atom",
+            "value": "return"
+          },
+          {
+            "type": "list",
+            "values": [
+              {
+                "type": "atom",
+                "value": "object"
+              },
+              {
+                "type": "list",
+                "values": [
+                  {
+                    "type": "atom",
+                    "value": "tag"
+                  },
+                  {
+                    "type": "string",
+                    "value": "Entry"
+                  }
+                ]
+              },
+              {
+                "type": "list",
+                "values": [
+                  {
+                    "type": "atom",
+                    "value": "right"
+                  },
+                  {
+                    "type": "atom",
+                    "value": "right"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type": "list",
+    "values": [
+      {
+        "type": "atom",
+        "value": "const"
+      },
+      {
+        "type": "atom",
+        "value": "item"
+      },
+      {
+        "type": "list",
+        "values": [
+          {
+            "type": "atom",
+            "value": "Entry"
+          },
+          {
+            "type": "string",
+            "value": "three"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type": "list",
+    "values": [
+      {
+        "type": "atom",
+        "value": "console:log"
+      },
+      {
+        "type": "list",
+        "values": [
+          {
+            "type": "list",
+            "values": [
+              {
+                "type": "atom",
+                "value": "=>"
+              },
+              {
+                "type": "list",
+                "values": []
+              },
+              {
+                "type": "list",
+                "values": [
+                  {
+                    "type": "atom",
+                    "value": "const"
+                  },
+                  {
+                    "type": "atom",
+                    "value": "target__gensym0"
+                  },
+                  {
+                    "type": "atom",
+                    "value": "item"
+                  }
+                ]
+              },
+              {
+                "type": "list",
+                "values": [
+                  {
+                    "type": "atom",
+                    "value": "let"
+                  },
+                  {
+                    "type": "atom",
+                    "value": "pattern_field__gensym1"
+                  }
+                ]
+              },
+              {
+                "type": "list",
+                "values": [
+                  {
+                    "type": "atom",
+                    "value": "if"
+                  },
+                  {
+                    "type": "list",
+                    "values": [
+                      {
+                        "type": "atom",
+                        "value": "&&"
+                      },
+                      {
+                        "type": "list",
+                        "values": [
+                          {
+                            "type": "atom",
+                            "value": "&&"
+                          },
+                          {
+                            "type": "list",
+                            "values": [
+                              {
+                                "type": "atom",
+                                "value": "!="
+                              },
+                              {
+                                "type": "atom",
+                                "value": "target__gensym0"
+                              },
+                              {
+                                "type": "atom",
+                                "value": "null"
+                              }
+                            ]
+                          },
+                          {
+                            "type": "list",
+                            "values": [
+                              {
+                                "type": "atom",
+                                "value": "==="
+                              },
+                              {
+                                "type": "atom",
+                                "value": "target__gensym0:tag"
+                              },
+                              {
+                                "type": "string",
+                                "value": "Entry"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "list",
+                        "values": [
+                          {
+                            "type": "atom",
+                            "value": "seq"
+                          },
+                          {
+                            "type": "list",
+                            "values": [
+                              {
+                                "type": "atom",
+                                "value": "="
+                              },
+                              {
+                                "type": "atom",
+                                "value": "pattern_field__gensym1"
+                              },
+                              {
+                                "type": "atom",
+                                "value": "target__gensym0:right"
+                              }
+                            ]
+                          },
+                          {
+                            "type": "atom",
+                            "value": "true"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "list",
+                    "values": [
+                      {
+                        "type": "atom",
+                        "value": "block"
+                      },
+                      {
+                        "type": "list",
+                        "values": [
+                          {
+                            "type": "atom",
+                            "value": "const"
+                          },
+                          {
+                            "type": "atom",
+                            "value": "value"
+                          },
+                          {
+                            "type": "atom",
+                            "value": "pattern_field__gensym1"
+                          }
+                        ]
+                      },
+                      {
+                        "type": "list",
+                        "values": [
+                          {
+                            "type": "atom",
+                            "value": "return"
+                          },
+                          {
+                            "type": "atom",
+                            "value": "value"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "list",
+                "values": [
+                  {
+                    "type": "atom",
+                    "value": "throw"
+                  },
+                  {
+                    "type": "list",
+                    "values": [
+                      {
+                        "type": "atom",
+                        "value": "new"
+                      },
+                      {
+                        "type": "atom",
+                        "value": "lyknIntrinsicError0"
+                      },
+                      {
+                        "type": "string",
+                        "value": "match: no matching pattern"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]

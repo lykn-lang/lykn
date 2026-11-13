@@ -1,0 +1,2 @@
+Source cwd, all environment.txt values:
+cargo test -p lykn-lang --doc -- --nocapture

@@ -1,0 +1,7 @@
+Author-readiness baseline only, NOT B2-UNIT acceptance/name-hygiene proof.
+Source cf4326224ccfd992cf9abf6f9f943375c5305fb0/tree27419cb322612374e036e14ea7e469243cf75eeb.
+Source cwd and B2b1 CDC environment.txt values (precreated outside-repo roots).
+Fresh target/release/lykn compile <absolute B2b CDC>/fixtures/naming-collision-baseline.lykn -o <absolute B2b CDC>/runtime/naming-collision-cf432622.mjs
+Same for function-forward-baseline.lykn -> function-forward-cf432622.mjs.
+Direct deno run --no-config --no-prompt --cached-only each emitted ESM.
+Expected current collision stdout2 (known unimplemented policy), forward41.

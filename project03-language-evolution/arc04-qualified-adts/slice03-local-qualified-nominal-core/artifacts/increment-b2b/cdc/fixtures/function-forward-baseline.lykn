@@ -1,0 +1,3 @@
+(func entry :args () :body (helper))
+(func helper :args () :body 41)
+(console:log (entry))

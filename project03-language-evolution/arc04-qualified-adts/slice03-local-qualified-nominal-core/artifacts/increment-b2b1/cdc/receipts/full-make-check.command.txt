@@ -1,0 +1,6 @@
+Source cwd/common environment.txt values plus precreated
+LYKN_MACRO_DEPENDENCIES_EVIDENCE_DIR=<absolute CDC>/receipts/full-macro
+make check
+Single final-source full gate; docs once. Its exact M6 inner command/status/
+module comparisons/materialized config and49-case summary satisfy cold M6
+without a duplicate merely for command naming.

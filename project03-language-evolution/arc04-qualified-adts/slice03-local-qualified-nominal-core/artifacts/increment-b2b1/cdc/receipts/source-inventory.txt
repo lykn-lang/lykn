@@ -1,0 +1,8 @@
+crates/lykn-cli/src/compile.rs
+crates/lykn-cli/src/dist.rs
+crates/lykn-lang/src/analysis/mod.rs
+crates/lykn-lang/src/emitter/dts.rs
+crates/lykn-lang/src/emitter/mod.rs
+crates/lykn-lang/tests/cross_compiler.rs
+crates/lykn-lang/tests/e2e_tests.rs
+crates/lykn-lang/tests/emission_results.rs

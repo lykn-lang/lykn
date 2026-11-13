@@ -1,0 +1,2 @@
+1:7: warning: unused binding 'B'
+  suggestion: prefix with underscore: _B

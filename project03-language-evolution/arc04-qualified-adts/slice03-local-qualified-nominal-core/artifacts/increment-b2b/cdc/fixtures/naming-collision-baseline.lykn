@@ -1,0 +1,3 @@
+(bind some-name 1)
+(func entry :args (:number someName) :body some-name)
+(console:log (entry 2))
