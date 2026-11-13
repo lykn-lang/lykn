@@ -23,6 +23,30 @@ const INVALID: &[(&str, &str)] = &[
         "w9",
         "(func guarded :args () :returns :number :pre (do (set! Reflect:apply 0) true) :body 1)",
     ),
+    (
+        "r04-genfn-body",
+        "(bind factory (genfn () :yields :any (set-symbol! Array \"isArray\" 1) (yield 41)))",
+    ),
+    (
+        "r04-genfn-metadata-binding-body",
+        "(bind factory (genfn () :yields (bind Array 1) (set-symbol! Array \"isArray\" 1) (yield 41)))",
+    ),
+    (
+        "r04-genfunc-pre",
+        "(genfunc factory :args () :pre (set-symbol! Array \"isArray\" 1) :body (yield 41))",
+    ),
+    (
+        "r04-genfunc-body",
+        "(genfunc factory :args () :body (set-symbol! Array \"isArray\" 1) (yield 41))",
+    ),
+    (
+        "r04-genfunc-post-binding-body",
+        "(genfunc factory :args () :post (bind Array 1) :body (set-symbol! Array \"isArray\" 1) (yield 41))",
+    ),
+    (
+        "r04-func-post",
+        "(func ordinary :args () :post (set-symbol! Array \"isArray\" 1) :body 41)",
+    ),
 ];
 
 const LEGAL: &[(&str, &str, &str)] = &[
@@ -45,6 +69,16 @@ const LEGAL: &[(&str, &str, &str)] = &[
         "v4",
         "(bind action (fn (:number n) (+ n 1)))\n(set! action:call (fn (:number n) 99))\n(console:log (JSON:stringify (action:call 1)))",
         "99\n",
+    ),
+    (
+        "r04-genfn-metadata",
+        "(bind factory (genfn () :yields (set-symbol! Array \"isArray\" 1) (yield 41)))\n(bind stream (factory))\n(console:log (get (stream:next) :value))",
+        "41\n",
+    ),
+    (
+        "r04-genfunc-post",
+        "(genfunc factory :args () :post (set-symbol! Array \"isArray\" 1) :body (yield 41))\n(bind stream (factory))\n(console:log (get (stream:next) :value))",
+        "41\n",
     ),
 ];
 
@@ -177,9 +211,14 @@ fn exact_diagnostic(case: &str, source: &str, path: &Path, route: &str) -> Vec<u
             .as_list()
             .expect("pre body is a list")[1]
             .span(),
+        name if name.starts_with("r04-") => find_symbol_write_target(form)
+            .expect("R04 fixture includes a set-symbol! target")
+            .span(),
         _ => values[1].span(),
     };
-    let slot = if matches!(case, "w3" | "w4") {
+    let slot = if case.starts_with("r04-") {
+        "Array.isArray"
+    } else if matches!(case, "w3" | "w4") {
         "Reflect"
     } else {
         "Reflect.apply"
@@ -194,6 +233,20 @@ fn exact_diagnostic(case: &str, source: &str, path: &Path, route: &str) -> Vec<u
     } else {
         rendered.into_bytes()
     }
+}
+
+fn find_symbol_write_target(
+    expr: &lykn_lang::ast::sexpr::SExpr,
+) -> Option<&lykn_lang::ast::sexpr::SExpr> {
+    let values = expr.as_list()?;
+    if values
+        .first()
+        .and_then(lykn_lang::ast::sexpr::SExpr::as_atom)
+        == Some("set-symbol!")
+    {
+        return values.get(1);
+    }
+    values.iter().find_map(find_symbol_write_target)
 }
 
 fn save_artifact_snapshot(name: &str, path_name: &str, phase: &str, state: &ArtifactState) {
@@ -736,9 +789,61 @@ fn protected_writes_are_captured_across_cli_routes_before_rejection_assertions()
         },
     });
 
+    for case_id in ["r04-genfn-body", "r04-genfunc-body"] {
+        let (case, source_text) = INVALID
+            .iter()
+            .find(|(name, _)| *name == case_id)
+            .copied()
+            .expect("R04 stripped witness exists");
+        let fixture = TempDir::new().expect("create stripped R04 fixture");
+        let source_path = write_source(fixture.path(), source_text);
+        let source = fs::read(&source_path).expect("read stripped R04 fixture");
+        let (output_path, dts_path, js_before, dts_before, js_expected, dts_expected) =
+            existing_sentinels(fixture.path(), case);
+        let route = format!("{case}-strip-compile-existing");
+        save_artifact_snapshot(&route, "js", "before", &js_before);
+        save_artifact_snapshot(&route, "dts", "before", &dts_before);
+        let stripped = execute_recorded(
+            &route,
+            &source_path,
+            &source,
+            cli()
+                .current_dir(fixture.path())
+                .arg("compile")
+                .arg("--strip-assertions")
+                .arg(&source_path)
+                .arg("-o")
+                .arg(&output_path),
+        );
+        let js_after = snapshot_artifact(&output_path);
+        let dts_after = snapshot_artifact(&dts_path);
+        save_artifact_snapshot(&route, "js", "after", &js_after);
+        save_artifact_snapshot(&route, "dts", "after", &dts_after);
+        observations.push(Observation {
+            name: case.to_string(),
+            route: "compile-strip-existing",
+            output: stripped,
+            expected_stderr: exact_diagnostic(case, source_text, &source_path, "compile"),
+            effects: ArtifactEffects::Preserve {
+                js: ArtifactPair {
+                    before: js_before,
+                    after: js_after,
+                    expected_bytes: js_expected,
+                    expected_modified: UNIX_EPOCH,
+                },
+                dts: ArtifactPair {
+                    before: dts_before,
+                    after: dts_after,
+                    expected_bytes: dts_expected,
+                    expected_modified: UNIX_EPOCH,
+                },
+            },
+        });
+    }
+
     assert_eq!(
         observations.len(),
-        29,
+        INVALID.len() * 3 + 4,
         "all invalid route observations captured"
     );
     eprintln!(

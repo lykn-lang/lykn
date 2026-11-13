@@ -307,8 +307,8 @@ fn object_executable_children(arg: &SExpr) -> Vec<&SExpr> {
 fn param_scope_names(params: &[crate::ast::surface::ParamShape]) -> HashSet<String> {
     params
         .iter()
-        .flat_map(|param| param.bound_names())
-        .map(to_js_identifier)
+        .flat_map(|param| param.typed_params())
+        .map(|param| to_js_identifier(&param.name))
         .collect()
 }
 
@@ -410,6 +410,29 @@ struct Walker {
 }
 
 impl Walker {
+    fn visit_surface_callable(
+        &mut self,
+        params: &[crate::ast::surface::ParamShape],
+        name: Option<&str>,
+        body: &[SExpr],
+        dialect: InputDialect,
+    ) {
+        let mut param_names = param_scope_names(params);
+        if let Some(name) = name {
+            param_names.insert(to_js_identifier(name));
+        }
+        self.scopes.push(param_names.clone());
+        visit_param_defaults(self, params, dialect);
+        self.scopes.pop();
+
+        let names = function_scope_names(body, param_names);
+        self.scopes.push(names);
+        for form in body {
+            self.visit(form, dialect);
+        }
+        self.scopes.pop();
+    }
+
     fn is_local(&self, name: &str) -> bool {
         let name = to_js_identifier(name);
         self.scopes.iter().rev().any(|scope| scope.contains(&name))
@@ -667,15 +690,12 @@ impl Walker {
             }
             return;
         }
-        if dialect == InputDialect::Surface && matches!(head, "func" | "genfunc") {
+        if dialect == InputDialect::Surface
+            && matches!(head, "func" | "genfunc" | "fn" | "lambda" | "genfn")
+        {
             match crate::classifier::classify_expr(expr) {
                 Ok(SurfaceForm::Func { name, clauses, .. }) => {
                     for clause in clauses {
-                        let mut params = param_scope_names(&clause.args);
-                        params.insert(to_js_identifier(&name));
-                        self.scopes.push(params.clone());
-                        visit_param_defaults(self, &clause.args, dialect);
-                        self.scopes.pop();
                         let mut emitted_body = Vec::new();
                         if let Some(pre) = &clause.pre {
                             emitted_body.push(pre.clone());
@@ -684,49 +704,35 @@ impl Walker {
                             emitted_body.push(post.clone());
                         }
                         emitted_body.extend(clause.body.iter().cloned());
-                        let names = function_scope_names(&emitted_body, params);
-                        self.scopes.push(names);
-                        if let Some(pre) = &clause.pre {
-                            self.visit(pre, dialect);
-                        }
-                        if let Some(post) = &clause.post {
-                            self.visit(post, dialect);
-                        }
-                        for body in &clause.body {
-                            self.visit(body, dialect);
-                        }
-                        self.scopes.pop();
+                        self.visit_surface_callable(
+                            &clause.args,
+                            Some(&name),
+                            &emitted_body,
+                            dialect,
+                        );
                     }
                     return;
                 }
                 Ok(SurfaceForm::Genfunc { name, clauses, .. }) => {
                     for clause in clauses {
-                        let mut params = param_scope_names(&clause.args);
-                        params.insert(to_js_identifier(&name));
-                        self.scopes.push(params.clone());
-                        visit_param_defaults(self, &clause.args, dialect);
-                        self.scopes.pop();
                         let mut emitted_body = Vec::new();
                         if let Some(pre) = &clause.pre {
                             emitted_body.push(pre.clone());
                         }
-                        if let Some(post) = &clause.post {
-                            emitted_body.push(post.clone());
-                        }
                         emitted_body.extend(clause.body.iter().cloned());
-                        let names = function_scope_names(&emitted_body, params);
-                        self.scopes.push(names);
-                        if let Some(pre) = &clause.pre {
-                            self.visit(pre, dialect);
-                        }
-                        if let Some(post) = &clause.post {
-                            self.visit(post, dialect);
-                        }
-                        for body in &clause.body {
-                            self.visit(body, dialect);
-                        }
-                        self.scopes.pop();
+                        self.visit_surface_callable(
+                            &clause.args,
+                            Some(&name),
+                            &emitted_body,
+                            dialect,
+                        );
                     }
+                    return;
+                }
+                Ok(SurfaceForm::Fn { params, body, .. })
+                | Ok(SurfaceForm::Lambda { params, body, .. })
+                | Ok(SurfaceForm::Genfn { params, body, .. }) => {
+                    self.visit_surface_callable(&params, None, &body, dialect);
                     return;
                 }
                 _ => {}
@@ -1116,6 +1122,145 @@ mod tests {
 
     fn check(source: &str, dialect: InputDialect) -> Vec<Diagnostic> {
         validate_program(&read(source).expect("test source parses"), dialect)
+    }
+
+    fn assert_protected_array_write(source: &str) {
+        fn target(expr: &SExpr) -> Option<&SExpr> {
+            let values = expr.as_list()?;
+            if values.first().and_then(SExpr::as_atom) == Some("set-symbol!") {
+                return values.get(1);
+            }
+            values.iter().find_map(target)
+        }
+
+        let forms = read(source).expect("test source parses");
+        let expected_span = forms
+            .iter()
+            .find_map(target)
+            .expect("write target exists")
+            .span();
+        let errors = validate_program(&forms, InputDialect::Surface);
+        assert_eq!(errors.len(), 1);
+        assert_eq!(
+            errors[0].message,
+            "host-contract v2: write to protected slot Array.isArray"
+        );
+        assert_eq!(errors[0].span, expected_span);
+    }
+
+    #[test]
+    fn surface_callable_boundaries_match_parsed_emitted_regions() {
+        let protected_write = r#"(set-symbol! Array "isArray" 1)"#;
+
+        let genfn_metadata =
+            format!("(bind factory (genfn () :yields {protected_write} (yield 41)))");
+        assert!(check(&genfn_metadata, InputDialect::Surface).is_empty());
+
+        let genfn_body =
+            format!("(bind factory (genfn () :yields :any {protected_write} (yield 41)))");
+        assert_protected_array_write(&genfn_body);
+
+        let genfn_metadata_binding = format!(
+            "(bind factory (genfn () :yields (bind Array 1) {protected_write} (yield 41)))"
+        );
+        assert_protected_array_write(&genfn_metadata_binding);
+
+        let genfunc_post =
+            format!("(genfunc factory :args () :post {protected_write} :body (yield 41))");
+        assert!(check(&genfunc_post, InputDialect::Surface).is_empty());
+
+        let genfunc_body = format!("(genfunc factory :args () :body {protected_write} (yield 41))");
+        assert_protected_array_write(&genfunc_body);
+
+        let genfunc_post_binding = format!(
+            "(genfunc factory :args () :post (bind Array 1) :body {protected_write} (yield 41))"
+        );
+        assert_protected_array_write(&genfunc_post_binding);
+
+        let genfunc_pre =
+            format!("(genfunc factory :args () :pre {protected_write} :body (yield 41))");
+        assert_protected_array_write(&genfunc_pre);
+
+        let func_post = format!("(func ordinary :args () :post {protected_write} :body 41)");
+        assert_protected_array_write(&func_post);
+    }
+
+    #[test]
+    fn surface_anonymous_defaults_and_nested_param_leaves_use_actual_bindings() {
+        let protected_write = r#"(set-symbol! Array "isArray" 1)"#;
+
+        for (head, body) in [
+            ("fn", "value"),
+            ("lambda", "value"),
+            ("genfn", "(yield value)"),
+        ] {
+            let metadata = if head == "genfn" { " :yields :any" } else { "" };
+            let default_without_param =
+                format!("({head} ((default :any value {protected_write})){metadata} {body})");
+            assert_protected_array_write(&default_without_param);
+
+            let default_with_param = format!(
+                "({head} (:any Array (default :any value {protected_write})){metadata} {body})"
+            );
+            assert!(check(&default_with_param, InputDialect::Surface).is_empty());
+
+            let actual_body_write =
+                format!("({head} (:any value){metadata} {protected_write} {body})");
+            assert_protected_array_write(&actual_body_write);
+        }
+
+        let body_binding_does_not_hide_default =
+            format!("(fn ((default :any value {protected_write})) (bind Array 1) value)");
+        assert_protected_array_write(&body_binding_does_not_hide_default);
+
+        let external_object_alias = format!(
+            "(fn ((object :any wrapper (alias :any Array (object :any leaf)))) {protected_write})"
+        );
+        let parsed = crate::classifier::classify_expr(
+            &read(&external_object_alias).expect("test source parses")[0],
+        )
+        .expect("typed object header classifies");
+        let SurfaceForm::Fn { params, .. } = parsed else {
+            panic!("expected parsed fn parameters");
+        };
+        let leaf_names: Vec<_> = params
+            .iter()
+            .flat_map(|param| param.typed_params())
+            .map(|param| param.name.as_str())
+            .collect();
+        assert_eq!(leaf_names, ["wrapper", "leaf"]);
+        assert!(params[0].bound_names().contains(&"Array"));
+        assert_protected_array_write(&external_object_alias);
+
+        let actual_object_leaf = format!(
+            "(fn ((object :any wrapper (alias :any container (object :any Array)))) {protected_write})"
+        );
+        assert!(check(&actual_object_leaf, InputDialect::Surface).is_empty());
+
+        let external_array_alias = format!(
+            "(fn ((array _ (alias :array Array (array _ (rest :any leaf))))) {protected_write})"
+        );
+        assert_protected_array_write(&external_array_alias);
+
+        let parsed = crate::classifier::classify_expr(
+            &read(&external_array_alias).expect("test source parses")[0],
+        )
+        .expect("typed array header classifies");
+        let SurfaceForm::Fn { params, .. } = parsed else {
+            panic!("expected parsed fn parameters");
+        };
+        let leaf_names: Vec<_> = params
+            .iter()
+            .flat_map(|param| param.typed_params())
+            .map(|param| param.name.as_str())
+            .collect();
+        assert_eq!(leaf_names, ["leaf"]);
+        assert!(params[0].bound_names().contains(&"Array"));
+
+        let actual_array_rest = format!(
+            "(fn ((array _ (alias :array container (array _ (rest :any Array))))) {protected_write})"
+        );
+        assert!(check(&actual_array_rest, InputDialect::Surface).is_empty());
     }
 
     #[test]

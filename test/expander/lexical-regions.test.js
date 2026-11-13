@@ -117,6 +117,62 @@ Deno.test("B2a genfn metadata is inert and excluded from the body region", async
   }
 });
 
+Deno.test("B2a public compiler follows emitted Genfn and Genfunc regions", async () => {
+  await executeModule(
+    lykn(`
+      (bind factory (genfn () :yields (set-symbol! Array "isArray" 1) (yield 41)))
+      (bind stream (factory))
+      (console:log (get (stream:next) :value))
+    `),
+    "41\n",
+  );
+
+  await executeModule(
+    lykn(`
+      (genfunc factory :args () :post (set-symbol! Array "isArray" 1) :body (yield 41))
+      (bind stream (factory))
+      (console:log (get (stream:next) :value))
+    `),
+    "41\n",
+  );
+
+  assertThrows(
+    () => lykn(`
+      (bind factory (genfn () :yields :any (set-symbol! Array "isArray" 1) (yield 41)))
+    `),
+    Error,
+    "protected slot Array.isArray",
+  );
+
+  assertThrows(
+    () => lykn(`
+      (genfunc factory :args () :body (set-symbol! Array "isArray" 1) (yield 41))
+    `),
+    Error,
+    "protected slot Array.isArray",
+  );
+
+  for (const [head, body] of [["fn", "value"], ["lambda", "value"], ["genfn", "(yield value)"]]) {
+    const yields = head === "genfn" ? " :yields :any" : "";
+    const protectedDefault = `(${head} ((default :any value (set-symbol! Array "isArray" 1)))${yields} ${body})`;
+    assertThrows(
+      () => lykn(protectedDefault),
+      Error,
+      "protected slot Array.isArray",
+    );
+
+    const parameterShadow = `(${head} (:any Array (default :any value (set-symbol! Array "isArray" 1)))${yields} ${body})`;
+    lykn(parameterShadow);
+
+    const bodyBinding = `(${head} ((default :any value (set-symbol! Array "isArray" 1)))${yields} (bind Array 1) ${body})`;
+    assertThrows(
+      () => lykn(bodyBinding),
+      Error,
+      "protected slot Array.isArray",
+    );
+  }
+});
+
 Deno.test("B2a class methods isolate their parameter lists", async () => {
   const source = `
     (class Box ()

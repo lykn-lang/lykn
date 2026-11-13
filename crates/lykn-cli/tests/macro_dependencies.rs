@@ -1156,7 +1156,7 @@ fn m6_embedded_compiler_payload_matches_canonical_and_runs_from_cold_cache() {
         String::from_utf8_lossy(&public_result.stderr)
     );
     assert!(
-        public_output.contains("ok | 48 passed | 0 failed"),
-        "M6 must execute the derived 48-case retained, IC-01, and current B2a materialized population, output: {public_output}"
+        public_output.contains("ok | 49 passed | 0 failed"),
+        "M6 must execute the derived 49-case retained, IC-01, and current B2a materialized population (5 + 6 + 17 + 21), output: {public_output}"
     );
 }
