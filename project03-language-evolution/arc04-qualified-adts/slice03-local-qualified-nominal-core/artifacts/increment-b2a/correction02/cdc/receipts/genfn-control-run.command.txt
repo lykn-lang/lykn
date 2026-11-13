@@ -1,0 +1,2 @@
+CDC cwd; environment.txt values.
+deno run --no-config --no-prompt --cached-only runtime/genfn-ignored-header-control.mjs

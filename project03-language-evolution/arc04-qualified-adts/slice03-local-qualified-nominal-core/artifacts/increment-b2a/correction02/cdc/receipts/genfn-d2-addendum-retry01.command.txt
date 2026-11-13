@@ -1,0 +1,13 @@
+Setup attempt: the first public legal-name-control exec used nonexistent cwd
+/Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-languagevolution/arc04-qualified-adts/slice03-local-qualified-nominal-core/artifacts/increment-b2a/correction02/cdc
+The process did not start and no product/status receipt was created. This was
+a tooling setup failure, not a product result. The path spelling is corrected
+below; no missing product status is invented.
+
+Actual retry cwd is this canonical correction02/cdc directory.
+Environment is receipts/environment.txt.
+deno run --no-prompt --cached-only --allow-read --allow-env --config /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/project.json runtime/public-driver.mjs fixtures/genfn-inert-binding-control.lykn
+stdout -> runtime/public-genfn-inert-binding-control-retry01.mjs
+stderr/status -> receipts/public-genfn-inert-binding-control-retry01.*
+Then deno run --no-config --no-prompt --cached-only for the native and public
+legal-name-control emitted ESM; streams/status -> corresponding *-run.*.

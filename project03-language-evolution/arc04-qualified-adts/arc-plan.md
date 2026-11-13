@@ -2,7 +2,7 @@
 project: project03-language-evolution
 arc: arc04-qualified-adts
 status: active
-version: "1.10"
+version: "1.11"
 related: [project07-core-library-research]
 ---
 
@@ -22,8 +22,10 @@ uses occurrence-scoped typed identity and deferred private ADT resolution;
 iteration09's B2a candidate bcb98482 is independently held on native dispatch,
 public class defaults and named kernel-function scopes. Its correction804be5da
 passes those focused controls but remains held on actual declaration visibility
-across resolver/validation and wrappers. Source-ready iteration11 consolidates
-that query before B2b metadata transport. The pending
+across resolver/validation and wrappers. Correction595f672b passes R01–04 focused
+controls but remains independently held on typed-header ordering and genfn
+metadata/body alignment. Source-ready iteration12 repairs those boundaries
+before B2b metadata transport. The pending
 operator source-name identity choice B2-ID-NAME remains explicit. The eight-row plan retains local ownership, nominal runtime/guards, APIs/DTS,
 private purity, migration and full consumer proof. S03 software is not yet
 accepted. [S02 release integration](slice02-existing-adt-correctness/artifacts/release-integration-0829e892.md)
@@ -118,6 +120,10 @@ Project07's original research evidence, final synthesis and library handoffs
 survive this detour, including every YAML and human-review obligation.
 
 ## Version history
+
+- 2026-11-13 v1.11. Preserve R05 HOLD with supported header macro witnesses and
+  native/public inert-metadata controls; issue correction03 after pure-parser
+  and genfn slot source-readiness. All original scope/gates and name policy stay.
 
 - 2026-11-13 v1.10. Preserve corrected B2a's R04 HOLD and issue correction02's
   shared enclosing-declaration query after actual default/wrapper/source review.

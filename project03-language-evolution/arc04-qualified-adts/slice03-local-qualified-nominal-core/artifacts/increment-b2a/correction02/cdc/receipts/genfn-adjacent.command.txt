@@ -1,0 +1,4 @@
+Source cwd; environment.txt values; target/release/lykn compile.
+Compile genfn-ignored-header and genfn-ignored-header-control from absolute CDC
+fixtures into matching runtime .mjs outputs; paired control's compiled ESM runs
+with deno run --no-config --no-prompt --cached-only.

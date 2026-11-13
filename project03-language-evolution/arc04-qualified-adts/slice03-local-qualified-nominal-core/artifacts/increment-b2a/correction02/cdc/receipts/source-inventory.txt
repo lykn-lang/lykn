@@ -1,0 +1,15 @@
+crates/lykn-cli/tests/macro_dependencies.rs
+crates/lykn-lang/embedded/packages/lang/binding.js
+crates/lykn-lang/embedded/packages/lang/compiler-private-atoms.js
+crates/lykn-lang/embedded/packages/lang/compiler.js
+crates/lykn-lang/embedded/packages/lang/expander-core.js
+crates/lykn-lang/src/binding.rs
+crates/lykn-lang/src/expander/pass1.rs
+crates/lykn-lang/src/expander/pass2.rs
+crates/lykn-lang/src/resolver.rs
+packages/lang/binding.js
+packages/lang/compiler-private-atoms.js
+packages/lang/compiler.js
+packages/lang/expander-core.js
+project.json
+test/expander/lexical-regions.test.js

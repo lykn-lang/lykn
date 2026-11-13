@@ -1,0 +1,7 @@
+Source cwd; environment.txt values.
+target/release/lykn compile <absolute CDC>/fixtures/public-driver.lykn -o <absolute CDC>/runtime/public-driver.mjs
+Compile genfn-inert-binding-payload and paired legal-name control with native CLI.
+Public: deno run --no-prompt --cached-only --allow-read --allow-env --config
+<absolute source>/project.json <absolute CDC>/runtime/public-driver.mjs <fixture>
+Capture generated ESM as runtime/public-genfn-inert-binding-*.mjs.
+Run legal-name control ESM: deno run --no-config --no-prompt --cached-only.

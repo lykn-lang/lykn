@@ -1,0 +1,3 @@
+Source cwd; environment.txt values.
+target/release/lykn compile <absolute CDC>/fixtures/header-order.lykn -o <absolute CDC>/runtime/header-order.mjs
+Paired header-order-control uses the same CLI/options with its own output.

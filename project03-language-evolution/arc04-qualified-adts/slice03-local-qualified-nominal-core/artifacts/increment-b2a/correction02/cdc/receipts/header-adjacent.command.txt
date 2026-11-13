@@ -1,0 +1,5 @@
+Source cwd; environment.txt values; target/release/lykn compile.
+Each fixture header-registration-control, header-default-order,
+anonymous-header-order, header-valid-invocation-control is compiled from its
+absolute CDC fixtures path into its matching CDC runtime .mjs path.
+Streams/status are matching receipts/<stem>.{stdout,stderr,status}.txt.

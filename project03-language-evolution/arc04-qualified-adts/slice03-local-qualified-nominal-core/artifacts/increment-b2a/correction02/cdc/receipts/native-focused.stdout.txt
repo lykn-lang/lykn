@@ -1,0 +1,12 @@
+
+running 7 tests
+test b2a_native_kernel_import_local_participates_in_enclosing_dispatch ... ok
+test b2a_native_kernel_named_function_executes_parameter_call ... ok
+test b2a_native_kernel_named_function_name_is_recursive_scope ... ok
+test b2a_native_pass1_does_not_promote_bound_call_operands_to_declarations ... ok
+test b2a_native_enclosing_declaration_sites_follow_export_dispatch ... ok
+test b2a_native_macro_results_reenter_bound_and_sugar_priority ... ok
+test b2a_native_macro_head_chain_limit_remains_a_diagnostic ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 6 filtered out; finished in 2.93s
+

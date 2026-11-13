@@ -1,0 +1,24 @@
+commit 595f672b9991896754ba62a05c7c647dfaaeaa01
+Author: Duncan McGreggor <oubiwann@gmail.com>
+Commit: Duncan McGreggor <oubiwann@gmail.com>
+
+    chore: record B2a correction02 co-authorship
+    
+    Preserve implementation f39bc18a and its unchanged tree. Its message omitted the co-author trailer labels; this follow-up records them without rewriting history.
+    
+    Co-authored-by: Codex <noreply@openai.com>
+    Co-authored-by: Billo AI <ai-engineering@billo.systems>
+
+commit f39bc18af8ceb856e43db8c7808be8ad787a1f1a
+Author: Duncan McGreggor <oubiwann@gmail.com>
+Commit: Duncan McGreggor <oubiwann@gmail.com>
+
+    Share dispatch-aware declaration sites across B2a walkers
+    
+    Use one incoming-scope-aware declaration-site query across native resolver,
+    shadow, pass1, pass2, and D2 paths and public binding, expansion, and macro
+    extraction. Preserve site records and actual consumed result slots, and verify
+    kernel import shadows and the browser ESM delivery path.
+    
+    Codex <noreply@openai.com>
+    Billo AI <ai-engineering@billo.systems>

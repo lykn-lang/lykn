@@ -1,0 +1,22 @@
+crates/lykn-lang/src/binding.rs:407:    ) && let Some(layout) = crate::lexical_regions::function_regions(form)
+crates/lykn-lang/src/binding.rs:525:    let Some(layout) = crate::lexical_regions::function_regions(form) else {
+crates/lykn-lang/src/binding.rs:585:    let Some(layout) = crate::lexical_regions::function_regions(form) else {
+crates/lykn-lang/src/binding.rs:798:            crate::classifier::forms::classify_form_with_bindings(form).unwrap_or_default()
+crates/lykn-lang/src/binding.rs:803:                crate::classifier::forms::classify_form_with_bindings(form).unwrap_or_default();
+crates/lykn-lang/src/lexical_regions.rs:122:pub(crate) fn source_function_regions(form: &SExpr, generator: bool) -> Option<FunctionRegions> {
+crates/lykn-lang/src/lexical_regions.rs:181:pub(crate) fn function_regions(form: &SExpr) -> Option<FunctionRegions> {
+crates/lykn-lang/src/lexical_regions.rs:187:        return source_function_regions(form, head == "genfunc");
+crates/lykn-lang/src/expander/pass2.rs:108:                        crate::lexical_regions::source_function_regions(&current, true)
+crates/lykn-lang/src/resolver.rs:251:        return ScopePlan::SourceFunction(crate::lexical_regions::function_regions(form));
+crates/lykn-lang/src/classifier/forms.rs:837:pub(crate) fn classify_form_with_bindings<'tree>(
+crates/lykn-lang/src/classifier/forms.rs:1654:fn classify_func<'tree>(
+crates/lykn-lang/src/classifier/forms.rs:1729:fn parse_func_clause<'tree>(
+crates/lykn-lang/src/classifier/forms.rs:1740:fn parse_func_clause_from_args<'tree>(
+crates/lykn-lang/src/classifier/forms.rs:1815:fn classify_genfunc<'tree>(
+crates/lykn-lang/src/classifier/forms.rs:1889:fn parse_genfunc_clause<'tree>(
+crates/lykn-lang/src/classifier/forms.rs:1900:fn parse_genfunc_clause_from_args<'tree>(
+crates/lykn-lang/src/classifier/forms.rs:1972:fn classify_genfn<'tree>(
+crates/lykn-lang/src/classifier/forms.rs:2283:fn classify_fn<'tree>(
+crates/lykn-lang/src/classifier/forms.rs:2307:fn classify_lambda<'tree>(
+crates/lykn-lang/src/classifier/forms.rs:2486:fn parse_simple_typed_params_with_capture<'tree>(
+crates/lykn-lang/src/classifier/forms.rs:2526:fn parse_typed_params_with_capture<'tree>(

@@ -828,3 +828,68 @@ remain disclosed. Fresh full/docs/coldM6/copiedCLI/browser/private/citation/size
 independent gates were not run on known-bad software and remain due after repair.
 A/B1/IC acceptance is unchanged; LC-02–08, B2b/B2-ID-NAME and S03 remain open.
 No release integration or remote action occurred.
+
+## B2a correction02 candidate595f672b — 2026-11-13 independent HOLD
+
+Separate Sol6.1High CDC reviewed clean595f672b9991896754ba62a05c7c647dfaaeaa01,
+treedd518b1bf339aac75e25a8459c67804f0559de72. Implementationf39bc18a and final
+empty metadata follow-up have the same tree. Independent message inspection
+confirms f39's missing Co-authored-by labels and595f's correct contiguous labels;
+original history remains intact. No source edits were made; source/build
+ownership returns clean to root.
+
+**B2-LX: HOLD on R05 source-header validation/region selection.** Fresh native
+focused7/7 and canonical public82/82 pass the exercised R01–04, macro extraction,
+import, private predicate, host/type and browser ESM controls. Before any full
+known-bad gate, supported get-null macro witnesses establish that malformed
+named/anonymous/default typed headers execute selected body/default macros
+before the authoritative parser diagnostic. A registration-only control with
+the same macro and literal body returns the normal parameter-name error.
+This replaces the earlier unsuitable throw-shaped probe with supported causal
+execution evidence, without rewriting that old attempt.
+
+An adjacent genfn witness also invokes a macro from :yields metadata that the
+authoritative parser consumes and ignores. Exact source without the macro
+definition compiles0 and executes41; the defined macro case exits1 from the
+metadata null-property read. Its current generic lexical body paths disagree
+with the parser-selected body boundary. No new annotation grammar is inferred.
+
+[Independent index](artifacts/increment-b2a/correction02/cdc/README.md) preserves
+all commands/streams/statuses, actual source/binary/metadata identity, native
+per-case receipts, parser/caller census and class/kernel writer-authority
+limits. The pure existing func/genfunc/fn/lambda/genfn parsers validate headers
+and retain raw body expressions; preflight must preserve actual dispatch,
+all-clause header validation, ignored-group laziness, exact Diagnostic/span and
+canonical genfn metadata boundaries. Root retains the final correction03 recipe.
+
+[Evidence archive](artifacts/increment-b2a/correction02/cdc/receipts-595f672b.tar.gz)
+SHA-256 `c3c7f0404fb556dbe898bdaade59890d7bb552070763dba669e00c0dbc50c9cd`.
+Earlier HOLD archives are unchanged. Independent full/docs/coldM6/copiedCLI/
+fresh-staged-browser/full-fragment/citation/size gates were not run on this
+known-bad candidate. Prior CC1553/67steps,1195unit,482docs,14/45cold and46503gzip
+remain attestation, not CDC acceptance. A/B1/IC scope stays accepted; LC-02–08,
+B2b/pendingB2-ID-NAME and S03 remain open. No release or remote action occurred.
+
+### R05 genfn D2 addendum and correction03 readiness
+
+The bounded ignored-payload control independently confirms both native and
+public D2 visit `(bind eval 1)` inside consumed genfn :yields metadata and
+reject it as a strict binding. Changing only the ignored binder to `ignored`
+compiles0 in both; both actual emitted ESM programs execute0 and print41.
+One public control tool call failed before process start because of a nonexistent
+misspelled cwd; the attempt and distinct successful retry are disclosed in the
+index. No missing process status was invented.
+
+The complete draft iteration12 was source-readiness reviewed against held595f.
+No concrete contradiction was found in actual-dispatch pure typed-header
+preflight, all-clause ordering/None-layout coverage, exact Diagnostic propagation,
+per-backend canonical genfn slots or explicit class/kernel writer limits.
+This is readiness, not software acceptance. No further broad gates were run.
+
+[Supplemental cumulative evidence archive](artifacts/increment-b2a/correction02/cdc/receipts-595f672b-r05-addendum.tar.gz)
+SHA-256 `51dc4bf5d53a6cb8ee6c4b7047e5493c87d9b9088dbb5cea9f3e42b82d381e8e`.
+Original archive SHA remains
+`c3c7f0404fb556dbe898bdaade59890d7bb552070763dba669e00c0dbc50c9cd`.
+Final source pin/tree unchanged, final source status empty; source/build ownership
+returns clean to root. B2-LX remains HOLD R05; all wider owner/name/LC/S03 limits
+above remain open.

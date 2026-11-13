@@ -3,7 +3,7 @@ project: project03-language-evolution
 arc: arc04-qualified-adts
 slice: slice03-local-qualified-nominal-core
 status: active
-version: "1.21"
+version: "1.22"
 depends-on: [slice01-contract-and-emission-design, slice02-existing-adt-correctness]
 ---
 
@@ -203,8 +203,8 @@ depth, supported native quotation paths, kernel-only D1 scope corrections and
 validation-only class-member queries. Existing source Func/class aggregate
 scope issues are explicit B2 inputs, not new IC-01 expansion claims.
 
-**Current assignment:** [iteration11](cc-prompt-iteration11.md), B2a correction02
-against held804be5da/treed25f2b66, under the operator's
+**Current assignment:** [iteration12](cc-prompt-iteration12.md), B2a correction03
+against held595f672b/treedd518b1b, under the operator's
 2026-11-12 B2 design/implementation/independent-validation authorization.
 [B2 architecture](artifacts/b2-owner-and-lexical-design.md) settles typed owner/
 case, occurrence-scoped query and private finalization principles; its first
@@ -232,7 +232,8 @@ gates survive. No release edits/integration, remote CI, push or publication.
 | cc-prompt-iteration08.md | 2026-11-11 | iteration07 | Mandatory producer grammar, exactly-once function regions and ordinary malformed-header diagnostics | Independently accepted IC-01 at e80f613b/tree7376b33d; LC-02–08 remain open |
 | cc-prompt-iteration09.md | 2026-11-12 | iteration08 | B2a shared precise lexical regions, actual expanded visibility and explicit unsupported generator diagnostic | Independent HOLD bcb98482/tree72adf0ee; R01–03 and raw controls retained |
 | cc-prompt-iteration10.md | 2026-11-12 | iteration09 | B2a correction01: native redispatch/actual diagnostic gating, public class defaults, named kernel function scope | Independent HOLD804be5da/treed25f2b66 on R04; R01–03 focused replays pass |
-| cc-prompt-iteration11.md | 2026-11-13 | iteration10 | B2a correction02: shared actual enclosing-declaration sites across expansion/resolution/D2/shadow clients and real wrapper/default slots | Clean595f672b/treedd518b1b returned; separate Sol software review active |
+| cc-prompt-iteration11.md | 2026-11-13 | iteration10 | B2a correction02: shared actual enclosing-declaration sites across expansion/resolution/D2/shadow clients and real wrapper/default slots | Independent HOLD595f672b/treedd518b1b on R05; R01–04 focused controls pass |
+| cc-prompt-iteration12.md | 2026-11-13 | iteration11 | B2a correction03: pure typed-source header preflight and canonical genfn metadata/body slots in parser and walkers | Issued after separate Sol source-readiness; Luna owns source/build |
 
 The A correction loop used three refinement passes; B1 required no software
 correction. IC-01 is a distinct authorized usable prerequisite, not a retry
@@ -422,3 +423,22 @@ CC raw final1553/67steps plus482docs, cold14/45 and46503-byte gzip pass; origina
 failed/setup/cache/config attempts remain. Separate Sol now owns source/build
 for independent software/metadata review. No B2-LX/LC closure or release change
 is inferred; B2-ID-NAME remains unanswered.
+
+2026-11-13 v1.22: independent review holds595f672b on original R05 typed-header
+ordering and genfn metadata/body alignment. Supported get-null macros establish
+actual invocation before malformed-header diagnostics; paired registration/
+literal controls establish the ordinary parser boundary. Native/public D2 also
+reject an inert genfn :yields binding payload, while its legal-name control
+compiles/runs41 in both. [Full HOLD/addendum](artifacts/increment-b2a/correction02/cdc/README.md)
+preserves native7/public82 passing R01–04 focused evidence and all unrun full
+gates. Root verified both original and cumulative archive digests.
+
+Iteration12 supplies pure existing typed-source header preflight after actual
+root dispatch and before every selected clause's effects; a shared genfn slot
+descriptor aligns both actual parsers/lowerers and native/public layout clients.
+No broader raw-kernel/class grammar or early semantic analysis is claimed.
+Existing annotation permissiveness and backend error ordering remain explicit.
+Separate Sol reviewed the complete draft with no concrete contradiction; root
+issues correction03, Luna owns source/build, then independent software review.
+This is the third B2a formal correction; earlier history and all rows survive.
+The typed-owner/name choice remains pending and release0829 is unchanged.

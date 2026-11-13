@@ -20,8 +20,9 @@ authorizes B2 typed-owner/case and lexical design/implementation/review. Its
 first lexical candidate from iteration09 is independently held at bcb98482;
 iteration10's candidate804be5da/treed25f2b66 passes its focused repairs but is
 independently held on declaration transitions/wrappers. Iteration11 returns clean
-595f672b/treedd518b1b, now under separate Sol software review after consolidating
-that semantic query across actual clients. Typed metadata transport and private finalization
+595f672b/treedd518b1b, independently held on typed-header ordering and genfn
+metadata/body alignment after R01–04 focused controls pass. Source-ready
+iteration12 repairs the parser/traversal boundary. Typed metadata transport and private finalization
 follow under the preserved B2 design after lexical acceptance; source-name
 identity B2-ID-NAME remains an unanswered operator language-design choice. Local
 qualified nominal behavior, private purity and final consumer gates remain to

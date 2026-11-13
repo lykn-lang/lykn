@@ -1,0 +1,3 @@
+Source cwd; environment.txt values.
+LYKN_MACRO_DEPENDENCIES_EVIDENCE_DIR=<absolute CDC>/receipts/native-focused
+cargo test -p lykn-cli --test macro_dependencies b2a_native -- --nocapture

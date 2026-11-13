@@ -1,0 +1,7 @@
+Source cwd, read-only identity/cleanliness:
+git rev-parse HEAD HEAD^{tree}
+git status --short
+Evidence cwd, append-only supplemental archive:
+COPYFILE_DISABLE=1 tar -czf receipts-595f672b-r05-addendum.tar.gz README.md fixtures runtime receipts
+shasum -a 256 receipts-595f672b-r05-addendum.tar.gz > archive-r05-addendum.sha256
+shasum -a 256 receipts-595f672b.tar.gz (verify original archive unchanged)

@@ -1,0 +1,4 @@
+js_path="/private/tmp/lykn-b2a-c2-cdc/tmp/.tmpHYcc8g/scope.mjs"
+js_exists=true
+dts_path="/private/tmp/lykn-b2a-c2-cdc/tmp/.tmpHYcc8g/scope.d.ts"
+dts_exists=false
