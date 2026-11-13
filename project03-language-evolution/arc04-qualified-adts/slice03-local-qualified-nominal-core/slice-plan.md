@@ -3,7 +3,7 @@ project: project03-language-evolution
 arc: arc04-qualified-adts
 slice: slice03-local-qualified-nominal-core
 status: active
-version: "1.18"
+version: "1.19"
 depends-on: [slice01-contract-and-emission-design, slice02-existing-adt-correctness]
 ---
 
@@ -231,7 +231,7 @@ gates survive. No release edits/integration, remote CI, push or publication.
 | cc-prompt-iteration07.md | 2026-11-11 | iteration06 | Shared function group parsing, complete executable/default regions, restore public post scope and valid macro oracle | Independent HOLD atb8a1fa17/treed3e604b2: R01–05 repaired, new R06–08; three correction commits retained |
 | cc-prompt-iteration08.md | 2026-11-11 | iteration07 | Mandatory producer grammar, exactly-once function regions and ordinary malformed-header diagnostics | Independently accepted IC-01 at e80f613b/tree7376b33d; LC-02–08 remain open |
 | cc-prompt-iteration09.md | 2026-11-12 | iteration08 | B2a shared precise lexical regions, actual expanded visibility and explicit unsupported generator diagnostic | Independent HOLD bcb98482/tree72adf0ee; R01–03 and raw controls retained |
-| cc-prompt-iteration10.md | 2026-11-12 | iteration09 | B2a correction01: native redispatch/actual diagnostic gating, public class defaults, named kernel function scope | Issued after separate Sol source-readiness; Luna owns source/build |
+| cc-prompt-iteration10.md | 2026-11-12 | iteration09 | B2a correction01: native redispatch/actual diagnostic gating, public class defaults, named kernel function scope | Clean804be5da/treed25f2b66 returned; separate Sol software review active |
 
 The A correction loop used three refinement passes; B1 required no software
 correction. IC-01 is a distinct authorized usable prerequisite, not a retry
@@ -382,3 +382,15 @@ first formal correction; all earlier A/IC passes remain preserved. Luna now
 owns task source/build through clean committed return, followed by separate
 Sol software review. No row closes, B2-ID-NAME remains pending, and release0829
 is unchanged.
+
+2026-11-13 v1.19: root verified correction01's clean source
+804be5daace5b0cb708ad21b3beb7eecbd5d00fa, tree
+d25f2b660d3de2e6f52b8ee890172f223c9abc80, exact seven authorized paths and
+contiguous trailers. Exclusive source/build ownership transfers to separate
+Sol6.1High for corrected software verification. CC's raw final full check is
+1547 product/67steps and482 docs, numeric0; committed cold M6 reports14 module
+matches and39 materialized public cases. Browser raw gzip is46418, not
+independent acceptance. Prior B2a prose45457 was a preserved transcription error:
+its original raw gate says46457, so this correction is39 bytes smaller.
+Both metadata/count reconciliations remain append-only. B2-LX, LC-02–08 and
+B2-ID-NAME remain open/pending; source is not integrated into release0829.

@@ -1,0 +1,4 @@
+cwd=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+env=DENO_DIR=/Users/oubiwann/Library/Caches/deno XDG_CACHE_HOME=/tmp/lykn-b2a-correction01-xdg NPM_CONFIG_CACHE=/tmp/lykn-b2a-correction01-npm TMPDIR=/tmp/lykn-b2a-correction01-tmp
+argv=make check-cited-paths
+source_head=804be5daace5b0cb708ad21b3beb7eecbd5d00fa

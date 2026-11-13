@@ -1,0 +1,7 @@
+
+running 2 tests
+test b2a_native_kernel_named_function_executes_parameter_call ... ok
+test b2a_native_macro_results_reenter_bound_and_sugar_priority ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 6 filtered out; finished in 0.38s
+

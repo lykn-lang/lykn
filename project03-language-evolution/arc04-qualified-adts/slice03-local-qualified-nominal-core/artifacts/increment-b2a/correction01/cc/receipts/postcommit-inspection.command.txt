@@ -1,0 +1,10 @@
+cwd=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+read_only=true
+argv sequence:
+git show --format=fuller --no-patch HEAD
+git show -s --format=%B HEAD
+git show --format= --name-only HEAD
+git status --porcelain=v1
+git rev-parse HEAD
+git rev-parse HEAD^{tree}
+cmp -s packages/lang/expander-core.js crates/lykn-lang/embedded/packages/lang/expander-core.js

@@ -1,0 +1,161 @@
+Diff in /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli/src/compile.rs:527:
+     #[test]
+     fn compile_source_bound_macro_result_head_dispatches_as_call() {
+         let source = "(macro redirect () `(invoke 1)) (macro invoke (x) `99) (bind invoke (fn (:number x) (+ x 40))) (console:log (redirect))";
+-        let emitted = compile_source(source, Some(Path::new("bound-macro-result.lykn")), true, false)
+-            .unwrap();
++        let emitted = compile_source(
++            source,
++            Some(Path::new("bound-macro-result.lykn")),
++            true,
++            false,
++        )
++        .unwrap();
+         assert!(emitted.contains("console.log(invoke(1));"), "{emitted}");
+         assert!(!emitted.contains("console.log(99);"), "{emitted}");
+     }
+Diff in /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli/src/compile.rs:536:
+     #[test]
+     fn compile_source_bound_genfunc_call_ignores_unrelated_macro_presence() {
+         let call = "(bind genfunc (fn (:any name :any left :any right) 41)) (genfunc ignored (:args () :body 1) (:args (:any value) :body 2))";
+-        let plain = compile_source(call, Some(Path::new("bound-genfunc.lykn")), true, false)
+-            .unwrap();
++        let plain =
++            compile_source(call, Some(Path::new("bound-genfunc.lykn")), true, false).unwrap();
+         let with_unrelated_macro = compile_source(
+             &format!("(macro unrelated () `0) {call}"),
+             Some(Path::new("bound-genfunc-macro.lykn")),
+Diff in /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli/src/compile.rs:551:
+     #[test]
+     fn compile_source_kernel_escaped_named_function_scopes_parameter() {
+         let source = "(bind apply (kernel:function apply (array) (return (array 7))))";
+-        let emitted = compile_source(source, Some(Path::new("kernel-named-function.lykn")), true, false)
+-            .unwrap();
++        let emitted = compile_source(
++            source,
++            Some(Path::new("kernel-named-function.lykn")),
++            true,
++            false,
++        )
++        .unwrap();
+         assert!(emitted.contains("return array(7);"), "{emitted}");
+     }
+ 
+Diff in /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli/src/compile.rs:559:
+     #[test]
+     fn compile_source_kernel_escaped_named_generator_scopes_parameter() {
+         let source = "(bind stream (kernel:function* stream (array) (yield (array 7))))";
+-        let emitted = compile_source(source, Some(Path::new("kernel-named-generator.lykn")), true, false)
+-            .unwrap();
++        let emitted = compile_source(
++            source,
++            Some(Path::new("kernel-named-generator.lykn")),
++            true,
++            false,
++        )
++        .unwrap();
+         assert!(emitted.contains("yield array(7);"), "{emitted}");
+     }
+ 
+Diff in /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli/tests/macro_dependencies.rs:329:
+         &output_path,
+         &xdg,
+     );
+-    assert_eq!(compiled.status.code(), Some(0), "{name}: {:?}", compiled.stderr);
+-    assert!(declaration.is_none(), "{name}: unexpected declaration output");
++    assert_eq!(
++        compiled.status.code(),
++        Some(0),
++        "{name}: {:?}",
++        compiled.stderr
++    );
++    assert!(
++        declaration.is_none(),
++        "{name}: unexpected declaration output"
++    );
+     let generated = generated.expect("successful compile must produce ESM");
+     let runtime = run_strict_recorded(&format!("{name}-runtime"), fixture.path(), &output_path);
+-    assert_eq!(runtime.status.code(), Some(0), "{name}: {:?}", runtime.stderr);
++    assert_eq!(
++        runtime.status.code(),
++        Some(0),
++        "{name}: {:?}",
++        runtime.stderr
++    );
+     assert_eq!(runtime.stdout, expected, "{name} runtime output");
+     assert!(runtime.stderr.is_empty(), "{name}: {:?}", runtime.stderr);
+     generated
+Diff in /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli/tests/macro_dependencies.rs:382:
+         &xdg,
+     );
+     assert_eq!(compiled.status.code(), Some(1), "{:?}", compiled.stderr);
+-    assert!(String::from_utf8_lossy(&compiled.stderr).contains("expansion limit (1000) exceeded expanding 'alpha'"), "{:?}", compiled.stderr);
+-    assert!(generated.is_none(), "runaway expansion must not emit output");
++    assert!(
++        String::from_utf8_lossy(&compiled.stderr)
++            .contains("expansion limit (1000) exceeded expanding 'alpha'"),
++        "{:?}",
++        compiled.stderr
++    );
++    assert!(
++        generated.is_none(),
++        "runaway expansion must not emit output"
++    );
+ }
+ 
+ #[test]
+Diff in /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang/src/expander/pass2.rs:86:
+             let mut current = form;
+             let mut count = 0usize;
+             loop {
+-                let SExpr::List { values: current_values, span: current_span } = &current else {
++                let SExpr::List {
++                    values: current_values,
++                    span: current_span,
++                } = &current
++                else {
+                     break;
+                 };
+                 let Some(head) = current_values.first() else {
+Diff in /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang/src/expander/pass2.rs:103:
+ 
+                 if !bound
+                     && head_name == "genfunc"
+-                    && let Some(layout) = crate::lexical_regions::source_function_regions(&current, true)
++                    && let Some(layout) =
++                        crate::lexical_regions::source_function_regions(&current, true)
+                     && layout.clauses.len() > 1
+                 {
+                     return Err(LyknError::Read {
+Diff in /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang/src/expander/pass2.rs:112:
+                     });
+                 }
+ 
+-                let is_macro_def_shape = current_values.len() >= 2
+-                    && current_values[1].as_atom().is_some();
++                let is_macro_def_shape =
++                    current_values.len() >= 2 && current_values[1].as_atom().is_some();
+                 if !bound && head_name == "macro" && is_macro_def_shape {
+                     return Err(LyknError::Read {
+                         message: "unexpected macro definition in expansion pass \
+Diff in /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang/src/expander/pass2.rs:124:
+                 }
+ 
+                 if !bound
+-                    && let Some(desugared) = try_desugar(head_name, &current_values[1..], *current_span)
++                    && let Some(desugared) =
++                        try_desugar(head_name, &current_values[1..], *current_span)
+                 {
+                     current = desugared;
+                     continue;
+Diff in /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang/src/expander/pass2.rs:178:
+                 _ => None,
+             })
+         }
+-        SExpr::List { values, span } if values.is_empty() => {
+-            Ok(Some(SExpr::List { values, span }))
+-        }
++        SExpr::List { values, span } if values.is_empty() => Ok(Some(SExpr::List { values, span })),
+         SExpr::List { values, span } => {
+             let terminal = SExpr::List { values, span };
+             match &terminal {

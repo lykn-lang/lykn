@@ -1,0 +1,7 @@
+
+running 2 tests
+test compile::tests::compile_source_bound_genfunc_call_ignores_unrelated_macro_presence ... ok
+test compile::tests::compile_source_bound_macro_result_head_dispatches_as_call ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 191 filtered out; finished in 0.05s
+

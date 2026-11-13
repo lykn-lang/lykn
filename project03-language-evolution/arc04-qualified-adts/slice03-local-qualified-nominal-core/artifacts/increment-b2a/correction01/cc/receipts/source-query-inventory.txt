@@ -1,0 +1,308 @@
+cwd=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+$ rg -n "expand_expr\\(|try_desugar|source_function_regions|ScopePlan::SourceFunction|function_regions" crates/lykn-lang/src/expander/pass2.rs crates/lykn-lang/src/lexical_regions.rs crates/lykn-lang/src/resolver.rs
+crates/lykn-lang/src/lexical_regions.rs:122:pub(crate) fn source_function_regions(form: &SExpr, generator: bool) -> Option<FunctionRegions> {
+crates/lykn-lang/src/lexical_regions.rs:181:pub(crate) fn function_regions(form: &SExpr) -> Option<FunctionRegions> {
+crates/lykn-lang/src/lexical_regions.rs:187:        return source_function_regions(form, head == "genfunc");
+crates/lykn-lang/src/resolver.rs:197:        return ScopePlan::SourceFunction(crate::lexical_regions::function_regions(form));
+crates/lykn-lang/src/resolver.rs:347:                ScopePlan::SourceFunction(Some(layout)) => {
+crates/lykn-lang/src/resolver.rs:350:                ScopePlan::SourceFunction(None) => values.to_vec(),
+crates/lykn-lang/src/resolver.rs:882:            ScopePlan::SourceFunction(Some(layout)) => {
+crates/lykn-lang/src/resolver.rs:885:            ScopePlan::SourceFunction(None) => {}
+crates/lykn-lang/src/resolver.rs:1392:        assert!(matches!(plan, ScopePlan::SourceFunction(_)));
+crates/lykn-lang/src/expander/pass2.rs:36:        if let Some(expr) = expand_expr(form, deno, env, &mut scope)? {
+crates/lykn-lang/src/expander/pass2.rs:47:fn expand_expr(
+crates/lykn-lang/src/expander/pass2.rs:64:            let expanded_car = expand_expr(*car.clone(), deno, env, scope)?;
+crates/lykn-lang/src/expander/pass2.rs:65:            let expanded_cdr = expand_expr(*cdr.clone(), deno, env, scope)?;
+crates/lykn-lang/src/expander/pass2.rs:108:                        crate::lexical_regions::source_function_regions(&current, true)
+crates/lykn-lang/src/expander/pass2.rs:130:                        try_desugar(head_name, &current_values[1..], *current_span)
+crates/lykn-lang/src/expander/pass2.rs:173:            let expanded_car = expand_expr(*car, deno, env, scope)?;
+crates/lykn-lang/src/expander/pass2.rs:174:            let expanded_cdr = expand_expr(*cdr, deno, env, scope)?;
+crates/lykn-lang/src/expander/pass2.rs:222:                if let Some(e) = expand_expr(sub.clone(), deno, env, scope)? {
+crates/lykn-lang/src/expander/pass2.rs:240:                    if let Some(e) = expand_expr(values[next_index].clone(), deno, env, scope)? {
+crates/lykn-lang/src/expander/pass2.rs:245:                if let Some(e) = expand_expr(values[slot.name_index].clone(), deno, env, scope)? {
+crates/lykn-lang/src/expander/pass2.rs:251:                    if let Some(e) = expand_expr(values[next_index].clone(), deno, env, scope)? {
+crates/lykn-lang/src/expander/pass2.rs:256:                if let Some(e) = expand_expr(values[slot.value_index].clone(), deno, env, scope)? {
+crates/lykn-lang/src/expander/pass2.rs:268:                if let Some(e) = expand_expr(values[next_index].clone(), deno, env, scope)? {
+crates/lykn-lang/src/expander/pass2.rs:279:                if let Some(expanded) = expand_expr(child.clone(), deno, env, scope)? {
+crates/lykn-lang/src/expander/pass2.rs:288:                expand_expr(child.clone(), deno, env, scope)
+crates/lykn-lang/src/expander/pass2.rs:299:                expand_expr(subject.clone(), deno, env, scope)?.unwrap_or_else(|| subject.clone()),
+crates/lykn-lang/src/expander/pass2.rs:309:        crate::resolver::ScopePlan::SourceFunction(Some(layout)) => {
+crates/lykn-lang/src/expander/pass2.rs:312:        crate::resolver::ScopePlan::SourceFunction(None)
+crates/lykn-lang/src/expander/pass2.rs:466:    let expanded = expand_expr(node.clone(), deno, env, scope)?;
+crates/lykn-lang/src/expander/pass2.rs:535:                expand_expr(guard.clone(), deno, env, scope)?.unwrap_or_else(|| guard.clone()),
+crates/lykn-lang/src/expander/pass2.rs:560:        if let Some(e) = expand_expr(sub.clone(), deno, env, scope)? {
+crates/lykn-lang/src/expander/pass2.rs:573:fn try_desugar(head: &str, args: &[SExpr], span: Span) -> Option<SExpr> {
+crates/lykn-lang/src/expander/pass2.rs:706:    // try_desugar
+crates/lykn-lang/src/expander/pass2.rs:711:        let result = try_desugar("cons", &[atom("a"), atom("b")], s()).unwrap();
+crates/lykn-lang/src/expander/pass2.rs:723:        assert!(try_desugar("cons", &[atom("a")], s()).is_none());
+crates/lykn-lang/src/expander/pass2.rs:724:        assert!(try_desugar("cons", &[atom("a"), atom("b"), atom("c")], s()).is_none());
+crates/lykn-lang/src/expander/pass2.rs:729:        let result = try_desugar("car", &[atom("xs")], s()).unwrap();
+crates/lykn-lang/src/expander/pass2.rs:741:        let result = try_desugar("cdr", &[atom("xs")], s()).unwrap();
+crates/lykn-lang/src/expander/pass2.rs:753:        let result = try_desugar("cadr", &[atom("xs")], s()).unwrap();
+crates/lykn-lang/src/expander/pass2.rs:772:        let result = try_desugar("cddr", &[atom("xs")], s()).unwrap();
+crates/lykn-lang/src/expander/pass2.rs:783:        let result = try_desugar("list", &[], s()).unwrap();
+crates/lykn-lang/src/expander/pass2.rs:790:        let result = try_desugar("list", &[atom("a")], s()).unwrap();
+crates/lykn-lang/src/expander/pass2.rs:803:        let result = try_desugar("list", &[atom("a"), atom("b")], s()).unwrap();
+crates/lykn-lang/src/expander/pass2.rs:821:        let result = try_desugar("as", &[atom("foo"), atom("bar")], s()).unwrap();
+crates/lykn-lang/src/expander/pass2.rs:835:        assert!(try_desugar("as", &[complex, atom("bar")], s()).is_none());
+crates/lykn-lang/src/expander/pass2.rs:840:        assert!(try_desugar("define", &[atom("x"), num(1.0)], s()).is_none());
+crates/lykn-lang/src/expander/pass2.rs:897:    // try_desugar — additional edge cases
+crates/lykn-lang/src/expander/pass2.rs:902:        assert!(try_desugar("car", &[], s()).is_none());
+crates/lykn-lang/src/expander/pass2.rs:903:        assert!(try_desugar("car", &[atom("a"), atom("b")], s()).is_none());
+crates/lykn-lang/src/expander/pass2.rs:908:        assert!(try_desugar("cdr", &[], s()).is_none());
+crates/lykn-lang/src/expander/pass2.rs:909:        assert!(try_desugar("cdr", &[atom("a"), atom("b")], s()).is_none());
+crates/lykn-lang/src/expander/pass2.rs:914:        assert!(try_desugar("cadr", &[], s()).is_none());
+crates/lykn-lang/src/expander/pass2.rs:919:        assert!(try_desugar("cddr", &[], s()).is_none());
+crates/lykn-lang/src/expander/pass2.rs:924:        assert!(try_desugar("as", &[atom("a")], s()).is_none());
+crates/lykn-lang/src/expander/pass2.rs:925:        assert!(try_desugar("as", &[atom("a"), atom("b"), atom("c")], s()).is_none());
+crates/lykn-lang/src/expander/pass2.rs:931:        let result = try_desugar("list", &[atom("a"), atom("b"), atom("c")], s()).unwrap();
+$ rg -n "expandClassMember|replaceChildPath|replaceArrayPath" packages/lang/expander-core.js crates/lykn-lang/embedded/packages/lang/expander-core.js
+packages/lang/expander-core.js:1036:    values = replaceArrayPath(values, path, expanded);
+packages/lang/expander-core.js:1061:function replaceArrayPath(values, path, replacement) {
+packages/lang/expander-core.js:1070:  replaceArrayPath(nested, rest, replacement);
+packages/lang/expander-core.js:1086:    out.push(expandClassMember(form, member, classEnv, use));
+packages/lang/expander-core.js:1091:function expandClassMember(root, layout, env, use) {
+packages/lang/expander-core.js:1097:    const expanded = expandClassMember(root, layout.inner, env, use);
+packages/lang/expander-core.js:1117:    values = replaceArrayPath(values, relativePath, expandAt(original, methodEnv, "Value"));
+crates/lykn-lang/embedded/packages/lang/expander-core.js:1036:    values = replaceArrayPath(values, path, expanded);
+crates/lykn-lang/embedded/packages/lang/expander-core.js:1061:function replaceArrayPath(values, path, replacement) {
+crates/lykn-lang/embedded/packages/lang/expander-core.js:1070:  replaceArrayPath(nested, rest, replacement);
+crates/lykn-lang/embedded/packages/lang/expander-core.js:1086:    out.push(expandClassMember(form, member, classEnv, use));
+crates/lykn-lang/embedded/packages/lang/expander-core.js:1091:function expandClassMember(root, layout, env, use) {
+crates/lykn-lang/embedded/packages/lang/expander-core.js:1097:    const expanded = expandClassMember(root, layout.inner, env, use);
+crates/lykn-lang/embedded/packages/lang/expander-core.js:1117:    values = replaceArrayPath(values, relativePath, expandAt(original, methodEnv, "Value"));
+$ rg -n "b2a_native_|compile_source_bound|compile_source_kernel_escaped|package_names|public_tests" crates/lykn-cli/src/compile.rs crates/lykn-cli/tests/macro_dependencies.rs
+crates/lykn-cli/src/compile.rs:528:    fn compile_source_bound_macro_result_head_dispatches_as_call() {
+crates/lykn-cli/src/compile.rs:542:    fn compile_source_bound_genfunc_call_ignores_unrelated_macro_presence() {
+crates/lykn-cli/src/compile.rs:557:    fn compile_source_kernel_escaped_named_function_scopes_parameter() {
+crates/lykn-cli/src/compile.rs:570:    fn compile_source_kernel_escaped_named_generator_scopes_parameter() {
+crates/lykn-cli/tests/macro_dependencies.rs:356:fn b2a_native_macro_results_reenter_bound_and_sugar_priority() {
+crates/lykn-cli/tests/macro_dependencies.rs:379:fn b2a_native_macro_head_chain_limit_remains_a_diagnostic() {
+crates/lykn-cli/tests/macro_dependencies.rs:411:fn b2a_native_kernel_named_function_executes_parameter_call() {
+crates/lykn-cli/tests/macro_dependencies.rs:421:fn b2a_native_kernel_named_function_name_is_recursive_scope() {
+crates/lykn-cli/tests/macro_dependencies.rs:826:    let package_names = [
+crates/lykn-cli/tests/macro_dependencies.rs:842:    for name in package_names {
+crates/lykn-cli/tests/macro_dependencies.rs:885:    let public_tests = [
+crates/lykn-cli/tests/macro_dependencies.rs:897:        .args(&public_tests);
+$ sed -n "700,920p" crates/lykn-cli/tests/macro_dependencies.rs
+    );
+    assert_eq!(runtime.stdout, EXPECTED_RUNTIME);
+    assert!(runtime.stderr.is_empty());
+}
+
+#[test]
+fn m5_blocked_xdg_materialization_returns_io_error_without_output() {
+    let fixture = TempDir::new().expect("create blocked-cache fixture");
+    let blocked_xdg = fixture.path().join("xdg-cache-is-a-file");
+    fs::write(&blocked_xdg, b"owned blocked cache path\n")
+        .expect("create regular-file XDG blocker");
+    let source_path = write_source(fixture.path(), "twice.lykn", TWICE_SOURCE);
+    let source = fs::read(&source_path).expect("read blocked-cache source fixture");
+    let output_path = fixture.path().join("m5.js");
+
+    save_receipt("m5-blocked-xdg", "source.bin", &source);
+    let mut command = cli();
+    command
+        .current_dir(fixture.path())
+        .env("XDG_CACHE_HOME", &blocked_xdg)
+        .arg("compile")
+        .arg(&source_path)
+        .arg("-o")
+        .arg(&output_path);
+    record_command("m5-blocked-xdg", &command, Some(&blocked_xdg));
+    let result = command
+        .output()
+        .expect("start blocked-cache compile process");
+    record_output("m5-blocked-xdg", &result);
+    let generated = fs::read(&output_path).ok();
+    let declaration_path = output_path.with_extension("d.ts");
+    let declaration = fs::read(&declaration_path).ok();
+    save_receipt(
+        "m5-blocked-xdg",
+        "artifacts.txt",
+        format!(
+            "js_exists={}\ndts_exists={}\njs={generated:?}\ndts={declaration:?}\n",
+            generated.is_some(),
+            declaration.is_some(),
+        )
+        .as_bytes(),
+    );
+
+    assert_eq!(
+        result.status.code(),
+        Some(1),
+        "M5 stderr: {:?}",
+        result.stderr
+    );
+    assert!(
+        String::from_utf8_lossy(&result.stderr).contains("I/O error"),
+        "M5 must render typed I/O failure, got {:?}",
+        result.stderr
+    );
+    assert!(
+        !String::from_utf8_lossy(&result.stderr).contains("panicked"),
+        "M5 must not panic, got {:?}",
+        result.stderr
+    );
+    assert!(result.stdout.is_empty(), "M5 stdout: {:?}", result.stdout);
+    assert!(generated.is_none(), "M5 created JavaScript output");
+    assert!(declaration.is_none(), "M5 created declaration output");
+}
+
+#[test]
+fn m6_embedded_compiler_payload_matches_canonical_and_runs_from_cold_cache() {
+    let fixture = TempDir::new().expect("create standalone embedded compiler fixture");
+    let standalone = fixture.path().join("standalone");
+    fs::create_dir_all(&standalone).expect("create standalone CLI directory");
+    let copied_cli = standalone.join("lykn");
+    fs::copy(env!("CARGO_BIN_EXE_lykn"), &copied_cli).expect("copy built standalone CLI");
+    let xdg = write_xdg(fixture.path());
+    let embedded_root = owned_embedded_root(&xdg);
+    let materialized_package = embedded_root.join("packages/lang");
+    assert!(
+        !embedded_root.exists(),
+        "M6 must start with a cold owned XDG cache"
+    );
+    assert!(
+        !standalone.join("packages/lang").exists(),
+        "M6 standalone cwd must not contain canonical package fallback"
+    );
+
+    let repository = Path::new(env!("CARGO_MANIFEST_DIR")).join("../..");
+    let fixture_source =
+        repository.join("test/fixtures/semantic-roles/adt-pattern-correctness.lykn");
+    let mut source = M6_EMBEDDED_TRIGGER.as_bytes().to_vec();
+    source.extend(fs::read(&fixture_source).expect("read nested and zero-field product fixture"));
+    let source_path = standalone.join("embedded-delivery.lykn");
+    fs::write(&source_path, &source).expect("write embedded delivery trigger source");
+    let output_path = standalone.join("embedded-delivery.js");
+    save_receipt("m6-embedded-delivery", "source.bin", &source);
+    let mut compile = Command::new(&copied_cli);
+    compile
+        .current_dir(&standalone)
+        .env("XDG_CACHE_HOME", &xdg)
+        .env("DENO_DIR", deno_cache_dir())
+        .arg("compile")
+        .arg(&source_path)
+        .arg("-o")
+        .arg(&output_path);
+    record_command("m6-embedded-delivery", &compile, Some(&xdg));
+    let compiled = compile.output().expect("run copied standalone CLI");
+    record_output("m6-embedded-delivery", &compiled);
+    let generated = fs::read(&output_path).ok();
+    save_receipt(
+        "m6-embedded-delivery",
+        "generated.js",
+        generated.as_deref().unwrap_or_default(),
+    );
+    assert_eq!(
+        compiled.status.code(),
+        Some(0),
+        "M6 compile stderr: {:?}",
+        compiled.stderr
+    );
+    assert!(
+        generated.is_some(),
+        "M6 standalone CLI omitted generated JavaScript"
+    );
+    assert!(
+        materialized_package
+            .join("compiler-private-atoms.js")
+            .is_file()
+    );
+
+    let package_names = [
+        "binding.js",
+        "classifier.js",
+        "compiler.js",
+        "compiler-private-atoms.js",
+        "expander-core.js",
+        "function-clauses.js",
+        "host-invocation-kernel.js",
+        "identifier.js",
+        "lexical-regions.js",
+        "protected-host.js",
+        "reserved-words.js",
+        "surface-helpers.js",
+        "surface.js",
+        "surface-type-context.js",
+    ];
+    for name in package_names {
+        let canonical = repository.join("packages/lang").join(name);
+        let embedded = repository
+            .join("crates/lykn-lang/embedded/packages/lang")
+            .join(name);
+        let materialized = materialized_package.join(name);
+        let canonical_bytes = fs::read(&canonical).expect("read canonical compiler file");
+        let embedded_bytes = fs::read(&embedded).expect("read embedded compiler file");
+        let materialized_bytes = fs::read(&materialized).expect("read materialized compiler file");
+        assert_eq!(embedded_bytes, canonical_bytes, "embedded drift in {name}");
+        assert_eq!(
+            materialized_bytes, canonical_bytes,
+            "materialized drift in {name}"
+        );
+        save_receipt(
+            &format!("m6-embedded-delivery-{name}"),
+            "comparison.txt",
+            format!(
+                "canonical_equals_embedded=true\ncanonical_equals_materialized=true\nbytes={}\n",
+                canonical_bytes.len()
+            )
+            .as_bytes(),
+        );
+    }
+
+    let deno = std::env::var_os("LYKN_TEST_DENO").unwrap_or_else(|| OsString::from("deno"));
+    let deno_dir = deno_cache_dir();
+    let config_path = fixture.path().join("embedded-public-deno.json");
+    let materialized_url = format!(
+        "file://{}/",
+        materialized_package
+            .canonicalize()
+            .expect("canonicalize materialized package")
+            .display()
+    );
+    fs::write(
+        &config_path,
+        serde_json::to_vec(&serde_json::json!({
+            "imports": { "lang/": materialized_url }
+        }))
+        .expect("serialize materialized-package import map"),
+    )
+    .expect("write strict public Deno import map");
+    let public_tests = [
+        repository.join("test/forms/embedded-adt-pattern.test.js"),
+        repository.join("test/forms/surface-type-context.test.js"),
+        repository.join("test/forms/reserved-binding-output.test.js"),
+        repository.join("test/expander/lexical-regions.test.js"),
+    ];
+    let mut strict_public = Command::new(deno);
+    strict_public
+        .current_dir(&repository)
+        .env("DENO_DIR", &deno_dir)
+        .args(["test", "-A", "--cached-only", "--no-prompt", "--config"])
+        .arg(&config_path)
+        .args(&public_tests);
+    record_command("m6-embedded-public-strict", &strict_public, None);
+    let public_result = strict_public
+        .output()
+        .expect("run materialized strict public tests");
+    record_output("m6-embedded-public-strict", &public_result);
+    save_receipt(
+        "m6-embedded-public-strict",
+        "config.json",
+        &fs::read(&config_path).expect("read strict public import map"),
+    );
+    assert_eq!(
+        public_result.status.code(),
+        Some(0),
+        "M6 materialized strict public tests failed: {:?}",
+        public_result.stderr
+    );
+    let public_output = format!(
+        "{}{}",
+        String::from_utf8_lossy(&public_result.stdout),
+        String::from_utf8_lossy(&public_result.stderr)
+    );
+    assert!(
+        public_output.contains("ok | 39 passed | 0 failed"),

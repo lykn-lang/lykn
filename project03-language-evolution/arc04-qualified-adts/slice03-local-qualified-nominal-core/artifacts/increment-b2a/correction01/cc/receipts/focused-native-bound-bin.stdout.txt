@@ -1,0 +1,25 @@
+
+running 2 tests
+test compile::tests::compile_source_bound_genfunc_call_ignores_unrelated_macro_presence ... FAILED
+test compile::tests::compile_source_bound_macro_result_head_dispatches_as_call ... FAILED
+
+failures:
+
+---- compile::tests::compile_source_bound_genfunc_call_ignores_unrelated_macro_presence stdout ----
+
+thread 'compile::tests::compile_source_bound_genfunc_call_ignores_unrelated_macro_presence' (106241142) panicked at crates/lykn-cli/src/compile.rs:540:14:
+called `Result::unwrap()` on an `Err` value: Analysis("1:19: error: expected type keyword or destructuring pattern at position 0")
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- compile::tests::compile_source_bound_macro_result_head_dispatches_as_call stdout ----
+
+thread 'compile::tests::compile_source_bound_macro_result_head_dispatches_as_call' (106241143) panicked at crates/lykn-cli/src/compile.rs:531:14:
+called `Result::unwrap()` on an `Err` value: Analysis("1:73: error: expected type keyword or destructuring pattern at position 0")
+
+
+failures:
+    compile::tests::compile_source_bound_genfunc_call_ignores_unrelated_macro_presence
+    compile::tests::compile_source_bound_macro_result_head_dispatches_as_call
+
+test result: FAILED. 0 passed; 2 failed; 0 ignored; 0 measured; 191 filtered out; finished in 0.16s
+

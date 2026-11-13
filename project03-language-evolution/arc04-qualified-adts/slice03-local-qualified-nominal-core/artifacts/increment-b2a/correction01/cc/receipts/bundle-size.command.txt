@@ -1,0 +1,3 @@
+cwd=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+env=DENO_DIR=/Users/oubiwann/Library/Caches/deno XDG_CACHE_HOME=/tmp/lykn-b2a-correction01-xdg NPM_CONFIG_CACHE=/tmp/lykn-b2a-correction01-npm TMPDIR=/tmp/lykn-b2a-correction01-tmp
+argv=make bundle-size-check

@@ -1,0 +1,9 @@
+
+running 4 tests
+test b2a_native_kernel_named_function_name_is_recursive_scope ... ok
+test b2a_native_kernel_named_function_executes_parameter_call ... ok
+test b2a_native_macro_results_reenter_bound_and_sugar_priority ... ok
+test b2a_native_macro_head_chain_limit_remains_a_diagnostic ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 6 filtered out; finished in 2.12s
+

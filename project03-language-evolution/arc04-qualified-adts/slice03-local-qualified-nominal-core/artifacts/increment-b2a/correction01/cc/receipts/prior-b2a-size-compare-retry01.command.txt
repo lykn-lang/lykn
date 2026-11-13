@@ -1,0 +1,3 @@
+cwd=/tmp/lykn-b2a-prior-source-bcb98482
+env=DENO_DIR=/Users/oubiwann/Library/Caches/deno
+argv=deno run -A --cached-only --config /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/project.json /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/scripts/bundle-size.js

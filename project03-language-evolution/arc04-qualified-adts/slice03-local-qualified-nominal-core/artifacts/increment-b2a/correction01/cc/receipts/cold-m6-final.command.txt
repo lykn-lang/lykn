@@ -1,0 +1,4 @@
+cwd=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+env=DENO_DIR=/Users/oubiwann/Library/Caches/deno XDG_CACHE_HOME=/tmp/lykn-b2a-correction01-xdg NPM_CONFIG_CACHE=/tmp/lykn-b2a-correction01-npm TMPDIR=/tmp/lykn-b2a-correction01-tmp LYKN_MACRO_DEPENDENCIES_EVIDENCE_DIR=<canonical receipts>/m6-final
+argv=cargo test -p lykn-cli --test macro_dependencies m6_embedded_compiler_payload_matches_canonical_and_runs_from_cold_cache
+source_head=804be5daace5b0cb708ad21b3beb7eecbd5d00fa

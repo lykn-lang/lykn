@@ -1,0 +1,4 @@
+cwd=<temporary git-archive of bcb98482fa9b32aa6f58df3e2249123e16924271:packages>
+env=DENO_DIR=/Users/oubiwann/Library/Caches/deno
+argv=deno run --no-prompt --cached-only --config /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/project.json /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/scripts/bundle-size.js
+comparison=current shared Deno/esbuild/script/config versus prior-iteration09 package sources

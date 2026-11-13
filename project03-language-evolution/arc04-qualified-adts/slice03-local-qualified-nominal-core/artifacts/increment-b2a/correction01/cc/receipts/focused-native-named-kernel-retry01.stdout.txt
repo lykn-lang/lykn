@@ -1,0 +1,7 @@
+
+running 2 tests
+test compile::tests::compile_source_kernel_escaped_named_function_scopes_parameter ... ok
+test compile::tests::compile_source_kernel_escaped_named_generator_scopes_parameter ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 192 filtered out; finished in 0.00s
+

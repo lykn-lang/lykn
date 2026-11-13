@@ -1,0 +1,4 @@
+   Compiling lykn-cli v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.46s
+     Running unittests src/main.rs (target/debug/deps/lykn-633f39fab2860422)
+error: test failed, to rerun pass `-p lykn-cli --bin lykn`

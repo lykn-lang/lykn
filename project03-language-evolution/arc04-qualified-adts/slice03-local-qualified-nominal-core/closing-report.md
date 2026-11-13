@@ -294,3 +294,35 @@ failed. CC's1536 count above is a reporting error; preserve the original report
 and use1546 for this run. This reconciliation does not turn attestation into
 independent evidence. B2-ID-NAME remains unanswered; dependent B2b owner/name
 lookup is held while B2a verification continues.
+
+## B2a correction01 — CC proposed-done handoff
+
+Independent Sol review is pending; this report records CC evidence only. Correction01 addresses the three reproduced iteration10 findings at source commit `804be5daace5b0cb708ad21b3beb7eecbd5d00fa`, tree `d25f2b660d3de2e6f52b8ee890172f223c9abc80`, parent `bcb98482fa9b32aa6f58df3e2249123e16924271`, branch `codex/qualified-adt-core`. The seven-path authorized source inventory, command/environment receipts, readback, prior-failure reconciliation, and row walk are in [`artifacts/increment-b2a/correction01/cc/index.md`](artifacts/increment-b2a/correction01/cc/index.md). Source status is clean; ownership returns to root for separate Sol review.
+
+Native pass2 now rechecks actual bound/form/sugar/macro dispatch for each same-root result without resetting its macro budget or location. Bound multi-clause-genfunc-shaped calls are ordinary calls, while actual unbound multi-clause generators retain the diagnostic. Named kernel:function/function* forms keep their name and parameter roles. Public class-method defaults use the array-path rebuild helper; method, constructor and static-wrapper defaults execute without mutating source or expanding the macro twice. No new source syntax/API or B2b policy is introduced.
+
+Focused current-source public tests passed 11/11 with explicit `lang/` mapping to this worktree. Native compile/runtime controls passed for bound-result and sugar priority, paired two-clause genfunc calls, multi-step and bounded macro chains, named kernel function/generator parameters, and recursive own-name dispatch. Final cold M6 on the committed pin passed exit0, all14 canonical/embedded/materialized module comparisons matched, and the materialized strict public suite passed39/39. Fresh `make check` retry01 passed exit0 with1547 product cases/67 steps and482 documentation cases/0 failures. The prior first full attempt failed in Clippy before tests/docs and is retained. Post-commit citation validation passed64 documents/601 accepted historical citations. The browser bundle measured46,418 gzip bytes against the80KiB budget.
+
+The receipt index preserves the two initial selector misses, invalid test-fixture/assertion attempts, unsuitable recursive-macro probe, first format-check output, and first Clippy failure with their numeric statuses. They remain unchanged. The evidence-path correction and retrospective command-recording limits are disclosed. This is CC proposed-done, not CDC acceptance. B2-LX remains pending; B2b, B2-ID-NAME, OwnerRef/CaseRef, nominal activation, purity, LC-02–08 and S03 remain open.
+
+### Correction01 bundle-size reconciliation
+
+The iteration09 prose above reports45,457 gzip bytes. The immutable original `bundle-size-check.stdout.txt` is46,457 (baseline27,630; +18,827); preserve the prose history and use the raw receipt. A same-script/config/tool measurement against a temporary archive of prior source pin `bcb98482fa9b32aa6f58df3e2249123e16924271` again yielded46,457. Correction01 committed source yields46,418, 39 bytes lower and within80KiB. Root will reconcile the current status append-only. Full details and raw attempt/retry receipts are in [`artifacts/increment-b2a/correction01/cc/index.md`](artifacts/increment-b2a/correction01/cc/index.md).
+## Root corrected-candidate handoff — 2026-11-13
+
+Root verified804be5daace5b0cb708ad21b3beb7eecbd5d00fa, tree
+d25f2b660d3de2e6f52b8ee890172f223c9abc80, clean source, exact seven authorized
+paths and contiguous co-author trailers, then transferred exclusive source/build
+ownership to separate Sol6.1High. The correction01 CC index and raw failed/final
+attempts are retained. Its1547/67step product,482 docs,14/39 cold delivery,
+citation64/601 and46418-byte gzip results are CC attestation pending independent
+verification, not B2-LX closure. Earlier independent HOLD remains intact.
+
+Root reconciled one more numerical reporting error against the original raw
+iteration09 bundle-size stdout: **46457**, not45457, gzip bytes. Its recorded
+27630-byte baseline plus18827-byte delta also gives46457. Preserve the original
+prose and root commentary as historical errors; current corrected source46418
+is39 bytes smaller. No unsupported extra-size explanation is inferred. The
+correction index retains the same-script prior-pin comparison and its first
+permission-limited failed attempt. Native/public source scope remains B2-LX;
+typed-owner/name implementation is still held on unanswered B2-ID-NAME.

@@ -1,0 +1,35 @@
+commit 804be5daace5b0cb708ad21b3beb7eecbd5d00fa
+Author:     Duncan McGreggor <oubiwann@gmail.com>
+AuthorDate: Thu Nov 12 23:57:01 2026 -0600
+Commit:     Duncan McGreggor <oubiwann@gmail.com>
+CommitDate: Thu Nov 12 23:57:01 2026 -0600
+
+    fix(expander): correct B2a lexical dispatch paths
+    
+    Reapply native lexical, diagnostic, sugar, and macro priority to every
+    same-root result while retaining a single chain budget. Fix kernel-qualified
+    named function regions and public class-default path replacement. Add native
+    runtime and canonical public regression coverage.
+    
+    Co-authored-by: Codex <noreply@openai.com>
+    Co-authored-by: Billo AI <ai-engineering@billo.systems>
+fix(expander): correct B2a lexical dispatch paths
+
+Reapply native lexical, diagnostic, sugar, and macro priority to every
+same-root result while retaining a single chain budget. Fix kernel-qualified
+named function regions and public class-default path replacement. Add native
+runtime and canonical public regression coverage.
+
+Co-authored-by: Codex <noreply@openai.com>
+Co-authored-by: Billo AI <ai-engineering@billo.systems>
+
+crates/lykn-cli/src/compile.rs
+crates/lykn-cli/tests/macro_dependencies.rs
+crates/lykn-lang/embedded/packages/lang/expander-core.js
+crates/lykn-lang/src/expander/pass2.rs
+crates/lykn-lang/src/lexical_regions.rs
+packages/lang/expander-core.js
+test/expander/lexical-regions.test.js
+804be5daace5b0cb708ad21b3beb7eecbd5d00fa
+d25f2b660d3de2e6f52b8ee890172f223c9abc80
+mirror_cmp=0

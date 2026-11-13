@@ -1,0 +1,32 @@
+   Compiling lykn-lang v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang)
+   Compiling lykn-cli v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli)
+   Compiling lykn v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn)
+    Finished `release` profile [optimized] target(s) in 8.40s
+    Checking lykn-lang v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang)
+error: this loop could be written as a `while let` loop
+   --> crates/lykn-lang/src/expander/pass2.rs:88:13
+    |
+ 88 | /             loop {
+ 89 | |                 let SExpr::List {
+ 90 | |                     values: current_values,
+ 91 | |                     span: current_span,
+...   |
+157 | |                 break;
+158 | |             }
+    | |_____________^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.97.0/index.html#while_let_loop
+    = note: `-D clippy::while-let-loop` implied by `-D warnings`
+    = help: to override `-D warnings` add `#[allow(clippy::while_let_loop)]`
+help: try
+    |
+ 88 ~             while let SExpr::List {
+ 89 +                     values: current_values,
+ 90 +                     span: current_span,
+ 91 +                 } = &current { .. }
+    |
+
+error: could not compile `lykn-lang` (lib) due to 1 previous error
+warning: build failed, waiting for other jobs to finish...
+error: could not compile `lykn-lang` (lib test) due to 1 previous error
+make: *** [lint] Error 101
