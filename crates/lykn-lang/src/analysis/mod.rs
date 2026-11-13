@@ -261,7 +261,7 @@ impl Analyze for SurfaceForm {
                 // Walk the value expression first so references to earlier
                 // bindings are recorded before we introduce this one.
                 track_references_in_expr(value, scope);
-                if let Some(atom) = name.as_atom() {
+                if let Some(atom) = name.as_atom().filter(|name| *name != "_") {
                     scope.introduce(atom, *span, false, false);
                 }
             }
@@ -291,7 +291,9 @@ impl Analyze for SurfaceForm {
                     scope.enter_scope();
                     for param in &clause.args {
                         for tp in param.typed_params() {
-                            scope.introduce(&tp.name, tp.name_span, false, false);
+                            if tp.name != "_" {
+                                scope.introduce(&tp.name, tp.name_span, false, false);
+                            }
                         }
                     }
                     // Walk the body so references to params (and outer
@@ -343,7 +345,9 @@ impl Analyze for SurfaceForm {
                     scope.enter_scope();
                     for param in &clause.args {
                         for tp in param.typed_params() {
-                            scope.introduce(&tp.name, tp.name_span, false, false);
+                            if tp.name != "_" {
+                                scope.introduce(&tp.name, tp.name_span, false, false);
+                            }
                         }
                     }
                     for expr in &clause.body {
@@ -362,7 +366,9 @@ impl Analyze for SurfaceForm {
                 scope.enter_scope();
                 for param in params {
                     for tp in param.typed_params() {
-                        scope.introduce(&tp.name, tp.name_span, false, false);
+                        if tp.name != "_" {
+                            scope.introduce(&tp.name, tp.name_span, false, false);
+                        }
                     }
                 }
                 for expr in body {
@@ -374,7 +380,9 @@ impl Analyze for SurfaceForm {
                 scope.enter_scope();
                 for param in params {
                     for tp in param.typed_params() {
-                        scope.introduce(&tp.name, tp.name_span, false, false);
+                        if tp.name != "_" {
+                            scope.introduce(&tp.name, tp.name_span, false, false);
+                        }
                     }
                 }
                 for expr in body {

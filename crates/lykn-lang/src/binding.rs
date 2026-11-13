@@ -1151,13 +1151,24 @@ fn pattern_occurrences_with_grammar<'a>(
                                             pattern_occurrences_with_grammar(n, kind, grammar, out);
                                         }
                                     }
+                                    "spread"
+                                        if grammar == PatternGrammar::BindingPattern
+                                            && kind != BindingKind::CatchBinding =>
+                                    {
+                                        if let Some(n) = inner.get(1) {
+                                            pattern_occurrences_with_grammar(n, kind, grammar, out);
+                                        }
+                                    }
                                     "default" => {
                                         let index = if grammar == PatternGrammar::TypedParameter {
                                             2
                                         } else {
                                             1
                                         };
-                                        if let Some(n) = inner.get(index) {
+                                        let consumed = grammar != PatternGrammar::BindingPattern
+                                            || kind == BindingKind::CatchBinding
+                                            || inner.get(2).is_some();
+                                        if consumed && let Some(n) = inner.get(index) {
                                             pattern_occurrences_with_grammar(n, kind, grammar, out);
                                         }
                                     }
@@ -1658,6 +1669,48 @@ mod tests {
             validate_reserved_names(&read("(bind first 0 second (bind eval 1))").unwrap())[0]
                 .message
                 .contains("strict-mode binding identifier")
+        );
+    }
+
+    #[test]
+    fn binding_pattern_projection_matches_consumed_spread_and_default_slots() {
+        let object = read("(object (spread rest) (default absent))").expect("parse object");
+        assert_eq!(
+            binding_names_in_pattern(&object[0], BindingKind::Bind)
+                .into_iter()
+                .map(|site| site.name)
+                .collect::<Vec<_>>(),
+            vec!["rest"]
+        );
+
+        let array = read("(array first (spread remaining))").expect("parse array");
+        assert_eq!(
+            binding_names_in_pattern(&array[0], BindingKind::Bind)
+                .into_iter()
+                .map(|site| site.name)
+                .collect::<Vec<_>>(),
+            vec!["first", "remaining"]
+        );
+
+        let default = read("(object (default present value))").expect("parse default");
+        assert_eq!(
+            binding_names_in_pattern(&default[0], BindingKind::Bind)
+                .into_iter()
+                .map(|site| site.name)
+                .collect::<Vec<_>>(),
+            vec!["present"]
+        );
+    }
+
+    #[test]
+    fn catch_binding_projection_keeps_legacy_expression_object_extent() {
+        let default = read("(object (default array))").expect("parse catch pattern");
+        assert_eq!(
+            binding_names_in_pattern(&default[0], BindingKind::CatchBinding)
+                .into_iter()
+                .map(|site| site.name)
+                .collect::<Vec<_>>(),
+            vec!["array"]
         );
     }
 }

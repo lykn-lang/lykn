@@ -5,6 +5,7 @@ use crate::ast::surface::{
     FuncClause, GenfuncClause, MatchClause, ParamShape, Pattern, SurfaceForm, ThreadingStep,
     TypeAnnotation,
 };
+use crate::binding::{BindingKind, binding_names_in_pattern};
 use crate::codegen::names::to_js_identifier;
 use crate::diagnostics::{Diagnostic, Severity};
 use crate::error::LyknError;
@@ -19,7 +20,7 @@ use super::context::{EmitterContext, ExprContext};
 use super::contracts::{
     emit_post_check_with_predicate, emit_pre_check_with_predicate, replace_tilde,
 };
-use super::type_checks::{emit_return_type_check, emit_type_check};
+use super::type_checks::{emit_return_type_check, emit_type_check, emit_type_check_value};
 
 fn codegen_error(message: impl Into<String>, span: Span) -> LyknError {
     LyknError::Codegen(Diagnostic {
@@ -534,16 +535,22 @@ fn emit_form_inner(
         SurfaceForm::Export {
             inner, extra_args, ..
         } => {
-            // Emit the inner surface form to kernel, then wrap in (export ...)
-            let inner_kernel = emit_form_inner(inner, ctx, registry);
-            inner_kernel
-                .into_iter()
-                .map(|k| {
-                    let mut items = vec![atom("export"), k];
-                    items.extend(extra_args.iter().cloned());
-                    list(items)
-                })
-                .collect()
+            if let Some(names) = direct_bind_export_names(inner) {
+                let mut emitted = emit_form_inner(inner, ctx, registry);
+                emitted.push(emit_exports(&names));
+                emitted
+            } else {
+                // Preserve existing wrapper behavior for all other export forms.
+                let inner_kernel = emit_form_inner(inner, ctx, registry);
+                inner_kernel
+                    .into_iter()
+                    .map(|k| {
+                        let mut items = vec![atom("export"), k];
+                        items.extend(extra_args.iter().cloned());
+                        list(items)
+                    })
+                    .collect()
+            }
         }
         SurfaceForm::Class {
             name,
@@ -2819,6 +2826,7 @@ fn emit_bind(
     registry: &TypeRegistry,
 ) -> Vec<SExpr> {
     let saved_ctx = ctx.expr_context;
+    let emitted_name = lower_discard_binding_pattern(name, ctx);
     let mut prefix = Vec::new();
     let emitted_value =
         if ctx.direct_return_region && saved_ctx == ExprContext::Statement && name.is_atom() {
@@ -2842,7 +2850,7 @@ fn emit_bind(
             emitted
         };
     ctx.expr_context = saved_ctx;
-    let const_form = list(vec![atom("const"), name.clone(), emitted_value]);
+    let const_form = list(vec![atom("const"), emitted_name.clone(), emitted_value]);
     prefix.push(const_form);
 
     let type_kw = match type_ann {
@@ -2870,10 +2878,132 @@ fn emit_bind(
 
     // Non-literal value: emit const + runtime type check
     let name_str = name.as_atom().unwrap_or("<expr>");
-    if let Some(check) = emit_type_check(name_str, type_kw, "bind", "binding", span) {
+    let check = if name.is_atom() {
+        emit_type_check_value(&emitted_name, name_str, type_kw, "bind", "binding", span)
+    } else {
+        // Preserve the existing unsupported typed-pattern check behavior.
+        emit_type_check(name_str, type_kw, "bind", "binding", span)
+    };
+    if let Some(check) = check {
         prefix.push(check);
     }
     prefix
+}
+
+/// Lower only actual binding-pattern positions; expressions and object keys stay data.
+fn lower_discard_binding_pattern(expr: &SExpr, ctx: &mut EmitterContext) -> SExpr {
+    match expr {
+        SExpr::Atom(_) if expr.as_atom() == Some("_") => {
+            SExpr::completion_value_atom(ctx.next_completion_value_id(), expr.span())
+        }
+        SExpr::List { values, span }
+            if values.first().and_then(SExpr::as_atom) == Some("object") =>
+        {
+            let mut lowered = Vec::with_capacity(values.len());
+            lowered.push(values[0].clone());
+            for member in &values[1..] {
+                match member {
+                    SExpr::Atom(_) if member.as_atom() == Some("_") => {
+                        lowered.push(list(vec![
+                            atom("alias"),
+                            atom("_"),
+                            lower_discard_binding_pattern(member, ctx),
+                        ]));
+                    }
+                    SExpr::List {
+                        values: parts,
+                        span: part_span,
+                    } if !parts.is_empty() => match parts[0].as_atom() {
+                        Some("default") if parts.len() >= 3 => {
+                            if parts[1].as_atom() == Some("_") {
+                                let local = SExpr::completion_value_atom(
+                                    ctx.next_completion_value_id(),
+                                    parts[1].span(),
+                                );
+                                lowered.push(list(vec![
+                                    atom("alias"),
+                                    atom("_"),
+                                    local,
+                                    parts[2].clone(),
+                                ]));
+                                continue;
+                            }
+                            let mut mapped = parts.clone();
+                            mapped[1] = lower_discard_binding_pattern(&parts[1], ctx);
+                            lowered.push(SExpr::List {
+                                values: mapped,
+                                span: *part_span,
+                            });
+                        }
+                        Some("alias") if parts.len() >= 3 => {
+                            let mut mapped = parts.clone();
+                            mapped[2] = lower_discard_binding_pattern(&parts[2], ctx);
+                            lowered.push(SExpr::List {
+                                values: mapped,
+                                span: *part_span,
+                            });
+                        }
+                        Some("rest" | "spread") if parts.len() >= 2 => {
+                            let mut mapped = parts.clone();
+                            mapped[1] = lower_discard_binding_pattern(&parts[1], ctx);
+                            lowered.push(SExpr::List {
+                                values: mapped,
+                                span: *part_span,
+                            });
+                        }
+                        _ => lowered.push(member.clone()),
+                    },
+                    _ => lowered.push(member.clone()),
+                }
+            }
+            SExpr::List {
+                values: lowered,
+                span: *span,
+            }
+        }
+        SExpr::List { values, span }
+            if values.first().and_then(SExpr::as_atom) == Some("array") =>
+        {
+            let mut lowered = Vec::with_capacity(values.len());
+            lowered.push(values[0].clone());
+            for member in &values[1..] {
+                match member {
+                    SExpr::List {
+                        values: parts,
+                        span: part_span,
+                    } if !parts.is_empty() => match parts[0].as_atom() {
+                        Some("default" | "rest" | "spread") if parts.len() >= 2 => {
+                            let mut mapped = parts.clone();
+                            mapped[1] = lower_discard_binding_pattern(&parts[1], ctx);
+                            lowered.push(SExpr::List {
+                                values: mapped,
+                                span: *part_span,
+                            });
+                        }
+                        Some("alias") if parts.len() >= 3 => {
+                            let mut mapped = parts.clone();
+                            mapped[2] = lower_discard_binding_pattern(&parts[2], ctx);
+                            lowered.push(SExpr::List {
+                                values: mapped,
+                                span: *part_span,
+                            });
+                        }
+                        Some("object" | "array") => {
+                            lowered.push(lower_discard_binding_pattern(member, ctx))
+                        }
+                        _ => lowered.push(member.clone()),
+                    },
+                    // A bare array `_` denotes a hole and consumes no value binding.
+                    _ => lowered.push(member.clone()),
+                }
+            }
+            SExpr::List {
+                values: lowered,
+                span: *span,
+            }
+        }
+        _ => expr.clone(),
+    }
 }
 
 fn emit_bind_group(
@@ -2899,6 +3029,24 @@ fn emit_exports(names: &[SExpr]) -> SExpr {
     let mut name_list = vec![atom("names")];
     name_list.extend(names.iter().cloned());
     list(vec![atom("export"), list(name_list)])
+}
+
+/// Project only original source binding names for an inline bind export.
+fn direct_bind_export_names(form: &SurfaceForm) -> Option<Vec<SExpr>> {
+    let patterns: Vec<&SExpr> = match form {
+        SurfaceForm::Bind { name, .. } => vec![name],
+        SurfaceForm::BindGroup { bindings, .. } => {
+            bindings.iter().map(|binding| &binding.name).collect()
+        }
+        _ => return None,
+    };
+    Some(
+        patterns
+            .into_iter()
+            .flat_map(|pattern| binding_names_in_pattern(pattern, BindingKind::Bind))
+            .map(|site| SExpr::atom(site.name, site.span))
+            .collect(),
+    )
 }
 
 /// Return the JS type name for a literal `SExpr`, or `None` if it is not a
@@ -3381,111 +3529,206 @@ fn emit_type(
 // ParamShape helpers
 // ---------------------------------------------------------------------------
 
-/// Convert a ParamShape to kernel parameter name nodes.
-fn param_to_kernel_names(p: &ParamShape) -> Vec<SExpr> {
-    match p {
-        ParamShape::Simple(tp) => {
-            if tp.is_rest {
-                vec![list(vec![atom("rest"), atom(&tp.name)])]
-            } else if let Some(ref val) = tp.default_value {
-                vec![list(vec![atom("default"), atom(&tp.name), val.clone()])]
-            } else {
-                vec![atom(&tp.name)]
-            }
-        }
-        ParamShape::DestructuredObject { fields, .. } => {
-            let mut items = vec![atom("object")];
-            items.extend(fields.iter().map(|f| match f {
-                DestructuredField::Simple(tp) => {
-                    if let Some(ref val) = tp.default_value {
-                        list(vec![atom("default"), atom(&tp.name), val.clone()])
-                    } else {
-                        atom(&tp.name)
-                    }
-                }
-                DestructuredField::Nested {
-                    alias_name,
-                    pattern,
-                    ..
-                } => {
-                    let inner = param_to_kernel_names(pattern);
-                    let inner_node = if inner.len() == 1 {
-                        inner.into_iter().next().unwrap()
-                    } else {
-                        list(inner)
-                    };
-                    list(vec![atom("alias"), atom(alias_name), inner_node])
-                }
-            }));
-            vec![list(items)]
-        }
-        ParamShape::DestructuredArray { elements, .. } => {
-            let mut items = vec![atom("array")];
-            items.extend(elements.iter().map(|e| match e {
-                ArrayParamElement::Typed(tp) => {
-                    if let Some(ref val) = tp.default_value {
-                        list(vec![atom("default"), atom(&tp.name), val.clone()])
-                    } else {
-                        atom(&tp.name)
-                    }
-                }
-                ArrayParamElement::Rest(tp) => list(vec![atom("rest"), atom(&tp.name)]),
-                ArrayParamElement::Skip(_) => atom("_"),
-                ArrayParamElement::Nested { pattern, .. } => {
-                    let inner = param_to_kernel_names(pattern);
-                    if inner.len() == 1 {
-                        inner.into_iter().next().unwrap()
-                    } else {
-                        list(inner)
-                    }
-                }
-                ArrayParamElement::NestedWithAlias {
-                    alias_name,
-                    pattern,
-                    ..
-                } => {
-                    let inner = param_to_kernel_names(pattern);
-                    let inner_node = if inner.len() == 1 {
-                        inner.into_iter().next().unwrap()
-                    } else {
-                        list(inner)
-                    };
-                    list(vec![atom("alias"), atom(alias_name), inner_node])
-                }
-            }));
-            vec![list(items)]
-        }
+/// A parameter pattern and the guards that consume the same prepared values.
+struct PreparedParam {
+    pattern: Vec<SExpr>,
+    checks: Vec<SExpr>,
+}
+
+fn parameter_name(tp: &crate::ast::surface::TypedParam, ctx: &mut EmitterContext) -> SExpr {
+    if tp.name == "_" {
+        SExpr::completion_value_atom(ctx.next_completion_value_id(), tp.name_span)
+    } else {
+        SExpr::atom(&tp.name, tp.name_span)
     }
 }
 
-/// Emit type checks for all typed fields in a ParamShape.
-fn param_type_checks(p: &ParamShape, func_name: &str, label: &str) -> Vec<SExpr> {
-    p.typed_params()
-        .iter()
-        .filter_map(|tp| {
-            if tp.type_ann.name == "any" {
-                return None;
+fn prepare_typed_param(
+    tp: &crate::ast::surface::TypedParam,
+    ctx: &mut EmitterContext,
+    func_name: &str,
+    label: &str,
+) -> (SExpr, Vec<SExpr>) {
+    let is_discard = tp.name == "_";
+    let name = parameter_name(tp, ctx);
+    let pattern = if tp.is_rest {
+        list(vec![atom("rest"), name.clone()])
+    } else if let Some(default) = &tp.default_value {
+        list(vec![atom("default"), name.clone(), default.clone()])
+    } else {
+        name.clone()
+    };
+
+    let mut checks = Vec::new();
+    if tp.type_ann.name != "any" && !ctx.strip_assertions {
+        if tp.is_rest {
+            let element_name = format!("_el__{}", tp.name);
+            let element = if is_discard {
+                SExpr::completion_value_atom(ctx.next_completion_value_id(), tp.name_span)
+            } else {
+                SExpr::atom(&element_name, tp.name_span)
+            };
+            if let Some(check) = emit_type_check_value(
+                &element,
+                if is_discard { &tp.name } else { &element_name },
+                &tp.type_ann.name,
+                func_name,
+                "rest arg",
+                tp.name_span,
+            ) {
+                checks.push(list(vec![atom("for-of"), element, name, check]));
             }
-            if tp.is_rest {
-                // For rest params, emit a for-of loop that checks each element
-                let el_var = format!("_el__{}", tp.name);
-                let check = emit_type_check(
-                    &el_var,
-                    &tp.type_ann.name,
-                    func_name,
-                    "rest arg",
-                    tp.name_span,
-                )?;
-                return Some(list(vec![
-                    atom("for-of"),
-                    atom(&el_var),
-                    atom(&tp.name),
-                    check,
-                ]));
+        } else if let Some(check) = emit_type_check_value(
+            &name,
+            &tp.name,
+            &tp.type_ann.name,
+            func_name,
+            label,
+            tp.name_span,
+        ) {
+            checks.push(check);
+        }
+    }
+    (pattern, checks)
+}
+
+fn param_pattern_node(prepared: PreparedParam) -> SExpr {
+    if prepared.pattern.len() == 1 {
+        prepared.pattern.into_iter().next().unwrap()
+    } else {
+        list(prepared.pattern)
+    }
+}
+
+/// Prepare each parsed leaf once so pattern storage and guards share identities.
+fn prepare_param(
+    param: &ParamShape,
+    ctx: &mut EmitterContext,
+    func_name: &str,
+    label: &str,
+) -> PreparedParam {
+    match param {
+        ParamShape::Simple(tp) => {
+            let (pattern, checks) = prepare_typed_param(tp, ctx, func_name, label);
+            PreparedParam {
+                pattern: vec![pattern],
+                checks,
             }
-            emit_type_check(&tp.name, &tp.type_ann.name, func_name, label, tp.name_span)
-        })
-        .collect()
+        }
+        ParamShape::DestructuredObject { fields, .. } => {
+            let mut pattern = vec![atom("object")];
+            let mut checks = Vec::new();
+            for field in fields {
+                match field {
+                    DestructuredField::Simple(tp) => {
+                        let (local, leaf_checks) = prepare_typed_param(tp, ctx, func_name, label);
+                        checks.extend(leaf_checks);
+                        if tp.name == "_" {
+                            if let Some(default) = &tp.default_value {
+                                let local_name = match &local {
+                                    SExpr::List { values, .. }
+                                        if values.first().and_then(SExpr::as_atom)
+                                            == Some("default") =>
+                                    {
+                                        values[1].clone()
+                                    }
+                                    _ => local.clone(),
+                                };
+                                pattern.push(list(vec![
+                                    atom("alias"),
+                                    atom("_"),
+                                    local_name,
+                                    default.clone(),
+                                ]));
+                            } else {
+                                pattern.push(list(vec![atom("alias"), atom("_"), local]));
+                            }
+                        } else {
+                            pattern.push(local);
+                        }
+                    }
+                    DestructuredField::Nested {
+                        alias_name,
+                        pattern: nested,
+                        ..
+                    } => {
+                        let prepared = prepare_param(nested, ctx, func_name, label);
+                        let PreparedParam {
+                            pattern: nested_pattern,
+                            checks: nested_checks,
+                        } = prepared;
+                        checks.extend(nested_checks);
+                        pattern.push(list(vec![
+                            atom("alias"),
+                            atom(alias_name),
+                            param_pattern_node(PreparedParam {
+                                pattern: nested_pattern,
+                                checks: Vec::new(),
+                            }),
+                        ]));
+                    }
+                }
+            }
+            PreparedParam {
+                pattern: vec![list(pattern)],
+                checks,
+            }
+        }
+        ParamShape::DestructuredArray { elements, .. } => {
+            let mut pattern = vec![atom("array")];
+            let mut checks = Vec::new();
+            for element in elements {
+                match element {
+                    ArrayParamElement::Typed(tp) | ArrayParamElement::Rest(tp) => {
+                        let (local, leaf_checks) = prepare_typed_param(tp, ctx, func_name, label);
+                        checks.extend(leaf_checks);
+                        pattern.push(local);
+                    }
+                    ArrayParamElement::Skip(span) => {
+                        pattern.push(SExpr::atom("_", *span));
+                    }
+                    ArrayParamElement::Nested {
+                        pattern: nested, ..
+                    } => {
+                        let prepared = prepare_param(nested, ctx, func_name, label);
+                        let PreparedParam {
+                            pattern: nested_pattern,
+                            checks: nested_checks,
+                        } = prepared;
+                        checks.extend(nested_checks);
+                        pattern.push(param_pattern_node(PreparedParam {
+                            pattern: nested_pattern,
+                            checks: Vec::new(),
+                        }));
+                    }
+                    ArrayParamElement::NestedWithAlias {
+                        alias_name,
+                        pattern: nested,
+                        ..
+                    } => {
+                        let prepared = prepare_param(nested, ctx, func_name, label);
+                        let PreparedParam {
+                            pattern: nested_pattern,
+                            checks: nested_checks,
+                        } = prepared;
+                        checks.extend(nested_checks);
+                        pattern.push(list(vec![
+                            atom("alias"),
+                            atom(alias_name),
+                            param_pattern_node(PreparedParam {
+                                pattern: nested_pattern,
+                                checks: Vec::new(),
+                            }),
+                        ]));
+                    }
+                }
+            }
+            PreparedParam {
+                pattern: vec![list(pattern)],
+                checks,
+            }
+        }
+    }
 }
 
 // ---------------------------------------------------------------------------
@@ -3500,18 +3743,24 @@ fn emit_fn_expr(
 ) -> SExpr {
     let saved_direct_region = ctx.direct_return_region;
     ctx.direct_return_region = false;
-    let param_names: Vec<SExpr> = params.iter().flat_map(param_to_kernel_names).collect();
+    let prepared: Vec<_> = params
+        .iter()
+        .map(|param| prepare_param(param, ctx, "anonymous", "arg"))
+        .collect();
+    let param_names: Vec<SExpr> = prepared
+        .iter()
+        .flat_map(|param| param.pattern.iter().cloned())
+        .collect();
 
     let mut items = vec![atom("=>"), list(param_names)];
 
     // Type checks
     let mut has_type_checks = false;
     if !ctx.strip_assertions {
-        for param in params {
-            let checks = param_type_checks(param, "anonymous", "arg");
-            if !checks.is_empty() {
+        for param in &prepared {
+            if !param.checks.is_empty() {
                 has_type_checks = true;
-                items.extend(checks);
+                items.extend(param.checks.iter().cloned());
             }
         }
     }
@@ -3563,14 +3812,22 @@ fn emit_func_single(
     ctx: &mut EmitterContext,
     registry: &TypeRegistry,
 ) -> SExpr {
-    let param_names: Vec<SExpr> = clause.args.iter().flat_map(param_to_kernel_names).collect();
+    let prepared: Vec<_> = clause
+        .args
+        .iter()
+        .map(|param| prepare_param(param, ctx, name, "arg"))
+        .collect();
+    let param_names: Vec<SExpr> = prepared
+        .iter()
+        .flat_map(|param| param.pattern.iter().cloned())
+        .collect();
 
     let mut items = vec![atom("function"), atom(name), list(param_names)];
 
     // Type checks for parameters
     if !ctx.strip_assertions {
-        for param in &clause.args {
-            items.extend(param_type_checks(param, name, "arg"));
+        for param in &prepared {
+            items.extend(param.checks.iter().cloned());
         }
     }
 
@@ -3770,6 +4027,11 @@ fn emit_func_multi(
 
     for &idx in &sorted_indices {
         let clause = &clauses[idx];
+        let prepared: Vec<_> = clause
+            .args
+            .iter()
+            .map(|param| prepare_param(param, ctx, name, "arg"))
+            .collect();
         let arity = clause.args.len();
 
         // Build dispatch condition: (=== args:length N) && type dispatch checks
@@ -3803,22 +4065,18 @@ fn emit_func_multi(
         let mut block_items = vec![atom("block")];
 
         // Bind parameters from args array
-        for (i, param) in clause.args.iter().enumerate() {
+        for (i, _param) in clause.args.iter().enumerate() {
             let arg_access = list(vec![atom("get"), atom("args"), num(i as f64)]);
-            let binding = param_to_kernel_names(param);
+            let binding = &prepared[i].pattern;
             if binding.len() == 1 {
-                block_items.push(list(vec![
-                    atom("const"),
-                    binding.into_iter().next().unwrap(),
-                    arg_access,
-                ]));
+                block_items.push(list(vec![atom("const"), binding[0].clone(), arg_access]));
             }
         }
 
         // Full type checks
         if !ctx.strip_assertions {
-            for param in &clause.args {
-                block_items.extend(param_type_checks(param, name, "arg"));
+            for param in &prepared {
+                block_items.extend(param.checks.iter().cloned());
             }
         }
 
@@ -4010,14 +4268,22 @@ fn emit_genfunc_single(
 ) -> SExpr {
     let saved_direct_region = ctx.direct_return_region;
     ctx.direct_return_region = false;
-    let param_names: Vec<SExpr> = clause.args.iter().flat_map(param_to_kernel_names).collect();
+    let prepared: Vec<_> = clause
+        .args
+        .iter()
+        .map(|param| prepare_param(param, ctx, name, "arg"))
+        .collect();
+    let param_names: Vec<SExpr> = prepared
+        .iter()
+        .flat_map(|param| param.pattern.iter().cloned())
+        .collect();
 
     let mut items = vec![atom("function*"), atom(name), list(param_names)];
 
     // Type checks for parameters
     if !ctx.strip_assertions {
-        for param in &clause.args {
-            items.extend(param_type_checks(param, name, "arg"));
+        for param in &prepared {
+            items.extend(param.checks.iter().cloned());
         }
     }
 
@@ -4068,14 +4334,21 @@ fn emit_genfn_expr(
 ) -> SExpr {
     let saved_direct_region = ctx.direct_return_region;
     ctx.direct_return_region = false;
-    let param_names: Vec<SExpr> = params.iter().flat_map(param_to_kernel_names).collect();
+    let prepared: Vec<_> = params
+        .iter()
+        .map(|param| prepare_param(param, ctx, "anonymous", "arg"))
+        .collect();
+    let param_names: Vec<SExpr> = prepared
+        .iter()
+        .flat_map(|param| param.pattern.iter().cloned())
+        .collect();
 
     let mut items = vec![atom("function*"), list(param_names)];
 
     // Type checks
     if !ctx.strip_assertions {
-        for param in params {
-            items.extend(param_type_checks(param, "anonymous", "arg"));
+        for param in &prepared {
+            items.extend(param.checks.iter().cloned());
         }
     }
 
@@ -10694,18 +10967,25 @@ mod tests {
         let mut ctx = ctx();
         let registry = TypeRegistry::default();
         let result = emit_form(&form, &mut ctx, &registry).unwrap();
-        // Should produce (export (const VERSION "0.4.0"))
-        assert_eq!(result.len(), 1);
+        // The declaration remains ordinary; only its source binding is exported.
+        assert_eq!(result.len(), 2);
         match &result[0] {
             SExpr::List { values, .. } => {
-                assert_eq!(values[0].as_atom(), Some("export"));
-                if let SExpr::List { values: inner, .. } = &values[1] {
-                    assert_eq!(inner[0].as_atom(), Some("const"));
-                } else {
-                    panic!("expected list inside export");
-                }
+                assert_eq!(values[0].as_atom(), Some("const"));
+                assert_eq!(values[1].as_atom(), Some("VERSION"));
             }
-            _ => panic!("expected list"),
+            _ => panic!("expected binding declaration"),
+        }
+        match &result[1] {
+            SExpr::List { values, .. } => {
+                assert_eq!(values[0].as_atom(), Some("export"));
+                let SExpr::List { values: names, .. } = &values[1] else {
+                    panic!("expected source names list");
+                };
+                assert_eq!(names[0].as_atom(), Some("names"));
+                assert_eq!(names[1].as_atom(), Some("VERSION"));
+            }
+            _ => panic!("expected source-name export"),
         }
     }
 

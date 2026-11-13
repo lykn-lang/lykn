@@ -392,6 +392,7 @@ fn emit_pattern(w: &mut JsWriter, expr: &SExpr) -> Result<(), LyknError> {
             Some("array") => emit_array_pattern(w, &values[1..])?,
             Some("default") => emit_default_pattern(w, &values[1..])?,
             Some("rest") => emit_rest_pattern(w, &values[1..])?,
+            Some("spread") => emit_rest_pattern(w, &values[1..])?,
             Some("alias") => emit_alias_pattern(w, &values[1..])?,
             _ => emit_expr(w, expr, 0)?,
         },
@@ -408,9 +409,9 @@ fn emit_object_pattern(w: &mut JsWriter, members: &[SExpr]) -> Result<(), LyknEr
         }
         match member {
             a @ SExpr::Atom { .. } => w.write(&to_js_identifier(a.as_atom().unwrap())),
-            SExpr::List { values, .. } if !values.is_empty() => {
+            SExpr::List { values, .. } => {
                 // A6-exempt: object-pattern member grammar, not a call head.
-                match values[0].as_atom() {
+                match values.first().and_then(SExpr::as_atom) {
                     Some("default") => {
                         // (default name val)
                         if values.len() >= 3 {
@@ -426,12 +427,16 @@ fn emit_object_pattern(w: &mut JsWriter, members: &[SExpr]) -> Result<(), LyknEr
                         emit_rest_pattern(w, &values[1..])?;
                     }
                     Some("spread") => {
-                        w.write("...");
-                        if values.len() >= 2 {
-                            emit_expr(w, &values[1], 0)?;
-                        }
+                        emit_rest_pattern(w, &values[1..])?;
                     }
-                    _ => emit_pattern(w, member)?,
+                    _ => {
+                        return Err(LyknError::Codegen(Diagnostic {
+                            severity: Severity::Error,
+                            message: "object pattern member must use alias, default, rest, spread, or a shorthand field".to_string(),
+                            span: member.span(),
+                            suggestion: Some("use an alias form: (alias property local)".to_string()),
+                        }));
+                    }
                 }
             }
             _ => emit_pattern(w, member)?,
@@ -459,6 +464,13 @@ fn emit_array_pattern(w: &mut JsWriter, elements: &[SExpr]) -> Result<(), LyknEr
             }
             _ => emit_pattern(w, elem)?,
         }
+    }
+    if elements
+        .last()
+        .is_some_and(|element| element.as_atom() == Some("_"))
+    {
+        // Preserve the final elision's IteratorStep (without IteratorValue).
+        w.write(",");
     }
     w.write("]");
     Ok(())

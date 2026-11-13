@@ -1241,7 +1241,7 @@ fn classify_bind(args: &[SExpr], span: Span) -> Result<SurfaceForm, Diagnostic> 
         }
         len if len >= 4 => {
             let bindings = parse_bind_group(args, span)?;
-            validate_bind_group_duplicates(&bindings, span)?;
+            validate_bind_group_duplicates(&bindings)?;
             Ok(SurfaceForm::BindGroup { bindings, span })
         }
         _ => Err(err(
@@ -1429,7 +1429,7 @@ fn bind_binding_arg_slots(args: &[SExpr]) -> Vec<(usize, usize, Option<TypeAnnot
     slots
 }
 
-fn validate_bind_group_duplicates(bindings: &[BindBinding], span: Span) -> Result<(), Diagnostic> {
+fn validate_bind_group_duplicates(bindings: &[BindBinding]) -> Result<(), Diagnostic> {
     let mut seen: HashMap<String, Span> = HashMap::new();
     for binding in bindings {
         for site in binding_names_in_pattern(&binding.name, BindingKind::Bind) {
@@ -1449,9 +1449,6 @@ fn validate_bind_group_duplicates(bindings: &[BindBinding], span: Span) -> Resul
             }
             seen.insert(site.name, site.span);
         }
-    }
-    if seen.is_empty() {
-        return Err(err("bind group must declare at least one name", span));
     }
     Ok(())
 }

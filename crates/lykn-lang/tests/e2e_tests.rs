@@ -217,7 +217,86 @@ fn e2e_export_func() {
     assert_eq!(func_list[0]["value"], "function");
     assert_eq!(func_list[1]["value"], "add");
 }
-e2e_test!(e2e_export_bind, r#"(export (bind VERSION "0.4.0"))"#);
+#[test]
+fn e2e_export_bind() {
+    let source = r#"(export (bind VERSION "0.4.0"))"#;
+    let json = rust_pipeline(source);
+    let native_protocol = normalize_json(&json);
+    let expected_protocol = serde_json::json!([
+        {
+            "type": "list",
+            "values": [
+                { "type": "atom", "value": "const" },
+                { "type": "atom", "value": "VERSION" },
+                { "type": "string", "value": "0.4.0" }
+            ]
+        },
+        {
+            "type": "list",
+            "values": [
+                { "type": "atom", "value": "export" },
+                {
+                    "type": "list",
+                    "values": [
+                        { "type": "atom", "value": "names" },
+                        { "type": "atom", "value": "VERSION" }
+                    ]
+                }
+            ]
+        }
+    ]);
+    assert_eq!(
+        native_protocol, expected_protocol,
+        "native export protocol must contain only the declaration and names export"
+    );
+
+    let native_forms = native_protocol
+        .as_array()
+        .expect("native protocol is a form array")
+        .iter()
+        .map(lykn_lang::expander::env::protocol_json_to_sexpr)
+        .collect::<Result<Vec<_>, _>>()
+        .expect("native protocol forms read back");
+    let native_js = lykn_lang::codegen::emit_module_js(&native_forms)
+        .expect("native protocol generates an ESM module");
+
+    let script = format!(
+        r#"
+import {{ lykn }} from "./packages/lang/mod.js";
+const source = {};
+const nativeSource = {};
+const publicSource = lykn(source);
+const native = await import(`data:text/javascript;charset=utf-8,${{encodeURIComponent(nativeSource)}}`);
+const publicModule = await import(`data:text/javascript;charset=utf-8,${{encodeURIComponent(publicSource)}}`);
+console.log(JSON.stringify({{
+    native: {{ keys: Object.keys(native).sort(), value: native.VERSION }},
+    public: {{ keys: Object.keys(publicModule).sort(), value: publicModule.VERSION }}
+}}));
+"#,
+        serde_json::to_string(source).expect("source serializes as a JS string"),
+        serde_json::to_string(&native_js).expect("native module serializes as a JS string"),
+    );
+    let output = Command::new("deno")
+        .arg("eval")
+        .arg("--config")
+        .arg("project.json")
+        .arg("--ext=js")
+        .arg(script)
+        .current_dir(env!("CARGO_MANIFEST_DIR").to_string() + "/../..")
+        .output()
+        .expect("Deno is required for native/public export runtime parity");
+    assert!(
+        output.status.success(),
+        "Deno export runtime failed:\n{}",
+        String::from_utf8_lossy(&output.stderr)
+    );
+    assert_eq!(
+        String::from_utf8(output.stdout).expect("Deno stdout is UTF-8"),
+        r#"{"native":{"keys":["VERSION"],"value":"0.4.0"},"public":{"keys":["VERSION"],"value":"0.4.0"}}"#
+            .to_string()
+            + "\n"
+    );
+}
 e2e_test!(
     e2e_export_func_destructured,
     "(export (func connect :args ((object :string host :number port (default :boolean ssl true))) :body (open-connection host port ssl)))"

@@ -36,8 +36,28 @@ pub fn emit_type_check(
     label: &str,
     span: Span,
 ) -> Option<SExpr> {
-    let check = build_check(param_name, type_keyword, span)?;
-    let message = build_error_message(param_name, type_keyword, func_name, label);
+    emit_type_check_value(
+        &SExpr::atom(param_name, span),
+        param_name,
+        type_keyword,
+        func_name,
+        label,
+        span,
+    )
+}
+
+/// Emit a runtime check against an actual compiler-prepared value while
+/// retaining the source spelling for the diagnostic label.
+pub(super) fn emit_type_check_value(
+    actual: &SExpr,
+    source_name: &str,
+    type_keyword: &str,
+    func_name: &str,
+    label: &str,
+    span: Span,
+) -> Option<SExpr> {
+    let check = build_check(actual, type_keyword, span)?;
+    let message = build_error_message(actual, source_name, type_keyword, func_name, label);
     Some(list(vec![
         atom("if"),
         check,
@@ -55,8 +75,8 @@ pub fn emit_type_check(
 /// Build the negated type-check condition for the given type keyword.
 ///
 /// Returns `None` for `:any`.
-fn build_check(param_name: &str, type_keyword: &str, span: Span) -> Option<SExpr> {
-    let p = atom(param_name);
+fn build_check(actual: &SExpr, type_keyword: &str, span: Span) -> Option<SExpr> {
+    let p = actual.clone();
     match type_keyword {
         "any" => None,
         "number" => Some(list(vec![
@@ -145,14 +165,15 @@ pub fn emit_return_type_check(
     func_name: &str,
     span: Span,
 ) -> Option<SExpr> {
-    let check = build_check(result_var, type_keyword, span)?;
+    let value = atom(result_var);
+    let check = build_check(&value, type_keyword, span)?;
     let message = list(vec![
         atom("+"),
         str_lit(&format!(
             "{}: return value expected {type_keyword}, got ",
             display_name(func_name)
         )),
-        list(vec![atom("typeof"), atom(result_var)]),
+        list(vec![atom("typeof"), value]),
     ]);
     Some(list(vec![
         atom("if"),
@@ -172,7 +193,8 @@ pub fn emit_return_type_check(
 ///
 /// Produces: `"funcName: label 'paramName' expected type, got " + (typeof param)`
 fn build_error_message(
-    param_name: &str,
+    actual: &SExpr,
+    source_name: &str,
     type_keyword: &str,
     func_name: &str,
     label: &str,
@@ -182,9 +204,9 @@ fn build_error_message(
         str_lit(&format!(
             "{}: {label} '{}' expected {type_keyword}, got ",
             display_name(func_name),
-            display_name(param_name)
+            display_name(source_name)
         )),
-        list(vec![atom("typeof"), atom(param_name)]),
+        list(vec![atom("typeof"), actual.clone()]),
     ])
 }
 
