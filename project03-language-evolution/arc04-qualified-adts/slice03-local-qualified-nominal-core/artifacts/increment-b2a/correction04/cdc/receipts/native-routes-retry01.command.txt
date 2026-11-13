@@ -1,0 +1,3 @@
+Source cwd/common env: target/release/lykn compile <absolute CDC>/fixtures/native-routes-retry01.lykn -o <absolute CDC>/runtime/native-routes-retry01.mjs
+CDC cwd/common env: deno run --no-config --no-prompt --cached-only -A runtime/native-routes-retry01.mjs
+No previous route receipt stem is reused.

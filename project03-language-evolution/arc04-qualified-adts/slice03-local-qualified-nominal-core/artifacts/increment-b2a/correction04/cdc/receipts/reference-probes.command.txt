@@ -1,0 +1,9 @@
+Original Lykn source extracted byte-preserving from accepted A archive; new
+helper imports changed only to lang/ module specifiers and home from Deno.args,
+plus explicit fragment/shared-reference assertion. Compile in source cwd/common
+env with target/release/lykn to runtime/reference-probes.mjs AFTER full gate ends.
+CDC cwd/common env:
+deno run --cached-only --no-prompt -A --config fixtures/canonical-public.json runtime/reference-probes.mjs <absolute CDC>/runtime/references-canonical
+Then same helper under actual M6 materialized lang mapping to
+<absolute CDC>/runtime/references-materialized. Exact materialized config pinned
+and recorded after M6, not guessed from a versioned cache name.

@@ -1,0 +1,2 @@
+5:1: warning: unused binding 'decoder'
+  suggestion: prefix with underscore: _decoder

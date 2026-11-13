@@ -1,0 +1,8 @@
+{
+  "program": "/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/release/lykn",
+  "args": [
+    "check",
+    "/Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/arc04-qualified-adts/slice03-local-qualified-nominal-core/artifacts/increment-b2a/correction04/cdc/fixtures/header-fn-order.lykn"
+  ],
+  "cwd": "/Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/arc04-qualified-adts/slice03-local-qualified-nominal-core/artifacts/increment-b2a/correction04/cdc"
+}

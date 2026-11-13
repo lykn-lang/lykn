@@ -1,0 +1,4 @@
+Same common env/source cwd compile fixtures/reference-probes.lykn ->
+runtime/reference-probes-retry01.mjs, distinct compile receipts.
+CDC cwd common env/canonical config: same Deno args as first, retry01 module
+and runtime/references-canonical-retry01 directory. Original attempt preserved.

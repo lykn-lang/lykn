@@ -1,0 +1,8 @@
+header-order three diagnostic routes pass
+header-registration-control three diagnostic routes pass
+header-default-order three diagnostic routes pass
+header-fn-order three diagnostic routes pass
+header-genfn-order three diagnostic routes pass
+header-lambda-order three diagnostic routes pass
+header-later-clause-valid-overloads three diagnostic routes pass
+genfn-missing-yields-body three diagnostic routes pass

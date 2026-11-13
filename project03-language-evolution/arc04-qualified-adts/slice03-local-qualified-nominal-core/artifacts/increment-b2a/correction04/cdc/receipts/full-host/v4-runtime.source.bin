@@ -1,0 +1,3 @@
+(bind action (fn (:number n) (+ n 1)))
+(set! action:call (fn (:number n) 99))
+(console:log (JSON:stringify (action:call 1)))

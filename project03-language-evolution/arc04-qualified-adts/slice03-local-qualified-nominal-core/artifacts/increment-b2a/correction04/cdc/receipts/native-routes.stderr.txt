@@ -1,0 +1,9 @@
+error: Uncaught (in promise) Error: native-member-wrappers-checked-compile 10:1: warning: unused binding 'item'
+  suggestion: prefix with underscore: _item
+14:1: error: assign can only be used inside class bodies — use set! for property mutation
+
+    throw new Error(label + " " + decoder.decode(result.stderr));
+          ^
+    at capture (file:///Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/arc04-qualified-adts/slice03-local-qualified-nominal-core/artifacts/increment-b2a/correction04/cdc/runtime/native-routes.mjs:19:11)
+    at runtimeRoutes (file:///Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/arc04-qualified-adts/slice03-local-qualified-nominal-core/artifacts/increment-b2a/correction04/cdc/runtime/native-routes.mjs:38:5)
+    at file:///Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/arc04-qualified-adts/slice03-local-qualified-nominal-core/artifacts/increment-b2a/correction04/cdc/runtime/native-routes.mjs:55:1

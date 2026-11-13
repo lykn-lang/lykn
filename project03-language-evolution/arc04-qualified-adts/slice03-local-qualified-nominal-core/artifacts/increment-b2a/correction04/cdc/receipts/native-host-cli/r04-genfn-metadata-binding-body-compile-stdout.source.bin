@@ -1,0 +1,1 @@
+(bind factory (genfn () :yields (bind Array 1) (set-symbol! Array "isArray" 1) (yield 41)))

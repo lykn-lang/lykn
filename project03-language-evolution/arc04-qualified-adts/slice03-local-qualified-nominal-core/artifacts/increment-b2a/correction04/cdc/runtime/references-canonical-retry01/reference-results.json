@@ -1,0 +1,63 @@
+[
+  {
+    "name": "unshadowed",
+    "checks": [
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true
+    ]
+  },
+  {
+    "name": "module-shadowed",
+    "checks": [
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true
+    ]
+  },
+  {
+    "name": "parameter-shadowed",
+    "checks": [
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true
+    ]
+  },
+  {
+    "fragment": "OWN-Symbol",
+    "rejected": true,
+    "message": "unfinished compiler-owned host reference in fragment compilation"
+  },
+  {
+    "fragment": "(OWN-Symbol \"x\")",
+    "rejected": true,
+    "message": "unfinished compiler-owned host reference in fragment compilation"
+  },
+  {
+    "fragment": "(new OWN-TypeError \"failure\")",
+    "rejected": true,
+    "message": "unfinished compiler-owned host reference in fragment compilation"
+  },
+  {
+    "sharedReferenceNode": "compiled",
+    "output": "const lyknIntrinsicSymbolFor0 = Symbol.for;\nlyknIntrinsicSymbolFor0(\"a\");\nlyknIntrinsicSymbolFor0(\"b\");\n"
+  }
+]

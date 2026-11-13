@@ -1,0 +1,13 @@
+New precreated standalone cwd=/private/tmp/lykn-b2a-correction04-cdc/standalone
+Copied freshly full-built source bin/lykn -> standalone/lykn, digest saved.
+XDG_CACHE_HOME=/private/tmp/lykn-b2a-correction04-cdc/delivery-xdg
+Other three environment.txt values unchanged. Assert absent versioned cache and
+no packages/lang in standalone before first invocation.
+./lykn compile <absolute CDC>/fixtures/delivery.lykn -o <absolute CDC>/runtime/copied-delivery.mjs
+Then CDC cwd/common env: deno run --no-config --no-prompt --cached-only runtime/copied-delivery.mjs
+Expected actual stdout42,array,string,Error,TypeError on separate lines.
+Observed runtime0:42,array,string,TypeError,TypeError (empty stderr).
+The initial Error expectation above was an author assumption. Actual native
+no-match writer emits new lyknIntrinsicTypeError0; generated source retained.
+This is the existing native no-match behavior, not a new regression or runtime
+failure. No expected-output assertion was broadened; raw observation is retained.

@@ -1,0 +1,1 @@
+'eval' is forbidden as a strict-mode binding identifier; rename it (e.g. `eval_`)

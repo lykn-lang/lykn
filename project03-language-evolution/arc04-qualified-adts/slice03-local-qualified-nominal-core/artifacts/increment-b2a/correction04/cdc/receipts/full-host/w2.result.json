@@ -1,0 +1,18 @@
+{
+  "name": "w2",
+  "source": "(set-symbol! Reflect \"apply\" 0)",
+  "generated": null,
+  "command": {
+    "program": "/opt/homebrew/bin/deno",
+    "args": null,
+    "cwd": null,
+    "selectedEnv": {
+      "DENO_DIR": "/Users/oubiwann/Library/Caches/deno",
+      "LYKN_TEST_DENO": null,
+      "XDG_CACHE_HOME": "/private/tmp/lykn-b2a-correction04-cdc/xdg",
+      "TMPDIR": "/private/tmp/lykn-b2a-correction04-cdc/tmp",
+      "LYKN_PROTECTED_HOST_EVIDENCE_DIR": "/Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/arc04-qualified-adts/slice03-local-qualified-nominal-core/artifacts/increment-b2a/correction04/cdc/receipts/full-host"
+    }
+  },
+  "runtime": null
+}

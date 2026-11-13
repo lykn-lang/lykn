@@ -1,0 +1,3 @@
+browser-owned browser-compile/ESM pass
+genfn-protected-string-metadata browser-compile/ESM pass
+genfunc-protected-post browser-compile/ESM pass

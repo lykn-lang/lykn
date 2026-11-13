@@ -938,3 +938,112 @@ actual46503: current46600 would imply+97 and35320 headroom, not its prose values
 No independent current gzip claim follows. Root owns the next repair recipe.
 A/B1/IC remain accepted within prior limits; B2b/pendingB2-ID-NAME,LC02–08 and
 S03 stay open. No release/integration/remote/dependency or source Git action.
+
+## B2a correction04 candidate f9be7cb8 — 2026-11-13 independent acceptance
+
+**Accept B2-LX only** at clean
+`f9be7cb85f62513f1624964fcc6773bffe4f66fe`, tree
+`0ea27d21f759e0c068e8f655b14f43a1a5f20452`, codex/qualified-adt-core in the
+assigned task worktree. Separate Sol6.1High reviewed the four authorized-path
+candidate and complete CC chronology/raw claims, issued13 and original09–12
+contracts, with the preparatory twelve-row matrix. Correct literal contiguous
+and Git-parsed Codex/Billo trailers independently confirmed. No source edit,
+source Git/index mutation, release or remote action occurred. Final source
+status is empty; no active test/build job remains. Source/build ownership
+returns clean to root, who owns planning Git/ledger/status.
+
+The R05 host-policy carryover is resolved: native Surface Fn/Lambda/Genfn now
+uses parsed typed params and selected body, ignored genfn annotation payloads
+stay structural, Genfunc post is excluded from both names and visits, and
+real typed parameter leaves replace external nested alias keys in the private
+scope helper. Ordinary Func post, generator pre/body/defaults and actual
+global protected writes retain diagnostics with target spans. Raw Kernel
+patterns/error fallback/public expanded-kernel validator domain stay bounded.
+No new public source validator or raw class/kernel header grammar is claimed.
+
+The [independent index and twelve-row disposition](artifacts/increment-b2a/correction04/cdc/README.md#final-independent-verdict--accept-b2-lx-only)
+records original clause/member isolation, native semantic post/body order,
+actual-result declaration sites/wrapper slots/imports/source-only macro
+collection, per-step macro priority/limit/lazy arguments, original occurrence
+paths/Single–Sequence/private identities, generator non-features and all
+retained A/B1/IC/completion obligations. No original B2-LX row is omitted.
+
+Fresh independent observations:
+
+-15 native host-policy tests,4 CLI tests/49 captured rejection-route
+observations,8 native B2a macro tests pass. Source-only alias/hole/rest/default
+controls independently prove the source helper instead of relying on a later
+Kernel rejection.
+-7 native programs pass checked compile, stripped compile and check, with14
+actual ESM runtimes: original clauses/classes, both textual post/body orders,
+constructor/getter/setter/static/async/default/field/base member controls,
+ignored genfn protected metadata and ignored Genfunc post. Nested-block names
+do not leak into post in native/public negatives.24 malformed-header routes
+retain ordinary diagnostics and no body/default probe effect.
+-Canonical public focused130 cases/43steps passes semantic-roles/dd-50/lazy
+Reflect/private fragments/runway/lexical/binding/type-state/browser controls;
+separate public R05 replay passes10 expected diagnostics and5 actual ESM
+positives. Original match14 expectations/fixtures remain unchanged.
+-Single fresh final-source **make check exits0**: **1197 native library units,
+1557 product cases across67steps,482 documentation cases once**, all checks
+passed. CC's earlier full1556 preceded its last test-only addition; raw snapshot
+and unchanged production hashes corroborate that chronology, without pretending
+its old count included the new test.
+-Fresh cold M6 passes1/1,13filtered, all **14 canonical/embedded/materialized
+byte comparisons**, actual **49 materialized public cases** (5+6+17+21), copied
+CLI/no-canonical-cwd/absent owned compiler-cache assertions. Fresh workspace
+browser artifacts precede this; compiler-XDG delivery is cold, not the entire
+workspace/Deno cache.
+-An independent copied full-built CLI with separate empty owned XDG executes
+macro42 and shadowed guard/no-match controls. Canonical AND actual independently
+materialized all-nine helper each passes27 runtime checks,3 fragment rejections
+and shared identity; Reflect helper each executes2 runtimes and verifies
+fragment/orphan rejection plus recovery. Actual freshly staged browser adapter
+using materialized lang modules emits3 ESM programs that execute correctly.
+-PostHEAD citations pass0: **64documents/601historical citations**. Browser
+size passes0: **46600 gzip bytes**, baseline27630,delta18970,**35320 bytes below
+81920**. This equals correction03 size; no public production bytes changed.
+
+Two authored evidence mistakes remain preserved: class-only assign in a new
+top-level setter probe (distinct retry uses set!), and a hyphenated object-key
+assertion instead of emitted sharedReferenceNode (distinct retry/output dir).
+The copied CLI's native no-match TypeError differed from an initial author
+Error assumption; actual generated native writer/observed stdout are retained.
+A read-only .stdout.txt/.bin receipt lookup miss was corrected. No candidate
+product gate failed, no source repair or full-gate retry was needed, and no
+missing raw process result was reconstructed.
+
+[Raw evidence archive](artifacts/increment-b2a/correction04/cdc/receipts-f9be7cb8.tar.gz)
+SHA-256 `36ea6ae95822b2fd99f3bd0514ce71a95ba8fc75e947702fb8fe72b0fee076e4`.
+Built bin/independent copied CLI SHA-256
+`392508e4fe361b7177d9c891f33bf9913fdd5e746f112cadc27b5a3f472f979e`.
+All owned XDG/npm/TMP paths were precreated under /private/tmp outside repo/
+config ancestors; existing DENO_DIR reused. No caches/executable in archive,
+forbidden helper language, dependency or release/remote action. All prior HOLDs
+and archives survive unchanged.
+
+B2-LX acceptance does not establish typed OwnerRef/CaseRef, name/alias/forward
+semantics, qualified nominal runtime/DTS, initialization purity or overall S03.
+B2-ID-NAME remains unanswered and dependent B2b held; LC02–08 remain open.
+Accepted A/B1/IC limits persist: provisional fixed-nine support layout, I4,
+legacy fallback, sentinel warm cache, catch-emitter limitation, public API/S06
+migrations, multi-clause simple-default backend difference, nested alias guard/
+annotation issues, and browser indirect-eval run/load/CSP/module policy. Actual
+browser proof is compile-to-ESM. No next implementation/integration follows
+automatically from this clean handback.
+
+### B2-LX index wording clarification and final packet
+
+Root requested that LX10's unchanged-public-corpus claim be precisely scoped:
+within `test/`, the cumulative e80→f9 delta changes only
+expander/lexical-regions.test.js; native test files also changed and are
+separately inventoried. The README now says this explicitly. The earlier broad
+wording was a reporting imprecision, not a product defect. No runtime rerun,
+source edit, verdict or denominator change.
+
+The first archive above remains byte-preserved at SHA25636ea6a…076e4.
+The [final corrected packet](artifacts/increment-b2a/correction04/cdc/receipts-f9be7cb8-final.tar.gz)
+includes the qualified index and this correction's command record; SHA-256
+`a0e7b5673e31c18c5376418d646f60bf1e81d32f1a04cc98bc74d87addc90017`.
+The clean f9be7cb8/tree0ea27d21 source/build handback and B2-LX-only acceptance
+remain exactly as above.

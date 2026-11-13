@@ -1,0 +1,15 @@
+header-order parameter name must be an atom
+header-registration-control parameter name must be an atom
+header-default-order (default) second element must be a name
+header-default-body-order (default) second element must be a name
+header-fn-order parameter name must be an atom
+header-genfn-order parameter name must be an atom
+header-lambda-order parameter name must be an atom
+header-later-clause-valid-overloads parameter name must be an atom
+genfn-missing-yields-body genfn: :yields requires a type keyword and body
+genfn-actual-body-binding 'eval' is forbidden as a strict-mode binding identifier; rename it (e.g. `eval_`)
+header-valid-default-probe-quoted runtime-pass
+genfn-ignored-header runtime-pass
+genfn-inert-binding-payload runtime-pass
+genfn-no-metadata runtime-pass
+genfn-typed-yields runtime-pass

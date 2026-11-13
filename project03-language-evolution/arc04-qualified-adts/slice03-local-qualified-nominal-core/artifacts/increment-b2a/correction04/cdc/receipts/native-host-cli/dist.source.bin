@@ -1,0 +1,2 @@
+(export (func answer :args () :returns :number :body 42))
+(set! Reflect:apply 0)

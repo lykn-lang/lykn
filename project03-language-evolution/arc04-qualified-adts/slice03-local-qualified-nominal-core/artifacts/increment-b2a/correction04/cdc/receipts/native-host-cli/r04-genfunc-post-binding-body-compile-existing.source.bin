@@ -1,0 +1,1 @@
+(genfunc factory :args () :post (bind Array 1) :body (set-symbol! Array "isArray" 1) (yield 41))

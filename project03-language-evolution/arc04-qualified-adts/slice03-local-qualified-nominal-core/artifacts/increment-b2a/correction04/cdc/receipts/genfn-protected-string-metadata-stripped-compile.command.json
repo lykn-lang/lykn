@@ -1,0 +1,17 @@
+{
+  "program": "/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/release/lykn",
+  "args": [
+    "compile",
+    "/Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/arc04-qualified-adts/slice03-local-qualified-nominal-core/artifacts/increment-b2a/correction04/cdc/fixtures/genfn-protected-string-metadata.lykn",
+    "-o",
+    "/Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/arc04-qualified-adts/slice03-local-qualified-nominal-core/artifacts/increment-b2a/correction04/cdc/runtime/genfn-protected-string-metadata-stripped.mjs",
+    "--strip-assertions"
+  ],
+  "cwd": "/Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/arc04-qualified-adts/slice03-local-qualified-nominal-core/artifacts/increment-b2a/correction04/cdc",
+  "environment": {
+    "DENO_DIR": "/Users/oubiwann/Library/Caches/deno",
+    "XDG_CACHE_HOME": "/private/tmp/lykn-b2a-correction04-cdc/xdg",
+    "NPM_CONFIG_CACHE": "/private/tmp/lykn-b2a-correction04-cdc/npm",
+    "TMPDIR": "/private/tmp/lykn-b2a-correction04-cdc/tmp"
+  }
+}

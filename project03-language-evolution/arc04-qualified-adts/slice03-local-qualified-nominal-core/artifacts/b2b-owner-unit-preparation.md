@@ -7,6 +7,10 @@ assignment or acceptance. No B2b source changes are authorized by iteration09.
 The operator's B2 authorization covers completing this design and later
 implementation/review; root retains consequential decisions.
 
+2026-11-13 current foundation: B2-LX is independently accepted atf9be7cb8,
+tree0ea27d21. This preparation remains unissued pending B2-ID-NAME and final
+source-ready owner-unit APIs; lexical acceptance is not owner/case acceptance.
+
 ## Pending source-name identity decision (B2-ID-NAME)
 
 Root requested an actual operator language-design disposition on2026-11-12,

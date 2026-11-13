@@ -1,0 +1,5 @@
+Source cwd/common env after full ends: target/release/lykn compile <absolute CDC>/fixtures/reflect-probes.lykn -o <absolute CDC>/runtime/reflect-probes.mjs
+CDC cwd/common env: deno run --cached-only --no-prompt -A --config fixtures/canonical-public.json runtime/reflect-probes.mjs <absolute CDC>/runtime/references-canonical
+Then same helper with actual independent delivery materialized lang map and
+runtime/references-materialized. Records exact runtime commands/status/streams;
+expected fragment/orphan rejection messages and actual recovery are asserted.

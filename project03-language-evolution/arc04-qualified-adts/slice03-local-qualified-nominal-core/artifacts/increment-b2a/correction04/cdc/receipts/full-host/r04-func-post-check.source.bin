@@ -1,0 +1,1 @@
+(func ordinary :args () :post (set-symbol! Array "isArray" 1) :body 41)

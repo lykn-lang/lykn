@@ -1,0 +1,5 @@
+Source cwd, common environment.txt values plus
+LYKN_MACRO_DEPENDENCIES_EVIDENCE_DIR=<absolute CDC>/receipts/full-macro
+LYKN_PROTECTED_HOST_EVIDENCE_DIR=<absolute CDC>/receipts/full-host
+make check
+Single final-source full invocation; documentation tests included once.

@@ -1,0 +1,4 @@
+native-clause-runtime checked/stripped/runtime/check pass
+native-class-runtime checked/stripped/runtime/check pass
+native-post-before checked/stripped/runtime/check pass
+native-post-after checked/stripped/runtime/check pass

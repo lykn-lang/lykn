@@ -1,0 +1,3 @@
+native-member-wrappers-retry01 checked/stripped/runtime/check pass
+genfn-protected-string-metadata checked/stripped/runtime/check pass
+genfunc-protected-post checked/stripped/runtime/check pass

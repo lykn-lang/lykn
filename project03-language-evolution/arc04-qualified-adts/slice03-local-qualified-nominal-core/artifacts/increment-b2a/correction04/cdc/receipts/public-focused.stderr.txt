@@ -1,0 +1,13 @@
+Check test/expander/lexical-regions.test.js
+Check test/expander/resolution.test.js
+Check test/expander/quote.test.js
+Check test/expander/quasiquote.test.js
+Check test/forms/host-reference-lowering.test.js
+Check test/forms/protected-host-policy.test.js
+Check test/forms/reserved-binding-output.test.js
+Check test/forms/surface-type-context.test.js
+Check test/forms/browser-host-reference-compile.test.js
+Check test/forms/semantic-roles.test.js
+Check test/forms/dd-50.test.js
+Check test/forms/lazy-protected-invocation.test.js
+Check test/forms/language-surface-runway.test.js

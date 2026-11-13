@@ -1,0 +1,44 @@
+{
+  "name": "v1",
+  "source": "(console:log (JSON:stringify (typeof Reflect:apply)))",
+  "generated": "console.log(JSON.stringify(typeof Reflect.apply));\n",
+  "command": {
+    "program": "/opt/homebrew/bin/deno",
+    "args": [
+      "run",
+      "--no-config",
+      "--cached-only",
+      "--no-npm",
+      "--no-remote",
+      "--deny-net",
+      "--no-prompt",
+      "/private/tmp/lykn-b2a-correction04-cdc/tmp/f3a3ea9807b1908a/v1.js"
+    ],
+    "cwd": "/private/tmp/lykn-b2a-correction04-cdc/tmp/f3a3ea9807b1908a",
+    "selectedEnv": {
+      "DENO_DIR": "/Users/oubiwann/Library/Caches/deno",
+      "LYKN_TEST_DENO": null,
+      "XDG_CACHE_HOME": "/private/tmp/lykn-b2a-correction04-cdc/xdg",
+      "TMPDIR": "/private/tmp/lykn-b2a-correction04-cdc/tmp",
+      "LYKN_PROTECTED_HOST_EVIDENCE_DIR": "/Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/arc04-qualified-adts/slice03-local-qualified-nominal-core/artifacts/increment-b2a/correction04/cdc/receipts/full-host"
+    }
+  },
+  "runtime": {
+    "success": true,
+    "code": 0,
+    "stdout": [
+      34,
+      102,
+      117,
+      110,
+      99,
+      116,
+      105,
+      111,
+      110,
+      34,
+      10
+    ],
+    "stderr": []
+  }
+}

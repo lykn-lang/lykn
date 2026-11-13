@@ -580,3 +580,39 @@ keeps B2-LX, LC02–08 and B2b open; source-name identity remains an unanswered
 language choice with a concrete example in b2b-owner-unit-preparation.md.
 Release0829 is not advanced. Original findings and all deferred obligations
 remain. No new implementation scope is inferred from the successful checkpoint.
+
+## B2-LX independent acceptance and bounded continuation — 2026-11-13
+
+Separate Sol accepts the complete twelve-row lexical prerequisite at
+f9be7cb85f62513f1624964fcc6773bffe4f66fe/tree0ea27d21f759e0c068e8f655b14f43a1a5f20452.
+Root verified source/release clean pins, actual final full summary1197 native
+library/1557 product67steps/482 docs, and frozen archive digests. Final cold
+M6 has fourteen canonical/embedded/materialized comparisons and49 actual cases.
+Real native checked/stripped/check programs, 14 native ESM runtimes, canonical/
+materialized owned-reference/fragment/Reflect and staged-browser ESM proof pass.
+PostHEAD citations64/601 and46600-byte gzip pass. The final independent full
+includes the added public test, unlike CC's earlier1556-case full snapshot.
+
+Both packets survive: first36ea6ae95822b2fd99f3bd0514ce71a95ba8fc75e947702fb8fe72b0fee076e4;
+finala0e7b5673e31c18c5376418d646f60bf1e81d32f1a04cc98bc74d87addc90017.
+The second qualifies public test/ corpus scope in LX10; native tests also
+changed. This reporting correction changes no runtime evidence or verdict.
+Root's initial lookup used bundle-size.status.txt rather than the recorded
+posthead-size.status.txt; the read-only miss is not a product gate failure.
+
+Only B2-LX closes. LC02–08, B2b, qualified nominal/guard/DTS/purity behavior,
+API/docs/book/human acceptance and full S03 remain open. B2-ID-NAME is still an
+unanswered language semantics decision; the unissued B2b preparation gives the
+concrete some-name/someName program and distinct-binding recommendation.
+Release remains0829e892; no integration/remote/publication action occurred.
+
+Interim retrospective/audit input: several clients independently encoded source
+roles; initial fixes missed native host-policy traversal. Reusing parsed source
+regions and actual typed leaf projection corrected that cause without new
+syntax or a public source-validator API. Two independent helper author errors
+were repaired in distinct retained retries; the copied CLI's Error expectation
+was separately corrected to existing native TypeError behavior. Object keyword
+key normalization versus literal string access merits S06 guide review, but
+this evidence alone establishes no documentation defect. Keep that property
+rule separate from the pending source-binding identity decision. No model
+comparison or efficacy claim follows. Full S03 CDC retrospective remains due.

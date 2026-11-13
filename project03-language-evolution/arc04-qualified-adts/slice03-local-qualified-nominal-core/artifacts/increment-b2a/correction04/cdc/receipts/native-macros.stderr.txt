@@ -1,0 +1,2 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.04s
+     Running tests/macro_dependencies.rs (target/debug/deps/macro_dependencies-c2da4081568226dd)

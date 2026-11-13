@@ -1,0 +1,1 @@
+(bind gen (genfn () :yields (bind eval 1) (yield 41))) (console:log (Array:from (gen)))

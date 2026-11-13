@@ -1,0 +1,3 @@
+Same source cwd/common env: target/release/lykn compile <absolute CDC>/fixtures/public-r05-replay.lykn -o <absolute CDC>/runtime/public-r05-replay.mjs
+CDC cwd/common env: deno run --no-prompt --cached-only -A --config fixtures/canonical-public.json runtime/public-r05-replay.mjs
+Byte-copied corrected Lykn helper from correction03; resets macros per fixture.

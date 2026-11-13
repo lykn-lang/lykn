@@ -2,7 +2,7 @@
 project: project03-language-evolution
 arc: arc04-qualified-adts
 status: active
-version: "1.13"
+version: "1.14"
 related: [project07-core-library-research]
 ---
 
@@ -26,9 +26,10 @@ across resolver/validation and wrappers. Correction595f672b passes R01–04 focu
 controls but remains independently held on typed-header ordering and genfn
 metadata/body alignment. Iteration12 candidate0e249caf passes exercised header/
 D2 controls but remains held on native protected-host traversal of ignored
-generator regions. Iteration13 returns cleanf9be7cb8/tree0ea27d21 for independent
-software verification of this parsed-source client before B2b metadata transport.
-No B2-LX acceptance follows from CC's green checks. The pending
+generator regions. Iteration13 is independently accepted at cleanf9be7cb8/
+tree0ea27d21 for B2-LX only after complete native/public/delivery/full gates.
+[Verification](slice03-local-qualified-nominal-core/artifacts/increment-b2a/correction04/cdc/README.md)
+closes the lexical prerequisite, not B2b metadata transport or LC02–08. The pending
 operator source-name identity choice B2-ID-NAME remains explicit. The eight-row plan retains local ownership, nominal runtime/guards, APIs/DTS,
 private purity, migration and full consumer proof. S03 software is not yet
 accepted. [S02 release integration](slice02-existing-adt-correctness/artifacts/release-integration-0829e892.md)
@@ -123,6 +124,10 @@ Project07's original research evidence, final synthesis and library handoffs
 survive this detour, including every YAML and human-review obligation.
 
 ## Version history
+
+- 2026-11-13 v1.14. Independently accept bounded B2-LX atf9be7cb8, with complete
+  final-source/full/cold/runtime/private proof. Preserve original/final packets,
+  all earlier HOLDs, unanswered B2-ID-NAME and the complete remaining S03 scope.
 
 - 2026-11-13 v1.13. Record clean correction04 candidatef9be7cb8 and independent
   review transfer, with CC full-check snapshot separated from the final public

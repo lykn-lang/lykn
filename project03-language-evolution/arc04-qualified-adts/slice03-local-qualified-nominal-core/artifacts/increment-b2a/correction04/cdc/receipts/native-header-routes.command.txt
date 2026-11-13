@@ -1,0 +1,4 @@
+Source cwd/common env: target/release/lykn compile <absolute CDC>/fixtures/native-header-routes.lykn -o <absolute CDC>/runtime/native-header-routes.mjs
+CDC cwd/common env: deno run --no-config --no-prompt --cached-only -A runtime/native-header-routes.mjs
+Each command's common environment inherits environment.txt; exact per-case argv
+and cwd recorded by Lykn before invocation, raw streams/numeric status after.

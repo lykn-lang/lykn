@@ -1,0 +1,5 @@
+Source cwd/common env: target/release/lykn compile <absolute CDC>/fixtures/native-routes.lykn -o <absolute CDC>/runtime/native-routes.mjs
+CDC cwd/common env: deno run --no-config --no-prompt --cached-only -A runtime/native-routes.mjs
+Authored Lykn helper records each exact command/cwd/env BEFORE invocation and
+raw byte streams/status immediately. All seven fixture programs execute both
+checked/stripped ESM and pass check, with exact stdout and empty runtime stderr.

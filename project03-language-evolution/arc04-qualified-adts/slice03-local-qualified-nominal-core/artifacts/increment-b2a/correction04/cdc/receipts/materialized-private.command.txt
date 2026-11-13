@@ -1,0 +1,6 @@
+Actual extracted package observed after copied CLI compile:
+/private/tmp/lykn-b2a-correction04-cdc/delivery-xdg/lykn/embedded/0.6.0-compiler-split/packages/lang/
+fixtures/materialized-public.json maps lang/ to that actual package and browser/
+to current freshly staged output. Common environment.txt values, CDC cwd:
+deno run --no-prompt --cached-only -A --config fixtures/materialized-public.json runtime/reference-probes-retry01.mjs <absolute CDC>/runtime/references-materialized
+deno run --no-prompt --cached-only -A --config fixtures/materialized-public.json runtime/reflect-probes.mjs <absolute CDC>/runtime/references-materialized

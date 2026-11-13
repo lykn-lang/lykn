@@ -1,0 +1,12 @@
+(macro delivery-twice (x) `(+ ,x ,x))
+(console:log (delivery-twice 21))
+(bind Array 0)
+(bind Number 0)
+(func choose-value
+  (:args (:array value) :body "array")
+  (:args (:string value) :body "string"))
+(console:log (choose-value #a(1)))
+(console:log (choose-value "kept"))
+(try (choose-value 1) (catch error (console:log error:name)))
+(func need-number :args (:number value) :body value)
+(try (need-number "wrong") (catch error (console:log error:name)))

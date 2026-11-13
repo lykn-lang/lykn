@@ -1,0 +1,5 @@
+(func total
+  (:args (:any bind) :body (bind 11))
+  (:args (:number a :number b) :body (bind result (+ a b)) result))
+(console:log (total (fn (:any value) value)))
+(console:log (total 20 22))

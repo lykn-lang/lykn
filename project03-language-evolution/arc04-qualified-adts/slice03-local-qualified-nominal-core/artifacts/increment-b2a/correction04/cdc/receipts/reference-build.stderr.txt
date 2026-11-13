@@ -1,0 +1,10 @@
+59:1: warning: unused binding 'fragment-results'
+  suggestion: prefix with underscore: _fragment-results
+62:1: warning: unused binding 'shared-result'
+  suggestion: prefix with underscore: _shared-result
+46:1: warning: unused binding 'fragments'
+  suggestion: prefix with underscore: _fragments
+21:1: warning: unused binding 'scenarios'
+  suggestion: prefix with underscore: _scenarios
+53:1: warning: unused binding 'repeated'
+  suggestion: prefix with underscore: _repeated

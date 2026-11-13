@@ -1,0 +1,16 @@
+Source cwd, read-only final identity/metadata:
+git rev-parse HEAD HEAD^{tree}
+git status --short
+git show -s --format=fuller HEAD
+git show -s --format=%B HEAD | git interpret-trailers --parse
+git diff --name-only 0e249caf..HEAD
+git diff 0e249caf..HEAD
+shasum -a 256 bin/lykn target/release/lykn
+rustc --version; cargo --version; deno --version (separate direct calls)
+Evidence cwd after final status saved:
+COPYFILE_DISABLE=1 tar -czf receipts-f9be7cb8.tar.gz README.md fixtures runtime receipts
+shasum -a 256 receipts-f9be7cb8.tar.gz > archive.sha256
+After root requested LX10 public-test-corpus wording clarification, preserve
+initial receipts-f9be7cb8.tar.gz unchanged; freeze distinct corrected packet:
+COPYFILE_DISABLE=1 tar -czf receipts-f9be7cb8-final.tar.gz README.md fixtures runtime receipts
+shasum -a 256 receipts-f9be7cb8-final.tar.gz > archive-final.sha256

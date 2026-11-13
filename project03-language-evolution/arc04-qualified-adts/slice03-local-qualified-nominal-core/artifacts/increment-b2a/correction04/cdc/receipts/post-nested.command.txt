@@ -1,0 +1,5 @@
+Source cwd/common env: target/release/lykn compile <absolute CDC>/fixtures/post-nested-negative.lykn -o <absolute CDC>/runtime/post-nested-negative.mjs
+Expected normal strict-binding rejection (eval), not successful emission.
+Source cwd/common env: target/release/lykn compile <absolute CDC>/fixtures/post-nested-public.lykn -o <absolute CDC>/runtime/post-nested-public.mjs
+CDC cwd/common env: deno run --no-prompt --cached-only -A --config fixtures/canonical-public.json runtime/post-nested-public.mjs
+Expected public same non-leak strict-binding rejection, asserted by Lykn helper.

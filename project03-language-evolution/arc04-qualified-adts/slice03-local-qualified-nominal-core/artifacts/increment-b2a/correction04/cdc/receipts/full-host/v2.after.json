@@ -1,0 +1,39 @@
+{
+  "name": "v2",
+  "source": "(func local :args (:any Reflect :any globalThis) :returns :array :body\n  (set! Reflect:apply 7)\n  (set! globalThis:Reflect:apply 8)\n  (array Reflect:apply globalThis:Reflect:apply))\n(console:log (JSON:stringify (local (obj :apply 0) (obj :Reflect (obj :apply 0)))))",
+  "generated": "const lyknIntrinsicArrayIsArray0 = Array.isArray;\nconst lyknIntrinsicTypeError0 = TypeError;\nfunction local(Reflect, globalThis) {\n  Reflect.apply = 7;\n  globalThis.Reflect.apply = 8;\n  const result__gensym1 = [Reflect.apply, globalThis.Reflect.apply];\n  if (!lyknIntrinsicArrayIsArray0(result__gensym1)) {\n    throw new lyknIntrinsicTypeError0(\"local: return value expected array, got \" + typeof result__gensym1);\n  }\n  return result__gensym1;\n}\nconsole.log(JSON.stringify(local({\n  apply: 0\n}, {\n  Reflect: {\n    apply: 0\n  }\n})));\n",
+  "command": {
+    "program": "/opt/homebrew/bin/deno",
+    "args": [
+      "run",
+      "--no-config",
+      "--cached-only",
+      "--no-npm",
+      "--no-remote",
+      "--deny-net",
+      "--no-prompt",
+      "/private/tmp/lykn-b2a-correction04-cdc/tmp/9dd845de647128be/v2.js"
+    ],
+    "cwd": "/private/tmp/lykn-b2a-correction04-cdc/tmp/9dd845de647128be",
+    "selectedEnv": {
+      "DENO_DIR": "/Users/oubiwann/Library/Caches/deno",
+      "LYKN_TEST_DENO": null,
+      "XDG_CACHE_HOME": "/private/tmp/lykn-b2a-correction04-cdc/xdg",
+      "TMPDIR": "/private/tmp/lykn-b2a-correction04-cdc/tmp",
+      "LYKN_PROTECTED_HOST_EVIDENCE_DIR": "/Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/arc04-qualified-adts/slice03-local-qualified-nominal-core/artifacts/increment-b2a/correction04/cdc/receipts/full-host"
+    }
+  },
+  "runtime": {
+    "success": true,
+    "code": 0,
+    "stdout": [
+      91,
+      55,
+      44,
+      56,
+      93,
+      10
+    ],
+    "stderr": []
+  }
+}

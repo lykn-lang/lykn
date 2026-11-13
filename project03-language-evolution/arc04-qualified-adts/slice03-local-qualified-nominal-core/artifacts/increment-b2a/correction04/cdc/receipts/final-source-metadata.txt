@@ -1,0 +1,14 @@
+commit f9be7cb85f62513f1624964fcc6773bffe4f66fe
+Author:     Duncan McGreggor <oubiwann@gmail.com>
+AuthorDate: Fri Nov 13 03:14:18 2026 -0600
+Commit:     Duncan McGreggor <oubiwann@gmail.com>
+CommitDate: Fri Nov 13 03:14:18 2026 -0600
+
+    fix(host): align source checks with emitted regions
+    
+    Use classified Surface function regions for host policy and scope typed
+    parameters by their actual emitted leaves. Ignore only Genfunc post metadata,
+    while keeping ordinary Func post and executable generator bodies protected.
+    
+    Co-authored-by: Codex <noreply@openai.com>
+    Co-authored-by: Billo AI <ai-engineering@billo.systems>

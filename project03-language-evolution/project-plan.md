@@ -24,8 +24,10 @@ independently held on declaration transitions/wrappers. Iteration11 returns clea
 metadata/body alignment after R01–04 focused controls pass. Source-ready
 iteration12 returns clean0e249caf/treee946afc2, independently held on the native
 protected-host client's ignored generator metadata/post traversal. Exercised
-headers/D2 and R01–04 controls pass; iteration13 returns cleanf9be7cb8/tree0ea27d21
-for separate independent software verification of the remaining client.
+headers/D2 and R01–04 controls pass; iteration13 is independently accepted at
+cleanf9be7cb8/tree0ea27d21 for B2-LX only, with full native/public/delivery proof.
+[Verification](arc04-qualified-adts/slice03-local-qualified-nominal-core/artifacts/increment-b2a/correction04/cdc/README.md)
+closes the bounded lexical prerequisite, leaving original LC02–08 open.
 Typed metadata transport and private finalization
 follow under the preserved B2 design after lexical acceptance; source-name
 identity B2-ID-NAME remains an unanswered operator language-design choice. Local

@@ -1,0 +1,6 @@
+(class Box ()
+  (call (bind) (return (bind 7)))
+  (sum (left right) (bind total (+ left right)) (return total)))
+(bind box (new Box))
+(console:log (box:call (fn (:any value) value)))
+(console:log (box:sum 20 22))

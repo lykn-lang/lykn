@@ -1,0 +1,5 @@
+Source cwd/common env: target/release/lykn compile <absolute CDC>/fixtures/browser-delivery.lykn -o <absolute CDC>/runtime/browser-delivery.mjs
+CDC cwd/common env: deno run --cached-only --no-prompt -A --config fixtures/materialized-public.json runtime/browser-delivery.mjs
+Actual browser/ adapter freshly staged by full Make; its lang/ imports select
+the independent copied-CLI materialized cache. Three generated ESM runtimes
+assert exact stdout and empty stderr, child commands/statuses saved.

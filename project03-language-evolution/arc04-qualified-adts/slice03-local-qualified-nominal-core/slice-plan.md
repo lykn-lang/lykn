@@ -3,7 +3,7 @@ project: project03-language-evolution
 arc: arc04-qualified-adts
 slice: slice03-local-qualified-nominal-core
 status: active
-version: "1.25"
+version: "1.26"
 depends-on: [slice01-contract-and-emission-design, slice02-existing-adt-correctness]
 ---
 
@@ -234,7 +234,7 @@ gates survive. No release edits/integration, remote CI, push or publication.
 | cc-prompt-iteration10.md | 2026-11-12 | iteration09 | B2a correction01: native redispatch/actual diagnostic gating, public class defaults, named kernel function scope | Independent HOLD804be5da/treed25f2b66 on R04; R01–03 focused replays pass |
 | cc-prompt-iteration11.md | 2026-11-13 | iteration10 | B2a correction02: shared actual enclosing-declaration sites across expansion/resolution/D2/shadow clients and real wrapper/default slots | Independent HOLD595f672b/treedd518b1b on R05; R01–04 focused controls pass |
 | cc-prompt-iteration12.md | 2026-11-13 | iteration11 | B2a correction03: pure typed-source header preflight and canonical genfn metadata/body slots in parser and walkers | Independent HOLD0e249caf/treee946afc2: native protected-host client still visits ignored generator regions; exercised header/D2 controls green |
-| cc-prompt-iteration13.md | 2026-11-13 | iteration12 | B2a correction04: parsed native Surface function regions, ignored generator post excluded, actual parameter leaf scopes | Cleanf9be7cb8/tree0ea27d21 returned; separate Sol software verification active; original B2-LX gates retained |
+| cc-prompt-iteration13.md | 2026-11-13 | iteration12 | B2a correction04: parsed native Surface function regions, ignored generator post excluded, actual parameter leaf scopes | Independently acceptedf9be7cb8/tree0ea27d21 for B2-LX only; full S03 and B2b/name decision remain open |
 
 The A correction loop used three refinement passes; B1 required no software
 correction. IC-01 is a distinct authorized usable prerequisite, not a retry
@@ -482,3 +482,19 @@ expected-leaf error and non-gating preexisting Deno-format observation survive.
 Separate Sol now exclusively owns source/build for complete original B2-LX
 verification, including fresh final-source full checks. Only independent
 acceptance may close B2-LX; B2b/name policy and LC02–08 remain open.
+
+2026-11-13 v1.26: separate Sol accepts B2-LX only at cleanf9be7cb8/tree0ea27d21.
+All12 verification rows pass, including final-source full1197native/1557product/
+67steps/482docs, cold fourteen module comparisons/49cases, actual native routes,
+canonical/materialized fixed-nine/private/Reflect and staged-browser ESM proof,
+postHEAD citations64/601 and46600-byte gzip. Root verified both frozen packets:
+first36ea6ae95822b2fd99f3bd0514ce71a95ba8fc75e947702fb8fe72b0fee076e4;
+finala0e7b5673e31c18c5376418d646f60bf1e81d32f1a04cc98bc74d87addc90017.
+The final packet qualifies a broad public test-corpus wording; native tests
+also changed, and no runtime/verdict/denominator changed. Root verified source
+and release status/pins; release remains0829e892. Only B2-LX closes. B2-ID-NAME
+is unanswered, B2b remains unissued, LC02–08 and all nominal/purity/API/book/
+human obligations remain open. S06 should examine object-key normalization vs
+literal string lookup guidance based on the preserved helper assertion error;
+this is an audit input, not a proved documentation defect. Full S03 closing
+and CDC retrospective are still due when its original criteria are satisfied.

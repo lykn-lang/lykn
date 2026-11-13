@@ -1,0 +1,1 @@
+/Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/arc04-qualified-adts/slice03-local-qualified-nominal-core/artifacts/increment-b2a/correction04/cdc/fixtures/native-post-after.lykn: ok (2 top-level expressions)

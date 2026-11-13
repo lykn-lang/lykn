@@ -1,0 +1,4 @@
+error: Uncaught (in promise) TypeError: Cannot read properties of undefined (reading 'shared-reference-node')
+if (sharedResult["shared-reference-node"] !== "compiled") {
+                ^
+    at file:///Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/arc04-qualified-adts/slice03-local-qualified-nominal-core/artifacts/increment-b2a/correction04/cdc/runtime/reference-probes.mjs:60:17

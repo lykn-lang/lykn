@@ -1,0 +1,1 @@
+(genfunc factory :args () :pre (set-symbol! Array "isArray" 1) :body (yield 41))

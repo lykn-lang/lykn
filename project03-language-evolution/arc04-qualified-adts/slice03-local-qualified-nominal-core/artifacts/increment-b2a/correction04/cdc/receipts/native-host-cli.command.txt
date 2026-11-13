@@ -1,0 +1,3 @@
+Source cwd, common environment.txt values plus
+LYKN_PROTECTED_HOST_EVIDENCE_DIR=<absolute CDC>/receipts/native-host-cli
+cargo test -p lykn-cli --test protected_host -- --nocapture

@@ -1,0 +1,4 @@
+(func sample :args () :post (bind eval 1) :body
+  (block (bind bind (fn (:any a :any b) (= a eval))))
+  true)
+(console:log (sample))

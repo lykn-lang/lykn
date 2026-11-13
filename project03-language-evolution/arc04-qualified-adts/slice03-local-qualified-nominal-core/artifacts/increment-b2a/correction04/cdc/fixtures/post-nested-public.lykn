@@ -1,0 +1,8 @@
+(import "lang/mod.js" (lykn))
+(try
+  (lykn (Deno:readTextFileSync "fixtures/post-nested-negative.lykn"))
+  (throw (new Error "nested block leaked into post scope"))
+  (catch failure
+    (Deno:writeTextFileSync "receipts/post-nested-public.diagnostic.txt" failure:message)
+    (if (not (failure:message:includes "forbidden as a strict-mode binding identifier")) (throw failure) null)
+    (console:log "nested block does not leak into post")))

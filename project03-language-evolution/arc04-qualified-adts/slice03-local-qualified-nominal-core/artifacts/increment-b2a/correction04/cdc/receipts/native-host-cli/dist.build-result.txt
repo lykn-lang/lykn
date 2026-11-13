@@ -1,0 +1,1 @@
+Err(Language { path: "/private/tmp/lykn-b2a-correction04-cdc/tmp/.tmpPdpDy6/packages/fixture/mod.lykn", source: Classify(Diagnostic { severity: Error, message: "host-contract v2: write to protected slot Reflect.apply", span: Span { start: SourceLoc { line: 2, column: 7 }, end: SourceLoc { line: 2, column: 20 } }, suggestion: None }) })

@@ -1,0 +1,513 @@
+diff --git a/crates/lykn-cli/tests/macro_dependencies.rs b/crates/lykn-cli/tests/macro_dependencies.rs
+index 84d7ac62..1b3d7e84 100644
+--- a/crates/lykn-cli/tests/macro_dependencies.rs
++++ b/crates/lykn-cli/tests/macro_dependencies.rs
+@@ -1156,7 +1156,7 @@ fn m6_embedded_compiler_payload_matches_canonical_and_runs_from_cold_cache() {
+         String::from_utf8_lossy(&public_result.stderr)
+     );
+     assert!(
+-        public_output.contains("ok | 48 passed | 0 failed"),
+-        "M6 must execute the derived 48-case retained, IC-01, and current B2a materialized population, output: {public_output}"
++        public_output.contains("ok | 49 passed | 0 failed"),
++        "M6 must execute the derived 49-case retained, IC-01, and current B2a materialized population (5 + 6 + 17 + 21), output: {public_output}"
+     );
+ }
+diff --git a/crates/lykn-cli/tests/protected_host.rs b/crates/lykn-cli/tests/protected_host.rs
+index f809d4cc..3446b694 100644
+--- a/crates/lykn-cli/tests/protected_host.rs
++++ b/crates/lykn-cli/tests/protected_host.rs
+@@ -23,6 +23,30 @@ const INVALID: &[(&str, &str)] = &[
+         "w9",
+         "(func guarded :args () :returns :number :pre (do (set! Reflect:apply 0) true) :body 1)",
+     ),
++    (
++        "r04-genfn-body",
++        "(bind factory (genfn () :yields :any (set-symbol! Array \"isArray\" 1) (yield 41)))",
++    ),
++    (
++        "r04-genfn-metadata-binding-body",
++        "(bind factory (genfn () :yields (bind Array 1) (set-symbol! Array \"isArray\" 1) (yield 41)))",
++    ),
++    (
++        "r04-genfunc-pre",
++        "(genfunc factory :args () :pre (set-symbol! Array \"isArray\" 1) :body (yield 41))",
++    ),
++    (
++        "r04-genfunc-body",
++        "(genfunc factory :args () :body (set-symbol! Array \"isArray\" 1) (yield 41))",
++    ),
++    (
++        "r04-genfunc-post-binding-body",
++        "(genfunc factory :args () :post (bind Array 1) :body (set-symbol! Array \"isArray\" 1) (yield 41))",
++    ),
++    (
++        "r04-func-post",
++        "(func ordinary :args () :post (set-symbol! Array \"isArray\" 1) :body 41)",
++    ),
+ ];
+ 
+ const LEGAL: &[(&str, &str, &str)] = &[
+@@ -46,6 +70,16 @@ const LEGAL: &[(&str, &str, &str)] = &[
+         "(bind action (fn (:number n) (+ n 1)))\n(set! action:call (fn (:number n) 99))\n(console:log (JSON:stringify (action:call 1)))",
+         "99\n",
+     ),
++    (
++        "r04-genfn-metadata",
++        "(bind factory (genfn () :yields (set-symbol! Array \"isArray\" 1) (yield 41)))\n(bind stream (factory))\n(console:log (get (stream:next) :value))",
++        "41\n",
++    ),
++    (
++        "r04-genfunc-post",
++        "(genfunc factory :args () :post (set-symbol! Array \"isArray\" 1) :body (yield 41))\n(bind stream (factory))\n(console:log (get (stream:next) :value))",
++        "41\n",
++    ),
+ ];
+ 
+ const DIST_SOURCE: &str =
+@@ -177,9 +211,14 @@ fn exact_diagnostic(case: &str, source: &str, path: &Path, route: &str) -> Vec<u
+             .as_list()
+             .expect("pre body is a list")[1]
+             .span(),
++        name if name.starts_with("r04-") => find_symbol_write_target(form)
++            .expect("R04 fixture includes a set-symbol! target")
++            .span(),
+         _ => values[1].span(),
+     };
+-    let slot = if matches!(case, "w3" | "w4") {
++    let slot = if case.starts_with("r04-") {
++        "Array.isArray"
++    } else if matches!(case, "w3" | "w4") {
+         "Reflect"
+     } else {
+         "Reflect.apply"
+@@ -196,6 +235,20 @@ fn exact_diagnostic(case: &str, source: &str, path: &Path, route: &str) -> Vec<u
+     }
+ }
+ 
++fn find_symbol_write_target(
++    expr: &lykn_lang::ast::sexpr::SExpr,
++) -> Option<&lykn_lang::ast::sexpr::SExpr> {
++    let values = expr.as_list()?;
++    if values
++        .first()
++        .and_then(lykn_lang::ast::sexpr::SExpr::as_atom)
++        == Some("set-symbol!")
++    {
++        return values.get(1);
++    }
++    values.iter().find_map(find_symbol_write_target)
++}
++
+ fn save_artifact_snapshot(name: &str, path_name: &str, phase: &str, state: &ArtifactState) {
+     save_receipt(
+         name,
+@@ -736,9 +789,61 @@ fn protected_writes_are_captured_across_cli_routes_before_rejection_assertions()
+         },
+     });
+ 
++    for case_id in ["r04-genfn-body", "r04-genfunc-body"] {
++        let (case, source_text) = INVALID
++            .iter()
++            .find(|(name, _)| *name == case_id)
++            .copied()
++            .expect("R04 stripped witness exists");
++        let fixture = TempDir::new().expect("create stripped R04 fixture");
++        let source_path = write_source(fixture.path(), source_text);
++        let source = fs::read(&source_path).expect("read stripped R04 fixture");
++        let (output_path, dts_path, js_before, dts_before, js_expected, dts_expected) =
++            existing_sentinels(fixture.path(), case);
++        let route = format!("{case}-strip-compile-existing");
++        save_artifact_snapshot(&route, "js", "before", &js_before);
++        save_artifact_snapshot(&route, "dts", "before", &dts_before);
++        let stripped = execute_recorded(
++            &route,
++            &source_path,
++            &source,
++            cli()
++                .current_dir(fixture.path())
++                .arg("compile")
++                .arg("--strip-assertions")
++                .arg(&source_path)
++                .arg("-o")
++                .arg(&output_path),
++        );
++        let js_after = snapshot_artifact(&output_path);
++        let dts_after = snapshot_artifact(&dts_path);
++        save_artifact_snapshot(&route, "js", "after", &js_after);
++        save_artifact_snapshot(&route, "dts", "after", &dts_after);
++        observations.push(Observation {
++            name: case.to_string(),
++            route: "compile-strip-existing",
++            output: stripped,
++            expected_stderr: exact_diagnostic(case, source_text, &source_path, "compile"),
++            effects: ArtifactEffects::Preserve {
++                js: ArtifactPair {
++                    before: js_before,
++                    after: js_after,
++                    expected_bytes: js_expected,
++                    expected_modified: UNIX_EPOCH,
++                },
++                dts: ArtifactPair {
++                    before: dts_before,
++                    after: dts_after,
++                    expected_bytes: dts_expected,
++                    expected_modified: UNIX_EPOCH,
++                },
++            },
++        });
++    }
++
+     assert_eq!(
+         observations.len(),
+-        29,
++        INVALID.len() * 3 + 4,
+         "all invalid route observations captured"
+     );
+     eprintln!(
+diff --git a/crates/lykn-lang/src/protected_host.rs b/crates/lykn-lang/src/protected_host.rs
+index f8f665f5..fed34b3e 100644
+--- a/crates/lykn-lang/src/protected_host.rs
++++ b/crates/lykn-lang/src/protected_host.rs
+@@ -307,8 +307,8 @@ fn object_executable_children(arg: &SExpr) -> Vec<&SExpr> {
+ fn param_scope_names(params: &[crate::ast::surface::ParamShape]) -> HashSet<String> {
+     params
+         .iter()
+-        .flat_map(|param| param.bound_names())
+-        .map(to_js_identifier)
++        .flat_map(|param| param.typed_params())
++        .map(|param| to_js_identifier(&param.name))
+         .collect()
+ }
+ 
+@@ -410,6 +410,29 @@ struct Walker {
+ }
+ 
+ impl Walker {
++    fn visit_surface_callable(
++        &mut self,
++        params: &[crate::ast::surface::ParamShape],
++        name: Option<&str>,
++        body: &[SExpr],
++        dialect: InputDialect,
++    ) {
++        let mut param_names = param_scope_names(params);
++        if let Some(name) = name {
++            param_names.insert(to_js_identifier(name));
++        }
++        self.scopes.push(param_names.clone());
++        visit_param_defaults(self, params, dialect);
++        self.scopes.pop();
++
++        let names = function_scope_names(body, param_names);
++        self.scopes.push(names);
++        for form in body {
++            self.visit(form, dialect);
++        }
++        self.scopes.pop();
++    }
++
+     fn is_local(&self, name: &str) -> bool {
+         let name = to_js_identifier(name);
+         self.scopes.iter().rev().any(|scope| scope.contains(&name))
+@@ -667,15 +690,12 @@ impl Walker {
+             }
+             return;
+         }
+-        if dialect == InputDialect::Surface && matches!(head, "func" | "genfunc") {
++        if dialect == InputDialect::Surface
++            && matches!(head, "func" | "genfunc" | "fn" | "lambda" | "genfn")
++        {
+             match crate::classifier::classify_expr(expr) {
+                 Ok(SurfaceForm::Func { name, clauses, .. }) => {
+                     for clause in clauses {
+-                        let mut params = param_scope_names(&clause.args);
+-                        params.insert(to_js_identifier(&name));
+-                        self.scopes.push(params.clone());
+-                        visit_param_defaults(self, &clause.args, dialect);
+-                        self.scopes.pop();
+                         let mut emitted_body = Vec::new();
+                         if let Some(pre) = &clause.pre {
+                             emitted_body.push(pre.clone());
+@@ -684,51 +704,37 @@ impl Walker {
+                             emitted_body.push(post.clone());
+                         }
+                         emitted_body.extend(clause.body.iter().cloned());
+-                        let names = function_scope_names(&emitted_body, params);
+-                        self.scopes.push(names);
+-                        if let Some(pre) = &clause.pre {
+-                            self.visit(pre, dialect);
+-                        }
+-                        if let Some(post) = &clause.post {
+-                            self.visit(post, dialect);
+-                        }
+-                        for body in &clause.body {
+-                            self.visit(body, dialect);
+-                        }
+-                        self.scopes.pop();
++                        self.visit_surface_callable(
++                            &clause.args,
++                            Some(&name),
++                            &emitted_body,
++                            dialect,
++                        );
+                     }
+                     return;
+                 }
+                 Ok(SurfaceForm::Genfunc { name, clauses, .. }) => {
+                     for clause in clauses {
+-                        let mut params = param_scope_names(&clause.args);
+-                        params.insert(to_js_identifier(&name));
+-                        self.scopes.push(params.clone());
+-                        visit_param_defaults(self, &clause.args, dialect);
+-                        self.scopes.pop();
+                         let mut emitted_body = Vec::new();
+                         if let Some(pre) = &clause.pre {
+                             emitted_body.push(pre.clone());
+                         }
+-                        if let Some(post) = &clause.post {
+-                            emitted_body.push(post.clone());
+-                        }
+                         emitted_body.extend(clause.body.iter().cloned());
+-                        let names = function_scope_names(&emitted_body, params);
+-                        self.scopes.push(names);
+-                        if let Some(pre) = &clause.pre {
+-                            self.visit(pre, dialect);
+-                        }
+-                        if let Some(post) = &clause.post {
+-                            self.visit(post, dialect);
+-                        }
+-                        for body in &clause.body {
+-                            self.visit(body, dialect);
+-                        }
+-                        self.scopes.pop();
++                        self.visit_surface_callable(
++                            &clause.args,
++                            Some(&name),
++                            &emitted_body,
++                            dialect,
++                        );
+                     }
+                     return;
+                 }
++                Ok(SurfaceForm::Fn { params, body, .. })
++                | Ok(SurfaceForm::Lambda { params, body, .. })
++                | Ok(SurfaceForm::Genfn { params, body, .. }) => {
++                    self.visit_surface_callable(&params, None, &body, dialect);
++                    return;
++                }
+                 _ => {}
+             }
+         }
+@@ -1118,6 +1124,145 @@ mod tests {
+         validate_program(&read(source).expect("test source parses"), dialect)
+     }
+ 
++    fn assert_protected_array_write(source: &str) {
++        fn target(expr: &SExpr) -> Option<&SExpr> {
++            let values = expr.as_list()?;
++            if values.first().and_then(SExpr::as_atom) == Some("set-symbol!") {
++                return values.get(1);
++            }
++            values.iter().find_map(target)
++        }
++
++        let forms = read(source).expect("test source parses");
++        let expected_span = forms
++            .iter()
++            .find_map(target)
++            .expect("write target exists")
++            .span();
++        let errors = validate_program(&forms, InputDialect::Surface);
++        assert_eq!(errors.len(), 1);
++        assert_eq!(
++            errors[0].message,
++            "host-contract v2: write to protected slot Array.isArray"
++        );
++        assert_eq!(errors[0].span, expected_span);
++    }
++
++    #[test]
++    fn surface_callable_boundaries_match_parsed_emitted_regions() {
++        let protected_write = r#"(set-symbol! Array "isArray" 1)"#;
++
++        let genfn_metadata =
++            format!("(bind factory (genfn () :yields {protected_write} (yield 41)))");
++        assert!(check(&genfn_metadata, InputDialect::Surface).is_empty());
++
++        let genfn_body =
++            format!("(bind factory (genfn () :yields :any {protected_write} (yield 41)))");
++        assert_protected_array_write(&genfn_body);
++
++        let genfn_metadata_binding = format!(
++            "(bind factory (genfn () :yields (bind Array 1) {protected_write} (yield 41)))"
++        );
++        assert_protected_array_write(&genfn_metadata_binding);
++
++        let genfunc_post =
++            format!("(genfunc factory :args () :post {protected_write} :body (yield 41))");
++        assert!(check(&genfunc_post, InputDialect::Surface).is_empty());
++
++        let genfunc_body = format!("(genfunc factory :args () :body {protected_write} (yield 41))");
++        assert_protected_array_write(&genfunc_body);
++
++        let genfunc_post_binding = format!(
++            "(genfunc factory :args () :post (bind Array 1) :body {protected_write} (yield 41))"
++        );
++        assert_protected_array_write(&genfunc_post_binding);
++
++        let genfunc_pre =
++            format!("(genfunc factory :args () :pre {protected_write} :body (yield 41))");
++        assert_protected_array_write(&genfunc_pre);
++
++        let func_post = format!("(func ordinary :args () :post {protected_write} :body 41)");
++        assert_protected_array_write(&func_post);
++    }
++
++    #[test]
++    fn surface_anonymous_defaults_and_nested_param_leaves_use_actual_bindings() {
++        let protected_write = r#"(set-symbol! Array "isArray" 1)"#;
++
++        for (head, body) in [
++            ("fn", "value"),
++            ("lambda", "value"),
++            ("genfn", "(yield value)"),
++        ] {
++            let metadata = if head == "genfn" { " :yields :any" } else { "" };
++            let default_without_param =
++                format!("({head} ((default :any value {protected_write})){metadata} {body})");
++            assert_protected_array_write(&default_without_param);
++
++            let default_with_param = format!(
++                "({head} (:any Array (default :any value {protected_write})){metadata} {body})"
++            );
++            assert!(check(&default_with_param, InputDialect::Surface).is_empty());
++
++            let actual_body_write =
++                format!("({head} (:any value){metadata} {protected_write} {body})");
++            assert_protected_array_write(&actual_body_write);
++        }
++
++        let body_binding_does_not_hide_default =
++            format!("(fn ((default :any value {protected_write})) (bind Array 1) value)");
++        assert_protected_array_write(&body_binding_does_not_hide_default);
++
++        let external_object_alias = format!(
++            "(fn ((object :any wrapper (alias :any Array (object :any leaf)))) {protected_write})"
++        );
++        let parsed = crate::classifier::classify_expr(
++            &read(&external_object_alias).expect("test source parses")[0],
++        )
++        .expect("typed object header classifies");
++        let SurfaceForm::Fn { params, .. } = parsed else {
++            panic!("expected parsed fn parameters");
++        };
++        let leaf_names: Vec<_> = params
++            .iter()
++            .flat_map(|param| param.typed_params())
++            .map(|param| param.name.as_str())
++            .collect();
++        assert_eq!(leaf_names, ["wrapper", "leaf"]);
++        assert!(params[0].bound_names().contains(&"Array"));
++        assert_protected_array_write(&external_object_alias);
++
++        let actual_object_leaf = format!(
++            "(fn ((object :any wrapper (alias :any container (object :any Array)))) {protected_write})"
++        );
++        assert!(check(&actual_object_leaf, InputDialect::Surface).is_empty());
++
++        let external_array_alias = format!(
++            "(fn ((array _ (alias :array Array (array _ (rest :any leaf))))) {protected_write})"
++        );
++        assert_protected_array_write(&external_array_alias);
++
++        let parsed = crate::classifier::classify_expr(
++            &read(&external_array_alias).expect("test source parses")[0],
++        )
++        .expect("typed array header classifies");
++        let SurfaceForm::Fn { params, .. } = parsed else {
++            panic!("expected parsed fn parameters");
++        };
++        let leaf_names: Vec<_> = params
++            .iter()
++            .flat_map(|param| param.typed_params())
++            .map(|param| param.name.as_str())
++            .collect();
++        assert_eq!(leaf_names, ["leaf"]);
++        assert!(params[0].bound_names().contains(&"Array"));
++
++        let actual_array_rest = format!(
++            "(fn ((array _ (alias :array container (array _ (rest :any Array))))) {protected_write})"
++        );
++        assert!(check(&actual_array_rest, InputDialect::Surface).is_empty());
++    }
++
+     #[test]
+     fn source_equality_is_not_a_write_but_kernel_assignment_is() {
+         assert!(check("(= Reflect:apply 0)", InputDialect::Surface).is_empty());
+diff --git a/test/expander/lexical-regions.test.js b/test/expander/lexical-regions.test.js
+index 04935b4c..b332e740 100644
+--- a/test/expander/lexical-regions.test.js
++++ b/test/expander/lexical-regions.test.js
+@@ -117,6 +117,62 @@ Deno.test("B2a genfn metadata is inert and excluded from the body region", async
+   }
+ });
+ 
++Deno.test("B2a public compiler follows emitted Genfn and Genfunc regions", async () => {
++  await executeModule(
++    lykn(`
++      (bind factory (genfn () :yields (set-symbol! Array "isArray" 1) (yield 41)))
++      (bind stream (factory))
++      (console:log (get (stream:next) :value))
++    `),
++    "41\n",
++  );
++
++  await executeModule(
++    lykn(`
++      (genfunc factory :args () :post (set-symbol! Array "isArray" 1) :body (yield 41))
++      (bind stream (factory))
++      (console:log (get (stream:next) :value))
++    `),
++    "41\n",
++  );
++
++  assertThrows(
++    () => lykn(`
++      (bind factory (genfn () :yields :any (set-symbol! Array "isArray" 1) (yield 41)))
++    `),
++    Error,
++    "protected slot Array.isArray",
++  );
++
++  assertThrows(
++    () => lykn(`
++      (genfunc factory :args () :body (set-symbol! Array "isArray" 1) (yield 41))
++    `),
++    Error,
++    "protected slot Array.isArray",
++  );
++
++  for (const [head, body] of [["fn", "value"], ["lambda", "value"], ["genfn", "(yield value)"]]) {
++    const yields = head === "genfn" ? " :yields :any" : "";
++    const protectedDefault = `(${head} ((default :any value (set-symbol! Array "isArray" 1)))${yields} ${body})`;
++    assertThrows(
++      () => lykn(protectedDefault),
++      Error,
++      "protected slot Array.isArray",
++    );
++
++    const parameterShadow = `(${head} (:any Array (default :any value (set-symbol! Array "isArray" 1)))${yields} ${body})`;
++    lykn(parameterShadow);
++
++    const bodyBinding = `(${head} ((default :any value (set-symbol! Array "isArray" 1)))${yields} (bind Array 1) ${body})`;
++    assertThrows(
++      () => lykn(bodyBinding),
++      Error,
++      "protected slot Array.isArray",
++    );
++  }
++});
++
+ Deno.test("B2a class methods isolate their parameter lists", async () => {
+   const source = `
+     (class Box ()
