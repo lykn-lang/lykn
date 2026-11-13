@@ -186,3 +186,42 @@ which remains resolved. Do not issue dependent general hygiene/discard lowering
 from the old preservation recommendation before the actual answer. No new
 catch grammar, omitted-binding syntax or changed underscore effect/type-check
 contract is approved by this draft. Unaffected source-readiness may continue.
+
+## Discard follow-through source notes — unissued
+
+Root read-only census at57c76c99 while Luna owns native18 implementation:
+public surface-helpers.js separates paramNameNodes from paramTypeChecks;
+classifier.js consumers include Fn681, Lambda791, single Func858/865,
+multi Func1121/1132, Genfunc1253/1260 (Genfn caller must also be checked).
+Public buildTypeCheck already takes an actual atom, but uses its `.value` for
+the display label. A prepared signature must therefore carry original label
+separately from private storage, preserving BOTH actual predicate and dynamic
+typeof operands. compilerPrivateAtom's existing identity/finalizer lifecycle
+is the matching public mechanism; do not invent active global unit state.
+
+Public emitBindKernelArgs458 emits original binder/check operands, and
+expandDirectBind1819 creates declarations independently; simpleDirectBind
+currently excludes `_`. Any public recipe must settle that direct transfer
+path with the same storage/guard/effect contract before issue. Private finalizer
+runs at expandExpr/pass2ExpandAll after expansion; preserve host request node
+identities and other private metadata. Type field parsing at classifier1560
+is schema, not callable discard preparation.
+
+Actual corpus census found test/surface/fn-lambda_test.lykn72/77 asserting
+literal `_ => 42` and `(_, i)` output from public compile. Those assertions
+encode the old spelling, and need behavioral migration in the public checkpoint
+once the actual producer changes; the runtime test at82 already ignores its
+first argument and retains its useful30 result. Native18 does not edit these
+public compiler assertions or claim public discard acceptance. Raw writer API
+versus canonical Source/kernel-escape binding scope still needs explicit
+consumer disposition, not a global rename of every `_` atom.
+
+These are preparation inputs, not another assignment, implemented API, full
+caller census or waiver of full public/materialized/browser/cold/JSON gates.
+
+Native18 integration preparation also inspected dts.rs85–103 and208–239:
+simple parameters retain original source names and inline exported Bind uses
+the original binder name. Discard-aware declaration output, including repeated
+discard parameters and empty/mixed inline exports, is a concrete downstream
+obligation. This is source inspection, not a TypeScript consumer result or
+permission to advertise complete discard-aware DTS.

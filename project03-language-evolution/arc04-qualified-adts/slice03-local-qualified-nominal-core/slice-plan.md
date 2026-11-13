@@ -3,11 +3,28 @@ project: project03-language-evolution
 arc: arc04-qualified-adts
 slice: slice03-local-qualified-nominal-core
 status: active
-version: "1.34"
+version: "1.35"
 depends-on: [slice01-contract-and-emission-design, slice02-existing-adt-correctness]
 ---
 
 # Local qualified nominal core
+
+2026-11-13 v1.35: native18's first compile-only loop-variable error is retained,
+followed by15 runtime tests and actual checked/stripped CLI proof. No full
+gate or source commit has run. Root's read-only integration review found
+Export wrapping private discard storage/check statements, then a shared spread
+projector/writer split. Separate Sol confirms the revised bounded route.
+Iteration19 now refines18: direct Bind/Group exports use original source names
+and ordinary sibling declarations/checks, empty names give export{}; binding/
+assignment spread uses canonical pattern grammar, value spread stays unchanged;
+BindingPattern spread/default projection matches actual consumed slots while
+CatchBinding and TypedParameter retain their previous projection. Old nested
+expression-object tuple pattern syntax receives a typed codegen migration
+diagnostic; legacy expression-rendered catch behavior remains open/unchanged.
+Seven exact source paths (18's six plus binding.rs), same Luna implementation
+owner, then separate Sol software review. One combined final full/cold/citation/
+size gate; all failed attempts and18's issued contract remain history. No
+public/raw scalar/catch/DTS/owner/hygiene/LC02–08 or S03 closure is implied.
 
 2026-11-13 v1.34: B2-ID-DISCARD is resolved by the operator's actual response:
 `_` is a discard in binding patterns, `_value` an ordinary named binding.
@@ -215,10 +232,11 @@ depth, supported native quotation paths, kernel-only D1 scope corrections and
 validation-only class-member queries. Existing source Func/class aggregate
 scope issues are explicit B2 inputs, not new IC-01 expansion claims.
 
-**Current assignment:** [iteration18](cc-prompt-iteration18.md), issued
+**Current assignment:** [iteration19](cc-prompt-iteration19.md), issued
 2026-11-13 against accepted57c76c99cbed07ff992e78aac8afefa4bdf0b2ad/
-treef044d795e88c3dac8e84a73a557cf071edd5327c after independent source-readiness.
-Luna owns source/build for the bounded native Surface discard checkpoint under the
+treef044d795e88c3dac8e84a73a557cf071edd5327c plus Luna's retained authorized18
+work, after independent export/pattern source-readiness. Luna owns source/build
+for the combined18+19 bounded native Surface discard checkpoint under the
 operator's B2 design/implementation/independent-validation authorization and
 2026-11-13 source-name decision. B2-LX and B2-UNIT are independently accepted.
 [B2 architecture](artifacts/b2-owner-and-lexical-design.md) still governs typed
@@ -227,7 +245,7 @@ that architecture or ordinary source binding hygiene.
 Both native B2-ICU-N and public B2-ICU-P are independently accepted. The
 general naming/owner work remains open. The operator has now resolved the
 underscore-contract gap (B2-ID-DISCARD): `_` is discard in binding patterns,
-`_value` normal. Native Surface checkpoint iteration18 is issued. B2-ID-NAME remains
+`_value` normal. Native Surface checkpoint iteration19 refines18. B2-ID-NAME remains
 resolved. Public/raw/kernel and all-discard grouped non-atom pattern admission
 plus existing multi-clause default/rest limits retain explicit follow-through.
 For the next issued implementation Luna6High owns task source/build through
@@ -259,7 +277,8 @@ gates survive. No release edits/integration, remote CI, push or publication.
 | cc-prompt-iteration15.md | 2026-11-13 | iteration14 | B2b1 correction01: complete-field private-construction Rustdoc discriminator | Independently accepted5554a4d6/treef632c415, strict Rustdoc-only correction and evidence retention; full B2b/S03 remain open |
 | cc-prompt-iteration16.md | 2026-11-13 | iteration15 | B2b2 native ICU generated-name allocator, actual hoist/selector capture repair | Independently accepted228e8c99/tree5a2c9a4b, B2-ICU-N only |
 | cc-prompt-iteration17.md | 2026-11-13 | iteration16 | B2b2 public ICU private allocator and actual mapped cold/browser/private runtime delivery | Independently accepted57c76c99/treef044d795, B2-ICU-P only |
-| cc-prompt-iteration18.md | 2026-11-13 | iteration17 | Operator discard policy, native Surface private values/guards and effects | Active; six exact source paths, Luna implementation then separate Sol review |
+| cc-prompt-iteration18.md | 2026-11-13 | iteration17 | Operator discard policy, native Surface private values/guards and effects | Retained15-test/CLI checkpoint; refined by19 before full gate/commit, no independent acceptance |
+| cc-prompt-iteration19.md | 2026-11-13 | iteration18 | Source-only export names and canonical spread-pattern/projector parity, preserving catch extent | Active; seven exact source paths, Luna implementation then separate Sol review |
 
 The A correction loop used three refinement passes; B1 required no software
 correction. IC-01 is a distinct authorized usable prerequisite, not a retry
