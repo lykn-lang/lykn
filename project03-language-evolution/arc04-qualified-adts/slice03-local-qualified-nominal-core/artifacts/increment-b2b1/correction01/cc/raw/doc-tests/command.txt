@@ -1,0 +1,3 @@
+Command: cargo test -p lykn-lang --doc
+Working directory: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+Environment: XDG_CACHE_HOME=/private/tmp/lykn-b2b1-correction01-cc/xdg; NPM_CONFIG_CACHE=/private/tmp/lykn-b2b1-correction01-cc/npm; TMPDIR=/private/tmp/lykn-b2b1-correction01-cc/tmp; DENO_DIR=/Users/oubiwann/Library/Caches/deno

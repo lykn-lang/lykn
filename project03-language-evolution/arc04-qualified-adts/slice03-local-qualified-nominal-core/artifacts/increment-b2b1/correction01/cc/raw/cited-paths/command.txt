@@ -1,0 +1,4 @@
+Command: make check-cited-paths
+Working directory: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+Environment: XDG_CACHE_HOME=/private/tmp/lykn-b2b1-correction01-cc/xdg; NPM_CONFIG_CACHE=/private/tmp/lykn-b2b1-correction01-cc/npm; TMPDIR=/private/tmp/lykn-b2b1-correction01-cc/tmp; DENO_DIR=/Users/oubiwann/Library/Caches/deno
+HEAD before invocation: 5554a4d6bd0aa66bbca3cedfd91a41e0f1cf86cb

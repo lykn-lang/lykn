@@ -1,0 +1,3 @@
+cwd=/Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/arc04-qualified-adts/slice03-local-qualified-nominal-core/artifacts/increment-b2b1/correction01/cdc
+tar -cf - README.md receipts | gzip -n > receipts-5554a4d6.tar.gz
+shasum -a 256 receipts-5554a4d6.tar.gz > receipts-5554a4d6.tar.gz.sha256

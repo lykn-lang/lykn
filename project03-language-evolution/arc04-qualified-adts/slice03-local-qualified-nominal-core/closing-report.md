@@ -636,3 +636,31 @@ hygiene must preserve those lifetimes and distinguish local variable names
 from object keys, import/export names and colon suffixes. No broad text rewrite
 or opaque source/JSON field can supply binding/owner authority. The unissued
 preparation and immutable census retain these engineering constraints.
+
+## Owned native unit accepted — 2026-11-13
+
+Separate Sol accepts B2-UNIT only at5554a4d6/treef632c415. Root verified the
+strict single-file Rustdoc-only correction and final archive SHA256
+7b12443b0f93852b3059f8f64d12008aeb79ab2187ffe74b5a5977008cac8932.
+Actual complete construction fails E0451 on private fields; old independent
+forms/registry emitter call fails E0061. Corrected doc4/format/finalHEADcites
+pass. Independent cf full1199native/1557product67steps/482docs(+15skipped),
+matched unit/CLI/JSON/DTS/recovery/warning and cold14/49 evidence is retained
+only because compiled-code/test/build/browser/compression inputs are identical.
+Current size remains46600 gzip; no fresh post-doc binary hash is claimed.
+
+B2-UNIT is an owned successful-analysis boundary, not total nested classification
+or an owner/case/name feature. Source policy is resolved but runtime naming
+still produces the recorded baseline2; helper-forward control produces41.
+Root continues source-readiness for actual hygiene/owner activation. All
+original LC02–08, purity, DTS/API/docs/book/human and check semantic join remain.
+No source is merged to release. Full S03 closing/retrospective is not due yet.
+
+Interim craft observation: the initial constructor-only unit oracle did not
+necessarily consume registry metadata; root added real MATCH projection and
+retained both source commits/full-test chronology. The initial empty-literal
+privacy example also failed for a non-privacy cause; separate review isolated
+and corrected that false-positive route. Those proof-design errors belong in
+the eventual retrospective alongside CC author/setup errors, not solely the
+implementation contributor's record. No comparative model-efficacy claim is
+made. Earlier archives/prompts/source contexts remain byte-preserved.

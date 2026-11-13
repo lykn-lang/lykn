@@ -1,0 +1,40 @@
+5554a4d6bd0aa66bbca3cedfd91a41e0f1cf86cb
+f632c415b833e796e6843abdc5220d6492595fc0
+commit 5554a4d6bd0aa66bbca3cedfd91a41e0f1cf86cb
+Author: Duncan McGreggor <oubiwann@gmail.com>
+Commit: Duncan McGreggor <oubiwann@gmail.com>
+
+    B2b1: make the construction privacy doctest discriminating
+    
+    Supply valid values for every AnalyzedUnit field so the compile-fail example
+    can only fail because those fields are private.
+    
+    Co-authored-by: Codex <noreply@openai.com>
+    Co-authored-by: Billo AI <ai-engineering@billo.systems>
+Co-authored-by: Codex <noreply@openai.com>
+Co-authored-by: Billo AI <ai-engineering@billo.systems>
+ crates/lykn-lang/src/analysis/mod.rs | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
+diff --git a/crates/lykn-lang/src/analysis/mod.rs b/crates/lykn-lang/src/analysis/mod.rs
+index 878551b9..162084e6 100644
+--- a/crates/lykn-lang/src/analysis/mod.rs
++++ b/crates/lykn-lang/src/analysis/mod.rs
+@@ -35,10 +35,16 @@ use type_registry::TypeRegistry;
+ /// ```
+ ///
+ /// Construction is intentionally restricted to [`analyze`].
++/// This example supplies valid values for every field, so privacy is the only
++/// reason the construction is rejected.
+ ///
+ /// ```compile_fail
+-/// use lykn_lang::analysis::AnalyzedUnit;
+-/// let unit = AnalyzedUnit {};
++/// use lykn_lang::analysis::{type_registry::TypeRegistry, AnalyzedUnit};
++/// let _forged = AnalyzedUnit {
++///     forms: Vec::new(),
++///     type_registry: TypeRegistry::default(),
++///     diagnostics: Vec::new(),
++/// };
+ /// ```
+ #[derive(Debug)]
+ pub struct AnalyzedUnit {

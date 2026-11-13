@@ -1,0 +1,2 @@
+Source cwd/common environment.txt values: cargo fmt --all -- --check
+Read-only source/diff checks and input equality are recorded at handoff.

@@ -2,7 +2,7 @@
 project: project03-language-evolution
 arc: arc04-qualified-adts
 status: active
-version: "1.16"
+version: "1.17"
 related: [project07-core-library-research]
 ---
 
@@ -33,9 +33,10 @@ closes the lexical prerequisite, not B2b metadata transport or LC02–08. On2026
 the operator resolves B2-ID-NAME: distinct source spellings identify distinct
 bindings; emission must preserve them hygienically. B2b starts with the owned
 native analysis-unit boundary, followed by identity/lookup/allocation and coherent
-owner activation. Its first unit candidatecf432622 has independent software/full
-gates green but remains validation-held on a non-discriminating Rustdoc privacy
-example; iteration15 repairs only that oracle. The eight-row plan retains local ownership, nominal runtime/guards, APIs/DTS,
+owner activation. The native owned-unit prerequisite B2-UNIT is independently
+accepted at5554a4d6/treef632c415 after the strict Rustdoc-only correction of its
+privacy oracle; all unchanged compiled-code evidence is explicitly retained.
+The eight-row plan retains local ownership, nominal runtime/guards, APIs/DTS,
 private purity, migration and full consumer proof. S03 software is not yet
 accepted. [S02 release integration](slice02-existing-adt-correctness/artifacts/release-integration-0829e892.md)
 passes all three independent gates, including fresh release full checks and
@@ -129,6 +130,10 @@ Project07's original research evidence, final synthesis and library handoffs
 survive this detour, including every YAML and human-review obligation.
 
 ## Version history
+
+- 2026-11-13 v1.17. Accept B2-UNIT only at5554a4d6 after corrected privacy proof,
+  new Rustdoc/provenance and qualified retention of independent compiled-code
+  gates. Naming hygiene/owner activation/LC02–08 and full S03 remain open.
 
 - 2026-11-13 v1.16. Preserve B2b1 candidatecf432622 and its green independent
   runtime/full gates, with bounded privacy-test HOLD and source-ready correction.

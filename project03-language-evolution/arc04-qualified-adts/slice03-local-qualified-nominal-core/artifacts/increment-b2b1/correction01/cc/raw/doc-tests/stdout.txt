@@ -1,0 +1,15 @@
+
+running 2 tests
+test crates/lykn-lang/src/codegen/mod.rs - codegen (line 8) ... ok
+test crates/lykn-lang/src/analysis/mod.rs - analysis::AnalyzedUnit (line 25) ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 2 tests
+test crates/lykn-lang/src/analysis/mod.rs - analysis::AnalyzedUnit (line 41) - compile fail ... ok
+test crates/lykn-lang/src/analysis/mod.rs - analysis::analyze (line 119) - compile fail ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.01s
+
+all doctests ran in 3.17s; merged doctests compilation took 1.92s

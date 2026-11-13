@@ -1,0 +1,9 @@
+Post-freeze archive verification bookkeeping,2026-11-13.
+First check used slice cwd with checksum path artifacts/increment-b2b1/correction01/cdc/receipts-5554a4d6.tar.gz.sha256. Checksum entry is archive-relative, so shasum exited1:
+receipts-5554a4d6.tar.gz: FAILED open or read
+shasum: receipts-5554a4d6.tar.gz: No such file or directory
+shasum: WARNING: 1 listed file could not be read
+No archive/source mutation. Corrected check below uses archive cwd.
+Command: shasum -a 256 -c receipts-5554a4d6.tar.gz.sha256
+receipts-5554a4d6.tar.gz: OK
+status=0

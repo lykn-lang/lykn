@@ -1,0 +1,44 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.05s
+   Doc-tests lykn_lang
+error[E0061]: this function takes 2 arguments but 3 arguments were supplied
+   --> crates/lykn-lang/src/analysis/mod.rs:124:9
+    |
+124 | let _ = emitter::emit(&forms, &registry, false);
+    |         ^^^^^^^^^^^^^         --------- unexpected argument #2 of type `&TypeRegistry`
+    |
+note: expected `&AnalyzedUnit`, found `&Vec<SurfaceForm>`
+   --> crates/lykn-lang/src/analysis/mod.rs:124:23
+    |
+124 | let _ = emitter::emit(&forms, &registry, false);
+    |                       ^^^^^^
+    = note: expected reference `&AnalyzedUnit`
+               found reference `&Vec<SurfaceForm>`
+note: function defined here
+   --> crates/lykn-lang/src/emitter/mod.rs:32:8
+    |
+ 32 | pub fn emit(
+    |        ^^^^
+help: remove the extra argument
+    |
+124 - let _ = emitter::emit(&forms, &registry, false);
+124 + let _ = emitter::emit(/* &AnalyzedUnit */, false);
+    |
+
+error: aborting due to 1 previous error
+
+For more information about this error, try `rustc --explain E0061`.
+error[E0451]: fields `forms`, `type_registry` and `diagnostics` of struct `AnalyzedUnit` are private
+  --> crates/lykn-lang/src/analysis/mod.rs:45:5
+   |
+44 | let _forged = AnalyzedUnit {
+   |               ------------ in this type
+45 |     forms: Vec::new(),
+   |     ^^^^^ private field
+46 |     type_registry: TypeRegistry::default(),
+   |     ^^^^^^^^^^^^^ private field
+47 |     diagnostics: Vec::new(),
+   |     ^^^^^^^^^^^ private field
+
+error: aborting due to 1 previous error
+
+For more information about this error, try `rustc --explain E0451`.

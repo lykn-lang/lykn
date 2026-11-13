@@ -1,0 +1,4 @@
+Source cwd/common environment.txt values:
+cargo test -p lykn-lang --doc -- --nocapture
+Expect2normal+2compile-fail; inspect actual full-field construction private-field
+error, excluding missing-field/import/type errors as alternate failure causes.

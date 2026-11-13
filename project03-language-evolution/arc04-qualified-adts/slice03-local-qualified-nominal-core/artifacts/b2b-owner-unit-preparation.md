@@ -11,8 +11,12 @@ implementation/review; root retains consequential decisions.
 tree0ea27d21. This preparation remains unissued pending final source-ready
 owner-unit APIs; lexical acceptance is not owner/case acceptance. B2-ID-NAME
 was resolved below. The initial native ownership boundary is now assigned by
-iteration14; this full owner/hygiene preparation is not that implementation
-assignment and remains unissued.
+iteration14 and independently accepted through iteration15 at5554a4d6/
+treef632c415; this full owner/hygiene preparation is not that implementation
+assignment and remains unissued. Canonical native analyze now consumes owned
+forms and returns Result<AnalyzedUnit,AnalysisFailure>; whole emit/emit_json and
+module DTS borrow that same opaque success unit. Older f9 signatures below are
+explicit historical consumer-census inputs, not the current API.
 
 ## Source-name identity decision (B2-ID-NAME)
 
@@ -126,6 +130,63 @@ These are engineering requirements and source-inspected hazards, not a claim
 that all storage/visitor/context APIs are ready or that a new runtime gate ran.
 The immutable source census is in increment-b2b/cdc/README.md. Root retains the
 final recipe/storage/phase decisions; accepted source-name policy is resolved.
+
+### Runtime-name implementation direction to finish source-checking
+
+Recommended next boundary: build an explicit private binding/occurrence/scope
+plan over the completed Core Kernel, after source lowering. Raw source spelling
+must be retained in VARIABLE slots until this point. This avoids relying on
+metadata that structural header parsers currently erase; static source-owner
+queries still require their separate earlier scope snapshots. This is a
+refinement of the earlier source-Atom transport proposal, not permission to
+replace owner-query identity with a late raw-name search.
+
+The plan distinguishes actual binding identities, bound/free value uses,
+property/API names and labels. Runtime lexical collection must match actual
+writer scopes and hoisting/TDZ, preserving already-decided form-versus-call
+roles rather than redispatching a lowered operator from a new hoisted env.
+Native ScopeTracker already keeps exact source keys and a SEPARATE normalized
+collision map; do not mistakenly replace its working reference lookup.
+Protected-host scope sets still normalize local names and must be reconciled
+with exact source lookup before/alongside naming activation.
+
+Allocation may coallocate the emitted spelling of same-raw-name bindings in
+different scopes while keeping their BindingIds distinct. Distinct raw-name
+groups whose preferred JS spellings collide must receive different names;
+free foreign-JS occurrences retain their own target names. Role-aware use
+classification is essential even with such groups. Coallocation avoids
+unnecessary output changes and preserves JS syntax that couples names, such
+as the inner and outer class-declaration bindings. That coupling is grounded
+in [ECMAScript2025 class evaluation](https://tc39.es/ecma262/2025/multipage/ecmascript-language-functions-and-classes.html#sec-runtime-semantics-classdefinitionevaluation).
+Legacy raw-kernel var/catch interactions also caution against blindly giving
+every declaration token a globally unique output name; actual pinned-runtime
+support must be established before claiming those optional shapes. See the
+[specified compatibility rule](https://tc39.es/ecma262/2025/multipage/additional-ecmascript-features-for-web-browsers.html#sec-variablestatements-in-catch-blocks).
+
+Final rewriting must preserve object/pattern shorthand keys through explicit
+key/local forms, import remote names, export API names/live bindings, class
+member keys and colon suffixes. Allocated call names must remain unambiguous
+through kernel JSON, which currently omits dispatch tags. Compiler-generated
+ICU/host/completion names must reserve source/foreign/allocated names. Do not
+rewrite raw JavaScript strings as if they were Lykn variable occurrences.
+
+Before issue, root still owes a complete writer-scope/position table and exact
+callback/record/error/consumer signatures, all early-normalization producer
+checks and private-anchor handling. Canonical expansion materializes private
+host calls, but raw private invocation entrypoints retain address/WeakMap
+anchors and a unit-array identity: generic AST copying can break them. They
+need explicit same-unit rewrite/reanchoring or a shared pre-materialization
+integration, with existing fragment/orphan/recovery proofs retained. The
+implementation cannot be issued as merely "walk and rename".
+
+Two actual cf432622 baselines in the CDC census now establish the future
+change/preservation pair: the operator's naming program prints2, and entry
+calling a later helper prints41. Neither is a B2-UNIT failure or proof of
+implemented hygiene. The later gate must produce1 and retain41, alongside
+same-spelling shadowing, TDZ, property/import/export, foreign-name, macro-shared
+occurrence, private/host/JSON and current documentation/build consumers.
+
+### Settled static owner/query rules
 
 - ModuleIdentity is Named(LogicalModuleId) or fresh opaque AnonymousUnit.
   Named IDs are exact nonempty caller-supplied logical strings, with no URL,

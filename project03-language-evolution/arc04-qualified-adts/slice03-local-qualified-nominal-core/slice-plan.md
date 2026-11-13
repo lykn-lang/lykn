@@ -3,7 +3,7 @@ project: project03-language-evolution
 arc: arc04-qualified-adts
 slice: slice03-local-qualified-nominal-core
 status: active
-version: "1.28"
+version: "1.29"
 depends-on: [slice01-contract-and-emission-design, slice02-existing-adt-correctness]
 ---
 
@@ -235,8 +235,8 @@ gates survive. No release edits/integration, remote CI, push or publication.
 | cc-prompt-iteration11.md | 2026-11-13 | iteration10 | B2a correction02: shared actual enclosing-declaration sites across expansion/resolution/D2/shadow clients and real wrapper/default slots | Independent HOLD595f672b/treedd518b1b on R05; R01–04 focused controls pass |
 | cc-prompt-iteration12.md | 2026-11-13 | iteration11 | B2a correction03: pure typed-source header preflight and canonical genfn metadata/body slots in parser and walkers | Independent HOLD0e249caf/treee946afc2: native protected-host client still visits ignored generator regions; exercised header/D2 controls green |
 | cc-prompt-iteration13.md | 2026-11-13 | iteration12 | B2a correction04: parsed native Surface function regions, ignored generator post excluded, actual parameter leaf scopes | Independently acceptedf9be7cb8/tree0ea27d21 for B2-LX only; full S03 and B2b/name decision remain open |
-| cc-prompt-iteration14.md | 2026-11-13 | iteration13 | B2b1 owned native analysis unit and canonical JS/JSON/DTS consumer pairing | Candidatecf432622/tree27419cb3 software/full gates green independently; validation HOLD on empty-literal privacy oracle |
-| cc-prompt-iteration15.md | 2026-11-13 | iteration14 | B2b1 correction01: complete-field private-construction Rustdoc discriminator | Separate Sol source-readiness/clean handback green; issued to Luna under existing authority |
+| cc-prompt-iteration14.md | 2026-11-13 | iteration13 | B2b1 owned native analysis unit and canonical JS/JSON/DTS consumer pairing | Accepted through iteration15 at5554a4d6 for B2-UNIT only; original weak-oracle HOLD/history retained |
+| cc-prompt-iteration15.md | 2026-11-13 | iteration14 | B2b1 correction01: complete-field private-construction Rustdoc discriminator | Independently accepted5554a4d6/treef632c415, strict Rustdoc-only correction and evidence retention; full B2b/S03 remain open |
 
 The A correction loop used three refinement passes; B1 required no software
 correction. IC-01 is a distinct authorized usable prerequisite, not a retry
@@ -551,3 +551,20 @@ issues the strictly one-file Rustdoc correction; Luna owns source/build until
 clean committed handback, then Sol independently verifies the new discriminator
 and evidence applicability. Old successful compiled-code gates remain evidence,
 not a claim the empty literal proved privacy. No ledger row closes yet.
+
+2026-11-13 v1.29: separate Sol accepts B2-UNIT at clean
+5554a4d6bd0aa66bbca3cedfd91a41e0f1cf86cb/treef632c415b833e796e6843abdc5220d6492595fc0.
+Root verified exact doc-only diff, both literal trailers and final archive
+7b12443b0f93852b3059f8f64d12008aeb79ab2187ffe74b5a5977008cac8932.
+The repaired full-field constructor rejects solely E0451; old-call test E0061,
+two normal/two compile-fail examples, format and finalHEADcites pass. Independent
+cf compiled-code/fixture/JS/build/compression inputs are unchanged and the
+reviewer explicitly retains its full1199native/1557product67steps/482docs
+(15skipped), matched registry/API/CLI/JSON/DTS/runtime/cold14/49 and46600-byte
+size evidence. The copied binary hash remains pinned to cf, not a post-doc build.
+Original U01 and CC/root/CDC first attempts remain. One post-freeze checksum
+cwd mistake and corrected check are outside the unchanged final archive.
+Only B2-UNIT closes. Name hygiene, owner/case graph/nominal activation/check
+semantic join and LC02–08/S03 remain open. Root resumes their source-readiness
+with no new operator name decision required. Source runtime naming baseline2
+and preserved hoisted helper41 remain future change/preservation controls.

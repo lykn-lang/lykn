@@ -1138,3 +1138,65 @@ LC02–08/S03 remain open. Accepted A/B1/IC/B2-LX limits persist, including fixe
 nine layout, I4, legacy fallback, warm cache, catch-emitter, multi-clause defaults,
 nested alias runtime/annotation guards and browser eval run/load limitations.
 No source integration or subsequent implementation follows automatically.
+
+## B2b1 correction01 5554a4d6 — 2026-11-13 B2-UNIT acceptance
+
+**B2-UNIT accepted; U01 resolved.** Independent Sol6.1High reviewed clean
+5554a4d6bd0aa66bbca3cedfd91a41e0f1cf86cb,
+treef632c415b833e796e6843abdc5220d6492595fc0, codex/qualified-adt-core.
+Actual diff versus cf432622 is exactly one Rustdoc-only file (8insertions/
+2deletions), no production/signature/test input change. Literal and Git-parsed
+contiguous Codex/Billo trailers match. No source or Git/index edits.
+
+The repaired literal includes all three actual fields using valid public
+TypeRegistry import/Default and inferred Vec types. Independently rerun
+Rustdoc exits0:2normal+2compile-fail,0failed. Actual stderr for the complete
+literal is solely E0451 on forms/type_registry/diagnostics; no omitted field,
+import or type failure. The separate legacy emitter-call negative gives E0061,
+so the two controls remain distinguishable. Privacy/immutability and canonical
+analyze→AnalyzedUnit→JS/JSON/module-DTS signatures match issued14/15. No public
+constructor/parts/mutator/Clone/Deserialize/registry escape exists. Algorithm,
+ordered diagnostics/spans/suggestions, compile/dist warning/error asymmetry
+and raw fragment contracts remain as independently reviewed at cf.
+
+Current-HEAD cargo fmt --all -- --check0 and make check-cited-paths0
+(64documents/601historical) pass. Under the expressly conditional retention
+direction, actual strictly doc-only diff makes the cf compiled-code evidence
+applicable: focused22analysis,22cross+18e2e+9emission,53CLI+3parity; interleaved
+registry-dependent Entry MATCH/JS/JSON/DTS and6ESM runtimes3/three; actual
+analysis-failure/recovery/compile-dist warnings/path controls;54public cases/
+43steps; one final-cf full make check **1199native/1557product/67steps/482docs**
+(22files,15skipped); cold **14module byte comparisons/49materialized cases**,
+actual staged browser/copied CLI/absent owned cache mapping; separate copied
+CLI MATCH/DTS; identical-input browser gzip **46600<81920**,35320headroom.
+No redundant full/product/CLI/M6/size run solely for the new doc commit. Retained
+binary hash is explicitly cf-built, not asserted as a new-HEAD binary hash.
+
+[Correction index](artifacts/increment-b2b1/correction01/cdc/README.md) records
+actual scope/API/privacy/retention and limitations. [Frozen correction packet](artifacts/increment-b2b1/correction01/cdc/receipts-5554a4d6.tar.gz)
+SHA256 `7b12443b0f93852b3059f8f64d12008aeb79ab2187ffe74b5a5977008cac8932`.
+Prior cf HOLD/index/archive remain byte-preserved; prior archive SHA independently
+reconfirmed0864bc473e988c6d9c2cbe6c2cf490249d8a8aea5f524b880ba1ba1f5c1b660d.
+All current commands/env/raw streams/numeric statuses and final source pin/
+metadata/full diff are retained. No correction author/setup/product failure;
+expected compile failures remain explicit. All own tmp/cache paths precreated
+outside repos/config ancestors, existing DENO_DIR reused; no caches in packet.
+
+Only this native owned-unit boundary closes. B2-ID-NAME policy is resolved,
+but naming runtime2 baseline is still unimplemented hygiene, not acceptance.
+Binding allocation/identity/OwnerRef/CaseRef/fieldTypeRef/nominal activation,
+private public requests/nested transport/purity, check_strict/dev join, final
+DTS/API/S06/consumer/book/human and LC02–08/B2b/S03 remain open. Accepted
+A/B1/IC/B2-LX and their fixed-nine/I4/fallback/warm-cache/catch/default/nested-
+alias/annotation/emitter/browser eval limits persist. Browser proof remains
+compile-to-ESM. No release/integration/dependency/remote action follows.
+
+Source/build returns clean at exact5554a4d6/treef632c415 above, with no active
+build/test. Root owns planning Git/ledger/status and subsequent implementation.
+
+Post-freeze bookkeeping note: first archive-check invocation ran at slice cwd,
+while the checksum file contains an archive-relative basename, and exited1
+with file-not-found. Rerun from the packet cwd verifies **OK/0**; see external
+correction01/cdc/postfreeze-checksum.txt. Frozen packet/hash are unchanged.
+This setup error occurred after the recorded product/doc/provenance gates and
+does not alter their results or B2-UNIT disposition.
