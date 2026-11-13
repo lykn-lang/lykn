@@ -398,3 +398,19 @@ acceptance claim. Other current binder escapes const/let/var/function/function*
 already have their projections. This observable introspection correction joins
 the S06 surface-audit inputs, while the existing structural helper's role stays
 separate from actual lexical-state transitions.
+
+## Root correction02 clarification — public macro collection
+
+Root inspected public pass1RegisterMacros at expander-core.js:2304–2316 of
+held804be5da: its raw top-level head/length scan has no incoming binding scope.
+A true callable macro binding followed by `(macro 20 21)` is an ordinary call,
+yet the scan selects it as a macro definition. Root authorizes the existing
+expander-core path to consume the same shared original-source declaration sites
+between forms and gate its existing macro-definition candidate by actual head/
+incoming bindings. Preserve the current definition grammar and dependency
+algorithm, including its existing backend differences; no eager expansion or
+retrospective macro-produced binding lookup is introduced. A valid bound
+two-argument macro call printing41 distinguishes this case, with a real unbound
+definition as positive. CC checks and records the actual observations rather
+than promoting this source-inspected counterexample to runtime proof. This is
+the public counterpart of the native pass1 transition correction above.
