@@ -348,3 +348,10 @@ The current14-file cold-M6 union already includes compiler and atom-metadata,
 so both changed files receive canonical/embedded/materialized byte comparison.
 CC records the extra paths and mechanics before affected edits; separate Sol
 software review must check the actual relocation and affected private controls.
+
+Separate Sol6.1High subsequently checked that exact relocation read-only:
+source-ready with no contradiction. Compiler imports/reexports the same
+function object; the existing WeakMaps remain in the metadata module and
+trusted-kernel priority stays a caller decision. Existing A6 conformance and
+M6 coverage still apply. This is assignment readiness, not software acceptance;
+no build, test or source edit was performed by that review context.
