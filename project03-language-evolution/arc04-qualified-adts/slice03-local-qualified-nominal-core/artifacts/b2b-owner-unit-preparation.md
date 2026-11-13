@@ -33,6 +33,10 @@ implementation/review; root retains consequential decisions.
 - Named annotation queries use the header's lexical scope before introducing
   its parameters; the function's own recursive binding remains visible. Return/
   yields annotations use that same header scope, not body-local declarations.
+  Grouped typed binds are a separate case: each pair's annotation uses the
+  snapshot after preceding pairs and before introducing its own binding. One
+  outer bind-head snapshot is insufficient; retain an occurrence-plus-group-
+  slot query or that binder's pre-introduction context.
   Type fields use declaration scope with forward owner lookup. Pattern owner
   queries use incoming clause scope before introducing pattern bindings;
   guards/bodies then see the actual pattern bindings. All source member paths
@@ -72,6 +76,39 @@ handles are not host authority or initialization-purity proof. Final emitted
 kernel has no unresolved ADT requests or dependency on an active analysis unit;
 fully lowered kernel compilation remains context-free. Avoid a complete cloned
 subtree cached at every node, which could add quadratic storage.
+
+Separate Sol's immutable-source transport check found no position inherently
+requiring Keyword metadata, but confirmed these mandatory consumers:
+
+- Grouped annotations are parsed at classifier/forms.rs:1328–1411 and need
+  the per-pair snapshots above. Simple/default/rest and nested destructuring
+  annotations all use their actual header context. ParamShape::typed_params()
+  omits DestructuredField::Nested and ArrayParamElement::NestedWithAlias type
+  annotations and therefore is not a complete annotation census.
+- Native instrument_yields currently receives only yields_ann.name at
+  emitter/forms.rs:4044/4090. It must consume the resolved header TypeRef,
+  not reconstruct a name query in a yield body's potentially shadowed scope.
+- All late classifier doors at emitter/forms.rs:755,1089,2409,2424,2433,2627,
+  plus recursive classify_export/classify_async, need the same closed unit and
+  the correct inner occurrence. Detached emitter/DTS annotation helpers must
+  receive resolved facts rather than attempt to recover a missing raw parent.
+- Structural binding discovery and protected-host validation already call
+  classify_form_with_bindings/classify_expr before an owner unit exists.
+  Keep pure structural parsing separate from semantic preparation; do not
+  introduce a classifier↔unit preparation cycle or allow those structural
+  results to bypass resolved semantic emission.
+- Canonical JS/DTS consumer pairs at compile.rs:186/206,257/275/291 and
+  dist.rs:239/254/267 must share one prepared unit. check_strict must join
+  analysis rather than stopping after classification. Foreign raw scope
+  handles reject even if two named unit graphs have equal logical module IDs.
+
+These are source-inspected constraints, not implementation or runtime receipts.
+The next API recipe should use a private prepared/resolved-form layer around
+structural source AST, rather than an optional unresolved name that every
+emitter may silently reinterpret. Emission accepts an owned analyzed-unit
+boundary; structurally constructed library/test AST must explicitly prepare or
+receive a normal unresolved-context diagnostic. Exact report/error/signature
+migration remains root's source-readiness responsibility before issue.
 
 ## Public producer/finalizer boundary
 
