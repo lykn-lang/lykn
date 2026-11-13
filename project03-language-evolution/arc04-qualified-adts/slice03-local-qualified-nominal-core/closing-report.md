@@ -486,3 +486,33 @@ gzip; they are CC evidence pending separate Sol review, not independent passes.
 Exclusive source/build ownership is now with Sol6.1High for complete B2-LX
 software and metadata verification. Earlier HOLDs, all failed conditions and
 unanswered B2-ID-NAME remain intact. No release integration or S03 closure.
+
+## Root correction03 scope clarification — public simple parameter name
+
+Before edits, CC attested a new public R05 boundary observation at held595f:
+the malformed func parameter :number9 with body41 compiles to invalid
+`function invalid(9)`, while a body probe executes. Root inspected actual
+surface-helpers.js:466 parseTypedParams: its simple keyword/name pair pushes
+the following node without checking atom kind. Existing default/rest/object/
+array sub-parsers in surface.js already check name atoms. Actual public Fn/
+GenFn/Func lowering calls this parser before body expansion, and multi-clause
+Func maps all parameters before emission. This source fact explains the report;
+the runtime baseline remains CC-attested until independent replay.
+
+Root authorizes exactly two additional paths, packages/lang/surface-helpers.js
+and its embedded mirror, to require an atom name in that existing simple-pair
+branch and throw normal Error(`parameter name must be an atom`) otherwise.
+No new public whole-header validator, stage, accepted syntax or surface.js
+refactor is introduced; existing sub-parser error wording stays. The issued
+native preflight and shared genfn metadata recipe remain. Add discriminating
+public malformed-header/probe controls and retain valid source/default/body
+behavior. Both files already belong to the14-file M6 union. This correction to
+the existing deep parser's invalid-input behavior is an explicit S06 audit input.
+
+Separate Sol read-only review finds that atom check source-ready after the
+existing missing-name check and before push, preserving error ordering and
+sub-parser delegation. Its caller census confirms emitTypeMacro also uses
+parseTypedParams for constructor fields, so nonatom simple typed field names
+will reject too. Record that shared-parser impact explicitly; retain valid Type
+controls and the native static atom-name grammar. This is not a function-only
+API claim or an independent runtime verdict. No edit/build/test by reviewer.
