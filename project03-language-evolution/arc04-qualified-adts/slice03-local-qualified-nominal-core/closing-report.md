@@ -616,3 +616,23 @@ key normalization versus literal string access merits S06 guide review, but
 this evidence alone establishes no documentation defect. Keep that property
 rule separate from the pending source-binding identity decision. No model
 comparison or efficacy claim follows. Full S03 CDC retrospective remains due.
+
+## B2-ID-NAME resolved and B2b1 issued — 2026-11-13
+
+Operator explicitly selected distinct source binding spellings; B2-ID-NAME is
+resolved, with the displayed example's required result1. No naming implementation
+or owner feature is accepted from the decision alone. Root issued iteration14
+for the first useful B2b native ownership boundary after separate source review:
+one successful owned analysis unit for canonical emission/JSON/DTS, typed
+analysis failure and real consumer migration. Existing check semantic join,
+exact value-binding allocation and owner activation remain later B2b work.
+
+Read-only preparation also distinguishes runtime lexical semantics from macro/
+form dispatch. Source guide06-functions-closures.md ID12 preserves real const
+TDZ; ID13 prose supports hoisted function calls/public APIs before later helpers.
+The ID13 heading's opposing 'not hoisted' statement is a verified guide
+inconsistency for S06/S07, not a reason to change runtime behavior. Proper
+hygiene must preserve those lifetimes and distinguish local variable names
+from object keys, import/export names and colon suffixes. No broad text rewrite
+or opaque source/JSON field can supply binding/owner authority. The unissued
+preparation and immutable census retain these engineering constraints.

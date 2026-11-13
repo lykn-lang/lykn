@@ -10,7 +10,9 @@ implementation/review; root retains consequential decisions.
 2026-11-13 current foundation: B2-LX is independently accepted atf9be7cb8,
 tree0ea27d21. This preparation remains unissued pending final source-ready
 owner-unit APIs; lexical acceptance is not owner/case acceptance. B2-ID-NAME
-was resolved below.
+was resolved below. The initial native ownership boundary is now assigned by
+iteration14; this full owner/hygiene preparation is not that implementation
+assignment and remains unissued.
 
 ## Source-name identity decision (B2-ID-NAME)
 
@@ -63,6 +65,67 @@ permit two colliding exported names or rename external property keys. The
 operator response recorded above selects distinct identities and return1.
 
 ## Settled identity/query rules
+
+### Runtime binding hygiene constraints (source-readiness, not issued)
+
+At accepted f9, resolver exact spelling only tags dispatch; it does not connect
+ordinary value uses to declaration identities. Both writers still normalize
+raw strings. The first owned native-unit checkpoint does not implement this
+missing runtime binding plan. Source annotations/owner queries and runtime
+value binding are distinct phases with distinct visibility rules.
+
+Current source guide06-functions-closures.md ID11–15 is consequential evidence:
+bind emits block-scoped const with a real TDZ; func emits a hoisted function,
+and its prose explicitly supports public APIs before later helper definitions.
+Hygiene must preserve these runtime lifetimes while resolving exact spellings.
+The existing sequential macro/form environment is not by itself a complete
+runtime value-binding graph. Do not silently turn forward helper calls into
+foreign globals, eliminate TDZ, or adopt let-style outer-initializer lookup
+from a macro-dispatch-only scope comment. ID13's heading says "func Is Not
+Hoisted" while its summary/rationale say it is hoisted: a source-verified S06
+guide inconsistency, not authority to change emitted lifetimes.
+
+Required engineering constraints for the later source-ready recipe:
+
+- BindingId belongs to an actual lexical binding, not just a spelling or JS
+  preferred name. Repeated var declarations in one owned kernel function may
+  denote the same runtime binding; new nested declarations are distinct.
+- Definition/value-reference identity must survive lowering and all late
+  classifier reconstruction doors. Native Bind/Class retain name SExprs;
+  named Func/Genfunc, TypedParam, Pattern and constructor names often reconstruct
+  from Strings. Merely adding AtomData fields to the reader cannot solve those
+  consumers. Unit-aware prepared form/header sites must supply the identity.
+- Bound colon roots use the binding's allocated JS name, while member suffixes
+  remain property names. Object literal/pattern shorthand must retain its
+  property key even when its local variable is renamed. Import remote/local,
+  export local/API and reexport names are separate roles; labels are a separate
+  namespace. A broad string rewrite or a global raw-spelling-to-name map is
+  insufficient: the same raw spelling can be bound in one occurrence and a
+  free foreign-JS name in another.
+- Allocate names under explicit unit ownership, reserve free foreign and owned
+  compiler names, and retain public export spellings through explicit local/API
+  aliasing when required. Compiler-generated ICU/host/completion names and
+  source names must participate in collision avoidance without manufacturing
+  private authority from JSON/source fields.
+- Native macro JSON and kernel JSON do not preserve arbitrary private metadata;
+  public WeakMaps are not serialization. Source macro exchange precedes semantic
+  identity attachment. Kernel serialization must finalize identities/names with
+  property roles preserved, or use a separately reviewed trusted transport;
+  never silently drop pending resolution. Fully lowered kernel remains usable
+  without an ambient active unit.
+- Occurrence identity must work when macros reuse syntax objects. Existing
+  public cloneOccurrenceSyntax intentionally preserves trusted kernel/private/
+  host/Reflect nodes. New naming metadata cannot assume every encountered object
+  has one lexical use, nor break those private anchors by generic copying.
+- Existing public runtime pattern compiler rejects alias outside object
+  patterns. Native/source validator handling of nested-array alias does not
+  prove it is a common executable runtime shape. Preserve that scope limit;
+  do not broaden grammar as a side effect of hygiene.
+
+These are engineering requirements and source-inspected hazards, not a claim
+that all storage/visitor/context APIs are ready or that a new runtime gate ran.
+The immutable source census is in increment-b2b/cdc/README.md. Root retains the
+final recipe/storage/phase decisions; accepted source-name policy is resolved.
 
 - ModuleIdentity is Named(LogicalModuleId) or fresh opaque AnonymousUnit.
   Named IDs are exact nonempty caller-supplied logical strings, with no URL,

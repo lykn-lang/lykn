@@ -172,3 +172,69 @@ failure diagnostics plus recovery, and compile_fail private-construction/old-
 API examples are meaningful proposed proofs of this ownership boundary. They
 are not owner identity, qualified nominal isolation or new source-name semantics.
 Root retains storage/API design; all accepted prerequisites and LC02–08 remain.
+
+## Immutable f9 kernel role/helper addendum — during B2b1 CC ownership
+
+All source reads for this addendum used `git show f9be7cb8:path`, never mutable
+analysis/emitter files while CC owns source/build. No runtime/build/tests,
+source/design/ledger edits or new helper. These are accepted writer shapes and
+existing traversal facts, not a storage/phase/forward-policy selection.
+
+### Concrete local-vs-structural slots
+
+| Kernel shape | Local/value role vs property/API role | Immutable source |
+| --- | --- | --- |
+| `(object local)` | One shorthand atom currently supplies BOTH normalized key and value identifier. A distinct emitted local requires preserving the key independently; it is not sufficient to rewrite that atom's sole text. | Native codegen/emit.rs1203–1218; public compiler.js1464–1480. |
+| `(object (key value))`, `(object ((computed key-expr) value))`, `(object (spread source))` | Pair key is structural; value is executable. Computed key expression is executable; spread operand is executable. Colon member roots in those expressions are lexical values, not their suffix names. | Native1203–1259; public object lowering1490+; native semantic_roles.rs32–64 ObjectPropertyRole::{Shorthand,Value,Pair,Dynamic,Computed} already identifies these raw property shapes. |
+| `(object local)` in binding/pattern position | Shorthand couples property key and local binder. `(default local value)` couples the key and binder again, plus an executable default. `(alias key local)` / `(alias key local default)` already separates key from binder/nested pattern and optional executable default. | Native emit_pattern377–400, emit_object_pattern403–441, emit_default_pattern1351, emit_alias_pattern1370; public compilePattern1872–1920 and compileObjectPattern1926–2028. |
+| `(array local _ (rest tail))` pattern | Element/rest targets are binders, `_` is a hole in arrays; no object property name is involved. Generic default patterns distinguish target and expression. | Native emit_array_pattern443+, emit_rest_pattern1361; public compileArrayPattern2037+, compilePattern/default1898+. Existing BindingPattern projection already handles producer slots. |
+| `local:member:-private` | Root is a lexical value; later segments are public/private property names, independently normalized. A local allocation must not rename the member or a class property declaration just because spelling matches. | Native codegen/names.rs203–225; public compiler.js1775–1817 and toClassKey144–150. |
+| `(import "m" local)`, `(import "m" ((alias remote local)))`, `(import "m" local (specs...))` | Default local is a binder. Named imported remote name is an API spelling; alias local is a binder. Shorthand imported name currently doubles as local. Module string is structural. | Native emit_import1569–1618/import_specifiers1620–1643; public import885–944/buildImportSpecifier90–109. Native binding.rs1016–1064 already enumerates default and alias LOCAL slots only. |
+| `(export (names local (alias local external)))`, `(export "m" (names ...))` | Local export slot references a local only when not reexporting another module. Exported name is API spelling; reexport names are remote. Shorthand currently shares one spelling. Direct declaration/default export local scope follows accepted B2a consumed-slot facts. | Native emit_export1645+/emit_export_names1707–1732; public buildExportNames112–140/export946–1000; shared enclosing_declaration_sites/enclosingDeclarationSites retain actual normal/default declaration-slot policies. |
+| `(label target body)`, `(break target)`, `(continue target)` | Label namespace is separate from ordinary value identity. Its textual target must not become a value reference because a same-spelled local exists. | Native binding.rs156–157/181–190/1004–1014 explicitly marks Label D2-only/non-value; public binding kind and label lowering compiler1263. |
+
+A supported-shape limit matters: public compilePattern1918 explicitly rejects
+`alias` outside an object pattern; compileObjectPattern1990+ owns the alias
+key/local/default shape. Native emit_alias_pattern1370 has no context restriction
+and mechanically prints key:pattern. Thus an alias in an array pattern is not
+proven a common valid JS-emission shape. Earlier typed nested-array alias tests
+were source-only projection/host-policy evidence with runtime-emitter concerns
+carried; do not expand accepted array alias grammar as a side effect of hygiene.
+
+### Existing traversal helpers and actual forward behavior
+
+- Native resolver ScopePlan117–151 covers Sequence, Body, GroupedBind,
+  Conditional, Call, Match, SourceFunction and Class. `scope_plan` delegates to
+  actual dispatch+occurrence work167+. Body_start keeps loop iterable/scrutinee
+  outside its binders281–291; grouped initializers resolve before that pair's
+  names enter scope740–767. Actual Call is independent operands, despite the
+  older Sequence enum comment mentioning calls. Use the executed variant logic,
+  not that stale descriptive shortcut.
+- Native binding.rs BindingOccurrence/BindingSite and explicit TypedParameter vs
+  BindingPattern projection617/858/944 supply binder roles; Label.shadows_values
+  false, import locals1016+ and actual enclosing-declaration sites preserve
+  kind/span. lexical_regions.rs20–61 names parameter/default/pre/body/post,
+  base/member/field-init paths by original occurrence indexes. These are role/
+  scope reuse points, not a general resolved-value reference graph.
+- Public bindingScopePlan459+ similarly selects class/function layouts,
+  real do/block/seq, conditional and body regions; walkSequenceReturning60–67
+  extends exact source names from actual declarations AFTER walking each form.
+  Function/member defaults and TypedParameter/BindingPattern are already
+  producer-specific. Separate object writer roles and shorthand keys must not
+  be inferred solely from recursive atom or binder enumeration.
+- Native resolve_seq300–325 and public pass2ExpandAll2396–2415 extend incoming
+  environments only after each actual sibling; neither precollects a complete
+  forward declaration→reference table for ordinary values. A named function
+  receives its own recursion binding before its own body. Current public value
+  atoms return unchanged; native earlier value atoms remain Unresolved until
+  a binding is in incoming scope. Writers still emit those value spellings as
+  ordinary JS identifiers. Consequently JS's declaration hoisting/TDZ can act
+  on such output, while an earlier form/macro-shaped CALL may already have
+  expanded under the original incoming dispatch scope. This is source-inspected
+  behavior, not a fresh runtime forward-semantics proof or a new policy.
+
+The subsequent recipe therefore needs an explicit distinction between actual
+expansion-time dispatch visibility and eventual selected value-binding/name
+transport, with structural keys/API spellings preserved. This addendum does
+not decide which pass/storage or exact forward semantics should implement it.
+Original accepted prerequisites and LC02–08/S03 scope remain unchanged.
