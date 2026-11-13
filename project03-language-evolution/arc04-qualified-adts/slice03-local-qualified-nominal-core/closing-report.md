@@ -414,3 +414,23 @@ two-argument macro call printing41 distinguishes this case, with a real unbound
 definition as positive. CC checks and records the actual observations rather
 than promoting this source-inspected counterexample to runtime proof. This is
 the public counterpart of the native pass1 transition correction above.
+
+Separate Sol checked that public extraction recipe read-only: source-ready.
+Retain the existing candidate list/length≥3 check, actual formHead and incoming
+macro binding gate; extracted macro names are not value bindings. Registration,
+dependency order and global macro state remain unchanged. No edits/build/tests
+were performed by that readiness check.
+
+## Root correction02 scope clarification — full-suite browser import map
+
+The full Deno gate reached a new static browser/compiler.js test import but
+repository project.json has only lang/, testing/ and astring mappings. Focused
+and cold-M6 configs supply their browser mapping explicitly, so those successful
+conditions do not establish full-suite loading. Root authorizes project.json
+as one necessary additional source path, adding only
+`browser/ → ./target/lykn/build/browser/`, consistent with its existing staged
+lang/testing maps and browser workspace. Confirm the normal build materializes
+that path. Do not remove the browser test or map this full-suite route to a
+canonical-source fallback. Current-source focused and materialized-lang M6
+maps remain separately described. Preserve the failed run; this is test/package
+integration and an S06 config-surface input, not a new dependency or user flag.
