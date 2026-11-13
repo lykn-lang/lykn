@@ -376,3 +376,25 @@ definition. True bound-macro suppression and circular-dependency controls stay.
 CC must run the complete relevant caller query across crates/packages before
 claiming the final client inventory. The earlier bounded census is retained,
 with its omission explicit rather than relabelled complete.
+
+Separate Sol's read-only check confirms pass1 is an actual lexical-state client
+and this recipe is source-ready. Extraction/dependency order remains unchanged;
+original-source declarations are its boundary. No earlier macro is expanded or
+retrospectively used to redefine extraction scope. No software acceptance was
+given by that check.
+
+## Root correction02 clarification — accepted kernel import projection
+
+Root's source check identified that native binding_occurrences and public
+bindingsIntroduced project bare import locals but not the already accepted
+kernel:import spelling. CC confirmed the missing projection in both modules.
+The shared actual-declaration query needs those real local sites before native
+classification strips the escape. Root authorizes the bounded existing binding
+module fix: route kernel:import to the same import-local projection as bare
+import, without new grammar or an added escape. A real local module exporting
+a callable array must remain a call after either import spelling; no external
+dependency/fetch is needed. Test/record actual behavior, not a source-only
+acceptance claim. Other current binder escapes const/let/var/function/function*
+already have their projections. This observable introspection correction joins
+the S06 surface-audit inputs, while the existing structural helper's role stays
+separate from actual lexical-state transitions.
