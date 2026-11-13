@@ -19,7 +19,10 @@ import {
   clearCompilerPrivateAtom,
   compilerPrivateAtomInfo,
   markCompilerPrivateAtom,
+  isCompilerPrivateAtom,
+  hostReferenceOf,
 } from './compiler-private-atoms.js';
+import { isExpandedHostCall } from './host-invocation-kernel.js';
 import {
   bindingScopePlan,
   bodyScopeNames,
@@ -28,7 +31,9 @@ import {
   validateReservedNames,
   bindingsIntroduced,
   bindingNamesInPattern,
+  kernelParameterNames,
 } from './binding.js';
+import { atOccurrencePath, classRegionLayout } from './lexical-regions.js';
 
 // --- AST Node API ---
 
@@ -39,6 +44,7 @@ let gensymCounter = 0;
 export const macroEnv = new Map();
 
 const MAX_EXPAND_ITERATIONS = 1000;
+const RESULT_SLOT = Object.freeze({ SINGLE: "Single", SEQUENCE: "Sequence" });
 
 /**
  * Create a symbol (atom) AST node.
@@ -845,6 +851,18 @@ function tagDefSites(form) {
   }
 }
 
+/** Copy ordinary syntax by occurrence before mutable binding tags are added.
+ * Compiler-owned identity-bearing nodes retain their private capabilities. */
+function cloneOccurrenceSyntax(node) {
+  if (node === null || typeof node !== "object") return node;
+  if (isKernel(node) || isCompilerPrivateAtom(node) || hostReferenceOf(node) ||
+      isExpandedHostCall(node)) return node;
+  if (Array.isArray(node)) return node.map(cloneOccurrenceSyntax);
+  if (node.type === "list") return { ...node, values: node.values.map(cloneOccurrenceSyntax) };
+  if (node.type === "cons") return { ...node, car: cloneOccurrenceSyntax(node.car), cdr: cloneOccurrenceSyntax(node.cdr) };
+  return { ...node };
+}
+
 
 /** Push an expandExpr result (single, array, or null) preserving old semantics. */
 function pushExpanded(out, result) {
@@ -878,9 +896,13 @@ function expandChildrenSeq(children, env, use = "Legacy") {
   let cur = env;
   for (const child of children) {
     const childUse = useAtFunctionBoundary(child, use);
-    pushExpanded(out, expandAt(child, cur, childUse));
-    const hoist = child?.type === "list" ? hoistedNames(child) : [];
-    if (hoist.length) cur = extendEnv(cur, hoist);
+    const expanded = expandAt(child, cur, childUse, null, null, RESULT_SLOT.SEQUENCE);
+    const siblings = Array.isArray(expanded) ? expanded : [expanded];
+    for (const sibling of siblings) {
+      if (sibling !== null && sibling !== undefined) out.push(sibling);
+      const hoist = actualExpandedHoists(sibling, cur);
+      if (hoist.length) cur = extendEnv(cur, hoist);
+    }
   }
   return out;
 }
@@ -890,9 +912,13 @@ function expandChildrenTail(children, env, prefixUse, tailUse) {
   const prefix = [];
   let cur = env;
   for (const child of children.slice(0, -1)) {
-    pushExpanded(prefix, expandAt(child, cur, useAtFunctionBoundary(child, prefixUse)));
-    const hoist = child?.type === "list" ? hoistedNames(child) : [];
-    if (hoist.length) cur = extendEnv(cur, hoist);
+    const expanded = expandAt(child, cur, useAtFunctionBoundary(child, prefixUse), null, null, RESULT_SLOT.SEQUENCE);
+    const siblings = Array.isArray(expanded) ? expanded : [expanded];
+    for (const sibling of siblings) {
+      if (sibling !== null && sibling !== undefined) prefix.push(sibling);
+      const hoist = actualExpandedHoists(sibling, cur);
+      if (hoist.length) cur = extendEnv(cur, hoist);
+    }
   }
   const tail = expandAt(children[children.length - 1], cur, tailUse);
   return { prefix, tail };
@@ -906,6 +932,9 @@ function expandChildrenTail(children, env, prefixUse, tailUse) {
 function expandChildrenPlan(form, env, use = "Legacy") {
   const plan = bindingScopePlan(form, formHead(form.values[0]));
   const children = form.values;
+  if (plan.kind === "class") return expandClassRegions(form, env, plan.layout, use);
+  if (plan.kind === "function") return expandFunctionRegions(form, env, plan.layout, use);
+  if (plan.kind === "call") return children.map((child) => expandAt(child, env, "Legacy"));
   if ((use === "Statement" || use === "DirectStatement") && formHead(children[0]) === "try") {
     return expandTryStatement(form, env, use);
   }
@@ -921,7 +950,7 @@ function expandChildrenPlan(form, env, use = "Legacy") {
       const isDefault = clause.values[0]?.type === "atom" && clause.values[0].value === "default";
       const prefix = isDefault ? [clause.values[0]] : [expandSingle(clause.values[0], cur, "Value", "switch test")];
       out.push({ type: "list", values: [...prefix, ...expandChildrenSeq(clause.values.slice(1), cur, use)] });
-      const hoist = hoistedNames(clause);
+      const hoist = actualExpandedHoists(out[out.length - 1], cur);
       if (hoist.length) cur = extendEnv(cur, hoist);
     }
     return out;
@@ -947,11 +976,16 @@ function expandChildrenPlan(form, env, use = "Legacy") {
     for (let i = 0; i < children.length; i++) {
       const requestedRole = roles[i] ?? "Legacy";
       const role = useAtFunctionBoundary(children[i], requestedRole);
-      pushExpanded(out, role === "Value"
+      const expanded = role === "Value"
         ? expandSingle(children[i], cur, role, "expression slot")
-        : expandAt(children[i], cur, role));
-      const hoist = children[i]?.type === "list" ? hoistedNames(children[i]) : [];
-      if (hoist.length) cur = extendEnv(cur, hoist);
+        : expandAt(children[i], cur, role, null, null,
+          use === "Statement" || use === "DirectStatement" ? RESULT_SLOT.SEQUENCE : RESULT_SLOT.SINGLE);
+      pushExpanded(out, expanded);
+      const actual = Array.isArray(expanded) ? expanded : [expanded];
+      for (const sibling of actual) {
+        const hoist = actualExpandedHoists(sibling, cur);
+        if (hoist.length) cur = extendEnv(cur, hoist);
+      }
     }
     return out;
   }
@@ -960,9 +994,10 @@ function expandChildrenPlan(form, env, use = "Legacy") {
   const roles = childRoles(form, use);
   for (let i = 0; i < split; i++) {
     const role = roles[i] ?? (use === "Protected" ? "Protected" : "Legacy");
-    pushExpanded(out, role === "Value"
+      const expanded = role === "Value"
       ? expandSingle(children[i], env, role, "expression slot")
-      : expandAt(children[i], env, role));
+        : expandAt(children[i], env, role);
+      pushExpanded(out, expanded);
   }
   if (split < children.length) {
     const bodyEnv = extendEnv(env, plan.names);
@@ -972,14 +1007,141 @@ function expandChildrenPlan(form, env, use = "Legacy") {
       const child = children[i];
       const requestedRole = roles[i] ?? bodyUse;
       const role = useAtFunctionBoundary(child, requestedRole);
-      pushExpanded(out, role === "Value"
+      const expanded = role === "Value"
         ? expandSingle(child, cur, role, "expression slot")
-        : expandAt(child, cur, role));
-      const hoist = child?.type === "list" ? hoistedNames(child) : [];
-      if (hoist.length) cur = extendEnv(cur, hoist);
+        : expandAt(child, cur, role, null, null,
+          use === "Statement" || use === "DirectStatement" ? RESULT_SLOT.SEQUENCE : RESULT_SLOT.SINGLE);
+      pushExpanded(out, expanded);
+      const actual = Array.isArray(expanded) ? expanded : [expanded];
+      for (const sibling of actual) {
+        const hoist = actualExpandedHoists(sibling, cur);
+        if (hoist.length) cur = extendEnv(cur, hoist);
+      }
     }
   }
   return out;
+}
+
+function expandFunctionRegions(form, env, layout, use) {
+  const name = layout.namePath ? atOccurrencePath(form, layout.namePath) : null;
+  const functionEnv = name?.type === "atom" ? extendEnv(env, [name.value]) : env;
+  const clause = layout.clauses[0];
+  if (!clause) return form.values.slice();
+  const params = clause.paramsPath ? atOccurrencePath(form, clause.paramsPath) : null;
+  const names = params ? kernelParameterNames(params).map((site) => site.name) : [];
+  const localEnv = extendEnv(functionEnv, names);
+  let values = form.values.slice();
+  for (const path of clause.defaultPaths) {
+    const expanded = expandAt(atOccurrencePath(form, path), localEnv, "Value");
+    values = replaceArrayPath(values, path, expanded);
+  }
+  let cur = localEnv;
+  const body = [];
+  const roles = childRoles(form, use);
+  for (const path of clause.bodyPaths) {
+    const child = atOccurrencePath(form, path);
+    const requestedRole = roles[path[0]] ?? "Legacy";
+    const role = useAtFunctionBoundary(child, requestedRole);
+    const expanded = role === "Value"
+      ? expandSingle(child, cur, role, "function body value")
+      : expandAt(child, cur, role, null, null,
+        role === "Statement" || role === "DirectStatement"
+          ? RESULT_SLOT.SEQUENCE
+          : RESULT_SLOT.SINGLE);
+    pushExpanded(body, expanded);
+    for (const sibling of Array.isArray(expanded) ? expanded : [expanded]) {
+      const hoist = actualExpandedHoists(sibling, cur);
+      if (hoist.length) cur = extendEnv(cur, hoist);
+    }
+  }
+  const bodyStart = clause.bodyPaths[0]?.[0] ?? values.length;
+  return [...values.slice(0, bodyStart), ...body];
+}
+
+function replaceArrayPath(values, path, replacement) {
+  const [index, ...rest] = path;
+  if (rest.length === 0) {
+    values[index] = replacement;
+    return values;
+  }
+  const parent = values[index];
+  if (parent?.type !== "list") return values;
+  const nested = parent.values.slice();
+  replaceArrayPath(nested, rest, replacement);
+  values[index] = { ...parent, values: nested };
+  return values;
+}
+
+function expandClassRegions(form, env, layout, use) {
+  const values = form.values;
+  const className = layout.namePath ? atOccurrencePath(form, layout.namePath) : null;
+  const classEnv = className?.type === "atom" ? extendEnv(env, [className.value]) : env;
+  const baseIndex = layout.grammar === "Class" ? 2 : 1;
+  const out = values.slice(0, baseIndex + 1);
+  if (values[baseIndex]?.type === "list") {
+    const bases = values[baseIndex];
+    out[baseIndex] = { ...bases, values: bases.values.map((base) => expandAt(base, classEnv, "Value")) };
+  }
+  for (const member of layout.members) {
+    out.push(expandClassMember(form, member, classEnv, use));
+  }
+  return out;
+}
+
+function expandClassMember(root, layout, env, use) {
+  const member = atOccurrencePath(root, layout.path);
+  if (member?.type !== "list" || member.values.length === 0) return member;
+  const head = member.values[0]?.type === "atom" ? member.values[0].value : "";
+  if (head === "static" || head === "async") {
+    if (!layout.inner) return member;
+    const expanded = expandClassMember(root, layout.inner, env, use);
+    const values = member.values.slice();
+    values[1] = expanded;
+    return { ...member, values };
+  }
+  if (head === "field") {
+    const values = member.values.slice();
+    for (const path of layout.initPaths) values[path[path.length - 1]] = expandAt(atOccurrencePath(root, path), env, "Value");
+    return { ...member, values };
+  }
+  const paramsIndex = layout.paramsPath?.[layout.paramsPath.length - 1];
+  if (paramsIndex === undefined) return member;
+  const bodyStart = paramsIndex + 1;
+  const params = atOccurrencePath(root, layout.paramsPath);
+  const names = kernelParameterNames(params).map((site) => site.name);
+  const methodEnv = extendEnv(env, names);
+  const values = member.values.slice();
+  for (const path of layout.defaultPaths) {
+    const relativePath = path.slice(layout.path.length);
+    const original = atOccurrencePath(root, path);
+    replaceChildPath(values, relativePath, expandAt(original, methodEnv, "Value"));
+  }
+  const bodyChildren = layout.bodyPaths.map((path) => atOccurrencePath(root, path));
+  const body = expandChildrenSeq(bodyChildren, methodEnv, use);
+  return { ...member, values: [...values.slice(0, bodyStart), ...body] };
+}
+
+function replaceChildPath(root, path, replacement) {
+  if (path.length === 0) return replacement;
+  const [index, ...rest] = path;
+  const values = root.values.slice();
+  values[index] = rest.length ? replaceChildPath(values[index], rest, replacement) : replacement;
+  root.values = values;
+  return root;
+}
+
+/** Names introduced by actually expanded declarations under the incoming
+ * dispatch environment. Raw invocation spelling never supplies visibility. */
+function actualExpandedHoists(form, env) {
+  if (form?.type !== "list" || form.values.length === 0) return [];
+  const head = form.values[0];
+  if (head?.type !== "atom" || formHead(head) === null) return [];
+  if (isKernel(form)) return hoistedNames(form);
+  if (env.bindings.has(head.value)) return [];
+  if (head.value === "export" || head.value === "async") {
+    return form.values.slice(1).flatMap((child) => actualExpandedHoists(child, env));
+  }
+  return hoistedNames(form);
 }
 
 function expandConditionalChild(child, env, isCondition, use = "Legacy") {
@@ -1012,9 +1174,13 @@ function expandTryStatement(form, env, use = "Statement") {
     const structuralElsewhere = head?.type === "atom" &&
       (head.value === "catch" || head.value === "finally");
     const childUse = structuralElsewhere ? "Legacy" : useAtFunctionBoundary(child, use);
-    pushExpanded(out, expandAt(child, cur, childUse));
-    const hoist = child?.type === "list" ? hoistedNames(child) : [];
-    if (hoist.length) cur = extendEnv(cur, hoist);
+    const expanded = expandAt(child, cur, childUse, null, null, RESULT_SLOT.SEQUENCE);
+    const siblings = Array.isArray(expanded) ? expanded : [expanded];
+    for (const sibling of siblings) {
+      if (sibling !== null && sibling !== undefined) out.push(sibling);
+      const hoist = actualExpandedHoists(sibling, cur);
+      if (hoist.length) cur = extendEnv(cur, hoist);
+    }
   }
   if (hasCatch) {
     const catchEnv = extendEnv(env, bodyScopeNames(catcher));
@@ -1705,6 +1871,7 @@ function expandDirectBind(args, env) {
  * @returns {* | *[]} Expanded form(s)
  */
 export function expandExpr(form, env = EMPTY_ENV) {
+  form = cloneOccurrenceSyntax(form);
   validateReservedNames([form], { bindings: env });
   const privateCountAtStart = compilerPrivateAtomCount;
   const expansionEnv = createExpansionEnvironment(env, createSurfaceTypeContext());
@@ -1720,7 +1887,7 @@ export function expandExpr(form, env = EMPTY_ENV) {
 }
 
 function expandAt(form, env, use, computedMemberCallRequest = null,
-  directCallArgumentRequest = null) {
+  directCallArgumentRequest = null, resultSlot = RESULT_SLOT.SINGLE) {
   // Propagate the sanctioned-kernel mark across expansion: if the input was
   // sanctioned (compiler-produced kernel), so is the output — even though the
   // inner walk rebuilds nodes (e.g. `expand-binding` returns a fresh list).
@@ -1733,6 +1900,7 @@ function expandAt(form, env, use, computedMemberCallRequest = null,
     use,
     computedMemberCallRequest,
     directCallArgumentRequest,
+    resultSlot,
   );
   if (computedMemberCallRequest?.handled) return computedMemberCallRequest.result;
   if (directCallArgumentRequest?.handled) return directCallArgumentRequest.result;
@@ -1747,7 +1915,7 @@ function expandAt(form, env, use, computedMemberCallRequest = null,
 }
 
 function expandExprInner(form, env, use = "Legacy", computedMemberCallRequest = null,
-  directCallArgumentRequest = null) {
+  directCallArgumentRequest = null, resultSlot = RESULT_SLOT.SINGLE) {
   if (form === null || form === undefined) return form;
   if (form.type === 'atom' || form.type === 'number' || form.type === 'string' || form.type === 'keyword') {
     return form;
@@ -1856,13 +2024,9 @@ function expandExprInner(form, env, use = "Legacy", computedMemberCallRequest = 
   if (surfaceHead !== null && !isKernel(form)) {
     const astNode = classifySurfaceForm(surfaceHead, form.values.slice(1));
     if (astNode) {
-      // Function-family bindings vanish into `=>`/`function` param lists at the
-      // kernel level, so extend the value env at the surface level, before
-      // lowering. All other binding forms re-expose their binders at the kernel
-      // level (handled by the default branch's `scopePlan`).
-      const childEnv = FUNCTION_FAMILY.has(surfaceHead)
-        ? extendEnv(env, bodyScopeNames(form))
-        : env;
+      // Lower first; the emitted kernel function carries each actual parameter
+      // list and the ordinary scope walker handles its local body sequence.
+      const childEnv = env;
       if (isResultOperandUse(use) && (astNode.type === "And" || astNode.type === "Or")) {
         return expandLogicalResultOperand(
           astNode.args,
@@ -1943,16 +2107,20 @@ function expandExprInner(form, env, use = "Legacy", computedMemberCallRequest = 
   }
 
   // Skip re-expansion of forms marked as kernel output by surface macros
-  if (head.type === 'atom' && macroEnv.has(head.value) && !isKernel(form)) {
+  if (head.type === 'atom' && macroEnv.has(head.value) && !env.bindings.has(head.value) &&
+      formHead(head) !== null && !isKernel(form)) {
     let current = form;
     let count = 0;
     while (current.type === 'list' && current.values.length > 0 &&
-           current.values[0].type === 'atom' && macroEnv.has(current.values[0].value) &&
-           !isKernel(current)) {
+           current.values[0].type === 'atom' && !isKernel(current)) {
+      const currentHead = current.values[0];
+      if (env.bindings.has(currentHead.value) || formHead(currentHead) === null ||
+          !macroEnv.has(currentHead.value)) break;
+      if (classifySurfaceForm(currentHead.value, current.values.slice(1))) break;
       const macroName = current.values[0].value;
       const macroArgs = current.values.slice(1);
       try {
-        current = macroEnv.get(macroName)(...macroArgs);
+        current = cloneOccurrenceSyntax(macroEnv.get(macroName)(...macroArgs));
       } catch (err) {
         throw new Error(`error expanding macro '${macroName}': ${err.message}`, { cause: err });
       }
@@ -1961,6 +2129,20 @@ function expandExprInner(form, env, use = "Legacy", computedMemberCallRequest = 
       }
     }
     if (Array.isArray(current)) {
+      if (resultSlot === RESULT_SLOT.SEQUENCE) {
+        const out = [];
+        let cur = env;
+        for (const item of current) {
+          const expanded = expandAt(item, cur, use, null, null, RESULT_SLOT.SEQUENCE);
+          const siblings = Array.isArray(expanded) ? expanded : [expanded];
+          for (const sibling of siblings) {
+            if (sibling !== null && sibling !== undefined) out.push(sibling);
+            const hoist = actualExpandedHoists(sibling, cur);
+            if (hoist.length) cur = extendEnv(cur, hoist);
+          }
+        }
+        return out;
+      }
       return current.map((r) => expandAt(r, env, use));
     }
     return expandAt(current, env, use, null, directCallArgumentRequest);
@@ -2233,16 +2415,13 @@ function pass2ExpandAll(forms) {
   // the binding.
   let env = createExpansionEnvironment(EMPTY_ENV, createSurfaceTypeContext());
   for (const form of forms) {
-    const expanded = expandAt(form, env, "Statement");
-    if (expanded !== null && expanded !== undefined) {
-      if (Array.isArray(expanded)) {
-        result.push(...expanded.filter((e) => e !== null && e !== undefined));
-      } else {
-        result.push(expanded);
-      }
+    const expanded = expandAt(form, env, "Statement", null, null, RESULT_SLOT.SEQUENCE);
+    const siblings = Array.isArray(expanded) ? expanded : [expanded];
+    for (const sibling of siblings) {
+      if (sibling !== null && sibling !== undefined) result.push(sibling);
+      const hoist = actualExpandedHoists(sibling, env);
+      if (hoist.length) env = extendEnv(env, hoist);
     }
-    const hoist = form?.type === "list" ? hoistedNames(form) : [];
-    if (hoist.length) env = extendEnv(env, hoist);
   }
   if (compilerPrivateAtomCount !== compilerPrivateAtomsAtStart) {
     finalizeCompilerPrivateAtoms(result);
@@ -2308,8 +2487,9 @@ export function expandWithMacroImports(forms, context = {}, processImports) {
   // lowering, so `func`/`fn` params are still visible (the JS expander lowers
   // surface forms to kernel during expansion). Covers `export`ed names and the
   // `kernel:` name slot.
-  validateReservedNames(forms);
-  const afterPass0 = processImports(forms, { filePath, compilationStack });
+  const ownedForms = cloneOccurrenceSyntax(forms);
+  validateReservedNames(ownedForms);
+  const afterPass0 = processImports(ownedForms, { filePath, compilationStack });
   const afterPass1 = pass1RegisterMacros(afterPass0);
   const expanded = pass2ExpandAll(afterPass1);
   validateReservedNames(expanded);

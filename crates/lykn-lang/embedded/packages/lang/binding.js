@@ -16,6 +16,8 @@ import { toJsIdentifier } from "./identifier.js";
 import { isCompilerPrivateAtom } from "./compiler-private-atoms.js";
 import { isKernel } from "./kernel-mark.js";
 import { FUNC_CLAUSE_KEYS, parseKeywordClauses } from "./function-clauses.js";
+import { atOccurrencePath, classRegionLayout, functionRegionLayout } from "./lexical-regions.js";
+import { KERNEL_FORMS, KERNEL_ONLY_FORMS } from "./kernel-forms.js";
 
 /** @typedef {'param'|'bind'|'loop-binding'|'class-method-param'} BindingKind */
 /**
@@ -139,7 +141,7 @@ function walk(form, out, inScope) {
     }
     return;
   }
-  if (headName === "class") {
+  if (headName === "class" || headName === "class-expr") {
     out.push(...bindingsIntroduced(form).filter((site) => site.kind === "bind"));
     const classScope = extendNames(inScope, bindingsIntroduced(form)
       .filter((site) => site.kind === "bind").map((site) => site.name));
@@ -147,8 +149,9 @@ function walk(form, out, inScope) {
     if (bases?.type === "list") {
       for (const base of bases.values) walk(base, out, classScope);
     }
-    for (const member of form.values.slice(3)) {
-      walkClassMember(member, out, classScope, true);
+    const layout = classRegionLayout(form);
+    for (const member of layout?.members ?? []) {
+      walkClassMember(form, atOccurrencePath(form, member.path), out, classScope, true, member);
     }
     return;
   }
@@ -160,6 +163,7 @@ function walk(form, out, inScope) {
 
   if (headName === null) {
     // A computed callee and each operand are independent executable regions.
+    if (!Array.isArray(form.values)) throw new TypeError(`non-array AST list: ${JSON.stringify(form)}`);
     for (const child of form.values) walk(child, out, inScope);
     return;
   }
@@ -201,20 +205,36 @@ function walk(form, out, inScope) {
   const kernelFunction = ["function", "function*", "kernel:function", "kernel:function*", "=>", "kernel:=>", "kernel:lambda"].includes(headName) || (headName === "lambda" && isKernel(form));
   const sourceFunction = ["fn", "genfn"].includes(headName) || (headName === "lambda" && !isKernel(form));
   if (kernelFunction || sourceFunction) {
-    const args = form.values.slice(1);
-    const paramsIndex = kernelFunction && !["=>", "kernel:=>", "kernel:lambda"].includes(headName) && args[0]?.type !== "list" ? 1 : 0;
-    const params = args[paramsIndex]?.type === "list" ? args[paramsIndex] : null;
     const sites = bindingsIntroduced(form);
     out.push(...sites);
     const functionScope = extendNames(inScope, sites.map((site) => site.name));
-    if (params) walkParamDefaults(params, out, functionScope, kernelFunction ? PatternGrammar.BINDING_PATTERN : PatternGrammar.TYPED_PARAMETER);
-    walkSequence(args.slice(params ? paramsIndex + 1 : 0), out, functionScope);
+    const layout = functionRegionLayout(form);
+    if (!layout) return;
+    for (const clause of layout.clauses) {
+      for (const path of clause.defaultPaths) {
+        const value = atOccurrencePath(form, path);
+        if (value) walk(value, out, functionScope);
+      }
+      for (const path of clause.prePaths) {
+        const value = atOccurrencePath(form, path);
+        if (value) walk(value, out, functionScope);
+      }
+      const body = clause.bodyPaths.map((path) => atOccurrencePath(form, path)).filter(Boolean);
+      walkSequence(body, out, functionScope);
+      for (const path of clause.postPaths) {
+        const value = atOccurrencePath(form, path);
+        if (value) walk(value, out, functionScope);
+      }
+    }
     return;
   }
 
-  out.push(...bindingsIntroduced(form));
-
   const plan = bindingScopePlan(form, headName);
+  if (plan.kind === "call") {
+    for (const child of form.values.slice(1)) walk(child, out, inScope);
+    return;
+  }
+  out.push(...bindingsIntroduced(form));
   const children = form.values;
   if (plan.kind === "conditional") {
     if (children.length > 1) walk(children[1], out, inScope);
@@ -285,11 +305,19 @@ function walkPatternDefaults(pattern, out, inScope, grammar) {
   }
 }
 
-function walkClassMember(member, out, classScope, validation = false) {
+function walkClassMember(root, member, out, classScope, validation = false, layout = null) {
   if (member?.type !== "list" || member.values.length === 0) return;
   const head = member.values[0]?.type === "atom" ? member.values[0].value : "";
   if (head === "static" || head === "async") {
-    for (const nested of member.values.slice(1)) walkClassMember(nested, out, classScope, validation);
+    if (layout?.inner) walkClassMember(root, atOccurrencePath(root, layout.inner.path), out, classScope, validation, layout.inner);
+    else for (const nested of member.values.slice(1)) walkClassMember(root, nested, out, classScope, validation);
+    return;
+  }
+  if (head === "field") {
+    for (const path of layout?.initPaths ?? []) {
+      const init = atOccurrencePath(root, path);
+      if (init) walk(init, out, classScope);
+    }
     return;
   }
   const paramsIndex = head === "get" || head === "set" ? 2 : 1;
@@ -301,8 +329,18 @@ function walkClassMember(member, out, classScope, validation = false) {
   const sites = kernelParamNames(params).map((site) => ({ ...site, kind: "class-method-param" }));
   out.push(...sites);
   const methodScope = extendNames(classScope, sites.map((site) => site.name));
-  if (validation) walkParamDefaults(params, out, methodScope, PatternGrammar.BINDING_PATTERN);
-  for (const child of member.values.slice(paramsIndex + 1)) walk(child, out, methodScope);
+  if (validation) {
+    for (const path of layout?.defaultPaths ?? []) {
+      const value = atOccurrencePath(root, path);
+      if (value) walk(value, out, methodScope);
+    }
+  }
+  if (layout) {
+    for (const path of layout.bodyPaths) {
+      const child = atOccurrencePath(root, path);
+      if (child) walk(child, out, methodScope);
+    }
+  } else for (const child of member.values.slice(paramsIndex + 1)) walk(child, out, methodScope);
 }
 
 function walkSourceFunction(form, out, inScope) {
@@ -312,39 +350,25 @@ function walkSourceFunction(form, out, inScope) {
     : [];
   out.push(...name);
   const functionScope = extendNames(inScope, name.map((site) => site.name));
-  const rest = args.slice(1);
-  const multi = rest[0]?.type === "list" && rest[0].values[0]?.type === "keyword" && FUNC_CLAUSE_KEYS.has(rest[0].values[0].value);
-  const keywordMode = !multi && rest[0]?.type === "keyword" && FUNC_CLAUSE_KEYS.has(rest[0].value);
-  const clauses = multi
-    ? rest.filter((value) => value?.type === "list" && value.values[0]?.type === "keyword" && FUNC_CLAUSE_KEYS.has(value.values[0].value)).map((value) => value.values)
-    : keywordMode ? [rest] : [null];
-  for (const values of clauses) {
-    if (values === null) {
-      walkSequenceReturning(rest, out, functionScope);
-      continue;
-    }
-    const groups = parseKeywordClauses(values);
-    const params = groups.get("args")?.[0];
+  const layout = functionRegionLayout(form);
+  if (!layout) return;
+  for (const clause of layout.clauses) {
+    const params = clause.paramsPath ? atOccurrencePath(form, clause.paramsPath) : null;
     const sites = params ? paramListNames(params) : [];
     out.push(...sites);
     let clauseScope = extendNames(functionScope, sites.map((site) => site.name));
-    if (params) walkParamDefaults(params, out, clauseScope, PatternGrammar.TYPED_PARAMETER);
-    const pre = groups.get("pre")?.[0];
-    const post = groups.get("post")?.[0];
-    if (pre) walk(pre, out, clauseScope);
-    clauseScope = walkSequenceReturning(groups.get("body") ?? [], out, clauseScope);
-    if (post) walk(post, out, clauseScope);
-  }
-}
-
-function walkParamDefaults(params, out, inScope, grammar) {
-  if (params?.type !== "list") return;
-  for (const param of params.values) {
-    if (param?.type !== "list") continue;
-    const head = param.values[0]?.type === "atom" ? param.values[0].value : "";
-    if (["default", "rest", "array", "object"].includes(head)) {
-      walkPatternDefaults(param, out, inScope, grammar);
+    for (const path of clause.defaultPaths) {
+      const value = atOccurrencePath(form, path);
+      if (value) walk(value, out, clauseScope);
     }
+    const pre = clause.prePaths.map((path) => atOccurrencePath(form, path))[0];
+    const post = clause.grammar === "SourceGenfunc"
+      ? null
+      : clause.postPaths.map((path) => atOccurrencePath(form, path))[0];
+    if (pre) walk(pre, out, clauseScope);
+    const body = clause.bodyPaths.map((path) => atOccurrencePath(form, path)).filter(Boolean);
+    clauseScope = walkSequenceReturning(body, out, clauseScope);
+    if (post) walk(post, out, clauseScope);
   }
 }
 
@@ -395,9 +419,23 @@ export function hoistedNames(form) {
  */
 export function bindingScopePlan(form, headName) {
   if (form?.type !== "list" || form.values.length === 0) return SEQUENCE;
+  if (headName === null) return { kind: "call" };
+  if (headName === "class" || headName === "class-expr") {
+    const layout = classRegionLayout(form);
+    return layout ? { kind: "class", layout } : SEQUENCE;
+  }
+  if (headName === "do" || headName === "block" || headName === "seq") return SEQUENCE;
+  if (["function", "function*", "=>", "lambda"].includes(headName) && isKernel(form)) {
+    const layout = functionRegionLayout(form);
+    return layout ? { kind: "function", layout } : SEQUENCE;
+  }
   const kernel = headName?.startsWith("kernel:")
     ? headName.slice("kernel:".length)
     : headName;
+  if (!KERNEL_FORMS.has(kernel) && !KERNEL_ONLY_FORMS.has(kernel) &&
+      !["func", "genfunc", "fn", "genfn", "lambda", "class", "class-expr"].includes(headName)) {
+    return { kind: "call" };
+  }
   if (["function", "function*", "=>", "lambda"].includes(kernel)) {
     return { kind: "body", names: bodyScopeNames(form), bodyStart: 0 };
   }
@@ -607,6 +645,11 @@ function kernelParamNames(list) {
     }
   }
   return out;
+}
+
+/** Kernel parameter-list projection shared with class lexical consumers. */
+export function kernelParameterNames(list) {
+  return kernelParamNames(list);
 }
 
 /**

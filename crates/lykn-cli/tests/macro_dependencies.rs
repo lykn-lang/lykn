@@ -718,7 +718,9 @@ fn m6_embedded_compiler_payload_matches_canonical_and_runs_from_cold_cache() {
         "compiler-private-atoms.js",
         "expander-core.js",
         "function-clauses.js",
+        "host-invocation-kernel.js",
         "identifier.js",
+        "lexical-regions.js",
         "protected-host.js",
         "reserved-words.js",
         "surface-helpers.js",
@@ -772,6 +774,7 @@ fn m6_embedded_compiler_payload_matches_canonical_and_runs_from_cold_cache() {
         repository.join("test/forms/embedded-adt-pattern.test.js"),
         repository.join("test/forms/surface-type-context.test.js"),
         repository.join("test/forms/reserved-binding-output.test.js"),
+        repository.join("test/expander/lexical-regions.test.js"),
     ];
     let mut strict_public = Command::new(deno);
     strict_public
@@ -802,7 +805,7 @@ fn m6_embedded_compiler_payload_matches_canonical_and_runs_from_cold_cache() {
         String::from_utf8_lossy(&public_result.stderr)
     );
     assert!(
-        public_output.contains("ok | 28 passed | 0 failed"),
-        "M6 must execute all eleven retained and seventeen IC-01 public cases, output: {public_output}"
+        public_output.contains("ok | 38 passed | 0 failed"),
+        "M6 must execute all eleven retained, seventeen IC-01, and ten B2a lexical-region cases, output: {public_output}"
     );
 }

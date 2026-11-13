@@ -3988,18 +3988,18 @@ fn emit_genfunc(
     name: &str,
     _name_span: Span,
     clauses: &[GenfuncClause],
-    _span: Span,
+    span: Span,
     ctx: &mut EmitterContext,
     registry: &TypeRegistry,
 ) -> Vec<SExpr> {
-    // For now, only single-clause genfunc is supported (matching JS behaviour)
-    if clauses.len() == 1 {
-        vec![emit_genfunc_single(name, &clauses[0], ctx, registry)]
-    } else {
-        // Multi-clause generators: emit each clause individually
-        // For now, treat each as a single clause (future: dispatch like func_multi)
-        vec![emit_genfunc_single(name, &clauses[0], ctx, registry)]
+    if clauses.len() != 1 {
+        ctx.record_fatal(codegen_error(
+            "genfunc: multiple clauses are not supported",
+            span,
+        ));
+        return Vec::new();
     }
+    vec![emit_genfunc_single(name, &clauses[0], ctx, registry)]
 }
 
 fn emit_genfunc_single(
@@ -10740,6 +10740,34 @@ mod tests {
         } else {
             panic!("expected list");
         }
+    }
+
+    #[test]
+    fn test_emit_genfunc_rejects_multiple_clauses() {
+        use super::emit_form_raw_checked as emit_form;
+        let clause = || GenfuncClause {
+            args: vec![],
+            yields: None,
+            returns: None,
+            pre: None,
+            post: None,
+            body: vec![list(vec![atom("yield"), num(1.0)])],
+            span: s(),
+        };
+        let form = SurfaceForm::Genfunc {
+            name: "gen".into(),
+            name_span: s(),
+            clauses: vec![clause(), clause()],
+            span: s(),
+        };
+        let mut ctx = EmitterContext::new(false);
+        let error = emit_form(&form, &mut ctx, &TypeRegistry::default()).unwrap_err();
+        assert!(
+            error
+                .to_string()
+                .contains("genfunc: multiple clauses are not supported"),
+            "{error}"
+        );
     }
 
     #[test]

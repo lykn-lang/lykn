@@ -1723,10 +1723,7 @@ fn classify_func<'tree>(
 }
 
 pub(crate) fn is_func_clause_key(name: &str) -> bool {
-    matches!(
-        name,
-        "args" | "yields" | "returns" | "pre" | "post" | "body"
-    )
+    crate::lexical_regions::is_func_clause_key(name)
 }
 
 fn parse_func_clause<'tree>(
@@ -1802,23 +1799,11 @@ fn parse_func_clause_from_args<'tree>(
 
 pub(crate) fn parse_keyword_clauses(args: &[SExpr]) -> HashMap<&str, Vec<&SExpr>> {
     let mut map = HashMap::new();
-    let mut current_key: Option<&str> = None;
-    let mut current_values: Vec<&SExpr> = Vec::new();
-
-    for arg in args {
-        if let SExpr::Keyword { value, .. } = arg
-            && is_func_clause_key(value)
-        {
-            if let Some(key) = current_key.take() {
-                map.insert(key, std::mem::take(&mut current_values));
-            }
-            current_key = Some(value);
-            continue;
-        }
-        current_values.push(arg);
-    }
-    if let Some(key) = current_key {
-        map.insert(key, current_values);
+    for range in crate::lexical_regions::keyword_group_ranges(args) {
+        map.insert(
+            range.key,
+            args[range.value_start..range.value_end].iter().collect(),
+        );
     }
     map
 }
@@ -1855,6 +1840,9 @@ fn classify_genfunc<'tree>(
         && let SExpr::Keyword { value, .. } = &values[0]
         && is_func_clause_key(value)
     {
+        if rest.len() > 1 {
+            return Err(err("genfunc: multiple clauses are not supported", span));
+        }
         let mut clauses = Vec::new();
         for clause_expr in rest {
             clauses.push(parse_genfunc_clause(clause_expr, span, capture)?);
@@ -3219,6 +3207,14 @@ fn classify_class_member_inner(
         }
         "field" => {
             // (field name) or (field name init-expr)
+            if values.len() < 2 {
+                return Err(Diagnostic {
+                    message: "field requires a property name".to_string(),
+                    severity: Severity::Error,
+                    span: member.span(),
+                    suggestion: None,
+                });
+            }
             let prefix = vec![values[0].clone(), values[1].clone()];
             let init = if values.len() >= 3 {
                 Some(values[2].clone())

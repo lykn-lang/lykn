@@ -347,29 +347,8 @@ fn walk(form: &SExpr, out: &mut Vec<BindingSite>, scope: &mut Vec<String>) {
             }
             return;
         }
-        "class" => {
-            let class_names = class_names(&values[1..]);
-            out.extend(
-                class_names
-                    .iter()
-                    .filter(|site| site.kind == BindingKind::Bind)
-                    .map(|site| (*site).project()),
-            );
-            let mut class_scope = scope.clone();
-            class_scope.extend(
-                class_names
-                    .iter()
-                    .filter(|site| site.kind == BindingKind::Bind)
-                    .filter_map(|site| site.atom.as_atom().map(str::to_string)),
-            );
-            if let Some(SExpr::List { values: bases, .. }) = values.get(2) {
-                for base in bases {
-                    walk(base, out, &mut class_scope);
-                }
-            }
-            for member in values.iter().skip(3) {
-                walk_class_member(member, out, &mut class_scope);
-            }
+        "class" | "class-expr" => {
+            walk_class_regions(form, out, scope);
             return;
         }
         "func" | "genfunc" => {
@@ -432,56 +411,31 @@ fn walk(form: &SExpr, out: &mut Vec<BindingSite>, scope: &mut Vec<String>) {
         }
         return;
     }
-    if matches!(kernel_head, "function" | "function*" | "=>" | "lambda") {
-        let args = &values[1..];
-        let params = if matches!(kernel_head, "=>" | "lambda")
-            || matches!(args.first(), Some(SExpr::List { .. }))
-        {
-            args.first()
-        } else {
-            args.get(1)
-        };
-        if let Some(params) = params.filter(|p| matches!(p, SExpr::List { .. })) {
-            let mut param_scope = scope.clone();
-            param_scope.extend(
-                sites
-                    .iter()
-                    .filter(|site| site.kind.shadows_values())
-                    .map(|site| site.name.clone()),
-            );
-            walk_param_defaults(
-                params,
-                out,
-                &mut param_scope,
-                PatternGrammar::BindingPattern,
-            );
-        }
-    }
     if matches!(
         name.strip_prefix("kernel:").unwrap_or(name),
         "function" | "function*" | "=>" | "lambda"
-    ) {
-        let mark = scope.len();
-        scope.extend(
+    ) && let Some(layout) = crate::lexical_regions::function_regions(form)
+    {
+        let mut function_scope = scope.clone();
+        function_scope.extend(
             sites
                 .iter()
-                .filter(|s| s.kind.shadows_values())
-                .map(|s| s.name.clone()),
+                .filter(|site| site.kind.shadows_values())
+                .map(|site| site.name.clone()),
         );
-        let args = &values[1..];
-        let params_index = if matches!(kernel_head, "=>" | "lambda")
-            || matches!(args.first(), Some(SExpr::List { .. }))
-        {
-            0
-        } else {
-            1
-        };
-        for (index, child) in args.iter().enumerate() {
-            if index != params_index {
-                walk(child, out, scope);
+        for clause in &layout.clauses {
+            for path in &clause.default_paths {
+                if let Some(default) = crate::lexical_regions::at_path(form, path) {
+                    walk(default, out, &mut function_scope);
+                }
             }
+            let body = clause
+                .body_paths
+                .iter()
+                .filter_map(|path| crate::lexical_regions::at_path(form, path))
+                .collect::<Vec<_>>();
+            walk_sequence_refs(&body, out, &mut function_scope);
         }
-        scope.truncate(mark);
         return;
     }
     let mark = scope.len();
@@ -500,65 +454,92 @@ fn walk(form: &SExpr, out: &mut Vec<BindingSite>, scope: &mut Vec<String>) {
     let _ = raw;
 }
 
-fn walk_class_member(member: &SExpr, out: &mut Vec<BindingSite>, class_scope: &mut Vec<String>) {
-    let SExpr::List { values, .. } = member else {
+fn walk_class_regions(form: &SExpr, out: &mut Vec<BindingSite>, scope: &[String]) {
+    let Some(layout) = crate::lexical_regions::class_regions(form) else {
         return;
     };
-    if values.is_empty() {
-        return;
-    }
-    let member_head = values[0].as_atom().unwrap_or("");
-    if matches!(member_head, "static" | "async") {
-        for inner in values.iter().skip(1) {
-            walk_class_member(inner, out, class_scope);
-        }
-        return;
-    }
-    let params_index = if matches!(member_head, "get" | "set") {
-        2
-    } else {
-        1
-    };
-    if let Some(params) = values
-        .get(params_index)
-        .filter(|param| matches!(param, SExpr::List { .. }))
+    let mut class_scope = scope.to_vec();
+    if let Some(path) = &layout.name_path
+        && let Some(name) = crate::lexical_regions::at_path(form, path)
+        && name.as_atom() != Some("_")
     {
-        let mut method_scope = class_scope.clone();
-        let sites = kernel_param_names(params)
-            .into_iter()
-            .map(|site| {
-                let mut site = site.project();
-                site.kind = BindingKind::ClassMethodParam;
-                site
-            })
-            .collect::<Vec<_>>();
-        method_scope.extend(sites.iter().map(|site| site.name.clone()));
-        out.extend(sites);
-        walk_param_defaults(
-            params,
-            out,
-            &mut method_scope,
-            PatternGrammar::BindingPattern,
-        );
-        for body in values.iter().skip(params_index + 1) {
-            walk(body, out, &mut method_scope);
+        let site = BindingOccurrence {
+            atom: name,
+            kind: BindingKind::Bind,
         }
-    } else {
-        for value in values.iter().skip(1) {
-            walk(value, out, class_scope);
+        .project();
+        class_scope.push(site.name.clone());
+        out.push(site);
+    }
+    for path in &layout.base_paths {
+        if let Some(base) = crate::lexical_regions::at_path(form, path) {
+            walk(base, out, &mut class_scope);
         }
+    }
+    for member in &layout.members {
+        walk_class_member_regions(form, member, out, &class_scope);
     }
 }
 
-fn walk_source_function(form: &SExpr, out: &mut Vec<BindingSite>, scope: &[String]) {
-    let SExpr::List { values, .. } = form else {
+fn walk_class_member_regions(
+    root: &SExpr,
+    member: &crate::lexical_regions::ClassMemberRegions,
+    out: &mut Vec<BindingSite>,
+    class_scope: &[String],
+) {
+    if member.grammar == crate::lexical_regions::ClassMemberGrammar::Wrapper {
+        if let Some(inner) = &member.inner {
+            walk_class_member_regions(root, inner, out, class_scope);
+        }
+        return;
+    }
+    if member.grammar == crate::lexical_regions::ClassMemberGrammar::Field {
+        for path in &member.init_paths {
+            if let Some(init) = crate::lexical_regions::at_path(root, path) {
+                walk(init, out, &mut class_scope.to_vec());
+            }
+        }
+        return;
+    }
+    let Some(params_path) = &member.params_path else {
         return;
     };
-    let Some((name, args)) = values[1..].split_first() else {
+    let Some(params) = crate::lexical_regions::at_path(root, params_path) else {
+        return;
+    };
+    let sites = kernel_param_names(params)
+        .into_iter()
+        .map(|site| {
+            let mut site = site.project();
+            site.kind = BindingKind::ClassMethodParam;
+            site
+        })
+        .collect::<Vec<_>>();
+    out.extend(sites.iter().cloned());
+    let mut method_scope = class_scope.to_vec();
+    method_scope.extend(sites.iter().map(|site| site.name.clone()));
+    for path in &member.default_paths {
+        if let Some(value) = crate::lexical_regions::at_path(root, path) {
+            walk(value, out, &mut method_scope);
+        }
+    }
+    let body = member
+        .body_paths
+        .iter()
+        .filter_map(|path| crate::lexical_regions::at_path(root, path))
+        .collect::<Vec<_>>();
+    walk_sequence_refs(&body, out, &mut method_scope);
+}
+
+fn walk_source_function(form: &SExpr, out: &mut Vec<BindingSite>, scope: &[String]) {
+    let Some(layout) = crate::lexical_regions::function_regions(form) else {
         return;
     };
     let mut function_scope = scope.to_vec();
-    if name.as_atom() != Some("_") && name.atom_parts().is_some() {
+    if let Some(path) = &layout.name_path
+        && let Some(name) = crate::lexical_regions::at_path(form, path)
+        && name.as_atom() != Some("_")
+    {
         let site = BindingOccurrence {
             atom: name,
             kind: BindingKind::Bind,
@@ -567,112 +548,83 @@ fn walk_source_function(form: &SExpr, out: &mut Vec<BindingSite>, scope: &[Strin
         function_scope.push(site.name.clone());
         out.push(site);
     }
-    let rest = args;
-    let multi = matches!(rest.first(), Some(SExpr::List { values, .. })
-        if values.first().and_then(SExpr::as_keyword).is_some_and(crate::classifier::forms::is_func_clause_key));
-    let keyword_mode = !multi
-        && rest
-            .first()
-            .and_then(SExpr::as_keyword)
-            .is_some_and(crate::classifier::forms::is_func_clause_key);
-    let clauses: Vec<&[SExpr]> = if multi {
-        rest.iter()
-            .filter_map(|clause| match clause {
-                SExpr::List { values, .. }
-                    if values
-                        .first()
-                        .and_then(SExpr::as_keyword)
-                        .is_some_and(crate::classifier::forms::is_func_clause_key) =>
-                {
-                    Some(values.as_slice())
-                }
-                _ => None,
-            })
-            .collect()
-    } else if keyword_mode {
-        vec![rest]
-    } else {
-        let mut body_scope = function_scope.clone();
-        walk_sequence(rest, out, &mut body_scope);
-        return;
-    };
-    for clause in clauses {
-        let groups = crate::classifier::forms::parse_keyword_clauses(clause);
-        let params = groups
-            .get("args")
-            .and_then(|values| values.first())
-            .copied();
+    for clause in &layout.clauses {
         let mut clause_scope = function_scope.clone();
-        if let Some(params) = params {
-            let param_sites = typed_param_names(params);
-            out.extend(param_sites.iter().map(|site| site.project()));
+        if let Some(path) = &clause.params_path
+            && let Some(params) = crate::lexical_regions::at_path(form, path)
+        {
+            let sites = if layout.grammar == crate::lexical_regions::FunctionGrammar::Kernel {
+                kernel_param_names(params)
+            } else {
+                typed_param_names(params)
+            };
+            out.extend(sites.iter().map(|site| site.project()));
             clause_scope.extend(
-                param_sites
+                sites
                     .iter()
                     .filter(|site| site.kind.shadows_values())
-                    .map(|site| site.atom.as_atom().unwrap().to_string()),
-            );
-            walk_param_defaults(
-                params,
-                out,
-                &mut clause_scope,
-                PatternGrammar::TypedParameter,
+                    .filter_map(|site| site.atom.as_atom().map(str::to_string)),
             );
         }
-        let pre = groups.get("pre").and_then(|values| values.first()).copied();
-        let post = groups
-            .get("post")
-            .and_then(|values| values.first())
-            .copied();
-        let body = groups.get("body").map(Vec::as_slice).unwrap_or(&[]);
-        let body_pos = clause
-            .iter()
-            .rposition(|item| item.as_keyword() == Some("body"));
-        let post_pos = clause
-            .iter()
-            .rposition(|item| item.as_keyword() == Some("post"));
-        if let Some(pre) = pre {
+        for path in &clause.default_paths {
+            if let Some(value) = crate::lexical_regions::at_path(form, path) {
+                walk(value, out, &mut clause_scope);
+            }
+        }
+        if let Some(path) = clause.pre_paths.first()
+            && let Some(pre) = crate::lexical_regions::at_path(form, path)
+        {
             walk(pre, out, &mut clause_scope);
         }
-        if post_pos
-            .zip(body_pos)
-            .is_some_and(|(post, body)| post < body)
+        let body = clause
+            .body_paths
+            .iter()
+            .filter_map(|path| crate::lexical_regions::at_path(form, path))
+            .collect::<Vec<_>>();
+        walk_sequence_refs(&body, out, &mut clause_scope);
+        if layout.grammar != crate::lexical_regions::FunctionGrammar::SourceGenfunc
+            && let Some(path) = clause.post_paths.first()
+            && let Some(post) = crate::lexical_regions::at_path(form, path)
         {
-            if let Some(post) = post {
-                walk(post, out, &mut clause_scope);
-            }
-            walk_sequence_refs(body, out, &mut clause_scope);
-        } else {
-            walk_sequence_refs(body, out, &mut clause_scope);
-            if let Some(post) = post {
-                walk(post, out, &mut clause_scope);
-            }
+            walk(post, out, &mut clause_scope);
         }
     }
 }
 
 fn walk_typed_function(form: &SExpr, out: &mut Vec<BindingSite>, scope: &mut Vec<String>) {
-    let SExpr::List { values, .. } = form else {
+    let Some(layout) = crate::lexical_regions::function_regions(form) else {
         return;
     };
-    let Some(params) = values.get(1) else {
-        return;
-    };
-    let param_sites = typed_param_names(params);
-    out.extend(param_sites.iter().map(|site| site.project()));
     let mark = scope.len();
-    scope.extend(
-        param_sites
+    for clause in &layout.clauses {
+        if let Some(path) = &clause.params_path
+            && let Some(params) = crate::lexical_regions::at_path(form, path)
+        {
+            let sites = typed_param_names(params);
+            out.extend(sites.iter().map(|site| site.project()));
+            scope.extend(
+                sites
+                    .iter()
+                    .filter(|site| site.kind.shadows_values())
+                    .filter_map(|site| site.atom.as_atom().map(str::to_string)),
+            );
+        }
+        for path in &clause.default_paths {
+            if let Some(default) = crate::lexical_regions::at_path(form, path) {
+                walk(default, out, scope);
+            }
+        }
+        let body = clause
+            .body_paths
             .iter()
-            .filter(|site| site.kind.shadows_values())
-            .filter_map(|site| site.atom.as_atom().map(str::to_string)),
-    );
-    walk_param_defaults(params, out, scope, PatternGrammar::TypedParameter);
-    walk_sequence(values.get(2..).unwrap_or_default(), out, scope);
-    scope.truncate(mark);
+            .filter_map(|path| crate::lexical_regions::at_path(form, path))
+            .collect::<Vec<_>>();
+        walk_sequence_refs(&body, out, scope);
+        scope.truncate(mark);
+    }
 }
 
-fn typed_param_names(params: &SExpr) -> Vec<BindingOccurrence<'_>> {
+pub(crate) fn typed_param_names(params: &SExpr) -> Vec<BindingOccurrence<'_>> {
     let SExpr::List { values, .. } = params else {
         return Vec::new();
     };
@@ -706,28 +658,6 @@ fn typed_param_names(params: &SExpr) -> Vec<BindingOccurrence<'_>> {
         }
     }
     out
-}
-
-fn walk_param_defaults(
-    params: &SExpr,
-    out: &mut Vec<BindingSite>,
-    scope: &mut Vec<String>,
-    grammar: PatternGrammar,
-) {
-    let SExpr::List { values, .. } = params else {
-        return;
-    };
-    for param in values {
-        let SExpr::List { values, .. } = param else {
-            continue;
-        };
-        if matches!(
-            values.first().and_then(SExpr::as_atom),
-            Some("default" | "rest" | "array" | "object")
-        ) {
-            walk_pattern_defaults(param, out, scope, grammar);
-        }
-    }
 }
 
 fn walk_bind_operands(args: &[SExpr], out: &mut Vec<BindingSite>, scope: &mut Vec<String>) {
@@ -935,7 +865,7 @@ fn kernel_function_names(args: &[SExpr]) -> Vec<BindingOccurrence<'_>> {
     out
 }
 
-fn kernel_param_names(params: &SExpr) -> Vec<BindingOccurrence<'_>> {
+pub(crate) fn kernel_param_names(params: &SExpr) -> Vec<BindingOccurrence<'_>> {
     let SExpr::List { values, .. } = params else {
         return Vec::new();
     };

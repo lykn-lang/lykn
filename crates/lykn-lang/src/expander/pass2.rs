@@ -33,13 +33,10 @@ pub fn expand_all(
     let mut scope: Vec<String> = Vec::new();
     let mut result = Vec::new();
     for form in forms {
-        let hoist = crate::resolver::hoisted_names(&form);
         if let Some(expr) = expand_expr(form, deno, env, &mut scope)? {
+            scope.extend(actual_expanded_hoists(&expr, &scope));
             result.push(expr);
         }
-        // Top-level declarations (`bind`, `import` locals) shadow in the forms
-        // that follow them.
-        scope.extend(hoist);
     }
     Ok(result)
 }
@@ -82,6 +79,16 @@ fn expand_expr(
         // Non-empty list — the interesting case.
         SExpr::List { values, span } => {
             let head = &values[0];
+
+            if head.as_form_head() == Some("genfunc")
+                && let Some(layout) = crate::lexical_regions::source_function_regions(&form, true)
+                && layout.clauses.len() > 1
+            {
+                return Err(LyknError::Read {
+                    message: "genfunc: multiple clauses are not supported".to_string(),
+                    location: span.start,
+                });
+            }
 
             if let Some(head_name) = head.as_atom() {
                 // `(quote ...)` suppresses all expansion.
@@ -251,6 +258,13 @@ fn expand_children_scoped(
             }
             Ok(out)
         }
+        crate::resolver::ScopePlan::Call => values
+            .iter()
+            .map(|child| {
+                expand_expr(child.clone(), deno, env, scope)
+                    .map(|form| form.unwrap_or_else(|| child.clone()))
+            })
+            .collect(),
         crate::resolver::ScopePlan::Match { subject, clauses } => {
             let Some(subject) = subject else {
                 return Ok(values.to_vec());
@@ -268,7 +282,209 @@ fn expand_children_scoped(
             }
             Ok(out)
         }
+        crate::resolver::ScopePlan::SourceFunction(Some(layout)) => {
+            expand_source_function(form, values, &layout, deno, env, scope)
+        }
+        crate::resolver::ScopePlan::SourceFunction(None)
+        | crate::resolver::ScopePlan::Class(None) => Ok(values.to_vec()),
+        crate::resolver::ScopePlan::Class(Some(layout)) => {
+            expand_class(form, values, &layout, deno, env, scope)
+        }
     }
+}
+
+fn expand_source_function(
+    form: &SExpr,
+    _values: &[SExpr],
+    layout: &crate::lexical_regions::FunctionRegions,
+    deno: &mut DenoSubprocess,
+    env: &MacroEnv,
+    scope: &mut Vec<String>,
+) -> Result<Vec<SExpr>, LyknError> {
+    let mark = scope.len();
+    if let Some(path) = &layout.name_path
+        && let Some(name) = crate::lexical_regions::at_path(form, path).and_then(SExpr::as_atom)
+    {
+        scope.push(name.to_string());
+    }
+    let mut out = form.clone();
+    for clause in &layout.clauses {
+        let clause_mark = scope.len();
+        if let Some(path) = &clause.params_path
+            && let Some(params) = crate::lexical_regions::at_path(form, path)
+        {
+            let occurrences = if layout.grammar == crate::lexical_regions::FunctionGrammar::Kernel {
+                crate::binding::kernel_param_names(params)
+            } else {
+                crate::binding::typed_param_names(params)
+            };
+            scope.extend(
+                occurrences
+                    .into_iter()
+                    .filter(|site| site.kind.shadows_values())
+                    .filter_map(|site| site.atom.as_atom().map(str::to_string)),
+            );
+        }
+        for path in &clause.default_paths {
+            expand_selected_path(form, &mut out, path, deno, env, scope)?;
+        }
+        if let Some(path) = clause.pre_paths.first() {
+            expand_selected_path(form, &mut out, path, deno, env, scope)?;
+        }
+        for path in &clause.body_paths {
+            if let Some(expanded) = expand_selected_path(form, &mut out, path, deno, env, scope)? {
+                scope.extend(actual_expanded_hoists(&expanded, scope));
+            }
+        }
+        if layout.grammar != crate::lexical_regions::FunctionGrammar::SourceGenfunc
+            && let Some(path) = clause.post_paths.first()
+        {
+            expand_selected_path(form, &mut out, path, deno, env, scope)?;
+        }
+        scope.truncate(clause_mark);
+    }
+    scope.truncate(mark);
+    Ok(match out {
+        SExpr::List { values, .. } => values,
+        _ => Vec::new(),
+    })
+}
+
+fn expand_class(
+    form: &SExpr,
+    _values: &[SExpr],
+    layout: &crate::lexical_regions::ClassRegions,
+    deno: &mut DenoSubprocess,
+    env: &MacroEnv,
+    scope: &mut Vec<String>,
+) -> Result<Vec<SExpr>, LyknError> {
+    let mark = scope.len();
+    if let Some(path) = &layout.name_path
+        && let Some(name) = crate::lexical_regions::at_path(form, path).and_then(SExpr::as_atom)
+    {
+        scope.push(name.to_string());
+    }
+    let mut out = form.clone();
+    for path in &layout.base_paths {
+        expand_selected_path(form, &mut out, path, deno, env, scope)?;
+    }
+    for member in &layout.members {
+        expand_class_member(form, &mut out, member, deno, env, scope)?;
+    }
+    scope.truncate(mark);
+    Ok(match out {
+        SExpr::List { values, .. } => values,
+        _ => Vec::new(),
+    })
+}
+
+fn expand_class_member(
+    root: &SExpr,
+    out: &mut SExpr,
+    layout: &crate::lexical_regions::ClassMemberRegions,
+    deno: &mut DenoSubprocess,
+    env: &MacroEnv,
+    class_scope: &mut Vec<String>,
+) -> Result<(), LyknError> {
+    let Some(member) = crate::lexical_regions::at_path(root, &layout.path) else {
+        return Ok(());
+    };
+    let Some(values) = member.as_list() else {
+        return Ok(());
+    };
+    let head = values.first().and_then(SExpr::as_atom).unwrap_or("");
+    if matches!(head, "static" | "async") {
+        if let Some(inner) = &layout.inner {
+            return expand_class_member(root, out, inner, deno, env, class_scope);
+        }
+        return Ok(());
+    }
+    if layout.grammar == crate::lexical_regions::ClassMemberGrammar::Field {
+        for init in &layout.init_paths {
+            expand_selected_path(root, out, init, deno, env, class_scope)?;
+        }
+        return Ok(());
+    }
+    let Some(params_path) = &layout.params_path else {
+        return Ok(());
+    };
+    let params = crate::lexical_regions::at_path(root, params_path).unwrap_or(member);
+    let mark = class_scope.len();
+    class_scope.extend(
+        crate::binding::kernel_param_names(params)
+            .into_iter()
+            .filter(|site| site.kind.shadows_values())
+            .filter_map(|site| site.atom.as_atom().map(str::to_string)),
+    );
+    for path in &layout.default_paths {
+        expand_selected_path(root, out, path, deno, env, class_scope)?;
+    }
+    for path in &layout.body_paths {
+        if let Some(expanded) = expand_selected_path(root, out, path, deno, env, class_scope)? {
+            class_scope.extend(actual_expanded_hoists(&expanded, class_scope));
+        }
+    }
+    class_scope.truncate(mark);
+    Ok(())
+}
+
+fn expand_selected_path(
+    root: &SExpr,
+    out: &mut SExpr,
+    path: &crate::lexical_regions::OccurrencePath,
+    deno: &mut DenoSubprocess,
+    env: &MacroEnv,
+    scope: &mut Vec<String>,
+) -> Result<Option<SExpr>, LyknError> {
+    let Some(node) = crate::lexical_regions::at_path(root, path) else {
+        return Ok(None);
+    };
+    let expanded = expand_expr(node.clone(), deno, env, scope)?;
+    if let Some(replacement) = expanded.clone() {
+        *out = replace_at_path(out, &path.0, replacement);
+    }
+    Ok(expanded)
+}
+
+fn replace_at_path(root: &SExpr, path: &[usize], replacement: SExpr) -> SExpr {
+    if path.is_empty() {
+        return replacement;
+    }
+    let SExpr::List { values, span } = root else {
+        return root.clone();
+    };
+    let Some(child) = values.get(path[0]) else {
+        return root.clone();
+    };
+    let mut rebuilt = values.clone();
+    rebuilt[path[0]] = replace_at_path(child, &path[1..], replacement);
+    SExpr::List {
+        values: rebuilt,
+        span: *span,
+    }
+}
+
+fn actual_expanded_hoists(form: &SExpr, scope: &[String]) -> Vec<String> {
+    let Some(values) = form.as_list() else {
+        return Vec::new();
+    };
+    let Some(head) = values.first() else {
+        return Vec::new();
+    };
+    let Some(name) = head.as_form_head() else {
+        return Vec::new();
+    };
+    if scope.iter().any(|bound| bound == name) {
+        return Vec::new();
+    }
+    if matches!(name, "export" | "async") {
+        return values
+            .iter()
+            .skip(1)
+            .flat_map(|child| actual_expanded_hoists(child, scope))
+            .collect();
+    }
+    crate::resolver::hoisted_names(form)
 }
 
 fn expand_match_clause(
@@ -317,11 +533,10 @@ fn expand_seq(
     let mark = scope.len();
     let mut out = Vec::with_capacity(values.len());
     for sub in values {
-        let hoist = crate::resolver::hoisted_names(sub);
         if let Some(e) = expand_expr(sub.clone(), deno, env, scope)? {
+            scope.extend(actual_expanded_hoists(&e, scope));
             out.push(e);
         }
-        scope.extend(hoist);
     }
     scope.truncate(mark);
     Ok(out)

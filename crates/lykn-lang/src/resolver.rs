@@ -81,12 +81,19 @@ pub(crate) enum ScopePlan<'tree> {
     /// A conditional's test, consequent, and optional alternate each see the
     /// same incoming scope; declarations in one operand do not leak to another.
     Conditional,
+    /// Ordinary calls evaluate their callee and operands independently; a
+    /// declaration produced by one operand never becomes visible to another.
+    Call,
     /// A genuine native match: the subject is outside every clause and each
     /// complete clause has its own structural pattern, guard and body scope.
     Match {
         subject: Option<&'tree SExpr>,
         clauses: Vec<Option<crate::classifier::forms::MatchClauseScope<'tree>>>,
     },
+    /// Source `func`/`genfunc` selected executable groups, isolated by clause.
+    SourceFunction(Option<crate::lexical_regions::FunctionRegions>),
+    /// Class identity, bases and method members have distinct lexical regions.
+    Class(Option<crate::lexical_regions::ClassRegions>),
 }
 
 #[derive(Clone, Copy)]
@@ -128,6 +135,30 @@ fn scope_plan_and_occurrences<'tree>(form: &'tree SExpr, scope: &[String]) -> Sc
         };
     }
 
+    let dispatch_head = form
+        .as_list()
+        .and_then(|values| values.first())
+        .and_then(SExpr::as_form_head);
+    let dispatches = dispatch_head.is_some_and(|name| !scope.iter().any(|bound| bound == name));
+    let known_dispatch = dispatch_head.is_some_and(|name| {
+        let grammar_name = name.strip_prefix("kernel:").unwrap_or(name);
+        crate::classifier::dispatch::is_surface_form(name)
+            || crate::classifier::dispatch::is_surface_form_strict(name)
+            || crate::classifier::dispatch::is_kernel_form(name)
+            || crate::classifier::dispatch::is_kernel_only_form(name)
+            || crate::classifier::dispatch::is_surface_form(grammar_name)
+            || crate::classifier::dispatch::is_surface_form_strict(grammar_name)
+            || crate::classifier::dispatch::is_kernel_form(grammar_name)
+            || crate::classifier::dispatch::is_kernel_only_form(grammar_name)
+            || matches!(name, "class" | "class-expr")
+            || matches!(name, "catch")
+    });
+    if !dispatches || !known_dispatch {
+        return ScopeWork {
+            plan: ScopePlan::Call,
+            occurrences: Vec::new(),
+        };
+    }
     let occurrences = binding_occurrences(form);
     let plan = scope_plan_with_occurrences(form, scope, &occurrences);
     ScopeWork { plan, occurrences }
@@ -143,6 +174,31 @@ fn scope_plan_with_occurrences<'tree>(
     };
     let head = values.first().and_then(|e| e.as_atom());
     let dispatch_head = values.first().and_then(SExpr::as_form_head);
+    let dispatches = dispatch_head.is_some_and(|name| !scope.iter().any(|bound| bound == name));
+    if dispatches
+        && matches!(
+            dispatch_head,
+            Some(
+                "func"
+                    | "genfunc"
+                    | "fn"
+                    | "genfn"
+                    | "lambda"
+                    | "function"
+                    | "function*"
+                    | "=>"
+                    | "kernel:function"
+                    | "kernel:function*"
+                    | "kernel:=>"
+                    | "kernel:lambda"
+            )
+        )
+    {
+        return ScopePlan::SourceFunction(crate::lexical_regions::function_regions(form));
+    }
+    if dispatches && matches!(dispatch_head, Some("class" | "class-expr")) {
+        return ScopePlan::Class(crate::lexical_regions::class_regions(form));
+    }
     if matches!(dispatch_head, Some("if" | "kernel:if"))
         && !scope
             .iter()
@@ -267,6 +323,10 @@ fn resolve_form(
                     .iter()
                     .map(|child| resolve_form(child, scope, &child_defs))
                     .collect(),
+                ScopePlan::Call => values
+                    .iter()
+                    .map(|child| resolve_form(child, scope, def_occurrences))
+                    .collect(),
                 ScopePlan::Match { subject, clauses } => {
                     let Some(subject) = subject else {
                         return form.clone();
@@ -284,6 +344,12 @@ fn resolve_form(
                     }
                     resolved
                 }
+                ScopePlan::SourceFunction(Some(layout)) => {
+                    resolve_source_function(form, &layout, scope, &child_defs)
+                }
+                ScopePlan::SourceFunction(None) => values.to_vec(),
+                ScopePlan::Class(Some(layout)) => resolve_class(form, &layout, scope, &child_defs),
+                ScopePlan::Class(None) => values.to_vec(),
             };
             SExpr::List {
                 values: new_values,
@@ -325,6 +391,200 @@ fn resolve_match_clause(
     SExpr::List {
         values,
         span: clause.span,
+    }
+}
+
+fn resolve_source_function(
+    form: &SExpr,
+    layout: &crate::lexical_regions::FunctionRegions,
+    scope: &[String],
+    def_occurrences: &[BindingOccurrence<'_>],
+) -> Vec<SExpr> {
+    let mut out = form.clone();
+    let mut function_scope = scope.to_vec();
+    if let Some(name_path) = &layout.name_path
+        && let Some(name) = crate::lexical_regions::at_path(form, name_path)
+    {
+        let resolved = resolve_form(name, &mut function_scope, def_occurrences);
+        out = replace_at_path(&out, &name_path.0, resolved);
+        if let Some(name) = name.as_atom() {
+            function_scope.push(name.to_string());
+        }
+    }
+
+    for clause in &layout.clauses {
+        let mut clause_scope = function_scope.clone();
+        if let Some(params_path) = &clause.params_path
+            && let Some(params) = crate::lexical_regions::at_path(form, params_path)
+        {
+            let occurrences = if layout.grammar == crate::lexical_regions::FunctionGrammar::Kernel {
+                crate::binding::kernel_param_names(params)
+            } else {
+                crate::binding::typed_param_names(params)
+            };
+            clause_scope.extend(
+                occurrences
+                    .iter()
+                    .filter(|occurrence| occurrence.kind.shadows_values())
+                    .filter_map(|occurrence| occurrence.atom.as_atom().map(str::to_string)),
+            );
+            out = replace_at_path(&out, &params_path.0, resolve_pattern(params, &occurrences));
+        }
+        for path in &clause.default_paths {
+            if let Some(value) = crate::lexical_regions::at_path(form, path) {
+                let resolved = resolve_form(value, &mut clause_scope, def_occurrences);
+                out = replace_at_path(&out, &path.0, resolved);
+            }
+        }
+        if let Some(path) = clause.pre_paths.first()
+            && let Some(pre) = crate::lexical_regions::at_path(form, path)
+        {
+            let resolved = resolve_form(pre, &mut clause_scope, def_occurrences);
+            out = replace_at_path(&out, &path.0, resolved);
+        }
+        for path in &clause.body_paths {
+            if let Some(body) = crate::lexical_regions::at_path(form, path) {
+                let resolved = resolve_form(body, &mut clause_scope, def_occurrences);
+                if let Some(head) = resolved.as_list().and_then(|values| values.first())
+                    && head.as_form_head().is_some()
+                {
+                    clause_scope.extend(hoisted_names(&resolved));
+                }
+                out = replace_at_path(&out, &path.0, resolved);
+            }
+        }
+        if layout.grammar != crate::lexical_regions::FunctionGrammar::SourceGenfunc
+            && let Some(path) = clause.post_paths.first()
+            && let Some(post) = crate::lexical_regions::at_path(form, path)
+        {
+            let resolved = resolve_form(post, &mut clause_scope, def_occurrences);
+            out = replace_at_path(&out, &path.0, resolved);
+        }
+    }
+    match out {
+        SExpr::List { values, .. } => values,
+        _ => Vec::new(),
+    }
+}
+
+fn resolve_class(
+    form: &SExpr,
+    layout: &crate::lexical_regions::ClassRegions,
+    scope: &[String],
+    def_occurrences: &[BindingOccurrence<'_>],
+) -> Vec<SExpr> {
+    let mut out = form.clone();
+    let mut class_scope = scope.to_vec();
+    if let Some(path) = &layout.name_path
+        && let Some(name) = crate::lexical_regions::at_path(form, path)
+    {
+        out = replace_at_path(
+            &out,
+            &path.0,
+            resolve_form(name, &mut class_scope, def_occurrences),
+        );
+        if let Some(name) = name.as_atom() {
+            class_scope.push(name.to_string());
+        }
+    }
+    for path in &layout.base_paths {
+        if let Some(base) = crate::lexical_regions::at_path(form, path) {
+            out = replace_at_path(
+                &out,
+                &path.0,
+                resolve_form(base, &mut class_scope, def_occurrences),
+            );
+        }
+    }
+    for member in &layout.members {
+        resolve_class_member(form, &mut out, member, &class_scope, def_occurrences);
+    }
+    match out {
+        SExpr::List { values, .. } => values,
+        _ => Vec::new(),
+    }
+}
+
+fn resolve_class_member(
+    root: &SExpr,
+    out: &mut SExpr,
+    layout: &crate::lexical_regions::ClassMemberRegions,
+    class_scope: &[String],
+    def_occurrences: &[BindingOccurrence<'_>],
+) {
+    if layout.grammar == crate::lexical_regions::ClassMemberGrammar::Wrapper {
+        if let Some(inner) = &layout.inner {
+            resolve_class_member(root, out, inner, class_scope, def_occurrences);
+        }
+        return;
+    }
+    if layout.grammar == crate::lexical_regions::ClassMemberGrammar::Field {
+        for path in &layout.init_paths {
+            if let Some(init) = crate::lexical_regions::at_path(root, path) {
+                *out = replace_at_path(
+                    out,
+                    &path.0,
+                    resolve_form(init, &mut class_scope.to_vec(), def_occurrences),
+                );
+            }
+        }
+        return;
+    }
+    let Some(params_path) = &layout.params_path else {
+        return;
+    };
+    let Some(params) = crate::lexical_regions::at_path(root, params_path) else {
+        return;
+    };
+    let occurrences = crate::binding::kernel_param_names(params);
+    let mut method_scope = class_scope.to_vec();
+    method_scope.extend(
+        occurrences
+            .iter()
+            .filter(|occurrence| occurrence.kind.shadows_values())
+            .filter_map(|occurrence| occurrence.atom.as_atom().map(str::to_string)),
+    );
+    *out = replace_at_path(out, &params_path.0, resolve_pattern(params, &occurrences));
+    for path in &layout.default_paths {
+        if let Some(value) = crate::lexical_regions::at_path(root, path) {
+            *out = replace_at_path(
+                out,
+                &path.0,
+                resolve_form(value, &mut method_scope, def_occurrences),
+            );
+        }
+    }
+    for path in &layout.body_paths {
+        let Some(body) = crate::lexical_regions::at_path(root, path) else {
+            continue;
+        };
+        let resolved = resolve_form(body, &mut method_scope, def_occurrences);
+        if resolved
+            .as_list()
+            .and_then(|values| values.first())
+            .is_some_and(|head| head.as_form_head().is_some())
+        {
+            method_scope.extend(hoisted_names(&resolved));
+        }
+        *out = replace_at_path(out, &path.0, resolved);
+    }
+}
+
+fn replace_at_path(root: &SExpr, path: &[usize], replacement: SExpr) -> SExpr {
+    if path.is_empty() {
+        return replacement;
+    }
+    let SExpr::List { values, span } = root else {
+        return root.clone();
+    };
+    let Some(child) = values.get(path[0]) else {
+        return root.clone();
+    };
+    let mut rebuilt = values.clone();
+    rebuilt[path[0]] = replace_at_path(child, &path[1..], replacement);
+    SExpr::List {
+        values: rebuilt,
+        span: *span,
     }
 }
 
@@ -588,6 +848,11 @@ fn shadow_form(form: &SExpr, scope: &mut Vec<String>, out: &mut Vec<BindingSite>
                     shadow_seq(std::slice::from_ref(child), scope, out);
                 }
             }
+            ScopePlan::Call => {
+                for child in values {
+                    shadow_form(child, scope, out);
+                }
+            }
             ScopePlan::Match { subject, clauses } => {
                 let Some(subject) = subject else {
                     return;
@@ -614,12 +879,166 @@ fn shadow_form(form: &SExpr, scope: &mut Vec<String>, out: &mut Vec<BindingSite>
                     scope.truncate(mark);
                 }
             }
+            ScopePlan::SourceFunction(Some(layout)) => {
+                shadow_source_function(form, &layout, scope, out);
+            }
+            ScopePlan::SourceFunction(None) => {}
+            ScopePlan::Class(Some(layout)) => {
+                shadow_class(form, &layout, scope, out);
+            }
+            ScopePlan::Class(None) => {}
         },
         SExpr::Cons { car, cdr, .. } => {
             shadow_form(car, scope, out);
             shadow_form(cdr, scope, out);
         }
         _ => {}
+    }
+}
+
+fn shadow_source_function(
+    form: &SExpr,
+    layout: &crate::lexical_regions::FunctionRegions,
+    scope: &mut Vec<String>,
+    out: &mut Vec<BindingSite>,
+) {
+    let mark = scope.len();
+    if let Some(path) = &layout.name_path
+        && let Some(name) = crate::lexical_regions::at_path(form, path).and_then(SExpr::as_atom)
+    {
+        scope.push(name.to_string());
+    }
+    for clause in &layout.clauses {
+        let clause_mark = scope.len();
+        if let Some(path) = &clause.params_path
+            && let Some(params) = crate::lexical_regions::at_path(form, path)
+        {
+            let sites = if layout.grammar == crate::lexical_regions::FunctionGrammar::Kernel {
+                crate::binding::kernel_param_names(params)
+            } else {
+                crate::binding::typed_param_names(params)
+            };
+            for occurrence in &sites {
+                let site = occurrence.project();
+                if scope.iter().any(|bound| bound == &site.name) {
+                    out.push(site);
+                }
+            }
+            scope.extend(sites.into_iter().map(|site| site.project().name));
+        }
+        shadow_paths(form, &clause.default_paths, scope, out, false);
+        shadow_paths(
+            form,
+            &clause.pre_paths.iter().take(1).cloned().collect::<Vec<_>>(),
+            scope,
+            out,
+            false,
+        );
+        shadow_paths(form, &clause.body_paths, scope, out, true);
+        if layout.grammar != crate::lexical_regions::FunctionGrammar::SourceGenfunc {
+            shadow_paths(
+                form,
+                &clause
+                    .post_paths
+                    .iter()
+                    .take(1)
+                    .cloned()
+                    .collect::<Vec<_>>(),
+                scope,
+                out,
+                false,
+            );
+        }
+        scope.truncate(clause_mark);
+    }
+    scope.truncate(mark);
+}
+
+fn shadow_class(
+    form: &SExpr,
+    layout: &crate::lexical_regions::ClassRegions,
+    scope: &mut Vec<String>,
+    out: &mut Vec<BindingSite>,
+) {
+    let mark = scope.len();
+    if let Some(path) = &layout.name_path
+        && let Some(name) = crate::lexical_regions::at_path(form, path).and_then(SExpr::as_atom)
+    {
+        scope.push(name.to_string());
+    }
+    shadow_paths(form, &layout.base_paths, scope, out, false);
+    for member in &layout.members {
+        if member.grammar == crate::lexical_regions::ClassMemberGrammar::Wrapper {
+            if let Some(inner) = &member.inner {
+                shadow_class_member(form, inner, scope, out);
+            }
+        } else {
+            shadow_class_member(form, member, scope, out);
+        }
+    }
+    scope.truncate(mark);
+}
+
+fn shadow_class_member(
+    form: &SExpr,
+    member: &crate::lexical_regions::ClassMemberRegions,
+    scope: &mut Vec<String>,
+    out: &mut Vec<BindingSite>,
+) {
+    if member.grammar == crate::lexical_regions::ClassMemberGrammar::Field {
+        shadow_paths(form, &member.init_paths, scope, out, false);
+        return;
+    }
+    let Some(params_path) = &member.params_path else {
+        return;
+    };
+    let Some(params) = crate::lexical_regions::at_path(form, params_path) else {
+        return;
+    };
+    let mark = scope.len();
+    let sites = crate::binding::kernel_param_names(params);
+    for occurrence in &sites {
+        let site = occurrence.project();
+        if scope.iter().any(|bound| bound == &site.name) {
+            out.push(site);
+        }
+    }
+    scope.extend(sites.into_iter().map(|site| site.project().name));
+    shadow_paths(form, &member.default_paths, scope, out, false);
+    shadow_paths(form, &member.body_paths, scope, out, true);
+    scope.truncate(mark);
+}
+
+fn shadow_paths(
+    root: &SExpr,
+    paths: &[crate::lexical_regions::OccurrencePath],
+    scope: &mut Vec<String>,
+    out: &mut Vec<BindingSite>,
+    retain_declarations: bool,
+) {
+    let mark = scope.len();
+    for path in paths {
+        if let Some(form) = crate::lexical_regions::at_path(root, path) {
+            shadow_form(form, scope, out);
+            let dispatches = form
+                .as_list()
+                .and_then(|values| values.first())
+                .and_then(SExpr::as_form_head)
+                .is_some_and(|head| !scope.iter().any(|bound| bound == head));
+            for site in if dispatches {
+                hoisted_sites(form)
+            } else {
+                Vec::new()
+            } {
+                if scope[..mark].iter().any(|name| name == &site.name) {
+                    out.push(site.clone());
+                }
+                scope.push(site.name);
+            }
+        }
+    }
+    if !retain_declarations {
+        scope.truncate(mark);
     }
 }
 
@@ -715,6 +1134,78 @@ mod tests {
             collect(f, &mut out);
         }
         out
+    }
+
+    #[test]
+    fn ordinary_call_operands_do_not_share_sibling_bindings() {
+        let resolved_tags = tags("(foo (bind local 1) (local))");
+        let local_heads = resolved_tags
+            .iter()
+            .filter(|(name, _)| name == "local")
+            .map(|(_, res)| *res)
+            .collect::<Vec<_>>();
+        assert_eq!(local_heads, [NameRes::BindingDef, NameRes::Unresolved]);
+
+        let resolved_tags = tags("(bind func identity) (func (:args (:any y) :body y)) (y)");
+        let y_sites = resolved_tags
+            .iter()
+            .filter(|(name, _)| name == "y")
+            .map(|(_, res)| *res)
+            .collect::<Vec<_>>();
+        assert_eq!(
+            y_sites,
+            [
+                NameRes::Unresolved,
+                NameRes::Unresolved,
+                NameRes::Unresolved
+            ]
+        );
+
+        let resolved_tags = tags("(bind class identity) (class C () (method (y) y)) (y)");
+        let y_sites = resolved_tags
+            .iter()
+            .filter(|(name, _)| name == "y")
+            .map(|(_, res)| *res)
+            .collect::<Vec<_>>();
+        assert_eq!(
+            y_sites,
+            [
+                NameRes::Unresolved,
+                NameRes::Unresolved,
+                NameRes::Unresolved
+            ]
+        );
+    }
+
+    #[test]
+    fn block_body_still_shares_own_level_bindings() {
+        let tags = tags("(block (bind local 1) (local))");
+        assert!(
+            tags.iter()
+                .any(|(name, res)| name == "local" && *res == NameRes::BindingRef)
+        );
+    }
+
+    #[test]
+    fn class_method_parameter_shadows_form_head_only_in_own_member() {
+        let forms =
+            read("(class Box () (call (bind) (bind 7)) (other () (bind 1)))").expect("parse");
+        assert!(matches!(scope_plan(&forms[0], &[]), ScopePlan::Class(_)));
+        let resolved_tags = tags("(class Box () (call (bind) (bind 7)) (other () (bind 1)))");
+        let bind_heads = resolved_tags
+            .iter()
+            .filter(|(name, _)| name == "bind")
+            .map(|(_, res)| *res)
+            .collect::<Vec<_>>();
+        assert_eq!(
+            bind_heads,
+            [
+                NameRes::BindingDef,
+                NameRes::BindingRef,
+                NameRes::Unresolved
+            ],
+            "resolved={resolved_tags:?}"
+        );
     }
 
     fn collect(e: &SExpr, out: &mut Vec<(String, NameRes)>) {
@@ -813,6 +1304,9 @@ mod tests {
 
     #[test]
     fn pattern_binding_is_def_site() {
+        let forms = read("(if-let (x 1) x)").expect("parse");
+        assert!(matches!(scope_plan(&forms[0], &[]), ScopePlan::Body { .. }));
+        assert_eq!(binding_occurrences(&forms[0]).len(), 1);
         assert_eq!(first("(if-let (x 1) x)", "x"), Some(NameRes::BindingDef));
     }
 
@@ -865,7 +1359,7 @@ mod tests {
         ));
         assert!(matches!(
             scope_plan(&kernel[0], &["kernel:if".to_string()]),
-            ScopePlan::Sequence
+            ScopePlan::Call
         ));
 
         let mut bound = read("(if true 1 2)").expect("parse bound call");
@@ -873,19 +1367,16 @@ mod tests {
             panic!("conditional is a list")
         };
         values[0] = values[0].clone().with_name_res(NameRes::BindingRef);
-        assert!(matches!(scope_plan(&bound[0], &[]), ScopePlan::Sequence));
+        assert!(matches!(scope_plan(&bound[0], &[]), ScopePlan::Call));
         let mut bound_kernel = kernel.clone();
         let SExpr::List { values, .. } = &mut bound_kernel[0] else {
             panic!("kernel conditional is a list")
         };
         values[0] = values[0].clone().with_name_res(NameRes::BindingRef);
-        assert!(matches!(
-            scope_plan(&bound_kernel[0], &[]),
-            ScopePlan::Sequence
-        ));
+        assert!(matches!(scope_plan(&bound_kernel[0], &[]), ScopePlan::Call));
         assert!(matches!(
             scope_plan(&ordinary[0], &["if".to_string()]),
-            ScopePlan::Sequence
+            ScopePlan::Call
         ));
     }
 
@@ -898,7 +1389,7 @@ mod tests {
         };
         let function = values.get(2).expect("function initializer");
         let plan = scope_plan(function, &[]);
-        assert!(matches!(plan, ScopePlan::Body { body_start: 0, .. }));
+        assert!(matches!(plan, ScopePlan::SourceFunction(_)));
         assert_eq!(hoisted_names(function), vec!["fn-local"]);
         let resolved = resolve(&forms);
         let rendered = resolved

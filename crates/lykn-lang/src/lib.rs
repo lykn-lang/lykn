@@ -7,6 +7,7 @@ pub mod diagnostics;
 pub mod emitter;
 pub mod error;
 pub mod expander;
+mod lexical_regions;
 mod protected_host;
 pub mod reader;
 pub mod resolver;

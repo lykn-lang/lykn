@@ -11,6 +11,11 @@ export function markExpandedHostCall(node) {
   return node;
 }
 
+/** Whether this exact list carries a private Reflect expansion request. */
+export function isExpandedHostCall(node) {
+  return !!node && typeof node === 'object' && EXPANDED_REQUESTS.has(node);
+}
+
 export function materializeExpandedHostCalls(forms, {
   toJsIdentifier,
   formHead,

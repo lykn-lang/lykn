@@ -462,6 +462,84 @@ mod tests {
     }
 
     #[test]
+    fn compile_source_func_post_uses_body_scope_before_or_after_textually() {
+        let path = Path::new("post-before-body.lykn");
+        let before = "(func sample :args () :post (bind eval 1) :body (bind bind (fn (:any a :any b) (= a eval))) true) (console:log (sample))";
+        let after = "(func sample :args () :body (bind bind (fn (:any a :any b) (= a eval))) true :post (bind eval 1)) (console:log (sample))";
+        for source in [before, after] {
+            let emitted = compile_source(source, Some(path), true, false).unwrap();
+            assert!(
+                emitted.contains("const bind = (a, b) => a === eval;"),
+                "{emitted}"
+            );
+            assert!(emitted.contains("return true;"), "{emitted}");
+        }
+    }
+
+    #[test]
+    fn compile_source_function_clauses_keep_independent_parameter_scope() {
+        let path = Path::new("clause-scope.lykn");
+        let source = "(func total (:args (:any bind) :body (bind 11)) (:args (:number a :number b) :body (bind result (+ a b)) result)) (console:log (total (fn (:any value) value))) (console:log (total 20 22))";
+        let emitted = compile_source(source, Some(path), true, false).unwrap();
+        assert!(emitted.contains("return bind(11);"), "{emitted}");
+        assert!(emitted.contains("const result = a + b;"), "{emitted}");
+        assert!(emitted.contains("return result;"), "{emitted}");
+    }
+
+    #[test]
+    fn compile_source_class_members_keep_independent_parameter_scope() {
+        let path = Path::new("class-member-scope.lykn");
+        let source = "(class Box () (call (bind) (return (bind 7))) (sum (left right) (bind total (+ left right)) (return total))) (bind box (new Box)) (console:log (box:call (fn (:any value) value))) (console:log (box:sum 20 22))";
+        let emitted = compile_source(source, Some(path), true, false).unwrap();
+        assert!(
+            emitted.contains("call(bind) {\n    return bind(7);"),
+            "{emitted}"
+        );
+        assert!(
+            emitted
+                .contains("sum(left, right) {\n    const total = left + right;\n    return total;"),
+            "{emitted}"
+        );
+    }
+
+    #[test]
+    fn compile_source_malformed_class_field_reports_diagnostic() {
+        let error = compile_source("(class Box () (field))", None, true, false)
+            .unwrap_err()
+            .to_string();
+        assert!(error.contains("field requires a property name"), "{error}");
+    }
+
+    #[test]
+    fn compile_source_rejects_multi_clause_genfunc_before_body() {
+        let path = Path::new("multi-genfunc.lykn");
+        let source = "(genfunc invalid (:args () :body (unknown-body-macro)) (:args (:any value) :body (yield value)))";
+        let error = compile_source(source, Some(path), true, false)
+            .unwrap_err()
+            .to_string();
+        assert!(
+            error.contains("genfunc: multiple clauses are not supported"),
+            "{error}"
+        );
+        assert!(!error.contains("unknown-body-macro"), "{error}");
+    }
+
+    #[test]
+    fn compile_source_macro_returned_declaration_scopes_following_call() {
+        let path = Path::new("macro-result-scope.lykn");
+        let source = "(macro make-local () `(export (async (function local-value () (return 41))))) (make-local) (console:log (await (local-value)))";
+        let emitted = compile_source(source, Some(path), true, false).unwrap();
+        assert!(
+            emitted.contains("export async function localValue()"),
+            "{emitted}"
+        );
+        assert!(
+            emitted.contains("console.log(await localValue());"),
+            "{emitted}"
+        );
+    }
+
+    #[test]
     fn compile_source_context_path_synthetic_parent() {
         // Verify that a synthetic path's parent() is what the expander
         // uses for relative-path resolution. This is the mechanism

@@ -1229,6 +1229,11 @@ export function emitGenfuncMacro(args) {
   }
   const funcName = funcNameNode.value;
   const clauseArgs = args.slice(1);
+  const firstClause = clauseArgs[0];
+  if (firstClause?.type === "list" && firstClause.values[0]?.type === "keyword" &&
+      FUNC_CLAUSE_KEYS.has(firstClause.values[0].value) && clauseArgs.length > 1) {
+    throw new Error("genfunc: multiple clauses are not supported");
+  }
   const clauses = parseKeywordClauses(clauseArgs);
   const argsClause = clauses.get("args");
   const yieldsClause = clauses.get("yields");
