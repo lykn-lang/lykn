@@ -1,0 +1,146 @@
+# B2b — owner-unit transport preparation (not issued)
+
+Root working design against e80f613b and the issued B2a lexical contract.
+Implementation must be prepared against independently accepted B2a, with its
+actual private helper signatures and consumer census. This file is not an
+assignment or acceptance. No B2b source changes are authorized by iteration09.
+The operator's B2 authorization covers completing this design and later
+implementation/review; root retains consequential decisions.
+
+## Settled identity/query rules
+
+- ModuleIdentity is Named(LogicalModuleId) or fresh opaque AnonymousUnit.
+  Named IDs are exact nonempty caller-supplied logical strings, with no URL,
+  query/fragment, path or source-hash normalization. Anonymous equality is
+  opaque unit identity, never the string '<anonymous>'. Anonymous units cannot
+  advertise stable graph metadata. No filesystem/module I/O is introduced.
+- DeclarationId is the unique normalized top-level owner binding name in this
+  local v1 unit; retain raw source spelling separately for diagnostics. OwnerRef
+  is module identity plus DeclarationId; CaseRef is OwnerRef plus normalized
+  case identity. Different owners may have equal case names. ScopeId,
+  ScopeSnapshotId, BindingId and semantic occurrence IDs are distinct private
+  types belonging to a unit domain. IDs cannot be confused with spans/names or
+  reused across anonymous calls.
+- A lexical scope is not a mutable retrospective name dictionary. At a real
+  annotation/pattern/member occurrence, capture either the then-visible
+  BindingId or a pending top-level owner-name query. Final collection may fill
+  in top-level owner declarations, but never a later ordinary alias. Ordinary
+  bindings and parameters shadow owners; only immutable direct owner aliases
+  preserve OwnerRef. Mutable/dynamic/conditional values are ordinary code.
+  A direct alias initializer may refer to a forward owner declaration, but its
+  runtime read/TDZ and declaration position remain unchanged. Alias relations
+  point to the initializer's captured query, not a name looked up again later.
+- Named annotation queries use the header's lexical scope before introducing
+  its parameters; the function's own recursive binding remains visible. Return/
+  yields annotations use that same header scope, not body-local declarations.
+  Type fields use declaration scope with forward owner lookup. Pattern owner
+  queries use incoming clause scope before introducing pattern bindings;
+  guards/bodies then see the actual pattern bindings. All source member paths
+  retain their original qualifier reads and existing ordinary-call semantics.
+- Final field TypeRef is Builtin or Adt(OwnerRef). Recursive field graphs are
+  legal metadata, not recursively evaluated values. Prelude Option/Result
+  analysis metadata never manufactures an OwnerRef/token/namespace. Unknown
+  names in ADT-specific type/pattern contexts diagnose; ordinary object member
+  use remains ordinary when its binding does not identify an owner.
+
+## Native resolved-unit boundary
+
+The canonical path must prepare one closed semantic unit from post-expansion
+source and use it in compile, check, DTS and dist, including inline exports.
+It must resolve nested raw annotations/matches/defaults before emission, not
+only top-level SurfaceForm records. The strong API direction is an owned
+AnalyzedUnit plus typed error/diagnostic return, consumed by whole-unit emission;
+do not keep a public forms-plus-unrelated-registry pairing as the canonical
+qualified route merely for compatibility. Rust breaking API change is allowed
+for0.6, but every actual caller and S06 impact must be enumerated before issue.
+
+Recommended transport to finish source-checking: add private unit-domain,
+occurrence and scope-snapshot handles to AtomData, preserving them on clones.
+Annotate actual source head/member/atom occurrences under the B2a regions.
+Raw nested source then keeps its scope when later classified. Header parsers
+receive the enclosing source occurrence's semantic context explicitly;
+parameters/returns use its captured header scope, rather than adding a private
+field to every Keyword variant or guessing from its span. Typed source AST
+annotations/patterns consume closed TypeRef/CaseRef facts, and nested emitter
+reclassification must call the unit-aware classifier, never the unscoped legacy
+classifier. If semantic positions require a site key, use the original
+occurrence ID plus structural slot path, not pointer identity or source span.
+
+The unit owns an immutable graph and the scope snapshots; private handles check
+their unit domain. Source/JSON cannot construct them. Analysis-only scope
+handles are not host authority or initialization-purity proof. Final emitted
+kernel has no unresolved ADT requests or dependency on an active analysis unit;
+fully lowered kernel compilation remains context-free. Avoid a complete cloned
+subtree cached at every node, which could add quadratic storage.
+
+## Public producer/finalizer boundary
+
+Retain the actual expansion order and fresh per-call type context. Extend the
+environment with explicit semantic scope/frame state; distinguish entering a
+scope from declaring following-sibling bindings. Actual expanded declaration
+results feed the same unit, including macro-produced/export-wrapped top-level
+owners. Nested/local type declarations receive the S01 v1 diagnostic. Top-level
+position is explicit, not inferred solely from a shared lexical frame.
+
+Type declarations, named predicates and qualified patterns need private typed
+requests while forward metadata is incomplete. Capture query IDs, qualifier
+syntax, already expanded operands/body/guard/completion use and field-slot
+positions. A same-spelled source object or JSON record cannot manufacture a
+request; a request from another unit is rejected. Per-request WeakMap metadata
+is allowed as an identity facility; it is not an active global compilation.
+Separate request ownership from existing compiler atoms, kernel marks, Reflect
+anchors and future purity metadata.
+
+Finalize after actual expansion/collection, before compiler-private name
+allocation and A host-call/reference materialization. Seal queries first;
+final lowering consumes resolved facts and must not create new unresolved
+lookups, execute macros or re-expand expressions. Pending pattern field keys
+may be private field-slot requests resolved to exact declared keys; keep field
+reads in the existing short-circuit/clause-local temporary plan. Unfinished
+fragments/serialization boundaries diagnose rather than silently dropping a
+request. expandExpr finalizes its own complete one-form unit; it does not gain
+whole expand's import/macro registration side effects.
+
+Direct qualified calls/extractions can retain ordinary L1 member lowering and
+record side requests for static validation, avoiding unnecessary new call
+rewrites. Capture original exact case use and argument shape at actual expansion,
+not by scanning arbitrary final property syntax. Known-owner unknown cases,
+zero-field calls and direct fielded arity diagnose in both modes. Unknown-owner
+ordinary object members remain ordinary. Shared syntax reused by a macro is
+visited per occurrence, not memoized by object identity. Exact native/public
+producer callback signatures and completion-region request categories still
+need the accepted-B2a source-readiness pass.
+
+## Preserved runtime and static distinctions
+
+Namespace declaration position and actual qualifier-before-argument/field
+reads are fixed by S01. Named type annotations are static queries, not ordinary
+namespace expressions; their runtime checks use the resolved owner token and
+closed case membership. Explicit qualified values/patterns still read their
+actual source qualifier, including aliases in TDZ. Do not replace that read
+with a token-only optimization.
+
+No purity annotation is inferred from owner identity. Constructor/predicate/
+pattern initialization lowering still needs the separately reviewed typed
+purity producer/serialization/writer protocol. Static validation, field guard
+policy, runtime nominal tokens and public declaration types are separate proof
+obligations; a successful metadata query cannot close nominal runtime rows.
+
+## Source-readiness work remaining before B2b issue
+
+Enumerate actual raw-header/nested-classification consumers and scoped unit
+API callers at the accepted B2a pin; settle error/report/signature migration,
+request kinds and reconstruction boundaries, field/case/ABI collision checks,
+pattern nested-field policy and direct-call spread handling. Check constructor
+field grammar against S01's static declarations. Supply actual source/runtime
+and metadata oracles rather than leaving public behavior to the implementer.
+
+Two inspected feature limitations stay explicit: public ordinary multi-clause
+simple defaults are dropped while native retains a default-shaped binding;
+and the current public reference compiler has no assertion-stripping option
+(no stripAssertions/strip_assertions producer in inspected public core). The
+future full checked/stripped consumer claim must supply a reviewed public
+policy/route or precisely account for this boundary; do not invent a passing
+public stripped gate. Native stripping and ordinary public checked behavior
+remain actual existing routes. These are source-inspected inputs, not executed
+new experiments or approval to reduce S03. B2a's generator rejection is separate.
