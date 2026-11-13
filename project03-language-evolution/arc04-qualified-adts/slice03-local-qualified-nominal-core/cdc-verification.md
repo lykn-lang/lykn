@@ -717,3 +717,22 @@ run/load, I4, warm-cache and legacy fallback limits remain explicit; release0829
 is untouched. Source/build and CDC record/evidence ownership return to root;
 root owns planning Git/index/ledger/status and architecture. No further
 implementation, integration or release authority follows from this review.
+
+## B2a root record of separate Sol source-readiness — 2026-11-12
+
+Against immutable accepted e80f613b/tree7376b33d, separate Sol6.1High reviewed
+root's B2 architecture and lexical-region recipe read-only. No runtime probe,
+test, source/index edit or implementation acceptance was performed. Initial
+readiness required three explicit dispositions: multi-clause default lowering
+differs by backend; native genfunc accepts clauses it silently discards; class
+bases include the class's own binding. Root adopted per-backend default carryover,
+explicit multi-clause generator rejection and incoming-plus-own class base
+scope, also specifying native source versus public lowered/sorted clause order.
+Sol then found no remaining design contradiction and approved B2a for issue.
+
+The revised recipe also makes original occurrence paths, actual incoming-
+environment declaration checks and a private Single/Sequence result-slot tag
+explicit, preserving macro phases/private metadata. Root issues iteration09;
+B2-LX, B2b and LC-02–08 remain open. The review is source-readiness only and
+does not settle B2b's eventual storage/consumer API or accept typed owners,
+nominal runtime, purity, release integration or the later emission experiment.

@@ -3,7 +3,7 @@ project: project03-language-evolution
 arc: arc04-qualified-adts
 slice: slice03-local-qualified-nominal-core
 status: active
-version: "1.15"
+version: "1.16"
 depends-on: [slice01-contract-and-emission-design, slice02-existing-adt-correctness]
 ---
 
@@ -203,14 +203,19 @@ depth, supported native quotation paths, kernel-only D1 scope corrections and
 validation-only class-member queries. Existing source Func/class aggregate
 scope issues are explicit B2 inputs, not new IC-01 expansion claims.
 
-**Current assignment:** [iteration08](cc-prompt-iteration08.md) is independently
-accepted for IC-01 at e80f613b/tree7376b33d. Its explicit pattern grammar,
-single function-default traversal and ordinary malformed-header diagnostics
-close this prerequisite only. Root resumes B2 qualified-constructor preparation
-against this accepted source; no next CC source assignment has been issued.
-The preserved initial design remains historical where superseded by the role
-contract/corrections. LC-02–08 remain open. No release edits/integration or
-external actions; original B/C, purity, API and downstream gates survive.
+**Current assignment:** [iteration09](cc-prompt-iteration09.md), B2a precise
+lexical regions against accepted e80f613b/tree7376b33d, under the operator's
+2026-11-12 B2 design/implementation/independent-validation authorization.
+[B2 architecture](artifacts/b2-owner-and-lexical-design.md) settles typed owner/
+case, occurrence-scoped query and private finalization principles; its first
+[source-ready recipe](artifacts/b2a-lexical-regions-recipe.md) repairs actual
+lexical scope before B2b attaches metadata. Separate Sol readiness approves
+that bounded recipe after explicit default/generator/class-scope dispositions.
+Luna6High owns task source/build through clean handoff; Sol6.1High then reviews
+independently; root owns architecture and planning Git/index/status. Standard
+Autonomous Mode continues without routine permission stops. B2-LX has its own
+row and is not complete B2 or LC-02. Original B/C, purity, API and downstream
+gates survive. No release edits/integration, remote CI, push or publication.
 
 ## Assignment history
 
@@ -225,6 +230,7 @@ external actions; original B/C, purity, API and downstream gates survive.
 | cc-prompt-iteration06.md | 2026-11-11 | iteration05 | Rename guide block34 public to public-user, preserve output, finish original repair/gates | HOLD at5bdbfe3c/treee0a95d74: IC-R01–04 correctness plus R05 oracle gap |
 | cc-prompt-iteration07.md | 2026-11-11 | iteration06 | Shared function group parsing, complete executable/default regions, restore public post scope and valid macro oracle | Independent HOLD atb8a1fa17/treed3e604b2: R01–05 repaired, new R06–08; three correction commits retained |
 | cc-prompt-iteration08.md | 2026-11-11 | iteration07 | Mandatory producer grammar, exactly-once function regions and ordinary malformed-header diagnostics | Independently accepted IC-01 at e80f613b/tree7376b33d; LC-02–08 remain open |
+| cc-prompt-iteration09.md | 2026-11-12 | iteration08 | B2a shared precise lexical regions, actual expanded visibility and explicit unsupported generator diagnostic | Active CC implementation after separate source-readiness acceptance |
 
 The A correction loop used three refinement passes; B1 required no software
 correction. IC-01 is a distinct authorized usable prerequisite, not a retry
@@ -325,3 +331,19 @@ a889c79e0a1fb50847b9a0dbe8edd975a45096b1a0bd9d75eaef46c32c93fd7a.
 Only IC-01 closes. The B2 preparation handoff records the accepted source,
 remaining lexical identity/clause/member/native-order design inputs and the
 requirement for a source-ready next numbered assignment before implementation.
+
+2026-11-12 B2 authoring/readiness inspected native resolver/pass2/classifier/
+emitter and public lowering/sequence/private-marker paths. The chosen first
+checkpoint repairs clause/member scopes and native Func semantic-region order
+without a macro-phase split. Class bases retain incoming plus own class scope.
+Public/native macro clause-order differences remain explicit; multi-clause
+simple-default lowering differences are B2b/S06 carryovers. Silent native
+first-clause generator emission becomes an unsupported-feature diagnostic.
+The recipe uses original occurrence-index paths, explicit result-slot tags and
+incoming-environment declaration gating, not pointer/span identity or completion
+use guessing. Separate Sol initially required those behavioral dispositions,
+then accepted source readiness with no remaining contradiction. No new runtime
+experiment or software acceptance is inferred. B2a is a separate usable
+checkpoint after accepted IC, not erasure/reset of prior refinement history;
+its own corrections remain bounded by the framework's five-pass loop. Root
+continues B2b preparation after independent lexical acceptance.

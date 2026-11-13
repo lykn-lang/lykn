@@ -15,8 +15,10 @@ The finite host/reference prerequisite is independently accepted at 5caf3d87,
 and per-call public type isolation at 3f197340 is accepted as partial LC-02.
 The binding-role prerequisite IC-01 is independently accepted at e80f613b,
 tree7376b33d; [verification](arc04-qualified-adts/slice03-local-qualified-nominal-core/artifacts/increment-ic01/correction02/cdc/README.md)
-includes actual runtime, full and cold delivery proof. Root resumes B2
-preparation against that pin, with no next source assignment issued yet. Local
+includes actual runtime, full and cold delivery proof. On2026-11-12 the operator
+authorizes B2 typed-owner/case and lexical design/implementation/review. Its
+first source-ready lexical checkpoint is iteration09; typed metadata transport
+and private finalization follow under the preserved B2 design. Local
 qualified nominal behavior, private purity and final consumer gates remain to
 be implemented and verified; the active plan retains all eight LC criteria.
 Luna 6 High CC / separate Sol 6.1 High CDC and Autonomous Mode continue.
