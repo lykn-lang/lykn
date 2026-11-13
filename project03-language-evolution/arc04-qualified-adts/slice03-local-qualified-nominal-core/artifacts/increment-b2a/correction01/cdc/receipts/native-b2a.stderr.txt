@@ -1,0 +1,16 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.04s
+     Running tests/macro_dependencies.rs (target/debug/deps/macro_dependencies-c2da4081568226dd)
+
+thread 'b2a_native_kernel_named_function_executes_parameter_call' (106291345) panicked at crates/lykn-cli/tests/macro_dependencies.rs:49:5:
+evidence directory must be precreated
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+thread 'b2a_native_macro_head_chain_limit_remains_a_diagnostic' (106291347) panicked at crates/lykn-cli/tests/macro_dependencies.rs:49:5:
+evidence directory must be precreated
+
+thread 'b2a_native_kernel_named_function_name_is_recursive_scope' (106291346) panicked at crates/lykn-cli/tests/macro_dependencies.rs:49:5:
+evidence directory must be precreated
+
+thread 'b2a_native_macro_results_reenter_bound_and_sugar_priority' (106291348) panicked at crates/lykn-cli/tests/macro_dependencies.rs:49:5:
+evidence directory must be precreated
+error: test failed, to rerun pass `-p lykn-cli --test macro_dependencies`

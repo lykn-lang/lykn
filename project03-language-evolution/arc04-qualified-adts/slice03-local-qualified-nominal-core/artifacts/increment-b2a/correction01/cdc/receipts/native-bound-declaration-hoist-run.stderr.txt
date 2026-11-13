@@ -1,0 +1,4 @@
+error: Uncaught (in promise) TypeError: array is not a function
+console.log(array(7));
+            ^
+    at file:///Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/arc04-qualified-adts/slice03-local-qualified-nominal-core/artifacts/increment-b2a/correction01/cdc/runtime/native-bound-declaration-hoist.mjs:4:13

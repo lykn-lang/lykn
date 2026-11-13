@@ -3,7 +3,7 @@ project: project03-language-evolution
 arc: arc04-qualified-adts
 slice: slice03-local-qualified-nominal-core
 status: active
-version: "1.19"
+version: "1.20"
 depends-on: [slice01-contract-and-emission-design, slice02-existing-adt-correctness]
 ---
 
@@ -203,8 +203,8 @@ depth, supported native quotation paths, kernel-only D1 scope corrections and
 validation-only class-member queries. Existing source Func/class aggregate
 scope issues are explicit B2 inputs, not new IC-01 expansion claims.
 
-**Current assignment:** [iteration10](cc-prompt-iteration10.md), B2a correction01
-against held bcb98482/tree72adf0ee, under the operator's
+**Current assignment:** [iteration11](cc-prompt-iteration11.md), B2a correction02
+against held804be5da/treed25f2b66, under the operator's
 2026-11-12 B2 design/implementation/independent-validation authorization.
 [B2 architecture](artifacts/b2-owner-and-lexical-design.md) settles typed owner/
 case, occurrence-scoped query and private finalization principles; its first
@@ -231,7 +231,8 @@ gates survive. No release edits/integration, remote CI, push or publication.
 | cc-prompt-iteration07.md | 2026-11-11 | iteration06 | Shared function group parsing, complete executable/default regions, restore public post scope and valid macro oracle | Independent HOLD atb8a1fa17/treed3e604b2: R01–05 repaired, new R06–08; three correction commits retained |
 | cc-prompt-iteration08.md | 2026-11-11 | iteration07 | Mandatory producer grammar, exactly-once function regions and ordinary malformed-header diagnostics | Independently accepted IC-01 at e80f613b/tree7376b33d; LC-02–08 remain open |
 | cc-prompt-iteration09.md | 2026-11-12 | iteration08 | B2a shared precise lexical regions, actual expanded visibility and explicit unsupported generator diagnostic | Independent HOLD bcb98482/tree72adf0ee; R01–03 and raw controls retained |
-| cc-prompt-iteration10.md | 2026-11-12 | iteration09 | B2a correction01: native redispatch/actual diagnostic gating, public class defaults, named kernel function scope | Clean804be5da/treed25f2b66 returned; separate Sol software review active |
+| cc-prompt-iteration10.md | 2026-11-12 | iteration09 | B2a correction01: native redispatch/actual diagnostic gating, public class defaults, named kernel function scope | Independent HOLD804be5da/treed25f2b66 on R04; R01–03 focused replays pass |
+| cc-prompt-iteration11.md | 2026-11-13 | iteration10 | B2a correction02: shared actual enclosing-declaration sites across expansion/resolution/D2/shadow clients and real wrapper/default slots | Issued after separate Sol source-readiness; Luna owns source/build |
 
 The A correction loop used three refinement passes; B1 required no software
 correction. IC-01 is a distinct authorized usable prerequisite, not a retry
@@ -394,3 +395,17 @@ independent acceptance. Prior B2a prose45457 was a preserved transcription error
 its original raw gate says46457, so this correction is39 bytes smaller.
 Both metadata/count reconciliations remain append-only. B2-LX, LC-02–08 and
 B2-ID-NAME remain open/pending; source is not integrated into release0829.
+
+2026-11-13 v1.20: independent review holds804be5da on B2a-R04 despite passing
+focused R01–03 controls. [The preserved HOLD](artifacts/increment-b2a/correction01/cdc/README.md)
+reproduces false native declarations from ordinary calls, missing native normal/
+default export bindings and missing public trusted-wrapper visibility. Root
+verified receipt archive4418170862beeb0d0673fb14f7d2180dde26af129365bd1adfcfee16b70fc9f1.
+Complete bounded caller review exposes competing transition adapters; iteration11
+therefore supplies one sites-preserving actual declaration query per backend,
+consumed by expansion/resolution/D2/shadow clients. Direct default declarations
+and expression-local names have distinct explicit slots. Separate Sol finds
+this source-ready; its blanket baseline-failure wording clarification is adopted.
+Luna owns source/build for correction02, then Sol independently verifies.
+This is the second B2a formal correction; no loop history resets or row closes.
+The unanswered operator name policy and all original B/C/S06 obligations remain.

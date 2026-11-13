@@ -1,0 +1,2 @@
+(export default (func array :args (:number value) :body (+ value 40)))
+(console:log (array 1))

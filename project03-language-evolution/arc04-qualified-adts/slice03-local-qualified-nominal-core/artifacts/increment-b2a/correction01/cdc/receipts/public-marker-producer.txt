@@ -1,0 +1,58 @@
+    return expandAt(expanded, env, "Legacy");
+  }
+
+  // Unquote/splice outside quasiquote
+  if (head.type === 'atom' && head.value === 'unquote') {
+    throw new Error('unquote outside of quasiquote');
+  }
+  if (head.type === 'atom' && head.value === 'unquote-splicing') {
+    throw new Error('unquote-splicing outside of quasiquote');
+  }
+
+  // DD-58: (kernel:<form> …) escape — strip the prefix, validate the form
+  // against the kernel whitelist, and pass the raw kernel form through as
+  // sanctioned kernel (so it is neither re-classified nor macro-expanded nor
+  // strict-rejected). Mirrors the Rust classifier's kernel: handling
+  // (forms.rs); works in both lax and strict modes and at any nesting depth.
+  // Takes precedence over all other dispatch.
+  if (head.type === 'atom' && head.value.startsWith('kernel:') && !isKernel(form)) {
+    const kernelForm = head.value.slice('kernel:'.length);
+    if (!KERNEL_FORMS.has(kernelForm)) {
+      const hint = closestKernelForm(kernelForm);
+      throw new Error(
+        `unknown kernel form '${kernelForm}' in (kernel:${kernelForm} ...)` +
+        (hint ? `; did you mean '${hint}'?` : ''),
+      );
+    }
+    const stripped = markKernel({
+      type: 'list',
+      values: [{ type: 'atom', value: kernelForm }, ...form.values.slice(1)],
+    });
+    if (kernelForm === "spread" && directCallArgumentRequest) {
+      return expandDirectSpreadArgument(stripped, env, directCallArgumentRequest);
+    }
+    if ((kernelForm === "=" || kernelForm === "+=") &&
+      (use === "DirectStatement" || isResultOperandUse(use)) &&
+      stripped.values.length === 3) {
+      const assignment = expandDirectAssignment(
+        stripped.values[1],
+        stripped.values[2],
+        kernelForm,
+        env,
+        use,
+      );
+      if (assignment !== null) return assignment;
+    }
+    if (computedMemberCallRequest) {
+      computedMemberCallRequest.explicitEscape = true;
+    }
+    return expandAt(stripped, env, use, computedMemberCallRequest, directCallArgumentRequest);
+  }
+
+  // Resolution gate (DD-60 D1 / DD-61 §A3). A head atom that is lexically bound
+  // in `env` (or already tagged `ref`) is a reference to the binding, not a
+  // macro/form/kernel head: tag it `ref`, emit a plain call, and skip classifier
+  // + user-macro + kernel dispatch entirely (F-2). Binding-position atoms thus
+  // never reach a dispatch site — the throws-from-the-binding-site rows resolve
+  // to ordinary calls. Sanctioned kernel (`isKernel`) is the compiler's own
+  // output and is never re-read as a bound reference (e.g. a `conj`-emitted

@@ -1,0 +1,2 @@
+(bind genfunc (fn (:any name :any left :any right) 41))
+(genfunc ignored (:args () :body 1) (:args (:any value) :body 2))

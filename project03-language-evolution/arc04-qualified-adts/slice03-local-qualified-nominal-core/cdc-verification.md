@@ -786,3 +786,45 @@ unsupported-form gating, were separately source-readiness reviewed and are
 ready for issue. That verdict does not accept future software. Earlier A/B1/
 IC acceptance remains unchanged; B2b, LC-02–08 and S03 stay open, with
 B2-ID-NAME pending. No release integration or remote action occurred.
+
+## B2a correction01 candidate804be5da — 2026-11-13 independent HOLD
+
+Separate Sol6.1High CDC reviewed clean804be5daace5b0cb708ad21b3beb7eecbd5d00fa,
+treed25f2b660d3de2e6f52b8ee890172f223c9abc80. No source edit was made;
+source/build ownership returns clean to root after bounded verification.
+
+**B2-LX: HOLD on new R04 actual enclosing-declaration transitions.**
+The original R01–03 repairs pass focused independent checks: native runtime
+4/4, bound-genfunc pair1/1, escaped function/generator header2/2 and canonical
+public11/11, plus exact prior bound-chain41, escaped-function7 and class-default42
+ESM replays. The initial native4 test attempt failed at a missing evidence
+subdirectory before behavior; its exit101/4setupfailures remain separate from
+the successful precreated-directory retry.
+
+[Independent correction01 index](artifacts/increment-b2a/correction01/cdc/README.md)
+records R04's causal witnesses: native resolver unconditionally applies a raw
+binder projection after an ordinary bound bind call, causing a later array
+literal to emit as array(7) and throw. Public and renamed native controls print
+[7]. Native normal exported function and public escaped exported function lose
+following visibility and print[1] instead of41. Native direct named default
+export likewise prints[1], while public prints41. Both compilers correctly keep
+a conditional default's function name expression-local and print[1]. Actual
+materialized ESM and numeric statuses distinguish each case.
+
+The bounded caller census covers native resolver/pass2/D2/shadow transitions
+and all public actual-hoist/D2 callers. A shared dispatch-aware sites query
+must preserve span/kind, use incoming scope, respect trusted-root/child
+boundaries and select the actual consumed declaration/default slots. Raw binder
+enumeration stays structural. Root's iteration11 mechanics were independently
+source-readiness reviewed; they require no broader writer/name/owner feature.
+Regression witnesses must fail baseline; paired retained positives already pass.
+
+[Evidence archive](artifacts/increment-b2a/correction01/cdc/receipts-804be5da.tar.gz)
+SHA-256 `4418170862beeb0d0673fb14f7d2180dde26af129365bd1adfcfee16b70fc9f1`.
+The original B2a HOLD/archive remains unchanged. Current CC raw full1547/67steps/
+482docs and46,418gzip were inspected/corroborated as CC evidence, not rerun or
+converted to independent acceptance. CC chronology/setup/filter/receipt limits
+remain disclosed. Fresh full/docs/coldM6/copiedCLI/browser/private/citation/size
+independent gates were not run on known-bad software and remain due after repair.
+A/B1/IC acceptance is unchanged; LC-02–08, B2b/B2-ID-NAME and S03 remain open.
+No release integration or remote action occurred.

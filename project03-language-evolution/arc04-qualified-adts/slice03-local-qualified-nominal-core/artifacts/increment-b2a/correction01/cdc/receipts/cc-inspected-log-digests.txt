@@ -1,0 +1,2 @@
+ece3b2637bddde972917edddf5b4f5f709be5eba75ee78d4305f3846140c99df  ../cc/receipts/full-make-check-retry01.stdout.txt
+7854b1c988cd5742b818ca54fdc32e760b1d3bd3f99fcb1f59ae1200b5bf073d  ../cc/receipts/postcommit-bundle-size.stdout.txt

@@ -1,0 +1,4 @@
+(macro from-chain () `(already-bound 1))
+(macro already-bound (value) `99)
+(bind already-bound (fn (:any value) (+ value 40)))
+(console:log (from-chain))

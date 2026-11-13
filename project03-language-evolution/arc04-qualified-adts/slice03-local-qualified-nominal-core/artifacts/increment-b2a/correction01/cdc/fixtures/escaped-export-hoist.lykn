@@ -1,0 +1,2 @@
+(kernel:export (kernel:function array (value) (return (+ value 40))))
+(console:log (array 1))

@@ -1,0 +1,72 @@
+fn hoisted_sites(form: &SExpr) -> Vec<BindingSite> {
+    bindings_introduced(form)
+        .into_iter()
+        .filter(|s| s.kind.shadows_values() && declares_in_enclosing(s.kind))
+        .collect()
+}
+
+/// The **pure body-scoped** binding sites a form introduces (params, loop,
+/// pattern, catch, class-method params) — the complement of the enclosing-scope
+/// declarations. These enter a *deeper* frame, so any collision with the
+/// enclosing scope is a shadow. (The enclosing-scope kinds — `bind`/import
+/// locals/`func`|`class` names — are checked at the hoist point instead, so each
+/// binding is checked exactly once.)
+fn body_shadow_sites(form: &SExpr) -> Vec<BindingSite> {
+    bindings_introduced(form)
+        .into_iter()
+        .filter(|s| {
+            s.kind.shadows_values() && !is_enclosing_only(s.kind) && !declares_in_enclosing(s.kind)
+        })
+        .collect()
+}
+
+/// Walk a sibling sequence, mirroring [`resolve_seq`]: resolve each form's
+/// subtree, then hoist its enclosing declarations to the following siblings. A
+/// hoisted name already present in an **ancestor** frame (`scope[..mark]`, never
+/// a preceding sibling in this same sequence) shadows it.
+fn shadow_seq(forms: &[SExpr], scope: &mut Vec<String>, out: &mut Vec<BindingSite>) {
+    let mark = scope.len();
+    for form in forms {
+        shadow_form(form, scope, out);
+        for site in hoisted_sites(form) {
+            if scope[..mark].iter().any(|n| n == &site.name) {
+                out.push(site.clone());
+            }
+            scope.push(site.name);
+        }
+    }
+    scope.truncate(mark);
+}
+
+/// Walk one form, mirroring [`resolve_form`]/[`resolve_split_at`]: distribute the
+/// form's body-scoped bindings over the child positions where they are visible
+    shadow_paths(form, &member.body_paths, scope, out, true);
+    scope.truncate(mark);
+}
+
+fn shadow_paths(
+    root: &SExpr,
+    paths: &[crate::lexical_regions::OccurrencePath],
+    scope: &mut Vec<String>,
+    out: &mut Vec<BindingSite>,
+    retain_declarations: bool,
+) {
+    let mark = scope.len();
+    for path in paths {
+        if let Some(form) = crate::lexical_regions::at_path(root, path) {
+            shadow_form(form, scope, out);
+            let dispatches = form
+                .as_list()
+                .and_then(|values| values.first())
+                .and_then(SExpr::as_form_head)
+                .is_some_and(|head| !scope.iter().any(|bound| bound == head));
+            for site in if dispatches {
+                hoisted_sites(form)
+            } else {
+                Vec::new()
+            } {
+                if scope[..mark].iter().any(|name| name == &site.name) {
+                    out.push(site.clone());
+                }
+                scope.push(site.name);
+            }

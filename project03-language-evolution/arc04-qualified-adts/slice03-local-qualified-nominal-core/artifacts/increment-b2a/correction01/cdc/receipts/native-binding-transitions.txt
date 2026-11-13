@@ -1,0 +1,46 @@
+}
+
+/// Recursively walk `forms`, collecting every binding site in source order.
+///
+/// This is D2's enumeration. Slices 04/05 use [`bindings_introduced`] per form
+/// during their own scoped walk to extend the resolver env — see the module
+/// doc and the slice03 bubble-up for the hook points.
+pub fn walk_bindings(forms: &[SExpr]) -> Vec<BindingSite> {
+    let mut out = Vec::new();
+    walk_sequence(forms, &mut out, &mut Vec::new());
+    out
+}
+
+fn walk_sequence(forms: &[SExpr], out: &mut Vec<BindingSite>, scope: &mut Vec<String>) {
+    let mark = scope.len();
+    for form in forms {
+        walk(form, out, scope);
+        let dispatches = match form {
+            SExpr::List { values, .. } => values
+                .first()
+                .and_then(SExpr::as_form_head)
+                .is_some_and(|head| !scope.iter().any(|bound| bound == head)),
+            _ => false,
+        };
+        if dispatches {
+            scope.extend(crate::resolver::hoisted_names(form));
+        }
+    }
+    scope.truncate(mark);
+}
+
+fn walk_sequence_refs(forms: &[&SExpr], out: &mut Vec<BindingSite>, scope: &mut Vec<String>) {
+    for form in forms {
+        walk(form, out, scope);
+        let dispatches = match form {
+            SExpr::List { values, .. } => values
+                .first()
+                .and_then(SExpr::as_form_head)
+                .is_some_and(|head| !scope.iter().any(|bound| bound == head)),
+            _ => false,
+        };
+        if dispatches {
+            scope.extend(crate::resolver::hoisted_names(form));
+        }
+    }
+}

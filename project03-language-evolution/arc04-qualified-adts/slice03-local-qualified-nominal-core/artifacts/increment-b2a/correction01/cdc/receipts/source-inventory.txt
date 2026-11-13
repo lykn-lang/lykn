@@ -1,0 +1,7 @@
+crates/lykn-cli/src/compile.rs
+crates/lykn-cli/tests/macro_dependencies.rs
+crates/lykn-lang/embedded/packages/lang/expander-core.js
+crates/lykn-lang/src/expander/pass2.rs
+crates/lykn-lang/src/lexical_regions.rs
+packages/lang/expander-core.js
+test/expander/lexical-regions.test.js

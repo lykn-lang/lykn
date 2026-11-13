@@ -1,0 +1,6 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.21s
+     Running unittests src/main.rs (target/debug/deps/lykn-633f39fab2860422)
+1:1: warning: unused binding 'apply'
+  suggestion: prefix with underscore: _apply
+1:1: warning: unused binding 'stream'
+  suggestion: prefix with underscore: _stream

@@ -1,0 +1,4 @@
+(set-symbol! globalThis :array 100)
+(bind invoke (fn (:any left :any right) left))
+(invoke array 1)
+(console:log (array 7))

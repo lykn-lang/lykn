@@ -18,9 +18,9 @@ tree7376b33d; [verification](arc04-qualified-adts/slice03-local-qualified-nomina
 includes actual runtime, full and cold delivery proof. On2026-11-12 the operator
 authorizes B2 typed-owner/case and lexical design/implementation/review. Its
 first lexical candidate from iteration09 is independently held at bcb98482;
-iteration10 returns correction candidate804be5da/treed25f2b66, now under separate
-Sol software review for native redispatch, public class defaults and named
-kernel-function scope. Typed metadata transport and private finalization
+iteration10's candidate804be5da/treed25f2b66 passes its focused repairs but is
+independently held on declaration transitions/wrappers. Source-ready iteration11
+consolidates that semantic query across actual clients. Typed metadata transport and private finalization
 follow under the preserved B2 design after lexical acceptance; source-name
 identity B2-ID-NAME remains an unanswered operator language-design choice. Local
 qualified nominal behavior, private purity and final consumer gates remain to

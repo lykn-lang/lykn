@@ -1,0 +1,2 @@
+(kernel:function local (array) (return (array 7)))
+(console:log (local (fn (:any value) value)))

@@ -1,0 +1,6 @@
+(class Sample ()
+  (constructor ((default amount 40)) (assign this:amount amount))
+  (value ((default amount 41)) (return amount))
+  (static (value ((default amount 43)) (return amount))))
+(bind sample (new Sample))
+(console:log sample:amount (sample:value) (sample:value 42) (Sample:value))

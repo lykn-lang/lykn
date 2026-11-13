@@ -1,0 +1,27 @@
+crates/lykn-lang/src/expander/pass2.rs:31:    // `resolver::scope_plan`/`hoisted_names`) so a bound head fires neither a
+crates/lykn-lang/src/expander/pass2.rs:37:            scope.extend(actual_expanded_hoists(&expr, &scope));
+crates/lykn-lang/src/expander/pass2.rs:360:                scope.extend(actual_expanded_hoists(&expanded, scope));
+crates/lykn-lang/src/expander/pass2.rs:448:            class_scope.extend(actual_expanded_hoists(&expanded, class_scope));
+crates/lykn-lang/src/expander/pass2.rs:491:fn actual_expanded_hoists(form: &SExpr, scope: &[String]) -> Vec<String> {
+crates/lykn-lang/src/expander/pass2.rs:508:            .flat_map(|child| actual_expanded_hoists(child, scope))
+crates/lykn-lang/src/expander/pass2.rs:511:    crate::resolver::hoisted_names(form)
+crates/lykn-lang/src/expander/pass2.rs:561:            scope.extend(actual_expanded_hoists(&e, scope));
+crates/lykn-lang/src/binding.rs:240:            scope.extend(crate::resolver::hoisted_names(form));
+crates/lykn-lang/src/binding.rs:257:            scope.extend(crate::resolver::hoisted_names(form));
+crates/lykn-lang/src/binding.rs:365:    let sites = bindings_introduced(form);
+crates/lykn-lang/src/binding.rs:789:pub fn bindings_introduced(form: &SExpr) -> Vec<BindingSite> {
+crates/lykn-lang/src/resolver.rs:51:pub(crate) fn hoisted_names(form: &SExpr) -> Vec<String> {
+crates/lykn-lang/src/resolver.rs:52:    bindings_introduced(form)
+crates/lykn-lang/src/resolver.rs:265:        scope.extend(hoisted_names(form));
+crates/lykn-lang/src/resolver.rs:451:                    clause_scope.extend(hoisted_names(&resolved));
+crates/lykn-lang/src/resolver.rs:567:            method_scope.extend(hoisted_names(&resolved));
+crates/lykn-lang/src/resolver.rs:759:/// [`hoisted_names`], and [`bindings_introduced`]. It is the "one decider, many
+crates/lykn-lang/src/resolver.rs:773:/// site-level companion to [`hoisted_names`] — same filter, kept in lockstep).
+crates/lykn-lang/src/resolver.rs:774:fn hoisted_sites(form: &SExpr) -> Vec<BindingSite> {
+crates/lykn-lang/src/resolver.rs:775:    bindings_introduced(form)
+crates/lykn-lang/src/resolver.rs:788:    bindings_introduced(form)
+crates/lykn-lang/src/resolver.rs:804:        for site in hoisted_sites(form) {
+crates/lykn-lang/src/resolver.rs:1029:                hoisted_sites(form)
+crates/lykn-lang/src/resolver.rs:1393:        assert_eq!(hoisted_names(function), vec!["fn-local"]);
+crates/lykn-lang/src/resolver.rs:1594:            bindings_introduced(&forms[0]),
+crates/lykn-lang/src/resolver.rs:1628:        assert!(bindings_introduced(&failed[0]).is_empty());

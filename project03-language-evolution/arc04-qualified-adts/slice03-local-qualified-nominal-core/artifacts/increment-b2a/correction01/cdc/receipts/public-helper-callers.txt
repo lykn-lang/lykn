@@ -1,0 +1,29 @@
+packages/lang/expander-core.js:30:  hoistedNames,
+packages/lang/expander-core.js:849:  for (const site of bindingsIntroduced(form)) {
+packages/lang/expander-core.js:903:      const hoist = actualExpandedHoists(sibling, cur);
+packages/lang/expander-core.js:919:      const hoist = actualExpandedHoists(sibling, cur);
+packages/lang/expander-core.js:953:      const hoist = actualExpandedHoists(out[out.length - 1], cur);
+packages/lang/expander-core.js:986:        const hoist = actualExpandedHoists(sibling, cur);
+packages/lang/expander-core.js:1017:        const hoist = actualExpandedHoists(sibling, cur);
+packages/lang/expander-core.js:1053:      const hoist = actualExpandedHoists(sibling, cur);
+packages/lang/expander-core.js:1126:function actualExpandedHoists(form, env) {
+packages/lang/expander-core.js:1130:  if (isKernel(form)) return hoistedNames(form);
+packages/lang/expander-core.js:1133:    return form.values.slice(1).flatMap((child) => actualExpandedHoists(child, env));
+packages/lang/expander-core.js:1135:  return hoistedNames(form);
+packages/lang/expander-core.js:1172:      const hoist = actualExpandedHoists(sibling, cur);
+packages/lang/expander-core.js:2131:            const hoist = actualExpandedHoists(sibling, cur);
+packages/lang/expander-core.js:2413:      const hoist = actualExpandedHoists(sibling, env);
+packages/lang/binding.js:67:    const hoisted = dispatches ? hoistedNames(form) : [];
+packages/lang/binding.js:96:    out.push(...bindingsIntroduced(form));
+packages/lang/binding.js:145:    out.push(...bindingsIntroduced(form).filter((site) => site.kind === "bind"));
+packages/lang/binding.js:146:    const classScope = extendNames(inScope, bindingsIntroduced(form)
+packages/lang/binding.js:172:    out.push(...bindingsIntroduced(form));
+packages/lang/binding.js:178:    const sites = bindingsIntroduced(form);
+packages/lang/binding.js:188:    const sites = bindingsIntroduced(form);
+packages/lang/binding.js:198:    out.push(...bindingsIntroduced(form));
+packages/lang/binding.js:208:    const sites = bindingsIntroduced(form);
+packages/lang/binding.js:237:  out.push(...bindingsIntroduced(form));
+packages/lang/binding.js:403:  return bindingsIntroduced(form)
+packages/lang/binding.js:409:export function hoistedNames(form) {
+packages/lang/binding.js:410:  return bindingsIntroduced(form)
+packages/lang/binding.js:475:export function bindingsIntroduced(form) {
