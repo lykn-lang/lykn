@@ -1,0 +1,2 @@
+cwd=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+env=environment.txt excluding full-only M6 hook; deno test --config project.json -A --cached-only --no-prompt test/forms/icu-generated-names.test.js test/forms/template-icu.test.js test/forms/icu-parser.test.js test/forms/lazy-protected-invocation.test.js test/forms/host-reference-lowering.test.js test/forms/browser-host-reference-compile.test.js test/forms/surface-type-context.test.js test/forms/semantic-roles.test.js

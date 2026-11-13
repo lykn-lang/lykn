@@ -1,0 +1,1 @@
+cargo test -p lykn-lang --test icu_cross_compiler_tests cross_icu_generated_names_keep_pure_values -- --exact

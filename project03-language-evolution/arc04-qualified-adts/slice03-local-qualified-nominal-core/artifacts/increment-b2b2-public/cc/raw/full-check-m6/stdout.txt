@@ -1,0 +1,33 @@
+[1;34mChecking for outdated dependencies...[0m
+
+
+[1;32m✓ All dependencies up to date[0m
+[1;34mChecking cited paths resolve in git...[0m
+[1;32m✓ Cited-path check passed[0m (64 documents on codex/qualified-adt-core; 601 historical citations accepted via scripts/cited-paths-census.tsv)
+[1;34mCleaning bin directory...[0m
+[1;32m✓ Clean complete[0m
+[1;34mCreating bin directory...[0m
+[1;32m✓ Directory created[0m
+[1;34mBuilding Lykn in release mode...[0m
+[1;36m• Compiling optimized workspace...[0m
+[1;36m• Copying binaries to ./bin/[0m
+  [1;32m✓[0m lykn (size: 3.3M)
+[1;32m✓ Release build complete[0m
+[1;36m→ Optimized binaries in ./bin/[0m
+[1;34mRunning linter checks...[0m
+[1;36m• Running clippy...[0m
+[1;32m✓ Clippy passed[0m
+[1;36m• Checking code formatting...[0m
+Diff in /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang/tests/icu_cross_compiler_tests.rs:599:
+ fn cross_icu_generated_names_keep_pure_values() {
+     assert!(deno_available(), "ICU generated-name parity requires Deno");
+ 
+-    assert_cross_equiv(
+-        r#"(template "{n} {n}" :n (+ _n 1))"#,
+-        &[("_n", "2")],
+-        "3 3",
+-    );
++    assert_cross_equiv(r#"(template "{n} {n}" :n (+ _n 1))"#, &[("_n", "2")], "3 3");
+     assert_cross_equiv(
+         r#"(template "{n, plural, one {one} other {#}}" :n _v0)"#,
+         &[("_v0", "2")],

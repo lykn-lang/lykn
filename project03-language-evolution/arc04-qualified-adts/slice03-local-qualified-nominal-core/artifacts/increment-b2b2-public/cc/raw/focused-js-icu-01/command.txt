@@ -1,0 +1,1 @@
+deno test --allow-all --no-prompt --cached-only --config /private/tmp/lykn-b2b2-public-cc/deno-source.json test/forms/template-icu.test.js test/forms/icu-generated-names.test.js

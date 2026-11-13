@@ -2,8 +2,9 @@
 
 Root2026-11-13. This refines the runtime-name direction in
 b2b-owner-unit-preparation.md after the operator selected exact source identity.
-Current native ICU candidate228e8c99 and public follow-through17 remain separate
-gates. This is not a CC assignment or claim of implemented scalar-name hygiene.
+Native ICU228e8c99 and public follow-through17 at57c76c99 are now independently
+accepted within their bounded scopes. This is not a CC assignment or claim
+of implemented scalar-name hygiene.
 Typed source owner/query BindingId, OwnerRef/CaseRef and nominal activation
 remain their original B2b obligations; the plan below is the later runtime
 namespace, not a retrospective source-owner search.
@@ -53,14 +54,14 @@ markers use the actual raw accessors as their writers do.
 | if | Test parent; each emitted arm owns one block, explicit block retained once. No sibling-arm declaration leakage. |
 | while / do-while | Condition outside body block; body statements in block. |
 | for | init/test/update header; lexical init owns loop environment, var remains function-scoped. Body separate block. Honor bare declaration clauses as writer consumes them. |
-| for-of/in/await-of | Bare binding is const in loop environment; iterable and pattern initialization must use real loop TDZ semantics. Wrapped declaration remains rejected. Body separate block. |
+| for-of/in/await-of | Bare binding is const; RHS sees an uninitialized binding of that exact spelling (TDZ), while each iteration has its own initialized binding. Wrapped declaration remains rejected. Body separate block. |
 | switch | Discriminant parent; all actual cases share one lexical case-block. Case tuple child0 is case expression, raw default is marker; no case keyword. |
-| try | Selected last catch/finally structural clauses only, other actual body forms in try block. Catch binder/handler scope separate; finally separate block. Do not visit superseded ignored clauses as declarations. |
+| try | Selected last catch/finally structural clauses only, other actual body forms in try block. Catch binder/handler scope separate; finally separate block. Current catch binder is rendered through emit_expr, not the ordinary pattern writer; bare/array-expression _ currently binds. Its literal object key/value and helper delegations need distinct consumed-role handling. Do not visit superseded ignored clauses as declarations. |
 | class / class-expr | Decl name has outer and class-inner coupled spellings; bases consume first entry only. Member keys are properties; each method/getter/setter/constructor owns params/default/body. Fields consume value only; static/async wrapper consumes inner member. |
 | object expression | Bare atom means key+value. Tuple key atom/string is property data; computed key is executable, tuple value executable, spread operand executable. Never mistake property tuple for declaration/call. |
-| binding/assignment patterns | Separate Def vs Use. Object shorthand preserves key; alias key/local/default have separate roles; array _ is hole but object _ is actual name. Rest/default use actual consumed slots. Defaults are expressions in the proper parameter/declaration environment. |
+| binding/assignment patterns | Separate Def vs Use. Object shorthand preserves key; alias key/local/default have separate roles; ordinary array-pattern _ is a hole but object _ currently renders a name. Catch does not use this same grammar. Rest/default use actual consumed slots. Defaults are expressions in the proper parameter/declaration environment. |
 | import | Module string/remote names are data/API; local default/named/alias slot defines binding. Preserve actual existing grammar; do not invent namespace-import support. |
-| export | Local occurrence vs public API name vs remote reexport. Renaming must retain live public alias; default expression stays expression. Inline named declaration may split into declaration plus explicit export aliases at same evaluation position. |
+| export | Local occurrence vs public API name vs remote reexport. Renaming must retain live public alias. Direct named function/class (including actual async/generator wrappers) after export default is a named default declaration with module binding; a wrapped/conditional payload is an expression. Inline named export may split into declaration plus explicit export aliases at same evaluation position. |
 | colon atom / get / dot | Colon first segment is lexical root; suffixes properties. get consumes object/key expressions. Dot atom method is property; non-atom consumed method follows actual writer expression behavior. |
 | label / break / continue | Own label namespace, active only in its statement region and not through functions. Bind/use exact spelling; do not accidentally treat labels as value references. |
 | seq / operators / calls | seq is comma expression, not block. Preserve already-selected kernel heads; visit only consumed operand slots. Ordinary callee/arguments are values, not sibling declaration sequences. |
@@ -70,6 +71,16 @@ markers use the actual raw accessors as their writers do.
 The loop iterable TDZ, parameter ContainsExpression, named declaration vs
 expression and class/catch var coupling need precise final source/runtime
 discriminators before issue; do not paper over them with a string map.
+
+Primary-source refresh: [ForIn/OfHeadEvaluation](https://tc39.es/ecma262/2025/multipage/ecmascript-language-statements-and-declarations.html#sec-runtime-semantics-forinofheadevaluation)
+creates uninitialized lexical bindings before evaluating the RHS. These static
+binding identities differ from per-iteration runtime instances; no attempt to
+allocate a compiler BindingId for each future iteration is intended.
+[Export declaration grammar and entries](https://tc39.es/ecma262/2025/multipage/ecmascript-language-scripts-and-modules.html#sec-exports)
+distinguish direct hoistable/class declarations from assignment expressions.
+Separate Sol caught root's initial too-broad default-expression statement
+before any issue; the table now preserves the direct named-default module
+binding already required by B2a. These are design facts, not fresh Lykn runs.
 
 ## Hygienic output allocation
 
@@ -90,10 +101,15 @@ Same-scope duplicate/normalized/export diagnostics remain; do not uniquely
 rename invalid duplicates into accidentally valid code.
 
 Keep ordinary noncolliding raw variable spellings where possible. If an
-already-resolved variable call has a raw spelling that would redispatch as a
+already-resolved variable group has a raw spelling that would redispatch as a
 kernel form after JSON loses tags (e.g. array), use a kernel-safe raw spelling
 that maps to the SAME chosen emitted JS name, such as array! after verifying
-normalization. It is serialization of the completed name plan, not new source
+normalization. Apply the SAME transport spelling to every definition and bound
+use in that group, not just the call head; otherwise a second complete-kernel
+consumer would see array! as foreign to a definition still spelled array and
+could rename the wrong binding. The completed plain-kernel representation must
+remain semantically stable through a second consumer/name-plan pass and JSON.
+It is serialization of the completed name plan, not new source
 authority or an annotation field. Property keys/import remote/export API names
 must retain original normalization through explicit key/local aliases.
 
@@ -128,3 +144,22 @@ some-name/someName=>1 and hoisted helper=>41. Add same-raw shadow/TDZ/defaults,
 foreign normalized target, properties/shorthand, import/export/live binding,
 labels, macro-shared syntax, JSON, private/host/completion and real CLI/cold
 consumer proof. No source naming acceptance follows from this draft.
+
+## Current language-contract gate — B2-ID-DISCARD
+
+Root initially selected preservation of current catch grammar for a naming-only
+increment, leaving any catch-pattern unification separate. Source inspection
+then showed a broader underscore disagreement among binder projectors, semantic
+analysis and writers. Three direct canonical probes at accepted57c76c99 now
+print7/99/7 for scalar _ parameter, array _ parameter and array _ catch, all
+compile/run0; scalar compilation reports a shadow warning. Their complete
+source/generated/status/streams are retained under
+increment-b2b3/root/underscore-baseline, not inferred from code alone.
+
+Root asks the operator whether _ is a true discard in binding-pattern positions
+(with _value as an ordinary named binding), or ordinary except explicit
+wildcard/skip grammar. This is not settled by distinct spelling identity,
+which remains resolved. Do not issue dependent general hygiene/discard lowering
+from the old preservation recommendation before the actual answer. No new
+catch grammar, omitted-binding syntax or changed underscore effect/type-check
+contract is approved by this draft. Unaffected source-readiness may continue.

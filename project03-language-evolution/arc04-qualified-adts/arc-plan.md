@@ -2,7 +2,7 @@
 project: project03-language-evolution
 arc: arc04-qualified-adts
 status: active
-version: "1.19"
+version: "1.20"
 related: [project07-core-library-research]
 ---
 
@@ -39,10 +39,15 @@ privacy oracle; all unchanged compiled-code evidence is explicitly retained.
 Naming preparation also exposed ICU hoist/selector captures. Native B2-ICU-N
 is independently accepted at228e8c99/tree5a2c9a4b: source/generated/shared-
 generated/effects/canonical/cold/full gates pass; root verified its frozen
-packet. Public B2-ICU-P is now issued as17 with actual mapped cold/browser/
-private integration tests. Ordinary source-binding hygiene and typed owner/
-case activation remain separate open obligations. No S03 completion follows
-from these prerequisites.
+packet. Public B2-ICU-P is independently accepted at57c76c99/treef044d795,
+including actual mapped cold55/14/browser/private integration proof, final
+full gates and46857gzip. Ordinary source-binding hygiene and typed owner/case
+activation remain open. Source-readiness now exposes a concrete underscore
+contract gap, B2-ID-DISCARD: canonical scalar/array-parameter/array-catch probes
+print7/99/7 and binder projectors disagree. Root has asked the operator for
+the intended discard/name rule before issuing dependent general hygiene.
+B2-ID-NAME is already resolved; this new question does not reopen it.
+No S03 completion follows from these prerequisites.
 The eight-row plan retains local ownership, nominal runtime/guards, APIs/DTS,
 private purity, migration and full consumer proof. S03 software is not yet
 accepted. [S02 release integration](slice02-existing-adt-correctness/artifacts/release-integration-0829e892.md)

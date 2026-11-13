@@ -1,0 +1,3 @@
+error: Import "astring" not a dependency
+  hint: If you want to use the npm package, try running `deno add npm:astring`
+    at file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander-core.js:9:26

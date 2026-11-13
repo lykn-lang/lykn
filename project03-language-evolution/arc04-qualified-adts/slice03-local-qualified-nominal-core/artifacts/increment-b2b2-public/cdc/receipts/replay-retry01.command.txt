@@ -1,0 +1,5 @@
+cwd=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+env=environment.txt excluding full-only M6 hook
+First helper invocation incorrectly used --no-config/--no-npm despite importing the compiler (existing astring dependency), so it exited1 before helper logic. Downstream absent-output run1/copy missing is setup fallout, not product failure. No source/dependency change. Corrected helper invocation uses compiler-owned existing config, cached-only, no remote/network. Final generated module still uses --no-config/--no-npm.
+deno run -A --config packages/lang/deno.json --cached-only --no-remote --deny-net --no-prompt /private/tmp/lykn-b2b2-public-cdc/public-replay.mjs
+deno run --no-config --cached-only --no-npm --no-remote --deny-net --no-prompt /private/tmp/lykn-b2b2-public-cdc/select-public.mjs

@@ -1,0 +1,2 @@
+cwd=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+env=environment.txt excluding full-only M6 hook; cargo test -p lykn-lang --test icu_cross_compiler_tests -- --nocapture

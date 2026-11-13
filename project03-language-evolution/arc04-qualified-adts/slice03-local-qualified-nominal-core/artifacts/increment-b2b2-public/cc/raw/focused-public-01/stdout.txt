@@ -1,0 +1,77 @@
+running 6 tests from ./test/forms/icu-generated-names.test.js
+public ICU hoists reserve compiled source identifiers ... ok (80ms)
+public ICU selectors and hoists share one generated-name set ... FAILED (22ms)
+public ICU keeps once-only effects and original exceptions ... FAILED (17ms)
+public ICU preserves lazy and eager branch evaluation ... ok (14ms)
+public ICU fragments and repeated calls keep independent state ... FAILED (29ms)
+browser ICU ESM and private Reflect calls preserve capture anchors ... ok (43ms)
+
+ ERRORS 
+
+public ICU selectors and hoists share one generated-name set => ./test/forms/icu-generated-names.test.js:97:6
+error: AssertionError: Values are not equal.
+
+
+    [Diff] Actual / Expected
+
+
+    2\n
+-   outer-other\n
++   deep-one\n
+    7 7\n
+    2-2\n
+    
+
+
+  throw new AssertionError(message);
+        ^
+    at assertEquals (https://jsr.io/@std/assert/1.0.19/equals.ts:67:9)
+    at executeModule (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/icu-generated-names.test.js:29:5)
+    at async file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/icu-generated-names.test.js:98:3
+
+public ICU keeps once-only effects and original exceptions => ./test/forms/icu-generated-names.test.js:116:6
+error: AssertionError: Values are not equal: error: Uncaught (in promise) ReferenceError: _x is not defined
+  const _x__lyknGenerated0 = nextId(_x);
+                                    ^
+    at file:///private/tmp/lykn-b2b2-public-cc/tmp/lykn-icu-generated-236d389de95535a8/output.mjs:16:37
+    at file:///private/tmp/lykn-b2b2-public-cc/tmp/lykn-icu-generated-236d389de95535a8/output.mjs:18:3
+
+
+
+    [Diff] Actual / Expected
+
+
+-   1
++   0
+
+  throw new AssertionError(message);
+        ^
+    at assertEquals (https://jsr.io/@std/assert/1.0.19/equals.ts:67:9)
+    at executeModule (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/icu-generated-names.test.js:27:5)
+    at async file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/icu-generated-names.test.js:117:3
+
+public ICU fragments and repeated calls keep independent state => ./test/forms/icu-generated-names.test.js:157:6
+error: AssertionError: Values are not equal.
+
+
+    [Diff] Actual / Expected
+
+
++   3 3\n
+    
+
+
+  throw new AssertionError(message);
+        ^
+    at assertEquals (https://jsr.io/@std/assert/1.0.19/equals.ts:67:9)
+    at executeModule (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/icu-generated-names.test.js:29:5)
+    at async file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/icu-generated-names.test.js:172:3
+
+ FAILURES 
+
+public ICU selectors and hoists share one generated-name set => ./test/forms/icu-generated-names.test.js:97:6
+public ICU keeps once-only effects and original exceptions => ./test/forms/icu-generated-names.test.js:116:6
+public ICU fragments and repeated calls keep independent state => ./test/forms/icu-generated-names.test.js:157:6
+
+FAILED | 3 passed | 3 failed (210ms)
+

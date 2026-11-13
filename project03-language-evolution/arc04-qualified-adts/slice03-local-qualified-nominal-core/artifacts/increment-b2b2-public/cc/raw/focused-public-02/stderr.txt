@@ -1,0 +1,2 @@
+Check test/forms/icu-generated-names.test.js
+error: Test failed

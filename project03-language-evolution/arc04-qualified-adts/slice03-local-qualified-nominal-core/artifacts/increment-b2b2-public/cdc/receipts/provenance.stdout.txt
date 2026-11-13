@@ -1,0 +1,500 @@
+57c76c99cbed07ff992e78aac8afefa4bdf0b2ad
+f044d795e88c3dac8e84a73a557cf071edd5327c
+commit 57c76c99cbed07ff992e78aac8afefa4bdf0b2ad
+Author: Duncan McGreggor <oubiwann@gmail.com>
+Commit: Duncan McGreggor <oubiwann@gmail.com>
+
+    fix: keep public ICU locals out of source bindings
+    
+    Allocate generated ICU names per template from compiled ESTree identifiers,
+    threading the same reservation state through selector and branch generation.
+    Keep the embedded compiler byte-identical and exercise canonical, browser,
+    private invocation, native parity, and materialized delivery paths.
+    
+    Co-authored-by: Codex <noreply@openai.com>
+    Co-authored-by: Billo AI <ai-engineering@billo.systems>
+Co-authored-by: Codex <noreply@openai.com>
+Co-authored-by: Billo AI <ai-engineering@billo.systems>
+ crates/lykn-cli/tests/macro_dependencies.rs        |   5 +-
+ .../lykn-lang/embedded/packages/lang/compiler.js   |  95 ++++++++--
+ crates/lykn-lang/tests/icu_cross_compiler_tests.rs |  27 +++
+ packages/lang/compiler.js                          |  95 ++++++++--
+ test/forms/icu-generated-names.test.js             | 209 +++++++++++++++++++++
+ 5 files changed, 391 insertions(+), 40 deletions(-)
+diff --git a/crates/lykn-cli/tests/macro_dependencies.rs b/crates/lykn-cli/tests/macro_dependencies.rs
+index 1b3d7e84..250c0286 100644
+--- a/crates/lykn-cli/tests/macro_dependencies.rs
++++ b/crates/lykn-cli/tests/macro_dependencies.rs
+@@ -1125,6 +1125,7 @@ fn m6_embedded_compiler_payload_matches_canonical_and_runs_from_cold_cache() {
+         repository.join("test/forms/embedded-adt-pattern.test.js"),
+         repository.join("test/forms/surface-type-context.test.js"),
+         repository.join("test/forms/reserved-binding-output.test.js"),
++        repository.join("test/forms/icu-generated-names.test.js"),
+         repository.join("test/expander/lexical-regions.test.js"),
+     ];
+     let mut strict_public = Command::new(deno);
+@@ -1156,7 +1157,7 @@ fn m6_embedded_compiler_payload_matches_canonical_and_runs_from_cold_cache() {
+         String::from_utf8_lossy(&public_result.stderr)
+     );
+     assert!(
+-        public_output.contains("ok | 49 passed | 0 failed"),
+-        "M6 must execute the derived 49-case retained, IC-01, and current B2a materialized population (5 + 6 + 17 + 21), output: {public_output}"
++        public_output.contains("ok | 55 passed | 0 failed"),
++        "M6 must execute the derived 55-case retained, IC-01, B2a, and B2b2 public ICU materialized population (5 + 6 + 17 + 21 + 6), output: {public_output}"
+     );
+ }
+diff --git a/crates/lykn-lang/tests/icu_cross_compiler_tests.rs b/crates/lykn-lang/tests/icu_cross_compiler_tests.rs
+index 18c02349..a5c4a1d4 100644
+--- a/crates/lykn-lang/tests/icu_cross_compiler_tests.rs
++++ b/crates/lykn-lang/tests/icu_cross_compiler_tests.rs
+@@ -594,3 +594,30 @@ fn native_icu_allocator_preserves_effects_and_is_per_template() {
+     assert_eq!(first, recovered, "per-template allocation state leaked");
+     assert_eq!(eval_js(&recovered, &[("_v0", "2")]), "2");
+ }
++
++#[test]
++fn cross_icu_generated_names_keep_pure_values() {
++    assert!(deno_available(), "ICU generated-name parity requires Deno");
++
++    assert_cross_equiv(r#"(template "{n} {n}" :n (+ _n 1))"#, &[("_n", "2")], "3 3");
++    assert_cross_equiv(
++        r#"(template "{n, plural, one {one} other {#}}" :n _v0)"#,
++        &[("_v0", "2")],
++        "2",
++    );
++    assert_cross_equiv(
++        r#"(template "{role, select, owner {Owner} other {Guest}}" :role _v0)"#,
++        &[("_v0", r#""owner""#)],
++        "Owner",
++    );
++    assert_cross_equiv(
++        r#"(template "{n, plural, one {{v0} {v0}} other {{v0} {v0}}}" :n 2 :v0 (+ 3 4))"#,
++        &[],
++        "7 7",
++    );
++    assert_cross_equiv(
++        r#"(template "{x}-{x}" :x (template "{n, plural, one {one} other {#}}" :n _v0))"#,
++        &[("_v0", "2")],
++        "2-2",
++    );
++}
+diff --git a/packages/lang/compiler.js b/packages/lang/compiler.js
+index d4328637..00c214b8 100644
+--- a/packages/lang/compiler.js
++++ b/packages/lang/compiler.js
+@@ -193,13 +193,68 @@ function templateConcat(args) {
+   };
+ }
+ 
+-let _icuGensymCounter = 0;
+-function freshIcuVar() {
+-  return { type: 'Identifier', name: `_v${_icuGensymCounter++}` };
++function reserveIcuIdentifiers(node, occupied, visited = new WeakSet()) {
++  if (!node || typeof node !== 'object' || visited.has(node)) return;
++  visited.add(node);
++
++  if (node.type === 'Identifier') {
++    occupied.add(node.name);
++    return;
++  }
++  if (node.type === 'Literal') return;
++
++  for (const value of Object.values(node)) {
++    if (Array.isArray(value)) {
++      for (const child of value) reserveIcuIdentifiers(child, occupied, visited);
++    } else if (value && typeof value === 'object') {
++      reserveIcuIdentifiers(value, occupied, visited);
++    }
++  }
++}
++
++function createIcuNameAllocator(expressions) {
++  const occupied = new Set();
++  const visited = new WeakSet();
++  for (const expression of expressions) {
++    reserveIcuIdentifiers(expression, occupied, visited);
++  }
++
++  let nextSuffix = 0;
++  let nextSelectorIndex = 0;
++
++  function allocate(preferred) {
++    if (!occupied.has(preferred)) {
++      occupied.add(preferred);
++      return { type: 'Identifier', name: preferred };
++    }
++
++    while (true) {
++      if (!Number.isSafeInteger(nextSuffix)) {
++        throw new Error('template: generated identifier allocation exhausted');
++      }
++      const suffix = nextSuffix;
++      nextSuffix += 1;
++      const candidate = `${preferred}__lyknGenerated${suffix}`;
++      if (!occupied.has(candidate)) {
++        occupied.add(candidate);
++        return { type: 'Identifier', name: candidate };
++      }
++    }
++  }
++
++  function nextSelector() {
++    if (!Number.isSafeInteger(nextSelectorIndex)) {
++      throw new Error('template: generated selector allocation exhausted');
++    }
++    const preferred = `_v${nextSelectorIndex}`;
++    nextSelectorIndex += 1;
++    return allocate(preferred);
++  }
++
++  return { allocate, nextSelector };
+ }
+ 
+ function templateIcu(args) {
+-  _icuGensymCounter = 0;
+   const icuString = args[0].value;
+   let mft;
+   try {
+@@ -257,6 +312,8 @@ function templateIcu(args) {
+     }
+   }
+ 
++  const names = createIcuNameAllocator(kwargs.values());
++
+   // Hoist non-trivial kwarg expressions referenced more than once.
+   const slotMultiplicity = countSlotReferences(mft);
+   const hoistedDecls = [];
+@@ -265,7 +322,7 @@ function templateIcu(args) {
+     const refs = slotMultiplicity.get(key) ?? 0;
+     const isTrivial = expr.type === 'Identifier' || expr.type === 'Literal';
+     if (refs > 1 && !isTrivial) {
+-      const local = { type: 'Identifier', name: `_${toJsIdentifier(key)}` };
++      const local = names.allocate(`_${toJsIdentifier(key)}`);
+       hoistedDecls.push({
+         type: 'VariableDeclaration',
+         kind: 'const',
+@@ -277,7 +334,7 @@ function templateIcu(args) {
+     }
+   }
+ 
+-  const body = emitMft(mft, finalKwargs);
++  const body = emitMft(mft, finalKwargs, names);
+ 
+   if (hoistedDecls.length === 0) {
+     return body;
+@@ -298,7 +355,7 @@ function templateIcu(args) {
+   };
+ }
+ 
+-function emitMft(nodes, kwargs) {
++function emitMft(nodes, kwargs, names) {
+   // If MFT is all literals, emit a simple template literal
+   if (nodes.every((n) => n.type === 'literal')) {
+     const text = nodes.map((n) => n.value).join('');
+@@ -320,11 +377,11 @@ function emitMft(nodes, kwargs) {
+     } else if (node.type === 'plural') {
+       quasis.push(makeTemplateElement(currentSegment, false));
+       currentSegment = '';
+-      expressions.push(emitPluralIife(node, kwargs));
++      expressions.push(emitPluralIife(node, kwargs, names));
+     } else if (node.type === 'select') {
+       quasis.push(makeTemplateElement(currentSegment, false));
+       currentSegment = '';
+-      expressions.push(emitSelectIife(node, kwargs));
++      expressions.push(emitSelectIife(node, kwargs, names));
+     }
+   }
+ 
+@@ -333,10 +390,10 @@ function emitMft(nodes, kwargs) {
+   return { type: 'TemplateLiteral', quasis, expressions };
+ }
+ 
+-function emitPluralIife(node, kwargs) {
++function emitPluralIife(node, kwargs, names) {
+   // (() => { const _v = <kwarg>; if (_v === N) return ...; if (_v === 1) return ...; return ...; })()
+   const valueExpr = kwargs.get(node.name);
+-  const vId = freshIcuVar();
++  const vId = names.nextSelector();
+ 
+   const body = [];
+   // const _v = <value>;
+@@ -359,7 +416,7 @@ function emitPluralIife(node, kwargs) {
+     body.push({
+       type: 'IfStatement',
+       test: { type: 'BinaryExpression', operator: '===', left: vId, right: { type: 'Literal', value: n } },
+-      consequent: { type: 'ReturnStatement', argument: emitMft(branch.body, makeSlotOverride(kwargs, node.name, vId)) },
++      consequent: { type: 'ReturnStatement', argument: emitMft(branch.body, makeSlotOverride(kwargs, node.name, vId), names) },
+     });
+   }
+ 
+@@ -371,7 +428,7 @@ function emitPluralIife(node, kwargs) {
+       body.push({
+         type: 'IfStatement',
+         test,
+-        consequent: { type: 'ReturnStatement', argument: emitMft(branch.body, makeSlotOverride(kwargs, node.name, vId)) },
++        consequent: { type: 'ReturnStatement', argument: emitMft(branch.body, makeSlotOverride(kwargs, node.name, vId), names) },
+       });
+     }
+   }
+@@ -380,7 +437,7 @@ function emitPluralIife(node, kwargs) {
+   const otherBranch = categoryBranches.find((b) => b.key === 'other');
+   body.push({
+     type: 'ReturnStatement',
+-    argument: emitMft(otherBranch.body, makeSlotOverride(kwargs, node.name, vId)),
++    argument: emitMft(otherBranch.body, makeSlotOverride(kwargs, node.name, vId), names),
+   });
+ 
+   return {
+@@ -395,9 +452,9 @@ function emitPluralIife(node, kwargs) {
+   };
+ }
+ 
+-function emitSelectIife(node, kwargs) {
++function emitSelectIife(node, kwargs, names) {
+   const valueExpr = kwargs.get(node.name);
+-  const vId = freshIcuVar();
++  const vId = names.nextSelector();
+ 
+   const body = [];
+   body.push({
+@@ -415,14 +472,14 @@ function emitSelectIife(node, kwargs) {
+     body.push({
+       type: 'IfStatement',
+       test: { type: 'BinaryExpression', operator: '===', left: vId, right: { type: 'Literal', value: branch.key } },
+-      consequent: { type: 'ReturnStatement', argument: emitMft(branch.body, makeSlotOverride(kwargs, node.name, vId)) },
++      consequent: { type: 'ReturnStatement', argument: emitMft(branch.body, makeSlotOverride(kwargs, node.name, vId), names) },
+     });
+   }
+ 
+   const otherBranch = node.branches.find((b) => b.key === 'other');
+   body.push({
+     type: 'ReturnStatement',
+-    argument: emitMft(otherBranch.body, makeSlotOverride(kwargs, node.name, vId)),
++    argument: emitMft(otherBranch.body, makeSlotOverride(kwargs, node.name, vId), names),
+   });
+ 
+   return {
+@@ -1335,7 +1392,7 @@ const macros = {
+           );
+         }
+         // No slots — emit using the parsed MFT (resolves escape sequences)
+-        return emitMft(mft, new Map());
++        return emitMft(mft, new Map(), createIcuNameAllocator([]));
+       } else if (args.length >= 2 && args[1].type === 'keyword') {
+         // Rule 2: literal string + keyword → ICU mode
+         // Check ambiguous form: keyword with no value
+diff --git a/test/forms/icu-generated-names.test.js b/test/forms/icu-generated-names.test.js
+new file mode 100644
+index 00000000..876254c7
+--- /dev/null
++++ b/test/forms/icu-generated-names.test.js
+@@ -0,0 +1,209 @@
++import {
++  assertEquals,
++  assertNotEquals,
++  assertStringIncludes,
++  assertThrows,
++} from "jsr:@std/assert";
++import { compileExpr, expandExpr, lykn, read } from "lang/mod.js";
++import { compile } from "lang/compiler.js";
++import {
++  compileWithHostInvocations,
++  hostInvocationRequest,
++  newHostInvocationId,
++} from "lang/host-invocation.js";
++import { compileLykn as browserCompileLykn } from "browser/compiler.js";
++
++async function executeModule(source, expected) {
++  const directory = await Deno.makeTempDir({ prefix: "lykn-icu-generated-" });
++  const path = `${directory}/output.mjs`;
++  try {
++    await Deno.writeTextFile(path, `${source}\nexport {};\n`);
++    const result = await new Deno.Command(Deno.execPath(), {
++      args: ["run", "--no-config", "--no-prompt", "--no-npm", "--cached-only", path],
++      cwd: directory,
++      stdout: "piped",
++      stderr: "piped",
++    }).output();
++    const stderr = new TextDecoder().decode(result.stderr);
++    assertEquals(result.code, 0, stderr);
++    assertEquals(stderr, "");
++    assertEquals(new TextDecoder().decode(result.stdout), expected);
++  } finally {
++    await Deno.remove(directory, { recursive: true });
++  }
++}
++
++function findSavedCall(nodes) {
++  for (const node of nodes) {
++    if (node.type !== "list") continue;
++    const values = node.values;
++    if (
++      values.length === 3 && values[0].type === "atom" && values[0].value === "saved" &&
++      values[1].type === "atom" && values[1].value === "receiver" &&
++      values[2].type === "atom" && values[2].value === "_n"
++    ) return node;
++    const found = findSavedCall(values);
++    if (found) return found;
++  }
++  return null;
++}
++
++function collectIdentifiers(node, names = new Set(), seen = new WeakSet()) {
++  if (!node || typeof node !== "object" || seen.has(node)) return names;
++  seen.add(node);
++  if (node.type === "Identifier") {
++    names.add(node.name);
++    return names;
++  }
++  if (node.type === "Literal") return names;
++  for (const value of Object.values(node)) {
++    if (Array.isArray(value)) {
++      for (const child of value) collectIdentifiers(child, names, seen);
++    } else if (value && typeof value === "object") {
++      collectIdentifiers(value, names, seen);
++    }
++  }
++  return names;
++}
++
++Deno.test("public ICU hoists reserve compiled source identifiers", async () => {
++  await executeModule(lykn(`
++    (bind _n 2)
++    (console:log (template "{n} {n}" :n (+ _n 1)))
++  `), "3 3\n");
++
++  await executeModule(lykn(`
++    (bind _n 8)
++    (console:log (template "{n} {n}" :n (+ _n! 1)))
++  `), "9 9\n");
++
++  await executeModule(lykn(`
++    (bind _n (object (value 4)))
++    (console:log (template "{n} {n}" :n (+ _n:value 1)))
++  `), "5 5\n");
++
++  await executeModule(lykn(`
++    (bind _n 1)
++    (bind _n__lyknGenerated0 6)
++    (console:log (template "{n} {n}" :n (+ _n _n__lyknGenerated0)))
++  `), "7 7\n");
++
++  await executeModule(lykn(`
++    (bind left 10)
++    (bind right 30)
++    (console:log (template "{a-b}|{a-b}|{aB}|{aB}" :a-b (+ left 1) :aB (+ right 10)))
++  `), "11|11|40|40\n");
++});
++
++Deno.test("public ICU selectors and hoists share one generated-name set", async () => {
++  await executeModule(lykn(`
++    (bind _v0 2)
++    (console:log (template "{n, plural, one {one} other {#}}" :n _v0))
++    (console:log (template "{n, plural, one {{v0} {v0}} other {{v0} {v0}}}" :n 2 :v0 (+ 3 4)))
++    (console:log (template "{x}-{x}" :x (template "{n, plural, one {one} other {#}}" :n _v0)))
++  `), "2\n7 7\n2-2\n");
++
++  await executeModule(lykn(`
++    (bind _v0 1)
++    (console:log (template "{n, plural, one {{n, plural, one {deep-one} other {deep-other}}} other {outer-other}}" :n _v0))
++  `), "deep-one\n");
++
++  await executeModule(lykn(`
++    (bind owner "owner")
++    (console:log (template "{role, select, owner {Owner} other {Guest}}" :role owner))
++    (console:log (template "{role, select, owner {{n, plural, one {one} other {#}}} other {N/A}}" :role owner :n 3))
++  `), "Owner\n3\n");
++
++  const preferred = lykn('(template "{x}-{x}" :x (next-id))');
++  assertStringIncludes(preferred, "const _x = nextId()");
++});
++
++Deno.test("public ICU keeps once-only effects and original exceptions", async () => {
++  await executeModule(lykn(`
++    (bind calls (array))
++    (bind _x 10)
++    (func next-id :args (:number value) :returns :number :body (calls:push value) (+ value calls:length))
++    (console:log (template "{x}-{x}" :x (next-id _x)))
++    (console:log (JSON:stringify calls))
++  `), "11-11\n[10]\n");
++
++  const throwing = lykn(`
++    (bind _n 5)
++    (func explode :args (:any value) :body (throw (new Error "expected boom")))
++    (console:log (template "{x}-{x}" :x (explode _n)))
++  `);
++  const directory = await Deno.makeTempDir({ prefix: "lykn-icu-throw-" });
++  const path = `${directory}/output.mjs`;
++  try {
++    await Deno.writeTextFile(path, `${throwing}\nexport {};\n`);
++    const result = await new Deno.Command(Deno.execPath(), {
++      args: ["run", "--no-config", "--no-prompt", "--no-npm", "--cached-only", path],
++      cwd: directory,
++      stdout: "piped",
++      stderr: "piped",
++    }).output();
++    assertNotEquals(result.code, 0);
++    assertStringIncludes(new TextDecoder().decode(result.stderr), "expected boom");
++  } finally {
++    await Deno.remove(directory, { recursive: true });
++  }
++});
++
++Deno.test("public ICU preserves lazy and eager branch evaluation", async () => {
++  const source = lykn(`
++    (bind calls (array))
++    (func branch-effect :args () :body (calls:push 99) calls:length)
++    (console:log (template "{role, select, owner {Owner} other {{unused}}}" :role "owner" :unused (branch-effect)))
++    (console:log (JSON:stringify calls))
++    (console:log (template "{role, select, owner {Owner} other {{unused} {unused}}}" :role "owner" :unused (branch-effect)))
++    (console:log (JSON:stringify calls))
++  `);
++  await executeModule(source, "Owner\n[]\nOwner\n[99]\n");
++});
++
++Deno.test("public ICU fragments and repeated calls keep independent state", async () => {
++  const source = '(template "{n} {n}" :n (+ _n 1))';
++  const form = read(source)[0];
++  const expanded = expandExpr(form);
++  const fragment = compileExpr(expanded);
++  const identifiers = collectIdentifiers(fragment);
++  assertEquals(fragment.type, "CallExpression");
++  assertEquals(identifiers.has("_n"), true);
++  assertEquals(identifiers.has("_n__lyknGenerated0"), true);
++  await executeModule(lykn(`(bind _n 2) (console:log ${source})`), "3 3\n");
++
++  const first = lykn(source);
++  assertThrows(() => lykn('(template "{n, plural, one {missing other}}" :n _v0)'), Error);
++  const recovered = lykn(source);
++  assertEquals(recovered, first);
++  await executeModule(`const _n = 2;\nconsole.log(${recovered.trim().replace(/;$/, "")});`, "3 3\n");
++  await executeModule(`const _n = 2;\nconsole.log(${lykn(source).trim().replace(/;$/, "")});`, "3 3\n");
++});
++
++Deno.test("browser ICU ESM and private Reflect calls preserve capture anchors", async () => {
++  await executeModule(browserCompileLykn(`
++    (bind _n 2)
++    (console:log (template "{n} {n}" :n (+ _n 1)))
++    (console:log (template "{n, plural, one {{v0} {v0}} other {{v0} {v0}}}" :n 2 :v0 (+ 3 4)))
++  `), "3 3\n7 7\n");
++
++  const source = `
++    (const receiver (object (base 10)))
++    (const _n (array 4))
++    (const calls (array))
++    (function saved (value)
++      (calls:push this:base)
++      (return (+ this:base value)))
++    (console:log (template "{n} {n}" :n (saved receiver _n)))
++    (console:log (JSON:stringify calls))
++  `;
++  for (const reflectBinding of [false, true]) {
++    const forms = read(`${reflectBinding ? "(const Reflect 0)" : ""}${source}`);
++    const anchor = findSavedCall(forms);
++    if (!anchor) throw new Error("raw private fixture lost its original saved-call node");
++    const request = hostInvocationRequest(newHostInvocationId(), anchor);
++    const output = compileWithHostInvocations(forms, compile, [request]);
++    assertEquals(output.includes("__lyknHostInvocationPending__"), false);
++    await executeModule(output, "14 14\n[10]\n");
++  }
++});

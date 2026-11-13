@@ -1,0 +1,9 @@
+cwd=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+git status --porcelain=v1
+git rev-parse HEAD HEAD^{tree}
+git show -s --format=full HEAD
+git show -s --format=%B HEAD | git interpret-trailers --parse
+git diff --stat 228e8c99 HEAD
+git diff 228e8c99 HEAD -- packages/lang/compiler.js test/forms/icu-generated-names.test.js crates/lykn-lang/tests/icu_cross_compiler_tests.rs crates/lykn-cli/tests/macro_dependencies.rs
+cmp packages/lang/compiler.js crates/lykn-lang/embedded/packages/lang/compiler.js
+git diff --exit-code 228e8c99 HEAD -- crates/lykn-lang/src packages/lang/host-invocation.js packages/lang/expander-core.js packages/browser/compiler.js

@@ -1,0 +1,4 @@
+true
+CallExpression CallExpression CallExpression
+true true
+{"type":"CallExpression","callee":{"type":"ArrowFunctionExpression","params":[],"body":{"type":"BlockStatement","body":[{"type":"VariableDeclaration","kind":"const","declarations":[{"type":"VariableDeclarator","id":{"type":"Identifier","name":"_n__lyknGenerated0"},"init":{"type":"BinaryExpression","operator":"+","left":{"type":"Identifier","name":"_n"},"right":{"type":"Literal","value":1}}}]},{"type":"ReturnStatement","argument":{"type":"TemplateLiteral","quasis":[{"type":"TemplateElement","value":{"raw":"","cooked":""},"tail":false},{"type":"TemplateElement","value":{"raw":" ","cooked":" "},"tail":false},{"type":"TemplateElement","value":{"raw":"","cooked":""},"tail":true}],"expressions":[{"type":"Identifier","name":"_n__lyknGenerated0"},{"type":"Identifier","name":"_n__lyknGenerated0"}]}}]},"expression":false},"arguments":[]}

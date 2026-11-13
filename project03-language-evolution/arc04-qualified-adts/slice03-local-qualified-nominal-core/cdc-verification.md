@@ -1269,3 +1269,79 @@ remain open. After gates, corrected unissued public recipe test-home conflict
 was rechecked resolved; draft17 still requires final accepted-native pin and
 root issue. No public software acceptance follows. Root owns planning Git,
 ledger closure and next source/build transfer.
+
+## B2b2 public ICU 57c76c99 — 2026-11-13 independent acceptance
+
+**B2-ICU-P accepted only**, separate Sol6.1High, clean
+57c76c99cbed07ff992e78aac8afefa4bdf0b2ad,
+treef044d795e88c3dac8e84a73a557cf071edd5327c, codex/qualified-adt-core.
+Exact5authorized paths, mirrorcmp0 and literal/Git-parsed contiguous Codex/Billo
+trailers verified. Source/build returns clean to root, no active test/build or
+source/Git/index/ledger/status changes. No release/remote/dependency action.
+
+Reviewed full issued17/recipe/AGENTS/actual compiler+test+M6+parity diff and
+CCindex390914710182cd18e7edbeef94de2e82639746c62cdc9b4a6f8cb7064a3e6bc4
+(snapshot retained). Per-template private closure scans actual compiled AST
+Identifier names before any allocation, preserves AST/PROVISIONAL identities,
+shares immediate-reserving checked names across all hoists/selectors/recursion
+and literal-only dispatch; ambient counter removed. Public API/grammar/runtime/
+private protocol/native production untouched. Map/effect/IIFE/error boundaries
+preserved; no generic cyclic-input or ordinary source-binding hygiene claim.
+
+Fresh stage0 then **128focused public cases/43steps**, **28native/public ICU**
+pass. Six real groups prove canonical source/normalized/root/suffix/a-b+aB,
+true sharedhoist/selector7 7, nested templates, exact once-only values/effects,
+original exception, inert once-reference versus eager repeated branch-only
+work, real fragment AST plus whole-module recovery and staged browser ESM.
+Trusted private raw API uses actual original3atom saved-call node, same forms,
+normal and moduleReflect fallback both runtime14 14/[10], no pending callee.
+No source-looking trust forgery/clone or browser-source producer claim.
+
+Reviewer supplements product coverage honestly: actual canonical _v0 select
+ESM0/Owner (product canonical select uses owner, raw parity uses _v0); repeated
+compileExpr(expandExpr(form)) around actual invalid template yields3CallExpressions,
+true/true JSON equality and retained correct original/generated Identifier AST.
+Returned fragment itself is inspected, not executed. Small new evidence logic
+is Lykn. First helper invocation wrongly used --no-config/--no-npm while
+importing compiler's existing astring dependency: setup1/downstream absent
+output1/copy miss retained. Corrected existing compiler config/cached-only/no
+remote-network invocation0; generated select module0. No product HOLD/failure.
+
+ONE independent final-source **make check0**: **1199native library,
+1563product/67steps,482docs once**; rawfullstdout1791/5178/5687/5691 andstderr174
+(22generated docfiles/15skipped). Exact same full innerM6 proves **14module
+comparisons true**, actual **55materialized cases0failed/status0**
+(5+6+17+21+6), true copiedCLI/absent owned compilerXDG/no canonical fallback,
+lang→materialized and browser→fresh stage. Nested command explicitly selects
+new6group file/private imports; no duplicate full/docs/M6 gate. Existing Deno
+cache reused; cold scope is owned compiler cache/copiedCLI, not all tools.
+
+FinalHEAD citations0=64documents/601historical. Fresh browser raw363450/
+min173685/gzip**46857<81920**,headroom35063; historical27630/delta19227,
+**+257**versus accepted46600. Existing esbuild Download/astring warnings retained;
+size gate is NOT wholly offline. No manifest/lock/new dependency changed.
+
+[Index](artifacts/increment-b2b2-public/cdc/README.md) records six-group verdict,
+source/gate readback/limits and expected negatives versus setup chronology.
+[Frozen packet](artifacts/increment-b2b2-public/cdc/receipts-57c76c99.tar.gz)
+SHA256 `3163d4a2cbb81ec5c3278e527f80953b653154202fbd97ac0d7b205f02f6a2b8`,
+verifiedOK0. Commands/env/raw statuses/streams/generated ESM/fragmentJSON/full
+provenance+diff/M6 receipts retained, no caches/binary. Own tmp/XDG/npm dirs
+precreated outside repos/config ancestors; existing DENO_DIR used.
+
+CC emptycache selection miss, authoredduplicate_v0/eageroracle/unbound_n,
+pretestfullformat and50receipt relocation remain unchanged in CC chronology;
+actual command/env/status bytes and canonical mapping were read. Byte-move is
+retained CC/root provenance, not independently replayed migration or a product
+finding. Original CC policy-unresolved prose is erroneous and not inherited:
+B2-ID-NAME policy is resolved, implementation open. Current independent results
+stand on fresh final-source receipts, not CC attestation or failed gates.
+
+A/B1/IC/B2-LX/B2-UNIT/B2-ICU-N remain accepted within fixed-nine/I4/fallback/
+warm-cache/catch/default/colon-triviality/nested-alias/annotation/emitter/fragment/
+browser indirect-eval limits. Browser proof remains compile-to-ESM. Ordinary
+source identity/allocation/hygiene, OwnerRef/CaseRef/fieldTypeRef/nested transport/
+private public requests/nominal/purity/check_strict-dev join, DTS/API/S06/consumer/
+book/human and LC02–08/B2b/S03 remain open. Runtime-name draft B2b3 is unissued;
+no new catch grammar or source-name/owner acceptance follows. Root owns planning
+Git/ledger closure and any subsequent implementation issue.

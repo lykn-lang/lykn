@@ -1,0 +1,141 @@
+running 6 tests from ./test/forms/icu-generated-names.test.js
+public ICU hoists reserve compiled source identifiers ... FAILED (34ms)
+public ICU selectors and hoists share one generated-name set ... FAILED (16ms)
+public ICU keeps once-only effects and original exceptions ... FAILED (17ms)
+public ICU preserves lazy and eager branch evaluation ... FAILED (16ms)
+public ICU fragments and repeated calls keep independent state ... FAILED (462µs)
+browser ICU ESM and private Reflect calls preserve capture anchors ... FAILED (15ms)
+
+ ERRORS 
+
+public ICU hoists reserve compiled source identifiers => ./test/forms/icu-generated-names.test.js:69:6
+error: AssertionError: Values are not equal: error: Uncaught (in promise) ReferenceError: Cannot access '_n' before initialization
+  const _n = _n + 1;
+             ^
+    at file:///private/tmp/lykn-b2b2-public-cc/tmp/lykn-icu-generated-1bec670e1e829df0/output.mjs:3:14
+    at file:///private/tmp/lykn-b2b2-public-cc/tmp/lykn-icu-generated-1bec670e1e829df0/output.mjs:5:3
+
+
+
+    [Diff] Actual / Expected
+
+
+-   1
++   0
+
+  throw new AssertionError(message);
+        ^
+    at assertEquals (https://jsr.io/@std/assert/1.0.19/equals.ts:67:9)
+    at executeModule (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/icu-generated-names.test.js:28:5)
+    at async file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/icu-generated-names.test.js:70:3
+
+public ICU selectors and hoists share one generated-name set => ./test/forms/icu-generated-names.test.js:91:6
+error: AssertionError: Values are not equal: error: Uncaught SyntaxError: Identifier '_v0' has already been declared
+const _v0 = "owner";
+      ^
+    at <anonymous> (file:///private/tmp/lykn-b2b2-public-cc/tmp/lykn-icu-generated-bd6147009c3d483d/output.mjs:7:7)
+
+
+
+    [Diff] Actual / Expected
+
+
+-   1
++   0
+
+  throw new AssertionError(message);
+        ^
+    at assertEquals (https://jsr.io/@std/assert/1.0.19/equals.ts:67:9)
+    at executeModule (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/icu-generated-names.test.js:28:5)
+    at async file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/icu-generated-names.test.js:92:3
+
+public ICU keeps once-only effects and original exceptions => ./test/forms/icu-generated-names.test.js:107:6
+error: AssertionError: Values are not equal: error: Uncaught (in promise) ReferenceError: Cannot access '_x' before initialization
+  const _x = nextId(_x);
+                    ^
+    at file:///private/tmp/lykn-b2b2-public-cc/tmp/lykn-icu-generated-be29abff70cd2413/output.mjs:16:21
+    at file:///private/tmp/lykn-b2b2-public-cc/tmp/lykn-icu-generated-be29abff70cd2413/output.mjs:18:3
+
+
+
+    [Diff] Actual / Expected
+
+
+-   1
++   0
+
+  throw new AssertionError(message);
+        ^
+    at assertEquals (https://jsr.io/@std/assert/1.0.19/equals.ts:67:9)
+    at executeModule (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/icu-generated-names.test.js:28:5)
+    at async file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/icu-generated-names.test.js:108:3
+
+public ICU preserves lazy and eager branch evaluation => ./test/forms/icu-generated-names.test.js:136:6
+error: AssertionError: Values are not equal: error: Uncaught (in promise) Error: unselected
+  throw new Error("unselected");
+        ^
+    at explode (file:///private/tmp/lykn-b2b2-public-cc/tmp/lykn-icu-generated-64b177a8348c4f2/output.mjs:2:9)
+    at file:///private/tmp/lykn-b2b2-public-cc/tmp/lykn-icu-generated-64b177a8348c4f2/output.mjs:10:19
+    at file:///private/tmp/lykn-b2b2-public-cc/tmp/lykn-icu-generated-64b177a8348c4f2/output.mjs:16:3
+
+
+
+    [Diff] Actual / Expected
+
+
+-   1
++   0
+
+  throw new AssertionError(message);
+        ^
+    at assertEquals (https://jsr.io/@std/assert/1.0.19/equals.ts:67:9)
+    at executeModule (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/icu-generated-names.test.js:28:5)
+    at async file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/icu-generated-names.test.js:137:3
+
+public ICU fragments and repeated calls keep independent state => ./test/forms/icu-generated-names.test.js:144:6
+error: AssertionError: Values are not equal.
+
+
+    [Diff] Actual / Expected
+
+
+-   false
++   true
+
+  throw new AssertionError(message);
+        ^
+    at assertEquals (https://jsr.io/@std/assert/1.0.19/equals.ts:67:9)
+    at file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/icu-generated-names.test.js:152:3
+
+browser ICU ESM and private Reflect calls preserve capture anchors => ./test/forms/icu-generated-names.test.js:163:6
+error: AssertionError: Values are not equal: error: Uncaught (in promise) ReferenceError: Cannot access '_n' before initialization
+  const _n = _n + 1;
+             ^
+    at file:///private/tmp/lykn-b2b2-public-cc/tmp/lykn-icu-generated-8e30bce76c561b11/output.mjs:3:14
+    at file:///private/tmp/lykn-b2b2-public-cc/tmp/lykn-icu-generated-8e30bce76c561b11/output.mjs:5:3
+
+
+
+    [Diff] Actual / Expected
+
+
+-   1
++   0
+
+  throw new AssertionError(message);
+        ^
+    at assertEquals (https://jsr.io/@std/assert/1.0.19/equals.ts:67:9)
+    at executeModule (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/icu-generated-names.test.js:28:5)
+    at async file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/icu-generated-names.test.js:164:3
+
+ FAILURES 
+
+public ICU hoists reserve compiled source identifiers => ./test/forms/icu-generated-names.test.js:69:6
+public ICU selectors and hoists share one generated-name set => ./test/forms/icu-generated-names.test.js:91:6
+public ICU keeps once-only effects and original exceptions => ./test/forms/icu-generated-names.test.js:107:6
+public ICU preserves lazy and eager branch evaluation => ./test/forms/icu-generated-names.test.js:136:6
+public ICU fragments and repeated calls keep independent state => ./test/forms/icu-generated-names.test.js:144:6
+browser ICU ESM and private Reflect calls preserve capture anchors => ./test/forms/icu-generated-names.test.js:163:6
+
+FAILED | 0 passed | 6 failed (104ms)
+

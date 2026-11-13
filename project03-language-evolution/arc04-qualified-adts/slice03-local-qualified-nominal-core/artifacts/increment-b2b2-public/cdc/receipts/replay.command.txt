@@ -1,0 +1,5 @@
+cwd=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+env=environment.txt excluding full-only M6 hook
+./bin/lykn compile <canonical cdc/fixtures/public-replay.lykn> -o /private/tmp/lykn-b2b2-public-cdc/public-replay.mjs
+deno run -A --no-config --cached-only --no-npm --no-remote --deny-net --no-prompt /private/tmp/lykn-b2b2-public-cdc/public-replay.mjs
+deno run --no-config --cached-only --no-npm --no-remote --deny-net --no-prompt /private/tmp/lykn-b2b2-public-cdc/select-public.mjs

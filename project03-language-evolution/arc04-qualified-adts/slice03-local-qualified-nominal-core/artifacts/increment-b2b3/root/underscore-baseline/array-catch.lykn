@@ -1,0 +1,3 @@
+(bind _ 99)
+(try (throw (array 7))
+  (catch (array _) (console:log _)))

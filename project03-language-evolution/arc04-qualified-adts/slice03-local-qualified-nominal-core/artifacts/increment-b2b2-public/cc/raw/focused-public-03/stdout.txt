@@ -1,0 +1,10 @@
+running 6 tests from ./test/forms/icu-generated-names.test.js
+public ICU hoists reserve compiled source identifiers ... ok (79ms)
+public ICU selectors and hoists share one generated-name set ... ok (43ms)
+public ICU keeps once-only effects and original exceptions ... ok (32ms)
+public ICU preserves lazy and eager branch evaluation ... ok (14ms)
+public ICU fragments and repeated calls keep independent state ... ok (40ms)
+browser ICU ESM and private Reflect calls preserve capture anchors ... ok (43ms)
+
+ok | 6 passed | 0 failed (257ms)
+

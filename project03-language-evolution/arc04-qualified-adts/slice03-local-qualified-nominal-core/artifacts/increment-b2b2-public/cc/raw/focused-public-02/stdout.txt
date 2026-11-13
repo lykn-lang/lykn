@@ -1,0 +1,28 @@
+running 6 tests from ./test/forms/icu-generated-names.test.js
+public ICU hoists reserve compiled source identifiers ... ok (78ms)
+public ICU selectors and hoists share one generated-name set ... ok (43ms)
+public ICU keeps once-only effects and original exceptions ... FAILED (31ms)
+public ICU preserves lazy and eager branch evaluation ... ok (14ms)
+public ICU fragments and repeated calls keep independent state ... ok (43ms)
+browser ICU ESM and private Reflect calls preserve capture anchors ... ok (43ms)
+
+ ERRORS 
+
+public ICU keeps once-only effects and original exceptions => ./test/forms/icu-generated-names.test.js:121:6
+error: AssertionError: Expected actual: "error: Uncaught (in promise) ReferenceError: _n is not defined
+  const _x = explode(_n);
+                     ^
+    at file:///private/tmp/lykn-b2b2-public-cc/tmp/lykn-icu-throw-2706e38514aeca46/output.mjs:5:22
+    at file:///private/tmp/lykn-b2b2-public-cc/tmp/lykn-icu-throw-2706e38514aeca46/output.mjs:7:3
+" to contain: "expected boom".
+  throw new AssertionError(msg);
+        ^
+    at assertStringIncludes (https://jsr.io/@std/assert/1.0.19/string_includes.ts:29:9)
+    at file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/icu-generated-names.test.js:145:5
+
+ FAILURES 
+
+public ICU keeps once-only effects and original exceptions => ./test/forms/icu-generated-names.test.js:121:6
+
+FAILED | 5 passed | 1 failed (256ms)
+

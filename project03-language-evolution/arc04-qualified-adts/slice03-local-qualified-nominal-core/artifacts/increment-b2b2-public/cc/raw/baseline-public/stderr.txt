@@ -1,0 +1,2 @@
+error: JSR package manifest for '@std/assert' failed to load. Specifier not found in cache: "https://jsr.io/@std/assert/meta.json", --cached-only is specified.
+    at file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/icu-generated-names.test.js:6:8

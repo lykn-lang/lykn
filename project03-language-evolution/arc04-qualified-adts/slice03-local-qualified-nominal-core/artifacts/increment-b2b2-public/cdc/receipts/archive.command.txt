@@ -1,0 +1,4 @@
+cwd=/Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/arc04-qualified-adts/slice03-local-qualified-nominal-core/artifacts/increment-b2b2-public/cdc
+tar -cf - README.md readiness.md fixtures receipts | gzip -n > receipts-57c76c99.tar.gz
+shasum -a 256 receipts-57c76c99.tar.gz > receipts-57c76c99.tar.gz.sha256
+shasum -a 256 -c receipts-57c76c99.tar.gz.sha256

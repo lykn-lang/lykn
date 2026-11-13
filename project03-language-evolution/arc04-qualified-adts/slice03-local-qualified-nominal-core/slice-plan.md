@@ -3,7 +3,7 @@ project: project03-language-evolution
 arc: arc04-qualified-adts
 slice: slice03-local-qualified-nominal-core
 status: active
-version: "1.32"
+version: "1.33"
 depends-on: [slice01-contract-and-emission-design, slice02-existing-adt-correctness]
 ---
 
@@ -203,20 +203,22 @@ depth, supported native quotation paths, kernel-only D1 scope corrections and
 validation-only class-member queries. Existing source Func/class aggregate
 scope issues are explicit B2 inputs, not new IC-01 expansion claims.
 
-**Current assignment:** [iteration17](cc-prompt-iteration17.md), B2b2 public ICU
-generated-name hygiene from independently accepted native
-228e8c99707e5dc4ee86a50e8aea532c9a99a80b/tree5a2c9a4ba836aaf6e34ef63c04f08b7f47621877,
-under the
+**Current assignment:** none issued after independent acceptance of
+[iteration17](cc-prompt-iteration17.md) at
+57c76c99cbed07ff992e78aac8afefa4bdf0b2ad/treef044d795e88c3dac8e84a73a557cf071edd5327c.
+Root owns source/build and prepares B2b3 under the
 operator's B2 design/implementation/independent-validation authorization and
 2026-11-13 source-name decision. B2-LX and B2-UNIT are independently accepted.
 [B2 architecture](artifacts/b2-owner-and-lexical-design.md) still governs typed
-owner/case and occurrence-scoped queries; this native generated-name repair
-does not complete that architecture or ordinary source binding hygiene.
-Separate Sol readiness and preserved root failures ground this bounded recipe.
-Native B2-ICU-N closes; public B2-ICU-P stays open. Root issues17 after its
-planning commit and transfers source/build exclusively to Luna.
-Luna6High owns task source/build through clean handoff; Sol6.1High then reviews
-independently; root owns architecture and planning Git/index/status. Standard
+owner/case and occurrence-scoped queries; these ICU repairs do not complete
+that architecture or ordinary source binding hygiene.
+Both native B2-ICU-N and public B2-ICU-P are independently accepted. The
+general naming/owner work remains open. A concrete underscore-contract gap
+(B2-ID-DISCARD) awaits the operator's actual response before dependent naming
+implementation is issued; B2-ID-NAME itself is already resolved.
+For the next issued implementation Luna6High owns task source/build through
+clean handoff; Sol6.1High then reviews independently; root owns architecture
+and planning Git/index/status. Standard
 Autonomous Mode continues without routine permission stops. B2-LX has its own
 row and is not complete B2 or LC-02. Original B/C, purity, API and downstream
 gates survive. No release edits/integration, remote CI, push or publication.
@@ -242,7 +244,7 @@ gates survive. No release edits/integration, remote CI, push or publication.
 | cc-prompt-iteration14.md | 2026-11-13 | iteration13 | B2b1 owned native analysis unit and canonical JS/JSON/DTS consumer pairing | Accepted through iteration15 at5554a4d6 for B2-UNIT only; original weak-oracle HOLD/history retained |
 | cc-prompt-iteration15.md | 2026-11-13 | iteration14 | B2b1 correction01: complete-field private-construction Rustdoc discriminator | Independently accepted5554a4d6/treef632c415, strict Rustdoc-only correction and evidence retention; full B2b/S03 remain open |
 | cc-prompt-iteration16.md | 2026-11-13 | iteration15 | B2b2 native ICU generated-name allocator, actual hoist/selector capture repair | Independently accepted228e8c99/tree5a2c9a4b, B2-ICU-N only |
-| cc-prompt-iteration17.md | 2026-11-13 | iteration16 | B2b2 public ICU private allocator and actual mapped cold/browser/private runtime delivery | Issued after final source-readiness and native acceptance; public B2-ICU-P open |
+| cc-prompt-iteration17.md | 2026-11-13 | iteration16 | B2b2 public ICU private allocator and actual mapped cold/browser/private runtime delivery | Independently accepted57c76c99/treef044d795, B2-ICU-P only |
 
 The A correction loop used three refinement passes; B1 required no software
 correction. IC-01 is a distinct authorized usable prerequisite, not a retry
@@ -622,3 +624,38 @@ inputs unchanged since5554 and issues17 against this accepted native pin.
 Luna then owns source/build; Sol independently reviews after clean handback.
 New B2-ICU-P is open. Source-name runtime plan is still an unissued design,
 not a closed typed owner/name contract; original LC02–08 and full S03 survive.
+
+2026-11-13 v1.33: iteration17 returns clean57c76c99/treef044d795, exact5
+authorized paths, and separate Sol accepts B2-ICU-P only. Root verifies frozen
+archive3163d4a2cbb81ec5c3278e527f80953b653154202fbd97ac0d7b205f02f6a2b8,
+including byte-identical archived/current README. Independent focused128public/
+43steps plus28ICU parity, canonical _v0-select/repeated fragment recovery
+supplement, one final-source full1199library/1563product67steps/482docs
+(15skipped), actual mapped cold55/14, HEADcites64/601 and fresh46857gzip pass.
+Size rises257bytes from46600 with35063headroom; no application runtime helper
+is added. Existing pinned tool network/warnings remain explicit.
+
+All first attempts survive: CC empty-cache setup, duplicate-variable/unbound-
+name fixture and eager-exception oracle mistakes, full formatter2 beforetests,
+50-file byte-preserved source→planning evidence relocation and unchanged
+original command paths; one reviewer helper import-config failure/fallout,
+then corrected success. These are not six product capture findings, and failed
+verification attempts remain failed in history. Root preserved original CC
+index3909147 byte-identically before its append-only policy correction to
+4c83f8a8c4920d4c6da90f0570b8e698eeca6fa4da61593205fb7f0308bdc279:
+B2-ID-NAME was resolved, only implementation is open.
+
+Root's next unissued native runtime-name design receives source-only review:
+direct named-default declarations, raw async structural doors, catch's actual
+expression-pattern writer, source-reserved gensym, finalized metadata/JSON
+and exact source vs emitted protected-root lookup all need coherent handling.
+Three fresh canonical underscore probes at this accepted pin compile/run0 and
+print7/99/7 for scalar parameter/array parameter/array catch. Their raw sources,
+ESM/status/streams and scalar shadow warning remain in
+artifacts/increment-b2b3/root/underscore-baseline. Projectors and actual
+binders disagree. Root asks B2-ID-DISCARD as a genuine language-contract
+choice, recommending true discard in binding patterns and ordinary _value
+names; no response yet, so no dependent implementation or changed underscore
+semantics is inferred. Source/build is clean and root-owned. Native/public ICU
+rows close; all LC02–08, source hygiene/owners/check join/purity/DTS/API/docs/
+book/human and full S03 remain open. No release integration/remote action.

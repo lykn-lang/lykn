@@ -1,0 +1,33 @@
+
+running 28 tests
+test cross_error_zero_category ... ok
+test cross_error_unused_kwarg ... ok
+test cross_error_ambiguous_form ... ok
+test cross_error_missing_kwarg ... ok
+test cross_error_missing_other_branch ... ok
+test cross_error_unknown_plural_category ... ok
+test cross_error_overlap ... ok
+test cross_error_duplicate_kwarg ... ok
+test cross_concat_backward_compat ... ok
+test cross_dollar_escape ... ok
+test cross_icu_dollar_before_escaped_brace ... ok
+test cross_multi_use_identifier ... ok
+test cross_multi_use_side_effect ... ok
+test cross_multi_use_triple ... ok
+test cross_plural_explicit_zero ... ok
+test cross_escape_sequences ... ok
+test cross_nested_plural_same_selector ... ok
+test cross_plural_other ... ok
+test cross_plural_one ... ok
+test cross_select_branch_single_eval ... ok
+test cross_plural_inside_select ... ok
+test native_icu_allocator_preserves_effects_and_is_per_template ... ok
+test cross_simple_slot ... ok
+test cross_select_three_branches ... ok
+test cross_select_with_slot_in_branch ... ok
+test cross_marketing_screenshot ... ok
+test native_icu_generated_names_avoid_source_capture ... ok
+test cross_icu_generated_names_keep_pure_values ... ok
+
+test result: ok. 28 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.47s
+

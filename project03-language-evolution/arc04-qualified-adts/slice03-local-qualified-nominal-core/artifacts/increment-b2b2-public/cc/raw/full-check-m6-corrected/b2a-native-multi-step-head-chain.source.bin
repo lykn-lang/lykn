@@ -1,0 +1,1 @@
+(macro first () `(second)) (macro second () `(third)) (macro third () `41) (console:log (first))

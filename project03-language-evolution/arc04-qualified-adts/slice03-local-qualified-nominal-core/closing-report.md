@@ -704,3 +704,38 @@ requiring actual55 cases after implementation; this is an assigned verifier,
 not a preclaimed result. Broader source-name runtime graph remains unissued
 preparation; typed owner/nominal/purity/check/API/docs/book/human and LC02–08/
 S03 remain open. Full S03 retrospective still belongs at its actual closure.
+
+## Public ICU accepted; genuine naming-contract choice — 2026-11-13
+
+Separate Sol accepts B2-ICU-P at57c76c99/treef044d795. Root verifies frozen
+archive3163d4a2cbb81ec5c3278e527f80953b653154202fbd97ac0d7b205f02f6a2b8 and its
+byte-identical current/archived acceptance README. Full source scope is exactly
+the five authorized paths; canonical/embedded compiler bytes match. Independent
+focused128public/43steps+28parity and supplemental canonical _v0-select/
+repeated fragment invalid/recovery prove issued obligations. One final-source
+full1199library/1563product67steps/482docs(+15skipped), actual cold mapped55/14,
+HEADcites64/601 and fresh46857gzip pass. Size adds257bytes with35063headroom;
+allocation is compiler code, no helper is added to deployed applications.
+
+Failed/setup/oracle attempts and original relocated receipt commands survive
+with actual numeric statuses. Reviewer helper first used no-config/no-npm
+while importing the existing compiler dependency, then corrected the setup
+using cached configured imports; missing-output fallout is retained. This is
+not a product HOLD or permission/dependency-policy change. Root preserves CC's
+original3909147 index separately and verifies its append-only correction
+4c83f8a8c4920d4c6da90f0570b8e698eeca6fa4da61593205fb7f0308bdc279:
+the source-spelling policy is resolved, implementation remains open.
+
+Root's next runtime-name plan is unissued. Actual canonical underscore probes
+all compile/run0 but print7/99/7 for scalar _ parameter, array _ parameter and
+array _ catch. Lookup projectors and emitted binder roles disagree, and scalar
+analysis also warns about shadowing. The preserved examples make B2-ID-DISCARD
+a concrete language-contract question: discard in binding patterns with _value
+as an ordinary name, versus ordinary _ except existing explicit wildcard/skip
+positions. Root recommends the former and has asked for the actual operator
+choice. No answer or changed semantics is inferred. This is a design gate,
+not routine permission to repair code. Source/build is clean and root-owned;
+no next CC assignment is issued yet. ICU rows close only; ordinary source
+hygiene/OwnerRef/CaseRef/check join/nominal/purity/DTS/API/docs/book/human and
+LC02–08/S03 remain open. Release stays clean0829e892; no integration/remote
+publication action ran. Full S03 retrospective remains due at actual closure.

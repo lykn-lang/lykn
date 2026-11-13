@@ -1,0 +1,2 @@
+Check test/forms/template-icu.test.js
+Check test/forms/icu-generated-names.test.js
