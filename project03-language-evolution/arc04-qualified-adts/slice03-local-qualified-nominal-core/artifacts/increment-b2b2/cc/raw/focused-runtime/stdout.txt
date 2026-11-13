@@ -1,0 +1,7 @@
+
+running 2 tests
+test native_icu_allocator_preserves_effects_and_is_per_template ... ok
+test native_icu_generated_names_avoid_source_capture ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 25 filtered out; finished in 0.31s
+

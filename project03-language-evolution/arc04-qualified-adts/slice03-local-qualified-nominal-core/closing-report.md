@@ -664,3 +664,24 @@ and corrected that false-positive route. Those proof-design errors belong in
 the eventual retrospective alongside CC author/setup errors, not solely the
 implementation contributor's record. No comparative model-efficacy claim is
 made. Earlier archives/prompts/source contexts remain byte-preserved.
+
+## Native generated-name repair proposed — 2026-11-13
+
+CC returns228e8c99/tree5a2c9a4b for native B2-ICU-N only, pending independent
+Sol. Root retained two real original CLI TDZ failures and positive control.
+One per-template allocator reserves normalized source roots and shares names
+between hoists/selectors; new runtime cases cover source/generated and actual
+generated/generated capture, effects/recovery and nested templates. Canonical
+checked/stripped output is3 3, full and detailed cold gates are CC-green.
+First formatting/lint failures and the test-oracle refinement are preserved.
+Existing pinned esbuild acquisition during size measurement is explicit;
+no claim the entire validation was offline. Public counterparts are source-
+ready drafts only. Ordinary source-name hygiene, typed owner activation and
+LC02–08/S03 remain open. No release integration or publication occurred.
+
+Root handoff bookkeeping: staged planning diff--check exits2 only for original
+tool-output whitespace (rustfmt/Clippy diagnostic layout and trailing blank
+lines in successful test streams). Those bytes are intentional raw evidence
+and remain unchanged. Separate authored Markdown/index diff--check exits0;
+source formatting/diff gates pass. No raw stream was cleaned to make an
+evidence-preservation check appear green.

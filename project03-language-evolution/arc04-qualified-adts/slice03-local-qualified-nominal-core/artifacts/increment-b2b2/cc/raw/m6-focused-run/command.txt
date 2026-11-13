@@ -1,0 +1,4 @@
+Command: cargo test -p lykn-cli --test macro_dependencies m6_embedded_compiler_payload_matches_canonical_and_runs_from_cold_cache -- --exact --nocapture
+Working directory: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+Environment: XDG_CACHE_HOME=/private/tmp/lykn-b2b2-cc/xdg; NPM_CONFIG_CACHE=/private/tmp/lykn-b2b2-cc/npm; TMPDIR=/private/tmp/lykn-b2b2-cc/tmp; DENO_DIR=/Users/oubiwann/Library/Caches/deno; LYKN_MACRO_DEPENDENCIES_EVIDENCE_DIR=/Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/arc04-qualified-adts/slice03-local-qualified-nominal-core/artifacts/increment-b2b2/cc/raw/m6-receipts
+Receipt directory was precreated and lies outside runtime/cache trees.

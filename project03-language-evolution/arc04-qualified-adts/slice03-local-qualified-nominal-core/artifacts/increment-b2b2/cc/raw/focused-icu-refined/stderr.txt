@@ -1,0 +1,3 @@
+   Compiling lykn-lang v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.42s
+     Running tests/icu_cross_compiler_tests.rs (target/debug/deps/icu_cross_compiler_tests-1835a3c7f031ad84)

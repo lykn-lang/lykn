@@ -186,6 +186,48 @@ implemented hygiene. The later gate must produce1 and retain41, alongside
 same-spelling shadowing, TDZ, property/import/export, foreign-name, macro-shared
 occurrence, private/host/JSON and current documentation/build consumers.
 
+### Additional generated-name and host-lookup source census
+
+2026-11-13 additional runtime-name source census (not new runtime evidence):
+native emitter/forms.rs uses raw EmitterGensym strings for rest/discard,
+some-thread temporaries, result captures, yield checks and awaited unboxing
+(226,3123–3126,3234–3275,3615/3696/3849,4125). Existing match/if-let helpers
+have local normalized-name reservation; completion IDs have whole-unit
+finalization. A late binding graph cannot distinguish a compiler-generated
+plain string from an equal raw source spelling after they have merged.
+The source-ready runtime recipe must either carry private IDs through these
+producers or seed compiler-owned allocation from the complete source names
+before emission, including nested syntax/reconstructed typed header strings.
+Do not infer generic hygiene from the bounded ICU repair. Public classifier.js
+also has unmarked gensym callers for rest/thread/results/yields; existing
+compilerPrivateAtom metadata covers only selected families. User-macro gensym
+transport across native macro JSON is a separate explicit boundary, not an
+implicitly trusted field or a newly promised general hygienic-macro system.
+
+Both protected-host walkers currently use normalized lexical names. Native
+protected_host.rs123–161 collects normalized declarations and437–459 normalizes
+an already normalized root again before lexical shadow lookup. Public
+protected-host.js directScopeNames does similarly. Source-exact binding
+activation must distinguish exact local root lookup from normalized foreign
+target comparison: a local Object! must not hide a free source Object merely
+because both currently emit Object. Kernel validation after naming has a
+different, finalized namespace. This is a source-inspected integration
+obligation, not a newly executed protected-host failure.
+
+Runtime graph function environments must follow the emitted parameter grammar,
+not just the source dispatch regions. Root checked
+[ECMAScript2025 FunctionDeclarationInstantiation](https://tc39.es/ecma262/2025/multipage/ordinary-and-exotic-objects-behaviours.html#sec-functiondeclarationinstantiation),
+steps21–31: parameter bindings exist before initialization; body var bindings
+share that environment when parameters contain no expressions. When parameter
+expressions exist, a separate body var environment keeps defaults and their
+closures from seeing body declarations. This condition is ContainsExpression,
+not merely whether the parameter list is non-simple. Same-named vars can
+coincide with parameters or be initialized from them according to that split.
+Thus generating a fresh BindingId for every declaration token, or hoisting body
+declarations into parameter-default lookup, would misrepresent runtime identity.
+The later recipe must supply the actual defaults/hoisting/TDZ discriminator;
+this primary-source check is a design input, not a Lykn runtime observation.
+
 ### Settled static owner/query rules
 
 - ModuleIdentity is Named(LogicalModuleId) or fresh opaque AnonymousUnit.

@@ -3,7 +3,7 @@ project: project03-language-evolution
 arc: arc04-qualified-adts
 slice: slice03-local-qualified-nominal-core
 status: active
-version: "1.30"
+version: "1.31"
 depends-on: [slice01-contract-and-emission-design, slice02-existing-adt-correctness]
 ---
 
@@ -204,13 +204,17 @@ validation-only class-member queries. Existing source Func/class aggregate
 scope issues are explicit B2 inputs, not new IC-01 expansion claims.
 
 **Current assignment:** [iteration16](cc-prompt-iteration16.md), B2b2 native ICU
-generated-name hygiene against accepted5554a4d6/treef632c415, under the
+generated-name hygiene returned for separate Sol verification at
+228e8c99707e5dc4ee86a50e8aea532c9a99a80b/tree5a2c9a4ba836aaf6e34ef63c04f08b7f47621877,
+under the
 operator's B2 design/implementation/independent-validation authorization and
 2026-11-13 source-name decision. B2-LX and B2-UNIT are independently accepted.
 [B2 architecture](artifacts/b2-owner-and-lexical-design.md) still governs typed
 owner/case and occurrence-scoped queries; this native generated-name repair
 does not complete that architecture or ordinary source binding hygiene.
 Separate Sol readiness and preserved root failures ground its bounded recipe.
+Sol exclusively owns source/build after the clean CC handback. Draft17 public
+follow-through is not issued and must await this disposition.
 Luna6High owns task source/build through clean handoff; Sol6.1High then reviews
 independently; root owns architecture and planning Git/index/status. Standard
 Autonomous Mode continues without routine permission stops. B2-LX has its own
@@ -237,7 +241,7 @@ gates survive. No release edits/integration, remote CI, push or publication.
 | cc-prompt-iteration13.md | 2026-11-13 | iteration12 | B2a correction04: parsed native Surface function regions, ignored generator post excluded, actual parameter leaf scopes | Independently acceptedf9be7cb8/tree0ea27d21 for B2-LX only; full S03 and B2b/name decision remain open |
 | cc-prompt-iteration14.md | 2026-11-13 | iteration13 | B2b1 owned native analysis unit and canonical JS/JSON/DTS consumer pairing | Accepted through iteration15 at5554a4d6 for B2-UNIT only; original weak-oracle HOLD/history retained |
 | cc-prompt-iteration15.md | 2026-11-13 | iteration14 | B2b1 correction01: complete-field private-construction Rustdoc discriminator | Independently accepted5554a4d6/treef632c415, strict Rustdoc-only correction and evidence retention; full B2b/S03 remain open |
-| cc-prompt-iteration16.md | 2026-11-13 | iteration15 | B2b2 native ICU generated-name allocator, actual hoist/selector capture repair | Issued after separate source-readiness; CC implementation pending, B2-ICU-N open |
+| cc-prompt-iteration16.md | 2026-11-13 | iteration15 | B2b2 native ICU generated-name allocator, actual hoist/selector capture repair | CC proposed-done228e8c99/tree5a2c9a4b; separate Sol verification underway, B2-ICU-N open |
 
 The A correction loop used three refinement passes; B1 required no software
 correction. IC-01 is a distinct authorized usable prerequisite, not a retry
@@ -589,3 +593,17 @@ host/completion aliases are finalized before this scan; raw private family
 names are disjoint from current ICU stems. This evidence is family-specific.
 After the clean handback and planning commit, root issues iteration16 and
 transfers source/build to Luna; public/source-name/owner scope remains open.
+
+2026-11-13 v1.31: iteration16 returns clean228e8c99/tree5a2c9a4b, exact3paths.
+CC full1199library/1557product67steps/482docs, focused27, actual canonical
+checked/stripped3 3, detailed cold14/49, finalHEADcites64/601 and46600gzip pass.
+First rustfmt layout and Clippy let_and_return failures survive; root refined
+the initial non-discriminating generated/generated collision test to actual
+hoist_v0/selector_v0=>7 7 and added nested independent-template proof before
+the full success. The first full lacked M6 inner receipts, so one focused M6
+supplied them; no second full solely for that gap. Size gate fetched existing
+pinned esbuild into DENO_DIR, no repo dependency/lock change; not fully offline.
+Root checked clean source pin/tree/path/trailers; independent Sol now owns
+verification, B2-ICU-N remains open. New public recipe/draft17/read-only
+readiness prepare mapped real ICU cold/browser tests, not implementation or
+acceptance. Native/public source-name/owner work and all LC02–08 survive.

@@ -1,0 +1,36 @@
+
+running 31 tests
+test codegen::icu::tests::parse_message_does_not_spin_on_hash ... ok
+test codegen::icu::tests::parse_hash_at_top_level_is_literal ... ok
+test codegen::icu::tests::parse_hash_only_top_level ... ok
+test codegen::icu::tests::test_emit_no_slots ... ok
+test codegen::icu::tests::emit_dollar_in_literal_is_escaped ... ok
+test codegen::icu::tests::emit_dollar_before_brace_is_escaped ... ok
+test codegen::icu::tests::test_collect_slot_names_nested ... ok
+test codegen::icu::tests::test_collect_slot_names ... ok
+test codegen::icu::tests::test_emit_simple_slot ... ok
+test codegen::icu::tests::test_emit_plural ... ok
+test codegen::icu::tests::test_emit_select_uses_override ... ok
+test codegen::icu::tests::test_emit_nested_no_tdz ... ok
+test codegen::icu::tests::test_emit_select ... ok
+test codegen::icu::tests::test_error_no_template_prefix ... ok
+test codegen::icu::tests::test_exact_one_overlap ... ok
+test codegen::icu::tests::test_exact_one_overlap_reverse ... ok
+test codegen::icu::tests::test_parse_escape_apostrophe ... ok
+test codegen::icu::tests::test_parse_escape_brace ... ok
+test codegen::icu::tests::test_parse_literal ... ok
+test codegen::icu::tests::test_parse_lone_apostrophe ... ok
+test codegen::icu::tests::test_parse_marketing_example ... ok
+test codegen::icu::tests::test_parse_plural ... ok
+test codegen::icu::tests::test_parse_plural_exact ... ok
+test codegen::icu::tests::test_parse_plural_missing_other ... ok
+test codegen::icu::tests::test_parse_plural_unknown_category ... ok
+test codegen::icu::tests::test_parse_select ... ok
+test codegen::icu::tests::test_parse_select_missing_other ... ok
+test codegen::icu::tests::test_parse_slot ... ok
+test codegen::icu::tests::test_parse_slot_surrounded ... ok
+test codegen::icu::tests::test_reject_two_few_many ... ok
+test codegen::icu::tests::test_reject_zero_category ... ok
+
+test result: ok. 31 passed; 0 failed; 0 ignored; 0 measured; 1168 filtered out; finished in 0.00s
+

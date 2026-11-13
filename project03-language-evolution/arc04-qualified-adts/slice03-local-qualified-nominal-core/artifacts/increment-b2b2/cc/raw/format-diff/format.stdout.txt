@@ -1,0 +1,96 @@
+Diff in /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang/src/codegen/names.rs:56:
+ 
+     /// Allocate the preferred emitted name when available, otherwise use a
+     /// deterministic suffix. Every returned identifier is reserved at once.
+-    pub(crate) fn allocate(
+-        &mut self,
+-        preferred: &str,
+-    ) -> Result<String, GeneratedNameExhausted> {
++    pub(crate) fn allocate(&mut self, preferred: &str) -> Result<String, GeneratedNameExhausted> {
+         if self.occupied.insert(preferred.to_owned()) {
+             return Ok(preferred.to_owned());
+         }
+Diff in /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang/tests/icu_cross_compiler_tests.rs:91:
+ }
+ 
+ fn assert_native_icu_runtime(source: &str, bindings: &[(&str, &str)], expected: &str) -> String {
+-    let js = rust_compile(source).unwrap_or_else(|error| {
+-        panic!("native compile failed for {source}: {error}")
+-    });
++    let js = rust_compile(source)
++        .unwrap_or_else(|error| panic!("native compile failed for {source}: {error}"));
+     let output = eval_js(&js, bindings);
+     assert_eq!(output, expected, "source: {source}\ngenerated JS:\n{js}");
+     js
+Diff in /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang/tests/icu_cross_compiler_tests.rs:462:
+ fn native_icu_generated_names_avoid_source_capture() {
+     assert!(deno_available(), "native ICU runtime proof requires Deno");
+ 
++    assert_native_icu_runtime(r#"(template "{n} {n}" :n (+ _n 1))"#, &[("_n", "2")], "3 3");
+     assert_native_icu_runtime(
+-        r#"(template "{n} {n}" :n (+ _n 1))"#,
+-        &[("_n", "2")],
+-        "3 3",
+-    );
+-    assert_native_icu_runtime(
+         r#"(template "{n, plural, one {one} other {#}}" :n _v0)"#,
+         &[("_v0", "2")],
+         "2",
+Diff in /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang/tests/icu_cross_compiler_tests.rs:549:
+ 
+     assert_native_icu_runtime(
+         r#"(template "{x}-{x}" :x (next-id _x))"#,
+-        &[("_x", "10"), ("nextId", "(()=>{let calls=0;return (value)=>{calls+=1;return value+calls}})()")],
++        &[
++            ("_x", "10"),
++            (
++                "nextId",
++                "(()=>{let calls=0;return (value)=>{calls+=1;return value+calls}})()",
++            ),
++        ],
+         "11-11",
+     );
+ 
+Diff in /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang/tests/icu_cross_compiler_tests.rs:557:
+     // stay lazy; this allocator change must not make it an eager hoist.
+     assert_native_icu_runtime(
+         r#"(template "{role, select, owner {Owner} other {{unused}}}" :role _v0 :unused (explode))"#,
+-        &[("_v0", r#""owner""#), ("explode", "()=>{throw new Error('unselected')}")],
++        &[
++            ("_v0", r#""owner""#),
++            ("explode", "()=>{throw new Error('unselected')}"),
++        ],
+         "Owner",
+     );
+ 
+Diff in /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang/tests/icu_cross_compiler_tests.rs:565:
+         .expect("throwing repeated-slot source should compile");
+     let failed = eval_js_output(
+         &throwing,
+-        &[("_n", "5"), ("explode", "(_value)=>{throw new Error('expected boom')}")],
++        &[
++            ("_n", "5"),
++            ("explode", "(_value)=>{throw new Error('expected boom')}"),
++        ],
+     );
+-    assert!(!failed.status.success(), "throwing kwarg unexpectedly succeeded");
+     assert!(
++        !failed.status.success(),
++        "throwing kwarg unexpectedly succeeded"
++    );
++    assert!(
+         String::from_utf8_lossy(&failed.stderr).contains("expected boom"),
+         "expected original kwarg exception to propagate; stderr was:\n{}",
+         String::from_utf8_lossy(&failed.stderr)
+Diff in /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang/tests/icu_cross_compiler_tests.rs:577:
+     let recovery_source = r#"(template "{n, plural, one {one} other {#}}" :n _v0)"#;
+     let first = rust_compile(recovery_source).expect("valid ICU compilation");
+     let rejected = rust_compile(r#"(template "{n, plural, one {missing other}}" :n _v0)"#);
+-    assert!(rejected.is_err(), "invalid ICU source should remain rejected");
++    assert!(
++        rejected.is_err(),
++        "invalid ICU source should remain rejected"
++    );
+     let recovered = rust_compile(recovery_source).expect("compilation after failure");
+     assert_eq!(first, recovered, "per-template allocation state leaked");
+     assert_eq!(eval_js(&recovered, &[("_v0", "2")]), "2");

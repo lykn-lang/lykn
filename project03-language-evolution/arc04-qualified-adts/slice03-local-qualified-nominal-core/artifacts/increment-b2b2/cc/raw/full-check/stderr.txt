@@ -1,0 +1,36 @@
+   Compiling lykn-lang v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang)
+   Compiling lykn-cli v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli)
+   Compiling lykn v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn)
+    Finished `release` profile [optimized] target(s) in 7.51s
+    Checking lykn-lang v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang)
+    Checking lykn-cli v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli)
+error: returning the result of a `let` binding from a block
+  --> crates/lykn-lang/tests/icu_cross_compiler_tests.rs:90:5
+   |
+84 | /     let output = Command::new("deno")
+85 | |         .arg("eval")
+86 | |         .arg("--ext=js")
+87 | |         .arg(&script)
+88 | |         .output()
+89 | |         .expect("failed to run deno");
+   | |______________________________________- unnecessary `let` binding
+90 |       output
+   |       ^^^^^^
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.97.0/index.html#let_and_return
+   = note: `-D clippy::let-and-return` implied by `-D warnings`
+   = help: to override `-D warnings` add `#[allow(clippy::let_and_return)]`
+help: return the expression directly
+   |
+84 ~     
+85 ~     Command::new("deno")
+86 +         .arg("eval")
+87 +         .arg("--ext=js")
+88 +         .arg(&script)
+89 +         .output()
+90 +         .expect("failed to run deno")
+   |
+
+error: could not compile `lykn-lang` (test "icu_cross_compiler_tests") due to 1 previous error
+warning: build failed, waiting for other jobs to finish...
+make: *** [lint] Error 101

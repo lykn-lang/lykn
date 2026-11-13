@@ -1,0 +1,9 @@
+Working directory: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+Environment for every invocation: XDG_CACHE_HOME=/private/tmp/lykn-b2b2-cc/xdg; NPM_CONFIG_CACHE=/private/tmp/lykn-b2b2-cc/npm; TMPDIR=/private/tmp/lykn-b2b2-cc/tmp; DENO_DIR=/Users/oubiwann/Library/Caches/deno
+Fresh binary: target/debug/lykn, rebuilt after final source formatting.
+Fixture: target/cc-b2b2-cli/icu-hoist.lykn, byte-equivalent to committed baseline `artifacts/increment-b2b/root/icu-hoist-baseline/source.lykn`.
+Commands:
+  target/debug/lykn compile target/cc-b2b2-cli/icu-hoist.lykn -o target/cc-b2b2-cli/checked.mjs
+  deno run --no-config --cached-only --no-npm --no-remote --deny-net --no-prompt target/cc-b2b2-cli/checked.mjs
+  target/debug/lykn compile target/cc-b2b2-cli/icu-hoist.lykn --strip-assertions -o target/cc-b2b2-cli/stripped.mjs
+  deno run --no-config --cached-only --no-npm --no-remote --deny-net --no-prompt target/cc-b2b2-cli/stripped.mjs

@@ -1,0 +1,17 @@
+DD-37 baseline source: 4b9546cdba6bdcd4e5dd82d7cdf6cf58da9edde0
+deno 2.9.6 (stable, release, aarch64-apple-darwin)
+v8 15.0.245.2-rusty
+typescript 6.0.3
+Raw:      217687 bytes (212.6 KB)
+Minified: 105439 bytes (103.0 KB)
+Gzipped:  27630 bytes (27.0 KB)
+Current source, measured with the same tools:
+[1;34mMeasuring browser bundle size...[0m
+Raw:      361569 bytes (353.1 KB)
+Minified: 172901 bytes (168.8 KB)
+Gzipped:  46600 bytes (45.5 KB)
+
+Baseline: 27630 bytes
+Delta:    +18970 bytes (+18.5 KB)
+
+✅ Within 80 KiB gzip budget
