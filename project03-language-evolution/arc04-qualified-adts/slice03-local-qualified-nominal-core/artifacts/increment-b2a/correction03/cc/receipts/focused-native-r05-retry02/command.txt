@@ -1,0 +1,1 @@
+cargo test -p lykn-cli --test macro_dependencies b2a_native_preflights_typed_source_headers_before_region_macros -- --exact --nocapture

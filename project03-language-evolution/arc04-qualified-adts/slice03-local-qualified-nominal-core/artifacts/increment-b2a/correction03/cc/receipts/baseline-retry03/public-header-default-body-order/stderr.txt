@@ -1,0 +1,13 @@
+error: Uncaught (in promise) Error: (default) second element must be a name
+		throw new Error("(default) second element must be a name");
+		      ^
+    at parseDefaultParam (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/surface.js:307:9)
+    at parseTypedParams (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/surface-helpers.js:477:21)
+    at buildSingleClauseFunc (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/classifier.js:857:14)
+    at emitSurfaceForm (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/classifier.js:770:16)
+    at expandExprInner (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander-core.js:2073:22)
+    at expandAt (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander-core.js:1880:18)
+    at pass2ExpandAll (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander-core.js:2405:22)
+    at expandWithMacroImports (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander-core.js:2481:20)
+    at expand (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander.js:22:10)
+    at lykn (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/mod.js:24:18)

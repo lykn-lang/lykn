@@ -1,0 +1,4 @@
+error: Error reading config file 'file:///Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/arc04-qualified-adtss/slice03-local-qualified-nominal-core/artifacts/increment-b2a/correction03/cc/fixtures/baseline/canonical-public.json'.
+
+Caused by:
+    No such file or directory (os error 2)

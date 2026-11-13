@@ -1,0 +1,13 @@
+error: Uncaught (in promise) Error: expandExpr: unexpected node type 'undefined'
+    throw new Error(`expandExpr: unexpected node type '${form.type}'`);
+          ^
+    at expandExprInner (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander-core.js:1912:11)
+    at expandAt (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander-core.js:1880:18)
+    at expandExprInner (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander-core.js:2131:12)
+    at expandAt (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander-core.js:1880:18)
+    at expandFunctionRegions (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander-core.js:1035:22)
+    at expandChildrenPlan (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander-core.js:936:40)
+    at expandExprInner (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander-core.js:2295:34)
+    at expandAt (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander-core.js:1880:18)
+    at expandExprInner (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander-core.js:2088:14)
+    at expandAt (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander-core.js:1880:18)

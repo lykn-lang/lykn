@@ -1,0 +1,4 @@
+(macro header-probe () (get null "genfn-header-was-expanded"))
+(bind factory (genfn () :yields (header-probe) (yield 41)))
+(bind stream (factory))
+(console:log (get (stream:next) :value))

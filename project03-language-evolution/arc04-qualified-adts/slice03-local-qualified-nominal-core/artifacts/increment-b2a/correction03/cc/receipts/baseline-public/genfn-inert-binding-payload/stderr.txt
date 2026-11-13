@@ -1,0 +1,8 @@
+error: Uncaught (in promise) Error: 'eval' is forbidden as a strict-mode binding identifier; rename it (e.g. `eval_`)
+      throw new Error(
+            ^
+    at validateReservedNames (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/binding.js:907:13)
+    at expandWithMacroImports (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander-core.js:2478:3)
+    at expand (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander.js:22:10)
+    at lykn (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/mod.js:24:18)
+    at file:///private/tmp/lykn-b2a-correction03-cc/tmp/public-driver.mjs:3:13

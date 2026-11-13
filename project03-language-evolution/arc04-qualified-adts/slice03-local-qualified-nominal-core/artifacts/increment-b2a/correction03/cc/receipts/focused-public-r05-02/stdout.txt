@@ -1,0 +1,47 @@
+running 19 tests from ./test/expander/lexical-regions.test.js
+B2a source clauses isolate parameter names and retain own body sequence ... ok (27ms)
+B2a public typed source headers reject non-atom parameter names ... ok (1ms)
+B2a genfn metadata is inert and excluded from the body region ... FAILED (20ms)
+B2a class methods isolate their parameter lists ... ok (14ms)
+B2a class method defaults expand once and execute ... ok (14ms)
+B2a class field initializer stays outside method parameters ... ok (361µs)
+B2a source Func post sees body declaration independent of keyword order ... ok (14ms)
+B2a rejects multi-clause generators before body macro expansion ... ok (414µs)
+B2a enclosing declaration sites follow dispatch and consumed export slots ... ok (388µs)
+B2a public export wrappers expose only their emitted declaration ... ok (115ms)
+B2a kernel import locals participate in enclosing dispatch ... ok (15ms)
+B2a public pass1 preserves a macro after a bound bind-shaped call ... ok (14ms)
+B2a public pass1 retains real unbound macro registration ... ok (14ms)
+B2a public pass1 honors a genuinely bound macro call ... ok (14ms)
+B2a macro result declaration controls following macro dispatch ... ok (13ms)
+B2a shared macro AST object keeps binder and head occurrences distinct ... ok (195µs)
+B2a ordinary call operands do not share declarations ... ok (85µs)
+B2a Single result slots do not inherit sibling visibility ... ok (111µs)
+B2a macro head chains recheck surface and lexical priority ... ok (101µs)
+
+ ERRORS 
+
+B2a genfn metadata is inert and excluded from the body region => ./test/expander/lexical-regions.test.js:50:6
+error: AssertionError: Values are not equal.
+
+
+    [Diff] Actual / Expected
+
+
+-   [ 41 ]\n
++   41\n
+    
+
+
+  throw new AssertionError(message);
+        ^
+    at assertEquals (https://jsr.io/@std/assert/1.0.19/equals.ts:67:9)
+    at executeModule (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/expander/lexical-regions.test.js:25:5)
+    at async file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/expander/lexical-regions.test.js:64:5
+
+ FAILURES 
+
+B2a genfn metadata is inert and excluded from the body region => ./test/expander/lexical-regions.test.js:50:6
+
+FAILED | 18 passed | 1 failed (283ms)
+

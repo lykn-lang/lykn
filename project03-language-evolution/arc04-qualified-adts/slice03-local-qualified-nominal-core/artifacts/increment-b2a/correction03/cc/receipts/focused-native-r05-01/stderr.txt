@@ -1,0 +1,10 @@
+   Compiling lykn-lang v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang)
+   Compiling lykn-cli v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 6.28s
+     Running tests/macro_dependencies.rs (target/debug/deps/macro_dependencies-c2da4081568226dd)
+
+thread 'b2a_native_preflights_typed_source_headers_before_region_macros' (106485772) panicked at crates/lykn-cli/tests/macro_dependencies.rs:605:9:
+b2a-r05-invalid-default-header: 2:22: error: (default) expected :type name value
+
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+error: test failed, to rerun pass `-p lykn-cli --test macro_dependencies`

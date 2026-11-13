@@ -1,0 +1,2 @@
+(macro header-probe () (get null "anonymous-body-was-expanded"))
+(bind invalid (fn (:number 9) (header-probe)))

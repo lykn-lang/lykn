@@ -1,0 +1,13 @@
+error: Uncaught (in promise) Error: genfn: :yields requires a type keyword and body
+          throw new Error("genfn: :yields requires a type keyword and body");
+                ^
+    at emitSurfaceForm (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/classifier.js:786:17)
+    at expandExprInner (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander-core.js:2073:22)
+    at expandAt (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander-core.js:1880:18)
+    at file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander-core.js:2219:67
+    at Array.map (<anonymous>)
+    at expandExprInner (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander-core.js:2219:54)
+    at expandAt (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander-core.js:1880:18)
+    at expandExprInner (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander-core.js:2088:14)
+    at expandAt (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander-core.js:1880:18)
+    at pass2ExpandAll (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander-core.js:2405:22)

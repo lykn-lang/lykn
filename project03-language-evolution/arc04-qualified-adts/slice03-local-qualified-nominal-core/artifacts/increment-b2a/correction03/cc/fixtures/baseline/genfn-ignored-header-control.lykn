@@ -1,0 +1,3 @@
+(bind factory (genfn () :yields (header-probe) (yield 41)))
+(bind stream (factory))
+(console:log (get (stream:next) :value))

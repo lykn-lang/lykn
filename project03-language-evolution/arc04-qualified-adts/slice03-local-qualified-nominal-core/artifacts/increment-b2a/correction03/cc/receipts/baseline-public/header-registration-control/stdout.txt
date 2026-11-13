@@ -1,0 +1,9 @@
+const lyknIntrinsicNumberIsNaN0 = Number.isNaN;
+const lyknIntrinsicTypeError0 = TypeError;
+function invalid(9) {
+  if (typeof 9 !== "number" || lyknIntrinsicNumberIsNaN0(9)) {
+    throw new lyknIntrinsicTypeError0("invalid: arg '' expected number, got " + typeof 9);
+  }
+  return 41;
+}
+

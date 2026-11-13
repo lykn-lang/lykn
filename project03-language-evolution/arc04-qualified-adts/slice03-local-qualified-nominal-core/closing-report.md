@@ -516,3 +516,19 @@ parseTypedParams for constructor fields, so nonatom simple typed field names
 will reject too. Record that shared-parser impact explicitly; retain valid Type
 controls and the native static atom-name grammar. This is not a function-only
 API claim or an independent runtime verdict. No edit/build/test by reviewer.
+## Root correction03 returned-candidate checkpoint
+
+Root verified clean0e249cafb7d50ce45e00f7c7288249666fcc113f,
+treee946afc2283951fe11f2e9c7040a7f734dbf6d11, exactly13 authorized source/test
+paths and actual contiguous Co-authored-by labels. Separate Sol6.1High now owns
+source/build for complete B2-LX software verification. Source remains on its
+task branch; B2b and all S03 rows stay pending their own gates.
+
+Original raw CC full check reports1556/67steps and482 docs, numeric0; cold M6
+reports14 comparisons/48 materialized public cases, citation gate64/601 and
+size46600. Those are CC evidence. The current raw size is97 above immediate
+correction02's46503; the CC prose used older correction01's46418 and overstated
+that delta as182. Actual81920-budget headroom is35320, not35220. Preserve
+those original sentences with the reconciliation in the CC index. No rerun or
+source change follows merely from arithmetic correction; independent actual
+size and all other required gates remain Sol's responsibility.

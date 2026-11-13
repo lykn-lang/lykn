@@ -1,0 +1,1 @@
+deno test -A --cached-only --no-prompt --config receipts/focused-public-r05-01/deno.json --filter "B2a public typed source|B2a genfn metadata" test/expander/lexical-regions.test.js

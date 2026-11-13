@@ -3,7 +3,7 @@ project: project03-language-evolution
 arc: arc04-qualified-adts
 slice: slice03-local-qualified-nominal-core
 status: active
-version: "1.22"
+version: "1.23"
 depends-on: [slice01-contract-and-emission-design, slice02-existing-adt-correctness]
 ---
 
@@ -233,7 +233,7 @@ gates survive. No release edits/integration, remote CI, push or publication.
 | cc-prompt-iteration09.md | 2026-11-12 | iteration08 | B2a shared precise lexical regions, actual expanded visibility and explicit unsupported generator diagnostic | Independent HOLD bcb98482/tree72adf0ee; R01–03 and raw controls retained |
 | cc-prompt-iteration10.md | 2026-11-12 | iteration09 | B2a correction01: native redispatch/actual diagnostic gating, public class defaults, named kernel function scope | Independent HOLD804be5da/treed25f2b66 on R04; R01–03 focused replays pass |
 | cc-prompt-iteration11.md | 2026-11-13 | iteration10 | B2a correction02: shared actual enclosing-declaration sites across expansion/resolution/D2/shadow clients and real wrapper/default slots | Independent HOLD595f672b/treedd518b1b on R05; R01–04 focused controls pass |
-| cc-prompt-iteration12.md | 2026-11-13 | iteration11 | B2a correction03: pure typed-source header preflight and canonical genfn metadata/body slots in parser and walkers | Issued after separate Sol source-readiness; Luna owns source/build |
+| cc-prompt-iteration12.md | 2026-11-13 | iteration11 | B2a correction03: pure typed-source header preflight and canonical genfn metadata/body slots in parser and walkers | Clean0e249caf/treee946afc2 returned; separate Sol software review active |
 
 The A correction loop used three refinement passes; B1 required no software
 correction. IC-01 is a distinct authorized usable prerequisite, not a retry
@@ -442,3 +442,15 @@ Separate Sol reviewed the complete draft with no concrete contradiction; root
 issues correction03, Luna owns source/build, then independent software review.
 This is the third B2a formal correction; earlier history and all rows survive.
 The typed-owner/name choice remains pending and release0829 is unchanged.
+
+2026-11-13 v1.23: root verified clean correction03
+0e249cafb7d50ce45e00f7c7288249666fcc113f, treee946afc2283951fe11f2e9c7040a7f734dbf6d11,
+13 authorized paths and correct literal/parsed contiguous co-author trailers.
+The [root scope clarification](closing-report.md) adds only the existing public
+simple typed-name atom guard and embedded mirror, including its constructor-
+field parser reach. CC raw full1556/67steps plus482 docs, cold14/48, citations64/
+601 and46600-byte gzip pass. Root corrected the CC prose's wrong predecessor
+comparison/headroom against original raw logs, preserving both reports.
+Exclusive source/build ownership transfers to separate Sol6.1High for complete
+B2-LX verification; no row closes on CC attestation. B2-ID-NAME, LC-02–08 and
+all original nominal/API/purity/book/human obligations remain open.

@@ -1,0 +1,14 @@
+const lyknIntrinsicNumberIsNaN0 = Number.isNaN;
+const lyknIntrinsicTypeError0 = TypeError;
+const factory = function* () {
+  yield (() => {
+    const yv__gensym0 = 41;
+    if (typeof yv__gensym0 !== "number" || lyknIntrinsicNumberIsNaN0(yv__gensym0)) {
+      throw new lyknIntrinsicTypeError0("anonymous: yield 'yv__gensym0' expected number, got " + typeof yv__gensym0);
+    }
+    return yv__gensym0;
+  })();
+};
+const stream = factory();
+console.log(stream.next()["value"]);
+

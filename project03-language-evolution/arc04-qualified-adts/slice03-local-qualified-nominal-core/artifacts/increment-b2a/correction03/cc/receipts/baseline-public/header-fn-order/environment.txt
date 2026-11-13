@@ -1,0 +1,5 @@
+XDG_CACHE_HOME=/private/tmp/lykn-b2a-correction03-cc/xdg
+NPM_CONFIG_CACHE=/private/tmp/lykn-b2a-correction03-cc/npm
+TMPDIR=/private/tmp/lykn-b2a-correction03-cc/tmp
+DENO_DIR=/Users/oubiwann/Library/Caches/deno
+SOURCE_HEAD=595f672b9991896754ba62a05c7c647dfaaeaa01

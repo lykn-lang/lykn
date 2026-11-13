@@ -1,0 +1,13 @@
+error: Uncaught (in promise) Error: invalid: clauses 0 and 1 overlap (same arity 1, compatible types)
+        throw new Error(
+              ^
+    at checkFuncClauseOverlap (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/classifier.js:1672:15)
+    at buildMultiClauseFunc (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/classifier.js:1020:3)
+    at emitSurfaceForm (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/classifier.js:767:16)
+    at expandExprInner (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander-core.js:2073:22)
+    at expandAt (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander-core.js:1880:18)
+    at pass2ExpandAll (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander-core.js:2405:22)
+    at expandWithMacroImports (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander-core.js:2481:20)
+    at expand (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander.js:22:10)
+    at lykn (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/mod.js:24:18)
+    at file:///private/tmp/lykn-b2a-correction03-cc/tmp/public-driver.mjs:3:13

@@ -1,0 +1,1 @@
+1:15: error: genfn: :yields requires a type keyword and body

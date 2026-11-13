@@ -1,0 +1,1 @@
+target/release/lykn compile /Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/arc04-qualified-adts/slice03-local-qualified-nominal-core/artifacts/increment-b2a/correction03/cc/fixtures/baseline/header-registration-control.lykn -o /private/tmp/lykn-b2a-correction03-cc/tmp/baseline-retry01-header-registration-control.mjs

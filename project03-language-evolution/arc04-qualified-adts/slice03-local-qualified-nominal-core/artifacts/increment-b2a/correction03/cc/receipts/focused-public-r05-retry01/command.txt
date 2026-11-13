@@ -1,0 +1,1 @@
+deno test -A --cached-only --no-prompt --config receipts/focused-public-r05-retry01/deno.json test/expander/lexical-regions.test.js

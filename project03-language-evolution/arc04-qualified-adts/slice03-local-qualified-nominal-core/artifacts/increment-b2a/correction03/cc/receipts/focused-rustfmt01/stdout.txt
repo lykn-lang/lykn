@@ -1,0 +1,63 @@
+Diff in /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli/tests/macro_dependencies.rs:607:
+             &xdg,
+         );
+         let stderr = String::from_utf8_lossy(&compiled.stderr);
+-        assert_ne!(compiled.status.code(), Some(0), "{name} unexpectedly compiled");
+-        assert!(stderr.contains(diagnostic), "{name}: expected {diagnostic:?}, got {stderr}");
++        assert_ne!(
++            compiled.status.code(),
++            Some(0),
++            "{name} unexpectedly compiled"
++        );
+         assert!(
++            stderr.contains(diagnostic),
++            "{name}: expected {diagnostic:?}, got {stderr}"
++        );
++        assert!(
+             !stderr.contains("header-body-was-expanded"),
+             "{name} expanded a body macro before reporting its header: {stderr}"
+         );
+Diff in /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli/tests/macro_dependencies.rs:649:
+     );
+     let stderr = String::from_utf8_lossy(&compiled.stderr);
+     assert_ne!(compiled.status.code(), Some(0));
+-    assert!(stderr.contains("'eval' is forbidden as a strict-mode binding identifier"), "{stderr}");
++    assert!(
++        stderr.contains("'eval' is forbidden as a strict-mode binding identifier"),
++        "{stderr}"
++    );
+ }
+ 
+ #[test]
+Diff in /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang/src/classifier/forms.rs:836:
+ 
+ /// Validate the selected typed-source function header without classifying or
+ /// evaluating any executable defaults, contracts, or body expressions.
+-pub(crate) fn validate_typed_source_function_header(
+-    expr: &SExpr,
+-) -> Result<(), Diagnostic> {
++pub(crate) fn validate_typed_source_function_header(expr: &SExpr) -> Result<(), Diagnostic> {
+     let SExpr::List { values, .. } = expr else {
+         return Ok(());
+     };
+Diff in /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang/src/classifier/forms.rs:2007:
+ 
+     let layout = crate::lexical_regions::genfn_body_layout(args)
+         .ok_or_else(|| err("genfn: :yields requires a type keyword and body", span))?;
+-    let yields = layout.yields_payload_index.and_then(|index| {
+-        match args.get(index) {
++    let yields = layout
++        .yields_payload_index
++        .and_then(|index| match args.get(index) {
+             Some(SExpr::Keyword { value, span: yspan }) => Some(TypeAnnotation {
+                 name: value.clone(),
+                 span: *yspan,
+Diff in /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang/src/classifier/forms.rs:2015:
+             }),
+             _ => None,
+-        }
+-    });
++        });
+ 
+     Ok(SurfaceForm::Genfn {
+         params,

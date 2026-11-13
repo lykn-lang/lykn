@@ -1,0 +1,1 @@
+deno run --no-config --no-prompt --no-npm --cached-only /private/tmp/lykn-b2a-correction03-cc/tmp/baseline-retry01-genfn-typed-yields.mjs

@@ -1,0 +1,4 @@
+(macro header-probe () (get null "later-clause-body-was-expanded"))
+(func invalid
+  (:args (:number value) :body (header-probe))
+  (:args (:number 9) :body 41))

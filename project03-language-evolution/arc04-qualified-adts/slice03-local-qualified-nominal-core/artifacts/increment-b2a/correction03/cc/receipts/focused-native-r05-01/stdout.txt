@@ -1,0 +1,11 @@
+
+running 1 test
+test b2a_native_preflights_typed_source_headers_before_region_macros ... FAILED
+
+failures:
+
+failures:
+    b2a_native_preflights_typed_source_headers_before_region_macros
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 13 filtered out; finished in 0.32s
+

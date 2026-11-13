@@ -1,0 +1,3 @@
+(macro header-probe () 41)
+(func valid :args ((default :number value (header-probe))) :body value)
+(console:log (valid))
