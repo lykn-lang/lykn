@@ -355,3 +355,24 @@ function object; the existing WeakMaps remain in the metadata module and
 trusted-kernel priority stays a caller decision. Existing A6 conformance and
 M6 coverage still apply. This is assignment readiness, not software acceptance;
 no build, test or source edit was performed by that review context.
+
+## Root correction02 scope clarification — native pass1 client
+
+Repository-wide source query during correction02 surfaced another actual
+transition client at expander/pass1.rs:31–48, omitted by the earlier bounded
+three-file caller census. It uses hoisted_names to update shadowed and decide
+whether later macro definitions are declarations or ordinary bound calls; this
+is not structural-only discovery. Keeping the old raw helper there merely to
+restore compilation would preserve the same R04 defect. Root authorizes exactly
+one additional native source path, crates/lykn-lang/src/expander/pass1.rs,
+to query the shared sites using its existing incoming shadowed scope.
+
+Preserve that phase's source-only declaration collection and dependency order;
+this authorizes no eager expansion, new phase or retrospective macro-produced
+binding lookup. The discriminating source supplies globalThis.macro=100,
+binds a callable bind, then calls `(bind macro 1)`, declares an actual answer
+macro and prints `(answer)`. The ordinary call must not hide that real macro
+definition. True bound-macro suppression and circular-dependency controls stay.
+CC must run the complete relevant caller query across crates/packages before
+claiming the final client inventory. The earlier bounded census is retained,
+with its omission explicit rather than relabelled complete.
