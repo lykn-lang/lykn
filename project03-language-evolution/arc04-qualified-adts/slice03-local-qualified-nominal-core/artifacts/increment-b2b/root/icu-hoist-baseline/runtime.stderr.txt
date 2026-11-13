@@ -1,0 +1,5 @@
+error: Uncaught (in promise) ReferenceError: Cannot access '_n' before initialization
+console.log((() => { const _n = _n + 1; return `${_n} ${_n}`; })());
+                                ^
+    at file:///private/tmp/lykn-b2b-author/icu-hoist.mjs:2:33
+    at file:///private/tmp/lykn-b2b-author/icu-hoist.mjs:2:65

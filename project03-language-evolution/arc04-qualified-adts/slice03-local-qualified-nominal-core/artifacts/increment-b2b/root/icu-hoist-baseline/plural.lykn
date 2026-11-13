@@ -1,0 +1,2 @@
+(bind _v0 2)
+(console:log (template "{n, plural, one {one} other {#}}" :n _v0))

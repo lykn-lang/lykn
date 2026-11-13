@@ -3,7 +3,7 @@ project: project03-language-evolution
 arc: arc04-qualified-adts
 slice: slice03-local-qualified-nominal-core
 status: active
-version: "1.29"
+version: "1.30"
 depends-on: [slice01-contract-and-emission-design, slice02-existing-adt-correctness]
 ---
 
@@ -203,14 +203,14 @@ depth, supported native quotation paths, kernel-only D1 scope corrections and
 validation-only class-member queries. Existing source Func/class aggregate
 scope issues are explicit B2 inputs, not new IC-01 expansion claims.
 
-**Current assignment:** [iteration12](cc-prompt-iteration12.md), B2a correction03
-against held595f672b/treedd518b1b, under the operator's
-2026-11-12 B2 design/implementation/independent-validation authorization.
-[B2 architecture](artifacts/b2-owner-and-lexical-design.md) settles typed owner/
-case, occurrence-scoped query and private finalization principles; its first
-[source-ready recipe](artifacts/b2a-lexical-regions-recipe.md) repairs actual
-lexical scope before B2b attaches metadata. Separate Sol readiness approves
-that bounded recipe after explicit default/generator/class-scope dispositions.
+**Current assignment:** [iteration16](cc-prompt-iteration16.md), B2b2 native ICU
+generated-name hygiene against accepted5554a4d6/treef632c415, under the
+operator's B2 design/implementation/independent-validation authorization and
+2026-11-13 source-name decision. B2-LX and B2-UNIT are independently accepted.
+[B2 architecture](artifacts/b2-owner-and-lexical-design.md) still governs typed
+owner/case and occurrence-scoped queries; this native generated-name repair
+does not complete that architecture or ordinary source binding hygiene.
+Separate Sol readiness and preserved root failures ground its bounded recipe.
 Luna6High owns task source/build through clean handoff; Sol6.1High then reviews
 independently; root owns architecture and planning Git/index/status. Standard
 Autonomous Mode continues without routine permission stops. B2-LX has its own
@@ -237,6 +237,7 @@ gates survive. No release edits/integration, remote CI, push or publication.
 | cc-prompt-iteration13.md | 2026-11-13 | iteration12 | B2a correction04: parsed native Surface function regions, ignored generator post excluded, actual parameter leaf scopes | Independently acceptedf9be7cb8/tree0ea27d21 for B2-LX only; full S03 and B2b/name decision remain open |
 | cc-prompt-iteration14.md | 2026-11-13 | iteration13 | B2b1 owned native analysis unit and canonical JS/JSON/DTS consumer pairing | Accepted through iteration15 at5554a4d6 for B2-UNIT only; original weak-oracle HOLD/history retained |
 | cc-prompt-iteration15.md | 2026-11-13 | iteration14 | B2b1 correction01: complete-field private-construction Rustdoc discriminator | Independently accepted5554a4d6/treef632c415, strict Rustdoc-only correction and evidence retention; full B2b/S03 remain open |
+| cc-prompt-iteration16.md | 2026-11-13 | iteration15 | B2b2 native ICU generated-name allocator, actual hoist/selector capture repair | Issued after separate source-readiness; CC implementation pending, B2-ICU-N open |
 
 The A correction loop used three refinement passes; B1 required no software
 correction. IC-01 is a distinct authorized usable prerequisite, not a retry
@@ -568,3 +569,23 @@ Only B2-UNIT closes. Name hygiene, owner/case graph/nominal activation/check
 semantic join and LC02–08/S03 remain open. Root resumes their source-readiness
 with no new operator name decision required. Source runtime naming baseline2
 and preserved hoisted helper41 remain future change/preservation controls.
+
+2026-11-13 v1.30: root's naming preparation reproduces two native ICU private-
+local captures: repeated-slot _n initializes from itself and plural _v0 does
+likewise, both runtime ReferenceError. Noncollision control prints3 3.
+Original CLI streams/generated outputs remain in
+artifacts/increment-b2b/root/icu-hoist-baseline. Draft iteration16 is the
+source-ready B2b2 native-only allocator prerequisite: source-normalized roots,
+one per-template shared hoist/selector namespace, unchanged evaluation/IIFE/
+error contracts and actual runtime discriminator tests. Separate Sol readiness
+precedes issue. Public JS has analogous raw ICU names and remains explicitly
+open; ordinary source binding hygiene/typed owner activation is not closed by
+this repair. New B2-ICU-N row does not replace LC02–08 or any original scope.
+
+Separate Sol read-only readiness found no concrete recipe contradiction.
+Root clarified eager repeated nontrivial kwargs versus once-referenced lazy
+branches, and current unspecified HashMap consumption order. Canonical
+host/completion aliases are finalized before this scan; raw private family
+names are disjoint from current ICU stems. This evidence is family-specific.
+After the clean handback and planning commit, root issues iteration16 and
+transfers source/build to Luna; public/source-name/owner scope remains open.

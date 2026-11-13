@@ -1,0 +1,5 @@
+error: Uncaught (in promise) ReferenceError: Cannot access '_v0' before initialization
+console.log(`${(() => { const _v0 = _v0; if (_v0 === 1) return `one`; return `${_v0}`; })()}`);
+                                    ^
+    at file:///private/tmp/lykn-b2b-author/plural.mjs:2:37
+    at file:///private/tmp/lykn-b2b-author/plural.mjs:2:90

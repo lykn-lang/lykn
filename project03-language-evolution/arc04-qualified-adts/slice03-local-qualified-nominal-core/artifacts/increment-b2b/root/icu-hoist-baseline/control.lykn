@@ -1,0 +1,2 @@
+(bind _seed 2)
+(console:log (template "{n} {n}" :n (+ _seed 1)))
