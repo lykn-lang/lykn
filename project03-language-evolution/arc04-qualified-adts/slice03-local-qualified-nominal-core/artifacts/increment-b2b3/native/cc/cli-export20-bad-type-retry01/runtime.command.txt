@@ -1,0 +1,1 @@
+deno run --no-config --cached-only --no-npm --no-remote --deny-net --no-prompt <bad-type.mjs>

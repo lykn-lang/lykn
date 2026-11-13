@@ -1,0 +1,1 @@
+/opt/homebrew/bin/bash: line 1: /Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/arc04-qualified-adt(s)/slice03-local-qualified-nominal-core/artifacts/increment-b2b3/native/cc/e2e-suite20/stdout.txt: No such file or directory

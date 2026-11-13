@@ -1,0 +1,1 @@
+cargo test -p lykn-lang --lib emitter::forms::tests::test_emit_export_bind -- --nocapture

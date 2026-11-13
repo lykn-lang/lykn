@@ -1,0 +1,13 @@
+
+running 3 tests
+test assignment_spread_patterns_keep_alias_bindings ... ok
+test nested_spread_patterns_use_pattern_grammar_and_old_tuple_patterns_diagnose ... FAILED
+test exports_project_nested_alias_and_spread_bindings_but_not_empty_default_slots ... ok
+
+failures:
+
+failures:
+    nested_spread_patterns_use_pattern_grammar_and_old_tuple_patterns_diagnose
+
+test result: FAILED. 2 passed; 1 failed; 0 ignored; 0 measured; 19 filtered out; finished in 0.03s
+

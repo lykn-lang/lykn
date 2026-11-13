@@ -2,7 +2,7 @@
 project: project03-language-evolution
 arc: arc04-qualified-adts
 status: active
-version: "1.21"
+version: "1.22"
 related: [project07-core-library-research]
 ---
 
@@ -46,8 +46,11 @@ activation remain open. Source-readiness now exposes a concrete underscore
 contract gap, B2-ID-DISCARD: canonical scalar/array-parameter/array-catch probes
 print7/99/7 and binder projectors disagree. On2026-11-13 the operator resolves
 the question: `_` is discard in binding patterns, `_value` a normal binding.
-Root prepares a bounded native Surface value/guard checkpoint, with public,
-raw/kernel, DTS/docs and general naming/owner follow-through kept open.
+Root's bounded native Surface value/guard/export/pattern checkpoint returns
+CC proposed-done759567f9/tree52dd6558 after preserved18–20, full/cold/CLI proof;
+separate Sol software verification is active. Public/raw/catch/kernel discard
+parity, DTS/docs and general naming/owner follow-through stay open. No broader
+S03 acceptance is implied by this candidate.
 B2-ID-NAME is already resolved; this new question does not reopen it.
 No S03 completion follows from these prerequisites.
 The eight-row plan retains local ownership, nominal runtime/guards, APIs/DTS,

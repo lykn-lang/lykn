@@ -1,0 +1,3 @@
+   Compiling lykn-lang v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.00s
+     Running tests/e2e_tests.rs (target/debug/deps/e2e_tests-a10fc2c08ad95c63)

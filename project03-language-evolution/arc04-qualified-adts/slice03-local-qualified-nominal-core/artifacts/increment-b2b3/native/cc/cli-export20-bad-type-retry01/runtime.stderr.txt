@@ -1,0 +1,5 @@
+error: Uncaught (in promise) TypeError: check: arg '_' expected number, got string
+    throw new lyknIntrinsicTypeError0("check: arg '_' expected number, got " + typeof completionValue__gensym0);
+          ^
+    at check (file:///Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/arc04-qualified-adts/slice03-local-qualified-nominal-core/artifacts/increment-b2b3/native/cc/cli-export20-bad-type-retry01/bad-type.mjs:6:11)
+    at file:///Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/arc04-qualified-adts/slice03-local-qualified-nominal-core/artifacts/increment-b2b3/native/cc/cli-export20-bad-type-retry01/bad-type.mjs:10:13

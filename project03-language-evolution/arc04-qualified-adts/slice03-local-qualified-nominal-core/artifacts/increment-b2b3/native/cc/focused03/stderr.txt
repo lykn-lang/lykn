@@ -1,0 +1,9 @@
+   Compiling lykn-lang v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang)
+error[E0609]: no field `message` on type `Vec<Diagnostic>`
+   --> crates/lykn-lang/tests/discard_bindings.rs:313:19
+    |
+313 |     assert!(error.message.contains("declares '_value' more than once"));
+    |                   ^^^^^^^ unknown field
+
+For more information about this error, try `rustc --explain E0609`.
+error: could not compile `lykn-lang` (test "discard_bindings") due to 1 previous error

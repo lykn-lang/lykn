@@ -1,0 +1,3 @@
+(bind wrong "bad")
+(func check :args (:number _) :body 41)
+(console:log (check wrong))

@@ -1345,3 +1345,27 @@ private public requests/nominal/purity/check_strict-dev join, DTS/API/S06/consum
 book/human and LC02–08/B2b/S03 remain open. Runtime-name draft B2b3 is unissued;
 no new catch grammar or source-name/owner acceptance follows. Root owns planning
 Git/ledger closure and any subsequent implementation issue.
+
+## Native discard candidate759567f9 — root reconciliation, not acceptance
+
+The operator resolved B2-ID-DISCARD: `_` discard in binding patterns, `_value`
+ordinary. Iterations18–20 are preserved. Root verified source HEAD
+759567f92bd145b5fbd0fbd4273aef368e52aeba,
+tree52dd6558eba4a5e9fe057dd03c368327ea578662, clean source and exact eight
+authorized paths with contiguous co-authors. CC index SHA256 is
+670b6d7441a956888da9b21093d1a415be96af6e247697d172fb10f227a1ba63.
+Reported full03/cold55/14/citations/size and actual CLI99 evidence is CC
+proposed-done only. Root does not accept its own design by attestation.
+Separate Sol now owns source/build and performs final independent software
+review/reproduction under current20 plus inherited18/19. Dirty pre-review
+[findings](artifacts/increment-b2b3/native/cdc/pre-review.md) are source-only,
+not final pin or runtime proof. B2-DISCARD-N remains open; no LC02–08, B2b,
+public/raw/catch/name/owner/check/DTS/API/docs/book/human or S03 closure follows.
+
+Root's exact authored Markdown/index/pre-review staged whitespace check passes0.
+Whole raw packet diff-check returns2 for31 original output EOF-blank-line
+diagnostics, retained byte-for-byte in
+artifacts/increment-b2b3/root/native-whitespace-check.txt. These are captured
+stdout/stderr/M6 streams, not authored-source formatting errors; no historical
+bytes were cleaned to manufacture a zero result. Git inventory is eight paths
+(19seven+20one), despite one CC final sentence's cardinality slip.

@@ -1,0 +1,1 @@
+The shell failed while opening the stdout redirection target; cargo was not invoked. The malformed path is preserved exactly in stderr.txt.

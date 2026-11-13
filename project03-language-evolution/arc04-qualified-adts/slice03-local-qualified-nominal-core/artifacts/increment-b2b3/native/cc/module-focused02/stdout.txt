@@ -1,0 +1,18 @@
+
+running 13 tests
+test emitter::type_checks::tests::test_any_returns_none ... ok
+test emitter::type_checks::tests::test_function_check ... ok
+test emitter::type_checks::tests::test_number_check ... ok
+test emitter::type_checks::tests::test_object_check ... ok
+test emitter::type_checks::tests::test_array_check ... ok
+test emitter::type_checks::tests::test_error_message_format ... ok
+test emitter::type_checks::tests::rule7_no_parens_for_pure_camel_case_transformation ... ok
+test emitter::type_checks::tests::rule7_arg_check_with_qmark_func ... ok
+test emitter::type_checks::tests::rule7_return_check_with_qmark_func ... ok
+test emitter::type_checks::tests::test_boolean_check ... ok
+test emitter::type_checks::tests::test_promise_check ... ok
+test emitter::type_checks::tests::test_string_check ... ok
+test emitter::type_checks::tests::test_user_defined_type_check ... ok
+
+test result: ok. 13 passed; 0 failed; 0 ignored; 0 measured; 1186 filtered out; finished in 0.00s
+

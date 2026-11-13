@@ -1,0 +1,2 @@
+cwd: /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+command: cargo build -p lykn-cli

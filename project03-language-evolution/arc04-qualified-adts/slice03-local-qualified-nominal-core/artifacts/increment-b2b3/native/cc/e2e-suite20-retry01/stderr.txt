@@ -1,0 +1,2 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.05s
+     Running tests/e2e_tests.rs (target/debug/deps/e2e_tests-a10fc2c08ad95c63)

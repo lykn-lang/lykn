@@ -1,0 +1,4 @@
+error: Uncaught (in promise) ReferenceError: wrongValue is not defined
+console.log(check(wrongValue));
+                  ^
+    at file:///Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/arc04-qualified-adts/slice03-local-qualified-nominal-core/artifacts/increment-b2b3/native/cc/cli-export20/bad-type.mjs:9:19

@@ -1,0 +1,2 @@
+PWD=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+exit_status=0 (captured retrospectively immediately after command)

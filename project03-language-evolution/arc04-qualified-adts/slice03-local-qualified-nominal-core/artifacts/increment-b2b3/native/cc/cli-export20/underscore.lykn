@@ -1,0 +1,3 @@
+(set! globalThis:_ 99)
+(func take :args (:any _) :body _)
+(console:log (take 7))

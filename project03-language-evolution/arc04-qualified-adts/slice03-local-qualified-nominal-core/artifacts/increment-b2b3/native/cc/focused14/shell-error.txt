@@ -1,0 +1,3 @@
+/opt/homebrew/bin/bash: line 11: /Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/arc04-qualified-adats/slice03-local-qualified-nominal-core/artifacts/increment-b2b3/native/cc/focused14/stdout.txt: No such file or directory
+cat: /Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/arc04-qualified-adts/slice03-local-qualified-nominal-core/artifacts/increment-b2b3/native/cc/focused14/stderr.txt: No such file or directory
+cat: /Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/arc04-qualified-adts/slice03-local-qualified-nominal-core/artifacts/increment-b2b3/native/cc/focused14/stdout.txt: No such file or directory

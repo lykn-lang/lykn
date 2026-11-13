@@ -1,0 +1,18 @@
+   Compiling lykn-lang v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.46s
+     Running tests/discard_bindings.rs (target/debug/deps/discard_bindings-3e9aefe0c9ea9e06)
+
+thread 'fn_lambda_genfn_and_schema_property_roles_keep_underscore_meaning' (107315295) panicked at crates/lykn-lang/tests/discard_bindings.rs:273:5:
+assertion `left == right` failed
+  left: "5\n6\nObject [Generator] {} next:value\n"
+ right: "5\n6\n7\n"
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+thread 'rest_discard_checks_each_consumed_member_and_keeps_source_label' (107315298) panicked at crates/lykn-lang/tests/discard_bindings.rs:217:5:
+error: Uncaught (in promise) TypeError: check: rest arg '_' expected number, got object
+      throw new lyknIntrinsicTypeError0("check: rest arg '_' expected number, got " + typeof completionValue__gensym1);
+            ^
+    at check (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/$deno$eval.js:7:13)
+    at file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/$deno$eval.js:12:13
+
+error: test failed, to rerun pass `-p lykn-lang --test discard_bindings`

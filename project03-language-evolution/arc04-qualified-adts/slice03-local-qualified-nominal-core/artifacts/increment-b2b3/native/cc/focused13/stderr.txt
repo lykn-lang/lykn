@@ -1,0 +1,16 @@
+   Compiling lykn-lang v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.58s
+     Running tests/discard_bindings.rs (target/debug/deps/discard_bindings-3e9aefe0c9ea9e06)
+
+thread 'nested_spread_patterns_use_pattern_grammar_and_old_tuple_patterns_diagnose' (107350107) panicked at crates/lykn-lang/tests/discard_bindings.rs:685:5:
+error: SyntaxError: `...` must be followed by an identifier in declaration contexts
+  |
+2 | const {...{source: named}} = input;
+  |        ~~~~~~~~~~~~~~~~~~
+    at file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/$deno$eval.js:2:8
+
+const {...{source: named}} = input;
+console.log(named);
+
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+error: test failed, to rerun pass `-p lykn-lang --test discard_bindings`

@@ -739,3 +739,36 @@ no next CC assignment is issued yet. ICU rows close only; ordinary source
 hygiene/OwnerRef/CaseRef/check join/nominal/purity/DTS/API/docs/book/human and
 LC02–08/S03 remain open. Release stays clean0829e892; no integration/remote
 publication action ran. Full S03 retrospective remains due at actual closure.
+
+## B2-DISCARD-N — policy resolved, native candidate pending review
+
+The operator answered B2-ID-DISCARD on2026-11-13: `_` is discard in binding
+patterns and `_value` ordinary. Earlier pending-question prose is retained
+history, superseded by this actual response. Issued18–20 implement the bounded
+native Surface checkpoint, returning759567f92bd145b5fbd0fbd4273aef368e52aeba,
+tree52dd6558eba4a5e9fe057dd03c368327ea578662. Root verified clean exact8path
+scope and both co-authors. CC index/receipts are
+[here](artifacts/increment-b2b3/native/cc/index.md), SHA256
+670b6d7441a956888da9b21093d1a415be96af6e247697d172fb10f227a1ba63.
+CC proposed-done is not independent acceptance; source/build transfers to Sol.
+
+Private storage and guards share identity, source labels/effects/defaults/
+destructuring remain, and inline Bind exports expose source names rather than
+private storage. Canonical pattern spread uses the pattern writer (including
+assignment); value spread and legacy catch remain distinct. Unknown object
+list patterns get a source-located codegen migration error. Native JSON Bind
+exports are declaration plus names export; the changed E2E test explicitly
+asserts that protocol and actually compares native/public ESM namespaces.
+Public discard/typed-export parity is not claimed by the simple VERSION case.
+
+Final CC full03 passes1201library/23discard/18e2e/1563product67steps/482docs,
+cold55/14. Actual CLI checked/stripped prints foreign `_`99; bad typed input
+throws TypeError with source `_` label. FinalHEADcites64/601 and46857gzip pass,
+35063bytes headroom. Existing pinned esbuild metadata/package fetching means
+the size run is not fully offline; no dependency/lock change. Full01/02 failed
+old export oracles, original invalid object-rest/value-spread/span-extractor
+fixtures, CLI unbound-name mistake and capture/read-location errors remain.
+Root's inspected inventory is19seven+20one=8, correcting one CC cardinality
+sentence without rewriting it. All full S03 and downstream public/raw/catch/
+owner/name/check/DTS/docs/book/human obligations remain open. Sol now supplies
+independent software disposition before this bounded row can close.

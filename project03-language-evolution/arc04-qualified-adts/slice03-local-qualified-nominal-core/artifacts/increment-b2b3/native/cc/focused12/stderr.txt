@@ -1,0 +1,15 @@
+   Compiling lykn-lang v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 6.26s
+     Running tests/discard_bindings.rs (target/debug/deps/discard_bindings-3e9aefe0c9ea9e06)
+
+thread 'assignment_spread_patterns_keep_alias_bindings' (107346894) panicked at crates/lykn-lang/tests/discard_bindings.rs:734:5:
+assertion `left == right` failed
+  left: "undefined\n"
+ right: "31\n"
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+thread 'nested_spread_patterns_use_pattern_grammar_and_old_tuple_patterns_diagnose' (107347020) panicked at crates/lykn-lang/tests/discard_bindings.rs:686:5:
+assertion `left == right` failed
+  left: "undefined\n"
+ right: "17\n"
+error: test failed, to rerun pass `-p lykn-lang --test discard_bindings`

@@ -1,0 +1,4 @@
+js_path="/private/tmp/lykn-b2-discard-native-cc/tmp/.tmpdFy9cQ/header.mjs"
+js_exists=false
+dts_path="/private/tmp/lykn-b2-discard-native-cc/tmp/.tmpdFy9cQ/header.d.ts"
+dts_exists=false

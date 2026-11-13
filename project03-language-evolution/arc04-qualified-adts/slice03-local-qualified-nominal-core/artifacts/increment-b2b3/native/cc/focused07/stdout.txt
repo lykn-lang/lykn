@@ -1,0 +1,19 @@
+
+running 14 tests
+test named_duplicate_diagnostic_is_retained_while_repeated_discard_group_is_valid ... ok
+test failed_fragment_emission_does_not_poison_reused_context ... ok
+test repeated_bind_discards_evaluate_once_and_leave_source_underscore_alone ... ok
+test typed_generator_discard_checks_only_when_iteration_advances ... ok
+test typed_object_field_getter_is_read_once ... ok
+test fn_lambda_genfn_and_schema_property_roles_keep_underscore_meaning ... ok
+test rest_discard_checks_each_consumed_member_and_keeps_source_label ... ok
+test distinct_generated_discard_names_do_not_capture_source_lookups ... ok
+test fixed_multi_clause_discards_keep_dispatch_and_checked_stripped_binding ... ok
+test defaults_are_lazy_once_and_nested_array_rest_remains_valid_in_multi_clause ... ok
+test source_underscore_in_body_and_default_is_not_private_storage ... ok
+test typed_object_discard_preserves_property_key_and_optional_default ... ok
+test typed_array_discard_reads_value_but_raw_trailing_holes_do_not ... ok
+test typed_scalar_discard_checks_the_actual_value_and_reports_source_name ... ok
+
+test result: ok. 14 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.27s
+

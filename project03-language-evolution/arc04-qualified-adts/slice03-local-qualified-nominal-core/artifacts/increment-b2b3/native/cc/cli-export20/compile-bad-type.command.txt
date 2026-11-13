@@ -1,0 +1,1 @@
+target/debug/lykn compile /private/tmp/lykn-b2-discard-native-cc/cli-export20-bad-type.lykn -o cli-export20-bad-type.mjs

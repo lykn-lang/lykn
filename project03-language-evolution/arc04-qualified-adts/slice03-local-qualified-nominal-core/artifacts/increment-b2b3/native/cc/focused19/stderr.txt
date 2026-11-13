@@ -1,0 +1,10 @@
+   Compiling lykn-lang v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.45s
+     Running tests/discard_bindings.rs (target/debug/deps/discard_bindings-3e9aefe0c9ea9e06)
+
+thread 'assignment_spread_patterns_keep_alias_bindings' (107364022) panicked at crates/lykn-lang/tests/discard_bindings.rs:809:5:
+assertion `left == right` failed
+  left: "{ nested: [ 41, 42 ] }\n41:42\n"
+ right: "41:42\n"
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+error: test failed, to rerun pass `-p lykn-lang --test discard_bindings`

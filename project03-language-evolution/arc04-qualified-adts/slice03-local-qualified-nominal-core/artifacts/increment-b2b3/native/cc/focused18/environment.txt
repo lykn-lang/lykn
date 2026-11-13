@@ -1,0 +1,5 @@
+PWD=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+DENO_DIR=/Users/oubiwann/Library/Caches/deno
+XDG_CACHE_HOME=/private/tmp/lykn-b2-discard-native-cc/xdg
+NPM_CONFIG_CACHE=/private/tmp/lykn-b2-discard-native-cc/npm
+TMPDIR=/private/tmp/lykn-b2-discard-native-cc/tmp

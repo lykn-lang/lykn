@@ -1,0 +1,1 @@
+target/debug/lykn compile --strip-assertions /private/tmp/lykn-b2-discard-native-cc/cli-export20-underscore.lykn -o cli-export20-stripped.mjs

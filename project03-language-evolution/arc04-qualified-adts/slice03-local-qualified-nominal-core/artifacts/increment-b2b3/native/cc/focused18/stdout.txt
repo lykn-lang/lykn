@@ -1,0 +1,32 @@
+
+running 22 tests
+test exports_project_nested_alias_and_spread_bindings_but_not_empty_default_slots ... ok
+test failed_fragment_emission_does_not_poison_reused_context ... ok
+test direct_return_member_calls_keep_order_and_discard_storage_private ... ok
+test named_duplicate_diagnostic_is_retained_while_repeated_discard_group_is_valid ... ok
+test catch_default_callable_lookup_keeps_legacy_expression_pattern ... ok
+test grouped_export_exposes_only_original_names_in_pair_order ... ok
+test assignment_spread_patterns_keep_alias_bindings ... FAILED
+test distinct_generated_discard_names_do_not_capture_source_lookups ... ok
+test inline_discard_export_has_no_private_exports_and_runs_initializer_once ... ok
+test repeated_bind_discards_evaluate_once_and_leave_source_underscore_alone ... ok
+test fixed_multi_clause_discards_keep_dispatch_and_checked_stripped_binding ... ok
+test defaults_are_lazy_once_and_nested_array_rest_remains_valid_in_multi_clause ... ok
+test typed_generator_discard_checks_only_when_iteration_advances ... ok
+test rest_discard_checks_each_consumed_member_and_keeps_source_label ... ok
+test source_underscore_in_body_and_default_is_not_private_storage ... ok
+test nested_spread_patterns_use_pattern_grammar_and_old_tuple_patterns_diagnose ... ok
+test fn_lambda_genfn_and_schema_property_roles_keep_underscore_meaning ... ok
+test typed_object_field_getter_is_read_once ... ok
+test typed_object_discard_preserves_property_key_and_optional_default ... ok
+test discard_exports_keep_type_checks_effects_json_and_named_bindings ... ok
+test typed_array_discard_reads_value_but_raw_trailing_holes_do_not ... ok
+test typed_scalar_discard_checks_the_actual_value_and_reports_source_name ... ok
+
+failures:
+
+failures:
+    assignment_spread_patterns_keep_alias_bindings
+
+test result: FAILED. 21 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.22s
+

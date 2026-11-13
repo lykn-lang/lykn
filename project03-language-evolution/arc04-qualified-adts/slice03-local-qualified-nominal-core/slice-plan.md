@@ -3,11 +3,28 @@ project: project03-language-evolution
 arc: arc04-qualified-adts
 slice: slice03-local-qualified-nominal-core
 status: active
-version: "1.36"
+version: "1.37"
 depends-on: [slice01-contract-and-emission-design, slice02-existing-adt-correctness]
 ---
 
 # Local qualified nominal core
+
+2026-11-13 v1.37: combined18–20 returns clean759567f92bd145b5fbd0fbd4273aef368e52aeba,
+tree52dd6558eba4a5e9fe057dd03c368327ea578662, exact8source/test paths and
+both contiguous trailers, verified by root. CC proposes B2-DISCARD-N only.
+Final full03 passes1201library,23discard integration,18e2e,1563product67steps,
+482docs, actual cold55/14; actual final CLI checked/stripped noncapture prints99
+and corrected bad typed input throws the source-labelled TypeError. FinalHEAD
+cites64/601 and fresh46857gzip pass. Size fetched existing pinned esbuild;
+not fully offline. All first attempts/full01/full02 and partial M6 packets stay.
+Root verified CC index670b6d7441a956888da9b21093d1a415be96af6e247697d172fb10f227a1ba63.
+Its final cardinality sentence accidentally says eight19paths plus20; actual
+Git inventory is19's seven plus e2e_tests.rs =8. Original attestation remains.
+Source/build now belongs to separate Sol for final independent software proof;
+root owns planning/Git/ledger. No row closes from proposed-done. All public/
+raw scalar/catch/kernel parity, grouped all-discard nonatom, top-level simple
+multi default/rest, name/owner/check/DTS/API/docs/book/human and LC02–08/B2b/
+S03 obligations remain open. Release integration is not part of this checkpoint.
 
 2026-11-13 v1.36: focused23/23, including actual source-only namespace,
 canonical spread/assignment and legacy catch controls, precedes full checks.
@@ -245,11 +262,12 @@ depth, supported native quotation paths, kernel-only D1 scope corrections and
 validation-only class-member queries. Existing source Func/class aggregate
 scope issues are explicit B2 inputs, not new IC-01 expansion claims.
 
-**Current assignment:** [iteration20](cc-prompt-iteration20.md), issued
+**Current assignment:** [iteration20](cc-prompt-iteration20.md), returned
+CC proposed-done at759567f9 for separate Sol software verification. Issued
 2026-11-13 against accepted57c76c99cbed07ff992e78aac8afefa4bdf0b2ad/
 treef044d795e88c3dac8e84a73a557cf071edd5327c plus Luna's retained authorized18
-work, after independent export/pattern source-readiness. Luna owns source/build
-for the combined18–20 bounded native Surface discard checkpoint under the
+work, after independent export/pattern source-readiness. Sol now owns clean
+source/build for independent verification of the combined18–20 checkpoint under the
 operator's B2 design/implementation/independent-validation authorization and
 2026-11-13 source-name decision. B2-LX and B2-UNIT are independently accepted.
 [B2 architecture](artifacts/b2-owner-and-lexical-design.md) still governs typed
@@ -292,7 +310,7 @@ gates survive. No release edits/integration, remote CI, push or publication.
 | cc-prompt-iteration17.md | 2026-11-13 | iteration16 | B2b2 public ICU private allocator and actual mapped cold/browser/private runtime delivery | Independently accepted57c76c99/treef044d795, B2-ICU-P only |
 | cc-prompt-iteration18.md | 2026-11-13 | iteration17 | Operator discard policy, native Surface private values/guards and effects | Retained15-test/CLI checkpoint; refined by19 before full gate/commit, no independent acceptance |
 | cc-prompt-iteration19.md | 2026-11-13 | iteration18 | Source-only export names and canonical spread-pattern/projector parity, preserving catch extent | Retained23-test checkpoint; refined by20 after full01/02 oracle migrations, not accepted |
-| cc-prompt-iteration20.md | 2026-11-13 | iteration19 | Explicit native export JSON and actual public/native ESM parity oracle | Active; eighth e2e_tests.rs test-only path, same Luna owner then separate Sol review |
+| cc-prompt-iteration20.md | 2026-11-13 | iteration19 | Explicit native export JSON and actual public/native ESM parity oracle | CC proposed-done759567f9/tree52dd6558, exact8paths; separate Sol verification active |
 
 The A correction loop used three refinement passes; B1 required no software
 correction. IC-01 is a distinct authorized usable prerequisite, not a retry

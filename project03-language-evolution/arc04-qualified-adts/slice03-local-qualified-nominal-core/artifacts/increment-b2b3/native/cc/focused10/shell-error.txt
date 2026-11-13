@@ -1,0 +1,10 @@
+First capture attempt, before cargo ran:
+/opt/homebrew/bin/bash: line 7: /Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/arc04-qualified-adats/slice03-local-qualified-nominal-core/artifacts/increment-b2b3/native/cc/focused10/environment.txt: No such file or directory
+/opt/homebrew/bin/bash: line 14: /Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/arc04-qualified-adats/slice03-local-qualified-nominal-core/artifacts/increment-b2b3/native/cc/focused10/stdout.txt: No such file or directory
+/opt/homebrew/bin/bash: line 16: /Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/arc04-qualified-adats/slice03-local-qualified-nominal-core/artifacts/increment-b2b3/native/cc/focused10/status.txt: No such file or directory
+
+Second setup attempt, before cargo ran:
+/opt/homebrew/bin/bash: line 8: /Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/arc04-qualified-adts/slice03-local-qualified-nominal-core/artifacts/increment-b2b3/native/cc/focused11/command.txt: No such file or directory
+/opt/homebrew/bin/bash: line 12: /Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/arc04-qualified-adts/slice03-local-qualified-nominal-core/artifacts/increment-b2b3/native/cc/focused11/environment.txt: No such file or directory
+/opt/homebrew/bin/bash: line 19: /Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/arc04-qualified-adts/slice03-local-qualified-nominal-core/artifacts/increment-b2b3/native/cc/focused11/stdout.txt: No such file or directory
+/opt/homebrew/bin/bash: line 21: /Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/arc04-qualified-adts/slice03-local-qualified-nominal-core/artifacts/increment-b2b3/native/cc/focused11/status.txt: No such file or directory

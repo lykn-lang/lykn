@@ -1,0 +1,32 @@
+   Compiling lykn-lang v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang)
+error[E0425]: cannot find value `param` in this scope
+    --> crates/lykn-lang/src/emitter/forms.rs:4017:25
+     |
+4016 |         for (i, _param) in clause.args.iter().enumerate() {
+     |                 ------ `_param` defined here
+4017 |             let dtype = param.dispatch_type();
+     |                         ^^^^^
+     |
+help: the leading underscore in `_param` marks it as unused, consider renaming it to `param`
+     |
+4016 -         for (i, _param) in clause.args.iter().enumerate() {
+4016 +         for (i, param) in clause.args.iter().enumerate() {
+     |
+
+error[E0425]: cannot find value `param` in this scope
+    --> crates/lykn-lang/src/emitter/forms.rs:4020:79
+     |
+4016 |         for (i, _param) in clause.args.iter().enumerate() {
+     |                 ------ `_param` defined here
+...
+4020 |                 let dispatch_check = build_dispatch_check(dtype, &arg_access, param.span());
+     |                                                                               ^^^^^
+     |
+help: the leading underscore in `_param` marks it as unused, consider renaming it to `param`
+     |
+4016 -         for (i, _param) in clause.args.iter().enumerate() {
+4016 +         for (i, param) in clause.args.iter().enumerate() {
+     |
+
+For more information about this error, try `rustc --explain E0425`.
+error: could not compile `lykn-lang` (lib) due to 2 previous errors

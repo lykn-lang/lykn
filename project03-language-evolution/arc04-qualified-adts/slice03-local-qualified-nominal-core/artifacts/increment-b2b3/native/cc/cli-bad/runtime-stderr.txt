@@ -1,0 +1,5 @@
+error: Uncaught (in promise) TypeError: check: arg '_' expected number, got string
+    throw new lyknIntrinsicTypeError0("check: arg '_' expected number, got " + typeof completionValue__gensym0);
+          ^
+    at check (file:///private/tmp/lykn-b2-discard-native-cc/cli-bad.mjs:5:11)
+    at file:///private/tmp/lykn-b2-discard-native-cc/cli-bad.mjs:9:13
