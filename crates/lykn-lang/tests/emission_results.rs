@@ -1,9 +1,40 @@
-use lykn_lang::{analysis::type_registry::TypeRegistry, ast::surface::SurfaceForm, emitter};
+use std::process::Command;
+
+use lykn_lang::{
+    analysis::{self, AnalyzedUnit, type_registry::TypeRegistry},
+    ast::surface::SurfaceForm,
+    emitter,
+};
 
 fn classify(source: &str) -> Vec<SurfaceForm> {
     let forms = lykn_lang::reader::read(source).expect("source reads");
     let resolved = lykn_lang::resolver::resolve(&forms);
     lykn_lang::classifier::classify(&resolved).expect("source classifies")
+}
+
+fn analyzed(forms: Vec<SurfaceForm>) -> AnalyzedUnit {
+    analysis::analyze(forms).expect("source analysis succeeds")
+}
+
+fn run_generated_esm(source: &str) -> String {
+    let output = Command::new("deno")
+        .arg("eval")
+        .arg("--config")
+        .arg("project.json")
+        .arg("--ext=js")
+        .arg(source)
+        .current_dir(env!("CARGO_MANIFEST_DIR").to_string() + "/../..")
+        .output()
+        .expect("Deno is available for generated ESM runtime proof");
+    assert!(
+        output.status.success(),
+        "generated ESM failed: {}",
+        String::from_utf8_lossy(&output.stderr)
+    );
+    String::from_utf8(output.stdout)
+        .expect("Deno stdout is UTF-8")
+        .trim()
+        .to_string()
 }
 
 fn nested_bad_child<'a>(
@@ -33,15 +64,16 @@ fn codegen_diagnostic(error: lykn_lang::error::LyknError) -> lykn_lang::diagnost
 fn checked_emission_boundaries_reject_value_if_without_else() {
     let forms = classify("(bind value (if true 1))");
     let registry = TypeRegistry::default();
+    let unit = analyzed(forms.clone());
 
     for strip_assertions in [false, true] {
-        let emitted = emitter::emit(&forms, &registry, strip_assertions);
+        let emitted = emitter::emit(&unit, strip_assertions);
         assert!(matches!(
             emitted,
             Err(lykn_lang::error::LyknError::Codegen(_))
         ));
 
-        let json = emitter::emit_json(&forms, &registry, strip_assertions);
+        let json = emitter::emit_json(&unit, strip_assertions);
         assert!(matches!(json, Err(lykn_lang::error::LyknError::Codegen(_))));
 
         let mut ctx = emitter::context::EmitterContext::new(strip_assertions);
@@ -63,15 +95,16 @@ fn nested_classification_failure_preserves_source_diagnostic() {
     assert_ne!(expected.span, Default::default());
     let forms = lykn_lang::classifier::classify(&resolved).expect("outer forms classify");
     let registry = TypeRegistry::default();
+    let unit = analyzed(forms.clone());
     for strip_assertions in [false, true] {
-        let error = emitter::emit(&forms, &registry, strip_assertions).unwrap_err();
+        let error = emitter::emit(&unit, strip_assertions).unwrap_err();
         let lykn_lang::error::LyknError::Classify(diagnostic) = error else {
             panic!("nested classification failure must remain a classifier diagnostic");
         };
         assert_eq!(diagnostic, expected);
         assert_ne!(diagnostic.span, Default::default());
 
-        let error = emitter::emit_json(&forms, &registry, strip_assertions).unwrap_err();
+        let error = emitter::emit_json(&unit, strip_assertions).unwrap_err();
         assert!(
             matches!(error, lykn_lang::error::LyknError::Classify(actual) if actual == expected)
         );
@@ -94,7 +127,8 @@ fn nested_diagnostic_keeps_duplicate_binding_suggestion() {
     assert_ne!(expected.span, Default::default());
     assert!(expected.suggestion.is_some());
     let forms = lykn_lang::classifier::classify(&resolved).expect("outer form classifies");
-    let error = emitter::emit(&forms, &TypeRegistry::default(), false).unwrap_err();
+    let unit = analyzed(forms);
+    let error = emitter::emit(&unit, false).unwrap_err();
     assert!(matches!(error, lykn_lang::error::LyknError::Classify(actual) if actual == expected));
 }
 
@@ -121,7 +155,7 @@ fn checked_emission_reports_assign_and_returns_mismatch() {
     let top_span = top_parsed[0].span();
     assert_ne!(top_span, Default::default());
     let top_assign = classify(top_source);
-    let top_error = codegen_diagnostic(emitter::emit(&top_assign, &registry, false).unwrap_err());
+    let top_error = codegen_diagnostic(emitter::emit(&analyzed(top_assign), false).unwrap_err());
     assert_eq!(top_error.span, top_span);
 
     let nested_source = "(bind value (assign field 1))";
@@ -135,7 +169,7 @@ fn checked_emission_reports_assign_and_returns_mismatch() {
     assert_ne!(nested_span, Default::default());
     let nested_forms = classify(nested_source);
     let nested_error =
-        codegen_diagnostic(emitter::emit(&nested_forms, &registry, false).unwrap_err());
+        codegen_diagnostic(emitter::emit(&analyzed(nested_forms), false).unwrap_err());
     assert_eq!(nested_error.span, nested_span);
 
     let mismatch_source = "(func broken :args () :returns :number :post true :body (while false (console:log \"never\")))";
@@ -156,10 +190,54 @@ fn checked_emission_reports_assign_and_returns_mismatch() {
 
 #[test]
 fn valid_empty_and_literal_emission_remain_checked_successes() {
-    let registry = TypeRegistry::default();
-    assert!(emitter::emit(&[], &registry, false).unwrap().is_empty());
+    assert!(
+        emitter::emit(&analyzed(Vec::new()), false)
+            .unwrap()
+            .is_empty()
+    );
     let forms = classify("(bind answer 42)");
-    assert!(!emitter::emit(&forms, &registry, false).unwrap().is_empty());
+    assert!(!emitter::emit(&analyzed(forms), false).unwrap().is_empty());
+}
+
+#[test]
+fn independent_analyzed_units_keep_registry_forms_paired_across_emitters() {
+    let unit_a = analyzed(classify(
+        "(type A (Entry :number left)) (bind item (Entry 3)) (console:log item:left)",
+    ));
+    let unit_b = analyzed(classify(
+        "(type B (Entry :string right)) (bind item (Entry \"three\")) (console:log item:right)",
+    ));
+
+    let kernel_a = emitter::emit(&unit_a, false).expect("A emits");
+    let dts_b = emitter::dts::emit_dts_module(&unit_b, "b.lykn").0;
+    let js_a = lykn_lang::codegen::emit_module_js(&kernel_a).expect("A lowers to ESM");
+    let runtime_a = run_generated_esm(&js_a);
+    let dts_a = emitter::dts::emit_dts_module(&unit_a, "a.lykn").0;
+    let kernel_b = emitter::emit(&unit_b, false).expect("B emits");
+    let js_b = lykn_lang::codegen::emit_module_js(&kernel_b).expect("B lowers to ESM");
+    let runtime_b = run_generated_esm(&js_b);
+    let json_a = emitter::emit_json(&unit_a, false).expect("A JSON emits");
+
+    assert!(js_a.contains("left"), "A ESM retains its field: {js_a}");
+    assert!(!js_a.contains("right"), "A ESM excludes B's field: {js_a}");
+    assert!(js_b.contains("right"), "B ESM retains its field: {js_b}");
+    assert!(!js_b.contains("left"), "B ESM excludes A's field: {js_b}");
+    assert_eq!(runtime_a, "3");
+    assert_eq!(runtime_b, "three");
+    assert!(dts_a.contains("type A"), "A declarations retain A: {dts_a}");
+    assert!(
+        dts_a.contains("left: number"),
+        "A declarations retain field type: {dts_a}"
+    );
+    assert!(!dts_a.contains("type B") && !dts_a.contains("right"));
+    assert!(dts_b.contains("type B"), "B declarations retain B: {dts_b}");
+    assert!(
+        dts_b.contains("right: string"),
+        "B declarations retain field type: {dts_b}"
+    );
+    assert!(!dts_b.contains("type A") && !dts_b.contains("left"));
+    assert!(json_a.contains("left"));
+    assert!(!json_a.contains("right"));
 }
 
 #[test]
@@ -189,7 +267,7 @@ fn public_form_boundary_rejects_owned_references_but_whole_emission_lowers_them(
     );
     assert_eq!(diagnostic.span, reference_span);
 
-    let whole_unit = emitter::emit(&forms, &registry, false).unwrap();
+    let whole_unit = emitter::emit(&analyzed(forms), false).unwrap();
     let json = emitter::json::emit_module_json(&whole_unit).unwrap();
     assert!(json.contains("lyknIntrinsicArrayIsArray0"));
 

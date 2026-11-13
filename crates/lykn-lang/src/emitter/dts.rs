@@ -6,7 +6,7 @@
 
 use std::collections::HashSet;
 
-use crate::analysis::type_registry::TypeRegistry;
+use crate::analysis::{AnalyzedUnit, type_registry::TypeRegistry};
 use crate::ast::surface::{
     ArrayParamElement, Constructor, DestructuredField, FuncClause, ParamShape, SurfaceForm,
     TypeAnnotation,
@@ -198,11 +198,13 @@ pub fn emit_bind_dts(
     format!("{modifier}const {js_name}: {ts_type};\n")
 }
 
-pub fn emit_dts_module(
-    forms: &[SurfaceForm],
-    registry: &TypeRegistry,
-    file_path: &str,
-) -> (String, Vec<Diagnostic>) {
+/// Build module declarations from the same analyzed forms used by emission.
+///
+/// Returns declaration text and any warnings generated while interpreting the
+/// file path and exported callable contracts.
+pub fn emit_dts_module(unit: &AnalyzedUnit, file_path: &str) -> (String, Vec<Diagnostic>) {
+    let forms = unit.forms();
+    let registry = unit.type_registry();
     let mut out = String::new();
     let mut warnings = Vec::new();
     let named_exports = named_export_set(forms);

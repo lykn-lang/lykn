@@ -236,26 +236,24 @@ fn compile_lykn_sources(
                     path: path.clone(),
                     source: lykn_lang::error::LyknError::Classify(diags.remove(0)),
                 })?;
-            let analysis_result = lykn_lang::analysis::analyze(&classified);
-            if analysis_result.has_errors {
-                let msg = analysis_result
-                    .diagnostics
+            let unit = lykn_lang::analysis::analyze(classified).map_err(|failure| {
+                let msg = failure
+                    .diagnostics()
                     .iter()
                     .filter(|d| d.severity == lykn_lang::diagnostics::Severity::Error)
                     .map(|d| format!("{d}"))
                     .collect::<Vec<_>>()
                     .join("\n");
-                return Err(DistError::Io {
+                DistError::Io {
                     path: path.clone(),
                     source: std::io::Error::new(std::io::ErrorKind::InvalidData, msg),
-                });
-            }
+                }
+            })?;
             let kernel =
-                lykn_lang::emitter::emit(&classified, &analysis_result.type_registry, false)
-                    .map_err(|source| DistError::Language {
-                        path: path.clone(),
-                        source,
-                    })?;
+                lykn_lang::emitter::emit(&unit, false).map_err(|source| DistError::Language {
+                    path: path.clone(),
+                    source,
+                })?;
             let js = lykn_lang::codegen::emit_module_js(&kernel).map_err(|e| DistError::Io {
                 path: js_path.clone(),
                 source: std::io::Error::new(std::io::ErrorKind::InvalidData, e.to_string()),
@@ -264,11 +262,8 @@ fn compile_lykn_sources(
 
             if emit_dts {
                 let file_str = path.display().to_string();
-                let (dts_content, dts_warnings) = lykn_lang::emitter::dts::emit_dts_module(
-                    &classified,
-                    &analysis_result.type_registry,
-                    &file_str,
-                );
+                let (dts_content, dts_warnings) =
+                    lykn_lang::emitter::dts::emit_dts_module(&unit, &file_str);
                 for w in &dts_warnings {
                     eprintln!("{w}");
                 }

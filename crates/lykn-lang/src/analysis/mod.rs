@@ -12,14 +12,142 @@ use crate::binding::{BindingKind, binding_names_in_pattern};
 use crate::diagnostics::{Diagnostic, Severity};
 use crate::reader::source_loc::Span;
 use scope::ScopeTracker;
+use std::fmt;
 use type_registry::TypeRegistry;
 
-/// The result of running static analysis over a sequence of surface forms.
-#[derive(Debug, Clone)]
-pub struct AnalysisResult {
-    pub diagnostics: Vec<Diagnostic>,
-    pub type_registry: TypeRegistry,
-    pub has_errors: bool,
+/// A surface program and the registry produced by successful semantic analysis.
+///
+/// The fields are private so emitters cannot accidentally combine forms with a
+/// registry from another analysis run.
+///
+/// # Examples
+///
+/// ```
+/// use lykn_lang::{analysis::analyze, classifier, emitter, reader, resolver};
+///
+/// let parsed = reader::read("(bind answer 42)")?;
+/// let resolved = resolver::resolve(&parsed);
+/// let forms = classifier::classify(&resolved).expect("source classifies");
+/// let unit = analyze(forms).expect("source analyzes");
+/// let kernel = emitter::emit(&unit, false)?;
+/// assert!(!kernel.is_empty());
+/// # Ok::<(), Box<dyn std::error::Error>>(())
+/// ```
+///
+/// Construction is intentionally restricted to [`analyze`].
+///
+/// ```compile_fail
+/// use lykn_lang::analysis::AnalyzedUnit;
+/// let unit = AnalyzedUnit {};
+/// ```
+#[derive(Debug)]
+pub struct AnalyzedUnit {
+    forms: Vec<SurfaceForm>,
+    type_registry: TypeRegistry,
+    diagnostics: Vec<Diagnostic>,
+}
+
+impl AnalyzedUnit {
+    /// Returns the forms that were analyzed, in source order.
+    pub fn forms(&self) -> &[SurfaceForm] {
+        &self.forms
+    }
+
+    /// Returns the successful analysis diagnostics in original order.
+    pub fn diagnostics(&self) -> &[Diagnostic] {
+        &self.diagnostics
+    }
+
+    pub(crate) fn type_registry(&self) -> &TypeRegistry {
+        &self.type_registry
+    }
+}
+
+/// Diagnostics from an analysis run that did not produce an [`AnalyzedUnit`].
+///
+/// The diagnostic slice retains every original diagnostic, including warnings
+/// and informational messages. Its display form renders errors in source
+/// analysis order.
+#[derive(Debug)]
+pub struct AnalysisFailure {
+    diagnostics: Vec<Diagnostic>,
+}
+
+impl AnalysisFailure {
+    /// Returns all diagnostics from the failed analysis, in original order.
+    pub fn diagnostics(&self) -> &[Diagnostic] {
+        &self.diagnostics
+    }
+}
+
+impl fmt::Display for AnalysisFailure {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        let mut first = true;
+        for diagnostic in self
+            .diagnostics
+            .iter()
+            .filter(|diagnostic| diagnostic.severity == Severity::Error)
+        {
+            if !first {
+                writeln!(f)?;
+            }
+            write!(f, "{diagnostic}")?;
+            first = false;
+        }
+        Ok(())
+    }
+}
+
+impl std::error::Error for AnalysisFailure {}
+
+/// Run all analysis passes and return an owned unit only when no errors occur.
+///
+/// The input vector is retained by the successful unit, so emitters consume
+/// only forms paired with the registry generated from those same forms.
+///
+/// # Errors
+///
+/// Returns every diagnostic if one or more errors were found; otherwise
+/// warnings and informational diagnostics are retained by the returned unit.
+///
+/// ```compile_fail
+/// use lykn_lang::{analysis::type_registry::TypeRegistry, ast::surface::SurfaceForm, emitter};
+/// # let forms: Vec<SurfaceForm> = Vec::new();
+/// let registry = TypeRegistry::default();
+/// let _ = emitter::emit(&forms, &registry, false);
+/// ```
+pub fn analyze(forms: Vec<SurfaceForm>) -> Result<AnalyzedUnit, AnalysisFailure> {
+    let mut registry = TypeRegistry::default();
+    let mut scope = ScopeTracker::new();
+    let mut diagnostics = Vec::new();
+
+    // Phase 1: Collection
+    prelude::register_prelude_types(&mut registry);
+    for form in &forms {
+        diagnostics.extend(form.collect(&mut registry, &mut scope));
+    }
+
+    // Phase 2: Checks + scope tracking
+    for form in &forms {
+        diagnostics.extend(form.check(&registry));
+        form.track_scope(&mut scope);
+    }
+
+    for name in exported_runtime_names(&forms) {
+        scope.mark_exported(&name);
+    }
+
+    diagnostics.extend(scope.collect_diagnostics());
+
+    if diagnostics.iter().any(|d| d.severity == Severity::Error) {
+        return Err(AnalysisFailure { diagnostics });
+    }
+
+    Ok(AnalyzedUnit {
+        forms,
+        type_registry: registry,
+        diagnostics,
+    })
 }
 
 // ---------------------------------------------------------------------------
@@ -379,42 +507,6 @@ impl Analyze for SurfaceForm {
 // Public entry point
 // ---------------------------------------------------------------------------
 
-/// Run all analysis passes over a slice of surface forms.
-///
-/// Phase 1 (collection): register prelude types and user-defined types.
-/// Phase 2 (analysis): check match exhaustiveness, function clause overlap,
-/// and scope usage.
-pub fn analyze(forms: &[SurfaceForm]) -> AnalysisResult {
-    let mut registry = TypeRegistry::default();
-    let mut scope = ScopeTracker::new();
-    let mut diagnostics = Vec::new();
-
-    // Phase 1: Collection
-    prelude::register_prelude_types(&mut registry);
-    for form in forms {
-        diagnostics.extend(form.collect(&mut registry, &mut scope));
-    }
-
-    // Phase 2: Checks + scope tracking
-    for form in forms {
-        diagnostics.extend(form.check(&registry));
-        form.track_scope(&mut scope);
-    }
-
-    for name in exported_runtime_names(forms) {
-        scope.mark_exported(&name);
-    }
-
-    diagnostics.extend(scope.collect_diagnostics());
-
-    let has_errors = diagnostics.iter().any(|d| d.severity == Severity::Error);
-    AnalysisResult {
-        diagnostics,
-        type_registry: registry,
-        has_errors,
-    }
-}
-
 fn exported_runtime_names(forms: &[SurfaceForm]) -> Vec<String> {
     let mut names = Vec::new();
     for form in forms {
@@ -651,9 +743,9 @@ mod tests {
                 span: span(),
             },
         ];
-        let result = analyze(&forms);
+        let result = analyze(forms).expect("analysis succeeds");
         let unused: Vec<_> = result
-            .diagnostics
+            .diagnostics()
             .iter()
             .filter(|d| d.message.contains("unused"))
             .collect();
@@ -675,10 +767,10 @@ mod tests {
             },
             span: span(),
         }];
-        let result = analyze(&forms);
+        let result = analyze(forms).expect("analysis succeeds");
         assert!(
             result
-                .diagnostics
+                .diagnostics()
                 .iter()
                 .any(|d| d.message.contains("unused binding 'x'")),
             "expected unused warning for 'x'"
@@ -753,9 +845,9 @@ mod tests {
                 span: span(),
             },
         ];
-        let result = analyze(&forms);
+        let result = analyze(forms).expect("analysis succeeds");
         let unused: Vec<_> = result
-            .diagnostics
+            .diagnostics()
             .iter()
             .filter(|d| d.message.contains("unused"))
             .collect();
@@ -812,17 +904,17 @@ mod tests {
                 span: span(),
             },
         ];
-        let result = analyze(&forms);
+        let result = analyze(forms).expect("analysis succeeds");
         assert!(
             result
-                .diagnostics
+                .diagnostics()
                 .iter()
                 .any(|d| d.message.contains("unused binding 'b'")),
             "expected unused warning for 'b'"
         );
         assert!(
             !result
-                .diagnostics
+                .diagnostics()
                 .iter()
                 .any(|d| d.message.contains("unused binding 'a'")),
             "should NOT warn about 'a'"
@@ -833,12 +925,11 @@ mod tests {
 
     #[test]
     fn test_analyze_empty_forms() {
-        let result = analyze(&[]);
-        assert!(!result.has_errors);
-        assert!(result.diagnostics.is_empty());
+        let result = analyze(Vec::new()).expect("empty analysis succeeds");
+        assert!(result.diagnostics().is_empty());
         // Prelude types should be registered
-        assert!(result.type_registry.lookup_type("Option").is_some());
-        assert!(result.type_registry.lookup_type("Result").is_some());
+        assert!(result.type_registry().lookup_type("Option").is_some());
+        assert!(result.type_registry().lookup_type("Result").is_some());
     }
 
     #[test]
@@ -868,10 +959,9 @@ mod tests {
             ],
             span: span(),
         }];
-        let result = analyze(&forms);
-        assert!(!result.has_errors);
-        assert!(result.type_registry.lookup_type("Color").is_some());
-        assert!(result.type_registry.lookup_constructor("Red").is_some());
+        let result = analyze(forms).expect("type analysis succeeds");
+        assert!(result.type_registry().lookup_type("Color").is_some());
+        assert!(result.type_registry().lookup_constructor("Red").is_some());
     }
 
     #[test]
@@ -892,11 +982,10 @@ mod tests {
             }],
             span: span(),
         }];
-        let result = analyze(&forms);
-        assert!(result.has_errors);
+        let result = analyze(forms).expect_err("non-exhaustive match fails");
         assert!(
             result
-                .diagnostics
+                .diagnostics()
                 .iter()
                 .any(|d| d.message.contains("None"))
         );
@@ -918,9 +1007,9 @@ mod tests {
             },
             span: span(),
         }];
-        let result = analyze(&forms);
+        let result = analyze(forms).expect("matching literal succeeds");
         let errors: Vec<_> = result
-            .diagnostics
+            .diagnostics()
             .iter()
             .filter(|d| d.severity == Severity::Error)
             .collect();
@@ -944,11 +1033,10 @@ mod tests {
             },
             span: span(),
         }];
-        let result = analyze(&forms);
-        assert!(result.has_errors, "mismatch should produce an error");
+        let result = analyze(forms).expect_err("mismatch should produce an error");
         assert!(
             result
-                .diagnostics
+                .diagnostics()
                 .iter()
                 .any(|d| d.message.contains("bind 'x'")
                     && d.message.contains(":number")
@@ -971,9 +1059,9 @@ mod tests {
             },
             span: span(),
         }];
-        let result = analyze(&forms);
+        let result = analyze(forms).expect("any annotation accepts literal");
         let errors: Vec<_> = result
-            .diagnostics
+            .diagnostics()
             .iter()
             .filter(|d| d.severity == Severity::Error)
             .collect();
@@ -994,8 +1082,13 @@ mod tests {
             value: SExpr::atom("NaN", span()),
             span: span(),
         }];
-        let result = analyze(&forms);
-        assert!(result.has_errors, "NaN should fail :number annotation");
+        let result = analyze(forms).expect_err("NaN should fail :number annotation");
+        assert!(
+            result
+                .diagnostics()
+                .iter()
+                .any(|d| d.severity == Severity::Error)
+        );
     }
 
     #[test]
@@ -1013,9 +1106,9 @@ mod tests {
             },
             span: span(),
         }];
-        let result = analyze(&forms);
+        let result = analyze(forms).expect("non-literal bind is not statically checked");
         let errors: Vec<_> = result
-            .diagnostics
+            .diagnostics()
             .iter()
             .filter(|d| d.severity == Severity::Error)
             .collect();
@@ -1036,8 +1129,13 @@ mod tests {
             value: SExpr::Null { span: span() },
             span: span(),
         }];
-        let result = analyze(&forms);
-        assert!(result.has_errors, "null should fail :number annotation");
+        let result = analyze(forms).expect_err("null should fail :number annotation");
+        assert!(
+            result
+                .diagnostics()
+                .iter()
+                .any(|d| d.severity == Severity::Error)
+        );
     }
 
     // --- Scope tracking for additional form variants ---
@@ -1084,10 +1182,10 @@ mod tests {
                 span: span(),
             },
         ];
-        let result = analyze(&forms);
+        let result = analyze(forms).expect("fn analysis succeeds");
         assert!(
             !result
-                .diagnostics
+                .diagnostics()
                 .iter()
                 .any(|d| d.message.contains("unused binding 'x'")),
             "fn param 'x' is used in body"
@@ -1108,10 +1206,10 @@ mod tests {
                 span: span(),
             },
         ];
-        let result = analyze(&forms);
+        let result = analyze(forms).expect("cell analysis succeeds");
         assert!(
             !result
-                .diagnostics
+                .diagnostics()
                 .iter()
                 .any(|d| d.message.contains("unused binding 'c'")),
             "'c' is referenced in cell"
@@ -1132,10 +1230,10 @@ mod tests {
                 span: span(),
             },
         ];
-        let result = analyze(&forms);
+        let result = analyze(forms).expect("object analysis succeeds");
         assert!(
             !result
-                .diagnostics
+                .diagnostics()
                 .iter()
                 .any(|d| d.message.contains("unused binding 'v'")),
             "'v' is referenced in obj"
@@ -1162,9 +1260,9 @@ mod tests {
                 span: span(),
             },
         ];
-        let result = analyze(&forms);
+        let result = analyze(forms).expect("threading analysis succeeds");
         let unused: Vec<_> = result
-            .diagnostics
+            .diagnostics()
             .iter()
             .filter(|d| d.message.contains("unused"))
             .collect();
@@ -1186,10 +1284,10 @@ mod tests {
                 span: span(),
             },
         ];
-        let result = analyze(&forms);
+        let result = analyze(forms).expect("scope analysis succeeds");
         assert!(
             !result
-                .diagnostics
+                .diagnostics()
                 .iter()
                 .any(|d| d.message.contains("unused binding 'x'")),
             "'x' is referenced in thread-first"
@@ -1208,10 +1306,10 @@ mod tests {
             else_body: None,
             span: span(),
         }];
-        let result = analyze(&forms);
+        let result = analyze(forms).expect("if-let analysis succeeds");
         assert!(
             !result
-                .diagnostics
+                .diagnostics()
                 .iter()
                 .any(|d| d.message.contains("unused binding 'val'")),
             "'val' is used in then_body"
@@ -1232,12 +1330,65 @@ mod tests {
             },
             span: span(),
         }];
-        let result = analyze(&forms);
+        let result = analyze(forms).expect("boolean bind analysis succeeds");
         let errors: Vec<_> = result
-            .diagnostics
+            .diagnostics()
             .iter()
             .filter(|d| d.severity == Severity::Error)
             .collect();
         assert!(errors.is_empty(), "bool should match :boolean: {errors:?}");
+    }
+
+    #[test]
+    fn analysis_failure_retains_errors_warnings_spans_and_suggestions() {
+        let parsed =
+            crate::reader::read("(bind :number age \"wrong\")").expect("mismatch source reads");
+        let expected_span = parsed[0].span();
+        let resolved = crate::resolver::resolve(&parsed);
+        let forms = crate::classifier::classify(&resolved).expect("mismatch source classifies");
+
+        let failure = analyze(forms).expect_err("literal mismatch must fail analysis");
+        let diagnostics = failure.diagnostics();
+        let error = diagnostics
+            .iter()
+            .find(|diagnostic| diagnostic.severity == Severity::Error)
+            .expect("failure retains error diagnostic");
+        assert_eq!(error.span, expected_span);
+        assert!(error.message.contains("age"));
+        assert_eq!(
+            error.suggestion.as_deref(),
+            Some("change the type annotation to :string or use a different value")
+        );
+        assert!(
+            diagnostics
+                .iter()
+                .any(|diagnostic| diagnostic.severity == Severity::Warning)
+        );
+        assert!(
+            failure
+                .to_string()
+                .contains("suggestion: change the type annotation")
+        );
+        assert!(!failure.to_string().contains("warning:"));
+    }
+
+    #[test]
+    fn successful_analysis_retains_non_error_diagnostics_and_owned_forms() {
+        let parsed = crate::reader::read("(bind unused 1)").expect("source reads");
+        let resolved = crate::resolver::resolve(&parsed);
+        let forms = crate::classifier::classify(&resolved).expect("source classifies");
+        let unit = analyze(forms).expect("unused binding is a warning");
+
+        assert_eq!(unit.forms().len(), 1);
+        assert!(
+            unit.diagnostics()
+                .iter()
+                .any(|diagnostic| diagnostic.severity == Severity::Warning)
+        );
+        assert!(
+            unit.diagnostics()
+                .iter()
+                .all(|diagnostic| diagnostic.severity != Severity::Error)
+        );
     }
 }

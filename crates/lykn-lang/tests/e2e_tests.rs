@@ -7,8 +7,6 @@
 use std::process::Command;
 
 use lykn_lang::analysis;
-use lykn_lang::analysis::type_registry::TypeRegistry;
-use lykn_lang::ast::surface::SurfaceForm;
 use lykn_lang::classifier;
 use lykn_lang::emitter;
 use lykn_lang::reader;
@@ -21,47 +19,8 @@ fn deno_available() -> bool {
 fn rust_pipeline(source: &str) -> String {
     let sexprs = reader::read(source).expect("Rust reader failed");
     let forms = classifier::classify(&sexprs).expect("Rust classifier failed");
-
-    let mut registry = TypeRegistry::default();
-    analysis::prelude::register_prelude_types(&mut registry);
-
-    for form in &forms {
-        if let SurfaceForm::Type {
-            name,
-            constructors,
-            span,
-            ..
-        } = form
-        {
-            use lykn_lang::analysis::type_registry::{ConstructorDef, FieldDef, TypeDef};
-            let ctors = constructors
-                .iter()
-                .map(|c| ConstructorDef {
-                    name: c.name.clone(),
-                    fields: c
-                        .fields
-                        .iter()
-                        .map(|f| FieldDef {
-                            name: f.name.clone(),
-                            type_keyword: f.type_ann.name.clone(),
-                        })
-                        .collect(),
-                    owning_type: name.clone(),
-                    span: c.span,
-                })
-                .collect();
-            let _ = registry.register_type(TypeDef {
-                name: name.clone(),
-                module_path: None,
-                constructors: ctors,
-                is_blessed: false,
-                span: *span,
-            });
-        }
-    }
-
-    let kernel = emitter::emit(&forms, &registry, false).unwrap();
-    emitter::json::emit_module_json(&kernel).unwrap()
+    let unit = analysis::analyze(forms).expect("Rust analysis failed");
+    emitter::emit_json(&unit, false).unwrap()
 }
 
 /// Run lykn source through the JS pipeline via Deno.
@@ -225,8 +184,8 @@ fn e2e_analysis_catches_errors() {
     let source = "(bind x 42)";
     let sexprs = reader::read(source).expect("read failed");
     let forms = classifier::classify(&sexprs).expect("classify failed");
-    let result = analysis::analyze(&forms);
-    assert!(!result.has_errors, "simple bind should not produce errors");
+    let result = analysis::analyze(forms);
+    assert!(result.is_ok(), "simple bind should not produce errors");
 }
 
 // --- Export wrapping surface forms ---

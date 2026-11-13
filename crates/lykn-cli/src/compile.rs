@@ -182,32 +182,26 @@ fn compile_source_inner(
         )
     })?;
 
-    // 4. Run static analysis (builds its own type registry internally)
-    let analysis_result = analysis::analyze(&classified);
-
-    if analysis_result.has_errors {
-        let msgs: Vec<String> = analysis_result
-            .diagnostics
+    // 4. Run static analysis and retain its forms/registry as one unit.
+    let unit = analysis::analyze(classified).map_err(|failure| {
+        let msgs: Vec<String> = failure
+            .diagnostics()
             .iter()
             .filter(|d| d.severity == Severity::Error)
             .map(|d| format!("{d}"))
             .collect();
-        return Err(CompileError::Analysis(msgs.join("\n")));
-    }
+        CompileError::Analysis(msgs.join("\n"))
+    })?;
 
     // Print warnings to stderr
-    for diag in &analysis_result.diagnostics {
+    for diag in unit.diagnostics() {
         if diag.severity == Severity::Warning {
             eprintln!("{diag}");
         }
     }
 
-    // 5. Emit kernel forms using the registry from analysis
-    let kernel = emitter::emit(
-        &classified,
-        &analysis_result.type_registry,
-        strip_assertions,
-    )?;
+    // 5. Emit the forms with the registry produced from those same forms.
+    let kernel = emitter::emit(&unit, strip_assertions)?;
 
     // 6. Output
     if kernel_json_only {
@@ -254,29 +248,23 @@ pub fn compile_source_with_dts(
         )
     })?;
 
-    let analysis_result = analysis::analyze(&classified);
-
-    if analysis_result.has_errors {
-        let msgs: Vec<String> = analysis_result
-            .diagnostics
+    let unit = analysis::analyze(classified).map_err(|failure| {
+        let msgs: Vec<String> = failure
+            .diagnostics()
             .iter()
             .filter(|d| d.severity == Severity::Error)
             .map(|d| format!("{d}"))
             .collect();
-        return Err(CompileError::Analysis(msgs.join("\n")));
-    }
+        CompileError::Analysis(msgs.join("\n"))
+    })?;
 
-    for diag in &analysis_result.diagnostics {
+    for diag in unit.diagnostics() {
         if diag.severity == Severity::Warning {
             eprintln!("{diag}");
         }
     }
 
-    let kernel = emitter::emit(
-        &classified,
-        &analysis_result.type_registry,
-        strip_assertions,
-    )?;
+    let kernel = emitter::emit(&unit, strip_assertions)?;
 
     let js = if kernel_json_only {
         emitter::json::emit_module_json(&kernel)?
@@ -287,8 +275,7 @@ pub fn compile_source_with_dts(
     let file_str = file_path
         .map(|p| p.display().to_string())
         .unwrap_or_default();
-    let (dts_content, dts_warnings) =
-        emitter::dts::emit_dts_module(&classified, &analysis_result.type_registry, &file_str);
+    let (dts_content, dts_warnings) = emitter::dts::emit_dts_module(&unit, &file_str);
     let dts_opt = if dts_content.is_empty() {
         None
     } else {

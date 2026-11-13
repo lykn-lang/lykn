@@ -12,24 +12,29 @@ pub mod gensym;
 pub mod json;
 pub mod type_checks;
 
-use crate::analysis::type_registry::TypeRegistry;
+use crate::analysis::AnalyzedUnit;
 use crate::ast::sexpr::SExpr;
-use crate::ast::surface::SurfaceForm;
 
 use context::EmitterContext;
 use forms::{emit_form_raw_checked, finalize_completion_value_markers};
 use json::emit_module_json;
 
-/// Emit a slice of surface forms to kernel `SExpr` nodes.
+/// Emit a successfully analyzed unit to kernel `SExpr` nodes.
 ///
 /// Each surface form may produce one or more kernel forms. The results are
 /// collected in order. When `strip_assertions` is `true`, type-check
 /// assertions and contract checks are omitted from the output.
+///
+/// # Errors
+///
+/// Returns a classification, code-generation, or host-reference error when a
+/// whole-module stage fails.
 pub fn emit(
-    forms: &[SurfaceForm],
-    registry: &TypeRegistry,
+    unit: &AnalyzedUnit,
     strip_assertions: bool,
 ) -> Result<Vec<SExpr>, crate::error::LyknError> {
+    let forms = unit.forms();
+    let registry = unit.type_registry();
     let mut ctx = EmitterContext::new(strip_assertions);
     let mut result = Vec::new();
     for form in forms {
@@ -206,22 +211,27 @@ fn materialize_host_invocations(forms: &mut Vec<SExpr>) -> Result<(), crate::err
     Ok(())
 }
 
-/// Emit a slice of surface forms to a pretty-printed JSON string.
+/// Emit a successfully analyzed unit to a pretty-printed JSON string.
 ///
 /// This is a convenience function that calls [`emit`] followed by JSON
 /// serialization.
+///
+/// # Errors
+///
+/// Returns any error produced by [`emit`] or JSON serialization.
 pub fn emit_json(
-    forms: &[SurfaceForm],
-    registry: &TypeRegistry,
+    unit: &AnalyzedUnit,
     strip_assertions: bool,
 ) -> Result<String, crate::error::LyknError> {
-    let kernel = emit(forms, registry, strip_assertions)?;
+    let kernel = emit(unit, strip_assertions)?;
     emit_module_json(&kernel)
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::analysis::analyze;
+    use crate::analysis::type_registry::TypeRegistry;
     use crate::ast::surface::SurfaceForm;
     use crate::reader::source_loc::Span;
 
@@ -231,16 +241,18 @@ mod tests {
         Span::default()
     }
 
+    fn analyzed(forms: Vec<SurfaceForm>) -> AnalyzedUnit {
+        analyze(forms).expect("emitter test forms analyze")
+    }
+
     #[test]
     fn test_emit_empty_input() {
-        let registry = TypeRegistry::default();
-        let result = emit(&[], &registry, false).unwrap();
+        let result = emit(&analyzed(Vec::new()), false).unwrap();
         assert!(result.is_empty());
     }
 
     #[test]
     fn test_emit_multiple_forms() {
-        let registry = TypeRegistry::default();
         let forms = vec![
             SurfaceForm::Bind {
                 name: atom("x"),
@@ -255,20 +267,19 @@ mod tests {
                 span: s(),
             },
         ];
-        let result = emit(&forms, &registry, false).unwrap();
+        let result = emit(&analyzed(forms), false).unwrap();
         assert_eq!(result.len(), 2);
     }
 
     #[test]
     fn test_emit_json_produces_valid_json() {
-        let registry = TypeRegistry::default();
         let forms = vec![SurfaceForm::Bind {
             name: atom("x"),
             type_ann: None,
             value: num(42.0),
             span: s(),
         }];
-        let json_str = emit_json(&forms, &registry, false).unwrap();
+        let json_str = emit_json(&analyzed(forms), false).unwrap();
         let parsed: serde_json::Value = serde_json::from_str(&json_str).unwrap();
         assert!(parsed.is_array());
         let arr = parsed.as_array().unwrap();
@@ -287,21 +298,20 @@ mod tests {
 
     #[test]
     fn test_emit_json_strip_assertions() {
-        let registry = TypeRegistry::default();
         let forms = vec![SurfaceForm::KernelPassthrough {
             raw: list(vec![atom("console:log"), str_lit("hello")]),
             span: s(),
         }];
 
-        let json_normal = emit_json(&forms, &registry, false).unwrap();
-        let json_stripped = emit_json(&forms, &registry, true).unwrap();
+        let unit = analyzed(forms);
+        let json_normal = emit_json(&unit, false).unwrap();
+        let json_stripped = emit_json(&unit, true).unwrap();
         // For passthrough, stripping assertions makes no difference
         assert_eq!(json_normal, json_stripped);
     }
 
     #[test]
     fn test_emit_preserves_form_order() {
-        let registry = TypeRegistry::default();
         let forms = vec![
             SurfaceForm::Bind {
                 name: atom("a"),
@@ -322,7 +332,7 @@ mod tests {
                 span: s(),
             },
         ];
-        let result = emit(&forms, &registry, false).unwrap();
+        let result = emit(&analyzed(forms), false).unwrap();
         assert_eq!(result.len(), 3);
 
         // Check ordering
@@ -358,7 +368,6 @@ mod tests {
 
     #[test]
     fn test_emit_mixed_forms() {
-        let registry = TypeRegistry::default();
         let forms = vec![
             SurfaceForm::Bind {
                 name: atom("x"),
@@ -372,7 +381,7 @@ mod tests {
                 span: s(),
             },
         ];
-        let result = emit(&forms, &registry, false).unwrap();
+        let result = emit(&analyzed(forms), false).unwrap();
         assert_eq!(result.len(), 2);
 
         // First is a const binding
