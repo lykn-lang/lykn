@@ -28,6 +28,23 @@ is a substantive language semantics choice, not a request to approve routine
 implementation or pause B2a. Source spelling/property-key normalization and
 public JS export-name mapping remain distinct concerns whatever the answer.
 
+Concrete proposed decision example (not a claim about current compiler output):
+
+```lykn
+(bind some-name 1)
+(func read-name :args (:number someName) :body some-name)
+(read-name 2)
+```
+
+Distinct source identities make this return1; emission must give the two
+bindings different JavaScript names. Canonical aliases make it return2 because
+the parameter shadows the outer binding through normalized spelling. Root
+recommends1: resolving a Lykn identifier should depend on Lykn's binding
+identity, with JavaScript name allocation preserving it. This retains the
+existing same-scope normalized collision diagnostic; it does not silently
+permit two colliding exported names or rename external property keys. The
+operator response remains required before either observable rule is implemented.
+
 ## Settled identity/query rules
 
 - ModuleIdentity is Named(LogicalModuleId) or fresh opaque AnonymousUnit.
