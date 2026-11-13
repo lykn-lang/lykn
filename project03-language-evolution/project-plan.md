@@ -30,7 +30,9 @@ cleanf9be7cb8/tree0ea27d21 for B2-LX only, with full native/public/delivery proo
 closes the bounded lexical prerequisite, leaving original LC02–08 open.
 Typed metadata transport and private finalization
 follow under the preserved B2 design after lexical acceptance; source-name
-identity B2-ID-NAME remains an unanswered operator language-design choice. Local
+identity B2-ID-NAME is resolved2026-11-13: distinct Lykn spellings identify
+distinct bindings. B2b begins with the owned native analysis-unit boundary;
+naming hygiene and owner activation remain unimplemented. Local
 qualified nominal behavior, private purity and final consumer gates remain to
 be implemented and verified; the active plan retains all eight LC criteria.
 Luna 6 High CC / separate Sol 6.1 High CDC and Autonomous Mode continue.

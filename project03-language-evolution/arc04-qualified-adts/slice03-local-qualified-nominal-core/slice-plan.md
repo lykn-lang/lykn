@@ -3,7 +3,7 @@ project: project03-language-evolution
 arc: arc04-qualified-adts
 slice: slice03-local-qualified-nominal-core
 status: active
-version: "1.26"
+version: "1.27"
 depends-on: [slice01-contract-and-emission-design, slice02-existing-adt-correctness]
 ---
 
@@ -235,6 +235,7 @@ gates survive. No release edits/integration, remote CI, push or publication.
 | cc-prompt-iteration11.md | 2026-11-13 | iteration10 | B2a correction02: shared actual enclosing-declaration sites across expansion/resolution/D2/shadow clients and real wrapper/default slots | Independent HOLD595f672b/treedd518b1b on R05; R01–04 focused controls pass |
 | cc-prompt-iteration12.md | 2026-11-13 | iteration11 | B2a correction03: pure typed-source header preflight and canonical genfn metadata/body slots in parser and walkers | Independent HOLD0e249caf/treee946afc2: native protected-host client still visits ignored generator regions; exercised header/D2 controls green |
 | cc-prompt-iteration13.md | 2026-11-13 | iteration12 | B2a correction04: parsed native Surface function regions, ignored generator post excluded, actual parameter leaf scopes | Independently acceptedf9be7cb8/tree0ea27d21 for B2-LX only; full S03 and B2b/name decision remain open |
+| cc-prompt-iteration14.md | 2026-11-13 | iteration13 | B2b1 owned native analysis unit and canonical JS/JSON/DTS consumer pairing | Separate Sol source-readiness green; issued to Luna; source-name policy resolved, naming/owner implementation remains open |
 
 The A correction loop used three refinement passes; B1 required no software
 correction. IC-01 is a distinct authorized usable prerequisite, not a retry
@@ -507,3 +508,19 @@ pending statements above describe their earlier checkpoints. Root resumes B2b
 source-readiness; no owner or naming implementation is yet accepted. Same
 Luna6High CC/separate Sol6.1High CDC, existing Autonomous authority and all
 original gates remain. No release or remote action is authorized here.
+
+Iteration14 is the first usable B2b checkpoint: replace independently paired
+native forms/registry with an opaque owned successful AnalyzedUnit and typed
+AnalysisFailure; canonical kernel/JSON and module DTS consume one unit. This
+lands the approved transport spine before source identity allocation or nominal
+activation. No new source-name behavior is claimed and check_strict's semantic
+join remains explicit future B2b work. Root inspected algorithm/signatures and
+actual production/test consumers; source-readiness is with separate Sol before
+issue. All old emitted output, diagnostics/fragment/completion/host contracts
+and full validation survive. This is new B2b feature work, not a B2a retry reset.
+
+Separate Sol read-only readiness on complete iteration14 found no concrete
+source contradiction. Root clarified that compile prints successful analysis
+warnings, whereas dist currently prints no analysis warnings and only its DTS
+warnings. Old negative emission cases remain analysis-valid and retain channels.
+Root issues iteration14 against cleanf9; Luna takes exclusive source/build.
