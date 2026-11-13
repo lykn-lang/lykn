@@ -202,10 +202,12 @@ fn valid_empty_and_literal_emission_remain_checked_successes() {
 #[test]
 fn independent_analyzed_units_keep_registry_forms_paired_across_emitters() {
     let unit_a = analyzed(classify(
-        "(type A (Entry :number left)) (bind item (Entry 3)) (console:log item:left)",
+        "(type A (Entry :number left)) (bind item (Entry 3)) \
+         (console:log (match item ((Entry value) value)))",
     ));
     let unit_b = analyzed(classify(
-        "(type B (Entry :string right)) (bind item (Entry \"three\")) (console:log item:right)",
+        "(type B (Entry :string right)) (bind item (Entry \"three\")) \
+         (console:log (match item ((Entry value) value)))",
     ));
 
     let kernel_a = emitter::emit(&unit_a, false).expect("A emits");
