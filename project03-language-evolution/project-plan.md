@@ -17,8 +17,11 @@ The binding-role prerequisite IC-01 is independently accepted at e80f613b,
 tree7376b33d; [verification](arc04-qualified-adts/slice03-local-qualified-nominal-core/artifacts/increment-ic01/correction02/cdc/README.md)
 includes actual runtime, full and cold delivery proof. On2026-11-12 the operator
 authorizes B2 typed-owner/case and lexical design/implementation/review. Its
-first source-ready lexical checkpoint is iteration09; typed metadata transport
-and private finalization follow under the preserved B2 design. Local
+first lexical candidate from iteration09 is independently held at bcb98482;
+source-ready iteration10 corrects native redispatch, public class defaults and
+named kernel-function scope. Typed metadata transport and private finalization
+follow under the preserved B2 design after lexical acceptance; source-name
+identity B2-ID-NAME remains an unanswered operator language-design choice. Local
 qualified nominal behavior, private purity and final consumer gates remain to
 be implemented and verified; the active plan retains all eight LC criteria.
 Luna 6 High CC / separate Sol 6.1 High CDC and Autonomous Mode continue.
