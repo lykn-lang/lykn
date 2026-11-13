@@ -35,10 +35,16 @@ use type_registry::TypeRegistry;
 /// ```
 ///
 /// Construction is intentionally restricted to [`analyze`].
+/// This example supplies valid values for every field, so privacy is the only
+/// reason the construction is rejected.
 ///
 /// ```compile_fail
-/// use lykn_lang::analysis::AnalyzedUnit;
-/// let unit = AnalyzedUnit {};
+/// use lykn_lang::analysis::{type_registry::TypeRegistry, AnalyzedUnit};
+/// let _forged = AnalyzedUnit {
+///     forms: Vec::new(),
+///     type_registry: TypeRegistry::default(),
+///     diagnostics: Vec::new(),
+/// };
 /// ```
 #[derive(Debug)]
 pub struct AnalyzedUnit {
