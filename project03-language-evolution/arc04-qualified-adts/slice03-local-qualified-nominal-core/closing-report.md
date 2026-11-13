@@ -685,3 +685,22 @@ lines in successful test streams). Those bytes are intentional raw evidence
 and remain unchanged. Separate authored Markdown/index diff--check exits0;
 source formatting/diff gates pass. No raw stream was cleaned to make an
 evidence-preservation check appear green.
+
+## Native generated-name repair accepted; public follow-through — 2026-11-13
+
+Separate Sol accepts B2-ICU-N at228e8c99/tree5a2c9a4b. Root verified archive
+SHA2566705f978abfc03958577897b2d2d4573088e527e487bc9ae5eec2455f0f677c4.
+Independent focused31/27, canonical checked/stripped/copied CLI causal matrix,
+effects/eager/lazy/exceptions/recovery, one final-source full1199library/
+1557product67steps/482docs, actual inner cold14/49, cites64/601 and fresh
+46600gzip pass. No independent author/setup/product failure. Native software
+scope is the ICU private-name family only; all prior APIs/private boundaries
+and limitations survive.
+
+Root issues17 for analogous public compiler/embedded/browser delivery after
+readiness and unchanged-source refresh. The new mapped-import six-group file
+will join existing M6 population, preserving fourteen byte comparisons and
+requiring actual55 cases after implementation; this is an assigned verifier,
+not a preclaimed result. Broader source-name runtime graph remains unissued
+preparation; typed owner/nominal/purity/check/API/docs/book/human and LC02–08/
+S03 remain open. Full S03 retrospective still belongs at its actual closure.

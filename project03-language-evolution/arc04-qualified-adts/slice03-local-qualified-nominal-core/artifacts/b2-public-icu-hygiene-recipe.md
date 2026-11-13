@@ -1,10 +1,10 @@
-# B2b2 follow-through — public ICU private-name hygiene (not issued)
+# B2b2 follow-through — public ICU private-name hygiene recipe
 
-Root design2026-11-13, inspected public product at5554a4d6. Native iteration16
-is currently with Luna; no overlapping source/build ownership is authorized.
-This is a concrete next public repair within the approved B2 binding work,
-not an assignment until native handback, clean-pin refresh, new numbered prompt
-and readiness. Same approved Luna6High implementation/Sol6.1High independent
+Root design2026-11-13, initially inspected public product at5554a4d6. Native
+iteration16 is independently accepted at228e8c99/tree5a2c9a4b; public inputs
+are byte-unchanged from5554. Issued iteration17 governs this approved public
+repair and source/build transfer; this supporting recipe is not a separate
+assignment. Same approved Luna6High implementation/Sol6.1High independent
 review. No license/publish/release/remote/dependency action.
 
 ## Observed source and boundary
@@ -112,9 +112,11 @@ and browser-host tests stay unchanged. The new file owns the mapped public/
 browser/private cases; M6 adds that file and its six real top-level groups.
 No public API or source grammar change.
 
-Before issue root still owes final accepted-native source pin, full affected
-function/caller/readiness refresh and exact existing cold/browser test homes.
-No implementation gate or public failure is preclaimed by this source design.
+Final root refresh verifies the accepted-native pin, unchanged public affected
+functions/callers and exact existing cold/browser/private test homes described
+below. Separate Sol rechecked the resolved test-home contradiction. Root's
+issued17 now records the ownership transfer. No public implementation gate
+or runtime result is preclaimed by this design.
 
 Separate Sol read-only readiness confirms no concrete allocator/AST
 contradiction. requestedHostCall uses a real CallExpression + pending

@@ -1,0 +1,6 @@
+error: Uncaught (in promise) Error: expected ICU boom
+  throw new Error("expected ICU boom");
+        ^
+    at explode (file:///private/tmp/lykn-b2b2-cdc/exception.mjs:2:9)
+    at file:///private/tmp/lykn-b2b2-cdc/exception.mjs:4:33
+    at file:///private/tmp/lykn-b2b2-cdc/exception.mjs:4:68

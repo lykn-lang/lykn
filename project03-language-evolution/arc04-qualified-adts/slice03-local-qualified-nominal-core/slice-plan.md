@@ -3,7 +3,7 @@ project: project03-language-evolution
 arc: arc04-qualified-adts
 slice: slice03-local-qualified-nominal-core
 status: active
-version: "1.31"
+version: "1.32"
 depends-on: [slice01-contract-and-emission-design, slice02-existing-adt-correctness]
 ---
 
@@ -203,8 +203,8 @@ depth, supported native quotation paths, kernel-only D1 scope corrections and
 validation-only class-member queries. Existing source Func/class aggregate
 scope issues are explicit B2 inputs, not new IC-01 expansion claims.
 
-**Current assignment:** [iteration16](cc-prompt-iteration16.md), B2b2 native ICU
-generated-name hygiene returned for separate Sol verification at
+**Current assignment:** [iteration17](cc-prompt-iteration17.md), B2b2 public ICU
+generated-name hygiene from independently accepted native
 228e8c99707e5dc4ee86a50e8aea532c9a99a80b/tree5a2c9a4ba836aaf6e34ef63c04f08b7f47621877,
 under the
 operator's B2 design/implementation/independent-validation authorization and
@@ -212,9 +212,9 @@ operator's B2 design/implementation/independent-validation authorization and
 [B2 architecture](artifacts/b2-owner-and-lexical-design.md) still governs typed
 owner/case and occurrence-scoped queries; this native generated-name repair
 does not complete that architecture or ordinary source binding hygiene.
-Separate Sol readiness and preserved root failures ground its bounded recipe.
-Sol exclusively owns source/build after the clean CC handback. Draft17 public
-follow-through is not issued and must await this disposition.
+Separate Sol readiness and preserved root failures ground this bounded recipe.
+Native B2-ICU-N closes; public B2-ICU-P stays open. Root issues17 after its
+planning commit and transfers source/build exclusively to Luna.
 Luna6High owns task source/build through clean handoff; Sol6.1High then reviews
 independently; root owns architecture and planning Git/index/status. Standard
 Autonomous Mode continues without routine permission stops. B2-LX has its own
@@ -241,7 +241,8 @@ gates survive. No release edits/integration, remote CI, push or publication.
 | cc-prompt-iteration13.md | 2026-11-13 | iteration12 | B2a correction04: parsed native Surface function regions, ignored generator post excluded, actual parameter leaf scopes | Independently acceptedf9be7cb8/tree0ea27d21 for B2-LX only; full S03 and B2b/name decision remain open |
 | cc-prompt-iteration14.md | 2026-11-13 | iteration13 | B2b1 owned native analysis unit and canonical JS/JSON/DTS consumer pairing | Accepted through iteration15 at5554a4d6 for B2-UNIT only; original weak-oracle HOLD/history retained |
 | cc-prompt-iteration15.md | 2026-11-13 | iteration14 | B2b1 correction01: complete-field private-construction Rustdoc discriminator | Independently accepted5554a4d6/treef632c415, strict Rustdoc-only correction and evidence retention; full B2b/S03 remain open |
-| cc-prompt-iteration16.md | 2026-11-13 | iteration15 | B2b2 native ICU generated-name allocator, actual hoist/selector capture repair | CC proposed-done228e8c99/tree5a2c9a4b; separate Sol verification underway, B2-ICU-N open |
+| cc-prompt-iteration16.md | 2026-11-13 | iteration15 | B2b2 native ICU generated-name allocator, actual hoist/selector capture repair | Independently accepted228e8c99/tree5a2c9a4b, B2-ICU-N only |
+| cc-prompt-iteration17.md | 2026-11-13 | iteration16 | B2b2 public ICU private allocator and actual mapped cold/browser/private runtime delivery | Issued after final source-readiness and native acceptance; public B2-ICU-P open |
 
 The A correction loop used three refinement passes; B1 required no software
 correction. IC-01 is a distinct authorized usable prerequisite, not a retry
@@ -607,3 +608,17 @@ Root checked clean source pin/tree/path/trailers; independent Sol now owns
 verification, B2-ICU-N remains open. New public recipe/draft17/read-only
 readiness prepare mapped real ICU cold/browser tests, not implementation or
 acceptance. Native/public source-name/owner work and all LC02–08 survive.
+
+2026-11-13 v1.32: separate Sol accepts native B2-ICU-N at228e8c99/tree5a2c9a4b.
+Root verified frozen archive6705f978abfc03958577897b2d2d4573088e527e487bc9ae5eec2455f0f677c4.
+All independent31/27 focused, original/matrix/copied CLI checked/stripped,
+effects/eager/lazy/exception/recovery, fresh full1199/1557/67steps/482docs
+(15skipped), actual full inner cold14/49, HEADcites64/601 and fresh46600gzip
+pass. No reviewer author/setup/product failure. Existing tool network fetching
+and warnings are explicitly retained. Release remains0829e892, no integration.
+Only B2-ICU-N closes. Public recipe's old test-home contradiction is fixed and
+independently rechecked; root verified public/compiler/embedded/M6/browser
+inputs unchanged since5554 and issues17 against this accepted native pin.
+Luna then owns source/build; Sol independently reviews after clean handback.
+New B2-ICU-P is open. Source-name runtime plan is still an unissued design,
+not a closed typed owner/name contract; original LC02–08 and full S03 survive.

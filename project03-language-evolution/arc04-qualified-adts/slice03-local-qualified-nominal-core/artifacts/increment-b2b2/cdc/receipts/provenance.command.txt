@@ -1,0 +1,8 @@
+cwd=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+git status --porcelain=v1
+git rev-parse HEAD HEAD^{tree}
+git show -s --format=full HEAD
+git show -s --format=%B HEAD | git interpret-trailers --parse
+git diff --stat 5554a4d6 HEAD
+git diff 5554a4d6 HEAD
+git diff --exit-code 5554a4d6 HEAD -- packages crates/lykn-lang/embedded crates/lykn-lang/src/analysis crates/lykn-lang/src/ast crates/lykn-lang/src/emitter crates/lykn-cli/src crates/lykn-cli/tests

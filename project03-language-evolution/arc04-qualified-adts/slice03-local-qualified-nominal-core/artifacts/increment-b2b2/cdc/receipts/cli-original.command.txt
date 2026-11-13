@@ -1,0 +1,7 @@
+cwd=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+env=receipts/environment.txt excluding full-only evidence variable
+fixture_dir=canonical cdc/fixtures; evidence_dir=canonical cdc/receipts
+./target/debug/lykn compile $fixture_dir/original.lykn -o /private/tmp/lykn-b2b2-cdc/original-checked.mjs
+deno run --no-config --cached-only --no-npm --no-remote --deny-net --no-prompt /private/tmp/lykn-b2b2-cdc/original-checked.mjs
+./target/debug/lykn compile $fixture_dir/original.lykn --strip-assertions -o /private/tmp/lykn-b2b2-cdc/original-stripped.mjs
+deno run --no-config --cached-only --no-npm --no-remote --deny-net --no-prompt /private/tmp/lykn-b2b2-cdc/original-stripped.mjs

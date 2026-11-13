@@ -1,0 +1,2 @@
+(func explode :args () :body (throw (new Error "expected ICU boom")))
+(console:log (template "{x}-{x}" :x (explode)))

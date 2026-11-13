@@ -1,0 +1,4 @@
+mkdir -p /private/tmp/lykn-b2b2-cdc/delivery-xdg
+cp source/bin/lykn /private/tmp/lykn-b2b2-cdc/standalone/lykn
+cp canonical cdc/fixtures/canonical-matrix.lykn /private/tmp/lykn-b2b2-cdc/standalone/matrix.lykn
+shasum -a 256 source/bin/lykn /private/tmp/lykn-b2b2-cdc/standalone/lykn

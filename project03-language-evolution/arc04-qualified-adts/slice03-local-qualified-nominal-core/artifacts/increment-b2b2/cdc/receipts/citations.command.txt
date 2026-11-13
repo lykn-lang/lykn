@@ -1,0 +1,2 @@
+cwd=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+env as environment.txt excluding full-only evidence variable; make check-cited-paths

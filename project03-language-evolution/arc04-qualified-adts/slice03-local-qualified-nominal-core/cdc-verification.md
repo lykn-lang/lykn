@@ -1200,3 +1200,72 @@ with file-not-found. Rerun from the packet cwd verifies **OK/0**; see external
 correction01/cdc/postfreeze-checksum.txt. Frozen packet/hash are unchanged.
 This setup error occurred after the recorded product/doc/provenance gates and
 does not alter their results or B2-UNIT disposition.
+
+## B2b2 native ICU 228e8c99 — 2026-11-13 independent acceptance
+
+**B2-ICU-N accepted only** by separate Sol6.1High at clean
+228e8c99707e5dc4ee86a50e8aea532c9a99a80b,
+tree5a2c9a4ba836aaf6e34ef63c04f08b7f47621877, codex/qualified-adt-core.
+Exactly3authorized paths: native codegen names/ICU and existing ICU integration
+tests. Literal and Git-parsed contiguous Codex/Billo trailers match; source
+status empty. Source/build returns to root; no active job/source/Git/index or
+ledger/status mutation, release/integration/remote/dependency action.
+
+Reviewed full issued16/AGENTS/actual diff/current affected bodies/caller census
+and CC index SHA f59a3c8365605204806e653c60cc09b0be08119d4aff6ce89f7439872d19c538.
+Borrowed source Atom/List/Cons scan reserves actual normalized lexical roots
+before any hoist; immediate checked allocation shares one per-template set
+across hoists/selectors/every recursive MFT branch and literal/test helpers.
+No ordinary binding policy, API/unit/metadata/JSON/public source behavior was
+rewritten. Original evaluation/IIFE/exception/HashMap consumption stays bounded.
+
+Independent31ICU library+27integration tests pass with new runtime cases
+requiring Deno and checked subprocess success. Source/normalized/colon/suffix
+capture, a-b/aB11|11|40|40, actual hoist-selector overlap7 7, nested selectors/
+independent templates, safe preferred names, exact once-only effects, inert
+once-reference branch, original exception and invalid/recovery controls pass.
+Fresh debug canonical CLI original fixture checked+stripped compiles/runs0,
+exact3 3. Separate reviewer canonical10line matrix both modes compile/runtime/
+cmp0 proves source→owned-unit→native writer route and eager repeated branch-
+only once versus once-reference laziness ([2]→[2,99]). Original ICU boom runtime1
+and missing-other compile1 with normal1:24 diagnostic are expected negatives;
+recovery0/3 3. No reviewer author/setup/product failure.
+
+ONE fresh final-source **make check0** includes docs once: **1199native library,
+1557product/67steps,482docs**; rawfull stdout1791/5170/5679/5683 establishes counts/
+final marker, stderr174 says22generated docfiles/15skipped. Existing private host/
+Reflect/completion/owned-unit/API/JSON and public preservation suites pass.
+Exact same full's inner cold M6 receipts establish **14byte comparisons true**,
+**49actual materialized public cases0failed/status0**, copied standalone CLI/
+absent owned compiler-XDG/no canonical fallback and fresh staged-browser mapping.
+No redundant full/docs/M6 run. This existing49population is public preservation,
+not unimplemented public ICU repair proof. Existing Deno cache reused; cold
+claim is owned compiler-XDG+standalone, not all workspace/tool caches.
+
+Separate copied full-built releaseCLI outside repo/canonicalcwd, empty owned
+delivery-XDG, compiles/runs reviewer matrix0/cmp0. Source bin/copy SHA256
+0aebdeac69d4b63a07c27a9def84b58973d09b851d2c006ae2a2b857179cfdc1.
+FinalHEAD citations0=64documents/601historical. Fresh browser size gate0:
+raw361569/min172901/gzip**46600<81920**,baseline27630/delta18970/headroom35320.
+Size stderr reports Download registry.npmjs.org/esbuild plus existing astring
+condition warnings, so this gate is NOT fully offline; no manifest/lock or
+new dependency changed. Raw acquisition/warnings remain. CC first format1/
+Clippy2 let_and_return and filtered M6 after missing full receipts are preserved
+as CC chronology, not erased/inherited as independent results.
+
+[Index](artifacts/increment-b2b2/cdc/README.md) records exact source/gates/limits.
+[Frozen packet](artifacts/increment-b2b2/cdc/receipts-228e8c99.tar.gz) SHA256
+`6705f978abfc03958577897b2d2d4573088e527e487bc9ae5eec2455f0f677c4`, checkedOK0.
+Commands/env/raw streams/status, fixtures/generated ESM, metadata/full diff and
+M6 inner receipts retained; no caches/binary or forbidden helper in packet.
+All own tmp/XDG/npm precreated outside repos/config ancestors; existing DENO_DIR.
+
+A/B1/IC/B2-LX/B2-UNIT and their fixed-nine/I4/fallback/warm-cache/catch/default/
+colon-triviality/nested-alias/annotation/emitter/browser eval/fragment limits
+persist. Public ICU, ordinary distinct-spelling binding allocation/hygiene,
+OwnerRef/CaseRef/fieldTypeRef/private public requests/nested transport/nominal/
+purity/check_strict-dev join, DTS/API/S06/consumer/book/human and LC02–08/B2b/S03
+remain open. After gates, corrected unissued public recipe test-home conflict
+was rechecked resolved; draft17 still requires final accepted-native pin and
+root issue. No public software acceptance follows. Root owns planning Git,
+ledger closure and next source/build transfer.

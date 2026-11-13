@@ -2,7 +2,7 @@
 project: project03-language-evolution
 arc: arc04-qualified-adts
 status: active
-version: "1.18"
+version: "1.19"
 related: [project07-core-library-research]
 ---
 
@@ -36,12 +36,13 @@ native analysis-unit boundary, followed by identity/lookup/allocation and cohere
 owner activation. The native owned-unit prerequisite B2-UNIT is independently
 accepted at5554a4d6/treef632c415 after the strict Rustdoc-only correction of its
 privacy oracle; all unchanged compiled-code evidence is explicitly retained.
-Naming preparation also exposed native ICU hoist/selector captures. B2b2
-iteration16 repairs that generated-name family with a shared private allocator;
-its separate B2-ICU-N row remains open pending implementation/review. Public
-JS ICU and ordinary source-binding hygiene are separate remaining obligations,
-alongside actual typed owner/case activation. No S03 completion follows from
-these prerequisites.
+Naming preparation also exposed ICU hoist/selector captures. Native B2-ICU-N
+is independently accepted at228e8c99/tree5a2c9a4b: source/generated/shared-
+generated/effects/canonical/cold/full gates pass; root verified its frozen
+packet. Public B2-ICU-P is now issued as17 with actual mapped cold/browser/
+private integration tests. Ordinary source-binding hygiene and typed owner/
+case activation remain separate open obligations. No S03 completion follows
+from these prerequisites.
 The eight-row plan retains local ownership, nominal runtime/guards, APIs/DTS,
 private purity, migration and full consumer proof. S03 software is not yet
 accepted. [S02 release integration](slice02-existing-adt-correctness/artifacts/release-integration-0829e892.md)

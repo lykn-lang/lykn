@@ -1,7 +1,8 @@
 # S03 iteration17 — B2b2 public ICU generated-name hygiene
 
-UNISSUED DRAFT2026-11-13. Candidate pin requires independent native16 acceptance
-and clean ownership handback before issue. Source home remains
+Issued2026-11-13 after independent native16 acceptance and clean handback at
+228e8c99707e5dc4ee86a50e8aea532c9a99a80b,
+tree5a2c9a4ba836aaf6e34ef63c04f08b7f47621877. Source home remains
 /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering,
 branch codex/qualified-adt-core; planning is its existing separate worktree.
 Assignment project03-language-evolution/arc04-qualified-adts/
@@ -183,6 +184,13 @@ Return clean committed source/build with commit/tree/path inventory, public API/
 runtime-only behavior impact, first/final results and limitations. CC proposed-
 done is not B2-ICU-P/LC/S03 acceptance. Separate Sol validates independently.
 
-Issue readiness remains with root: final accepted-native pin refresh and
-final source-readiness before dispatch. Do not begin
-from this draft merely because its suffix is newest.
+Root final issue readiness: separate Sol accepted native16 and returned all
+source/build ownership clean, no active jobs. Root verified its frozen archive
+SHA2566705f978abfc03958577897b2d2d4573088e527e487bc9ae5eec2455f0f677c4,
+exact native3path diff/tree/trailers and unchanged public/compiler/embedded/M6/
+browser source against5554. The complete public recipe/draft had separate
+source-readiness; its old test-home conflict is explicitly resolved and was
+independently rechecked. Exact six-group/M6/private API/browser routes and
+actual parameter/anchor grammar were inspected, no public behavior choice is
+delegated. Source/build transfers exclusively to Luna only with this root
+issue after planning commit. Broader source naming/typed-owner scope survives.

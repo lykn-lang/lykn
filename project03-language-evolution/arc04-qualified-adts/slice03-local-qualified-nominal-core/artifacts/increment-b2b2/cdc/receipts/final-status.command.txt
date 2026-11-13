@@ -1,0 +1,6 @@
+cwd=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+git status --porcelain=v1
+git rev-parse HEAD HEAD^{tree}
+git diff --name-only 5554a4d6 HEAD
+git diff --check
+git show -s --format=%B HEAD | git interpret-trailers --parse

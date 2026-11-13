@@ -1,0 +1,6 @@
+cwd=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+DENO_DIR=/Users/oubiwann/Library/Caches/deno
+XDG_CACHE_HOME=/private/tmp/lykn-b2b2-cdc/xdg
+NPM_CONFIG_CACHE=/private/tmp/lykn-b2b2-cdc/npm
+TMPDIR=/private/tmp/lykn-b2b2-cdc/tmp
+LYKN_MACRO_DEPENDENCIES_EVIDENCE_DIR=/Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/arc04-qualified-adts/slice03-local-qualified-nominal-core/artifacts/increment-b2b2/cdc/receipts/full-macro

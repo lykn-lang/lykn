@@ -166,3 +166,13 @@ Root should state new six-group file supersedes old expected test-home edits;
 old template tests stay regression inputs unchanged. No product-design change
 or alternate architecture is needed. Final accepted-native pin/readback remains
 intentionally pending, and the final issued prompt must carry that pin.
+
+Native-handoff refresh2026-11-13: after current native gates, re-read corrected
+public recipe sections. It now explicitly creates icu-generated-names.test.js,
+retains template-icu.test.js unchanged and enumerates draft17's exact5paths.
+The reported old recipe scope contradiction is resolved. Public source diff
+versus5554 remains empty; current native candidate228e8c99/tree5a2c9a4b is
+separately reviewed in increment-b2b2/cdc. Draft17 remains unissued pending root
+recording the accepted-native pin/final ownership transfer. No public runtime
+or implementation acceptance is inferred and no public tests/build were added
+by this readiness refresh.

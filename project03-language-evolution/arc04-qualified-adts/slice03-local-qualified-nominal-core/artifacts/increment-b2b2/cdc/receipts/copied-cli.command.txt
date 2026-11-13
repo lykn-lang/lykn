@@ -1,0 +1,7 @@
+cwd=/private/tmp/lykn-b2b2-cdc/standalone
+DENO_DIR=/Users/oubiwann/Library/Caches/deno XDG_CACHE_HOME=/private/tmp/lykn-b2b2-cdc/delivery-xdg NPM_CONFIG_CACHE=/private/tmp/lykn-b2b2-cdc/npm TMPDIR=/private/tmp/lykn-b2b2-cdc/tmp
+test ! -e /private/tmp/lykn-b2b2-cdc/delivery-xdg/lykn
+test ! -e packages
+./lykn compile matrix.lykn -o matrix.mjs
+deno run --no-config --cached-only --no-npm --no-remote --deny-net --no-prompt matrix.mjs
+cmp canonical cdc/fixtures/canonical-matrix.expected.txt canonical cdc/receipts/copied-cli-runtime.stdout.txt
