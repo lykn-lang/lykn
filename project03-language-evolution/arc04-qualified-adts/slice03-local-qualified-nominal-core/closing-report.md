@@ -326,3 +326,25 @@ is39 bytes smaller. No unsupported extra-size explanation is inferred. The
 correction index retains the same-script prior-pin comparison and its first
 permission-limited failed attempt. Native/public source scope remains B2-LX;
 typed-owner/name implementation is still held on unanswered B2-ID-NAME.
+
+## Root correction02 scope clarification — shared form-head predicate
+
+During implementation preparation, root inspected compiler.js:99's formHead,
+binding.js's independent raw-head checks, compiler-private-atoms.js and the
+compiler→protected-host→binding dependency chain at held804be5da. Importing
+compiler back into binding would introduce a cycle. To meet iteration11's
+single-policy requirement, root authorizes exactly four additional source paths:
+packages/lang/compiler.js, packages/lang/compiler-private-atoms.js and their
+exact embedded mirrors. Mechanically move the existing formHead predicate into
+the existing dependency-free atom-metadata module; compiler imports/reexports
+it, retaining its current public entry and behavior, and binding imports the
+same predicate. Expander can retain its existing compiler reexport import.
+
+This adds no dependency, new leaf/JSR module, authority, user option or changed
+dispatch semantics; the private helper/export placement is an explicit S06
+surface-audit input. Host-reference atoms still cannot become form heads;
+binding tags and real trusted-kernel handling retain their established rules.
+The current14-file cold-M6 union already includes compiler and atom-metadata,
+so both changed files receive canonical/embedded/materialized byte comparison.
+CC records the extra paths and mechanics before affected edits; separate Sol
+software review must check the actual relocation and affected private controls.
