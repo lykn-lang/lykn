@@ -19,8 +19,9 @@ includes actual runtime, full and cold delivery proof. On2026-11-12 the operator
 authorizes B2 typed-owner/case and lexical design/implementation/review. Its
 first lexical candidate from iteration09 is independently held at bcb98482;
 iteration10's candidate804be5da/treed25f2b66 passes its focused repairs but is
-independently held on declaration transitions/wrappers. Source-ready iteration11
-consolidates that semantic query across actual clients. Typed metadata transport and private finalization
+independently held on declaration transitions/wrappers. Iteration11 returns clean
+595f672b/treedd518b1b, now under separate Sol software review after consolidating
+that semantic query across actual clients. Typed metadata transport and private finalization
 follow under the preserved B2 design after lexical acceptance; source-name
 identity B2-ID-NAME remains an unanswered operator language-design choice. Local
 qualified nominal behavior, private purity and final consumer gates remain to

@@ -1,0 +1,21 @@
+running 17 tests from ./test/expander/lexical-regions.test.js
+B2a source clauses isolate parameter names and retain own body sequence ... ok (28ms)
+B2a class methods isolate their parameter lists ... ok (16ms)
+B2a class method defaults expand once and execute ... ok (17ms)
+B2a class field initializer stays outside method parameters ... ok (425µs)
+B2a source Func post sees body declaration independent of keyword order ... ok (16ms)
+B2a rejects multi-clause generators before body macro expansion ... ok (1ms)
+B2a enclosing declaration sites follow dispatch and consumed export slots ... ok (545µs)
+B2a public export wrappers expose only their emitted declaration ... ok (129ms)
+B2a kernel import locals participate in enclosing dispatch ... ok (16ms)
+B2a public pass1 preserves a macro after a bound bind-shaped call ... ok (17ms)
+B2a public pass1 retains real unbound macro registration ... ok (15ms)
+B2a public pass1 honors a genuinely bound macro call ... ok (15ms)
+B2a macro result declaration controls following macro dispatch ... ok (16ms)
+B2a shared macro AST object keeps binder and head occurrences distinct ... ok (241µs)
+B2a ordinary call operands do not share declarations ... ok (125µs)
+B2a Single result slots do not inherit sibling visibility ... ok (144µs)
+B2a macro head chains recheck surface and lexical priority ... ok (138µs)
+
+ok | 17 passed | 0 failed (302ms)
+

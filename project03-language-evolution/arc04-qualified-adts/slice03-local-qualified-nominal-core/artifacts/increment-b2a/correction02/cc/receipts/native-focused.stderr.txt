@@ -1,0 +1,21 @@
+   Compiling lykn-lang v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang)
+error[E0061]: this function takes 2 arguments but 1 argument was supplied
+   --> crates/lykn-lang/src/expander/pass1.rs:41:21
+    |
+ 41 |         let hoist = crate::resolver::hoisted_names(&form);
+    |                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^------- argument #2 of type `&[std::string::String]` is missing
+    |
+note: function defined here
+   --> crates/lykn-lang/src/resolver.rs:111:15
+    |
+111 | pub(crate) fn hoisted_names(form: &SExpr, scope: &[String]) -> Vec<String> {
+    |               ^^^^^^^^^^^^^               ----------------
+help: provide the argument
+    |
+ 41 |         let hoist = crate::resolver::hoisted_names(&form, /* &[std::string::String] */);
+    |                                                         ++++++++++++++++++++++++++++++
+
+For more information about this error, try `rustc --explain E0061`.
+error: could not compile `lykn-lang` (lib test) due to 1 previous error
+warning: build failed, waiting for other jobs to finish...
+error: could not compile `lykn-lang` (lib) due to 1 previous error

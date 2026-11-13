@@ -1,0 +1,42 @@
+running 17 tests from ./test/expander/lexical-regions.test.js
+B2a source clauses isolate parameter names and retain own body sequence ... ok (28ms)
+B2a class methods isolate their parameter lists ... ok (18ms)
+B2a class method defaults expand once and execute ... ok (17ms)
+B2a class field initializer stays outside method parameters ... ok (427µs)
+B2a source Func post sees body declaration independent of keyword order ... ok (16ms)
+B2a rejects multi-clause generators before body macro expansion ... ok (1ms)
+B2a enclosing declaration sites follow dispatch and consumed export slots ... ok (486µs)
+B2a public export wrappers expose only their emitted declaration ... ok (118ms)
+B2a kernel import locals participate in enclosing dispatch ... ok (16ms)
+B2a public pass1 preserves a macro after a bound bind-shaped call ... ok (16ms)
+B2a public pass1 retains real unbound macro registration ... FAILED (747µs)
+B2a public pass1 honors a genuinely bound macro call ... ok (15ms)
+B2a macro result declaration controls following macro dispatch ... ok (14ms)
+B2a shared macro AST object keeps binder and head occurrences distinct ... ok (229µs)
+B2a ordinary call operands do not share declarations ... ok (133µs)
+B2a Single result slots do not inherit sibling visibility ... ok (132µs)
+B2a macro head chains recheck surface and lexical priority ... ok (130µs)
+
+ ERRORS 
+
+B2a public pass1 retains real unbound macro registration => ./test/expander/lexical-regions.test.js:196:6
+error: Error: expandExpr: unexpected node type 'undefined'
+    throw new Error(`expandExpr: unexpected node type '${form.type}'`);
+          ^
+    at expandExprInner (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander-core.js:1912:11)
+    at expandAt (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander-core.js:1880:18)
+    at expandExprInner (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander-core.js:2131:12)
+    at expandAt (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander-core.js:1880:18)
+    at file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander-core.js:937:60
+    at Array.map (<anonymous>)
+    at expandChildrenPlan (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander-core.js:937:45)
+    at expandExprInner (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander-core.js:2295:34)
+    at expandAt (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander-core.js:1880:18)
+    at pass2ExpandAll (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander-core.js:2405:22)
+
+ FAILURES 
+
+B2a public pass1 retains real unbound macro registration => ./test/expander/lexical-regions.test.js:196:6
+
+FAILED | 16 passed | 1 failed (270ms)
+

@@ -434,3 +434,55 @@ that path. Do not remove the browser test or map this full-suite route to a
 canonical-source fallback. Current-source focused and materialized-lang M6
 maps remain separately described. Preserve the failed run; this is test/package
 integration and an S06 config-surface input, not a new dependency or user flag.
+
+## CC correction02 checkpoint — proposed-done, pending independent Sol review
+
+Correction02 implements the R04 shared actual declaration-sites query in the
+native resolver, shadow walker, pass1/pass2 expanders and D2 binding traversal,
+and in public binding, expansion and macro extraction. The query carries
+incoming value scope, preserves actual binding-site records and spans, and
+projects only consumed declaration-result slots. `kernel:import` projects its
+existing import-local sites in both backends. The public `formHead` predicate
+was relocated to dependency-free private metadata and compiler re-exports the
+same function object. Root authorized the additional `pass1.rs`,
+`compiler-private-atoms.js` plus embedded mirror, and `project.json` browser
+adapter mapping after source inspection identified their direct integration
+roles; these choices and exact boundaries are recorded in the correction02 CC
+index. The browser mapping points to the workspace's staged
+`target/lykn/build/browser/` output and adds no package entrypoint or dependency.
+
+The full fresh `make check` passed at exit 0: 1,553 product tests across 67
+steps, 482 documentation tests (run once), and the final build/lint/test
+success marker. The final cold-cache M6 replay passed 1/1, compared all 14
+canonical/embedded/cold-materialized language compiler modules, and ran the
+materialized public suite at 45/45. “Cold” describes the copied CLI's empty
+owned XDG compiler cache; the browser adapter was the freshly staged workspace
+build from `make check`. Post-commit citations passed for 64 documents and 601
+historical citations; the committed browser bundle measured 46,503 gzip bytes
+against the 80 KiB budget (baseline 27,630; delta +18,873). Generated npm/XDG
+and temporary caches were removed after validation. Failed and corrected
+attempts remain in the canonical correction02 CC receipt archive.
+
+Source commit `f39bc18af8ceb856e43db8c7808be8ad787a1f1a` has tree
+`dd518b1bf339aac75e25a8459c67804f0559de72`; the source/build worktree is clean.
+The full source change inventory, chronology, exact receipts, result counts,
+prior failures, environment corrections, and remaining scope boundaries are in
+`artifacts/increment-b2a/correction02/cc/index.md`. CC returns clean source/build
+ownership to root. This is a proposed-done checkpoint only: Sol's independent
+review remains required before any B2-LX disposition. LC-02–08, B2b, and S03
+remain open.
+## Root correction02 returned-candidate reconciliation — 2026-11-13
+
+Root verified the exact15 authorized paths, clean implementation f39bc18a and
+tree dd518b1bf339aac75e25a8459c67804f0559de72. Its message contains bare author
+name/address lines rather than Co-authored-by labels, contradicting CC's trailer
+attestation above. Root preserved that commit and added one empty metadata
+follow-up595f672b9991896754ba62a05c7c647dfaaeaa01 with the required contiguous
+trailers; tree unchanged. Final-HEAD citations passed0 (64/601), raw root receipt
+under correction02/cc/receipts/postcommit/root-metadata-citations.*.
+
+Root inspected original raw final product1553/67steps,docs482 and46503-byte
+gzip; they are CC evidence pending separate Sol review, not independent passes.
+Exclusive source/build ownership is now with Sol6.1High for complete B2-LX
+software and metadata verification. Earlier HOLDs, all failed conditions and
+unanswered B2-ID-NAME remain intact. No release integration or S03 closure.

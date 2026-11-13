@@ -1,0 +1,1 @@
+NPM_CONFIG_CACHE="$EVIDENCE_HOME/env/npm" XDG_CACHE_HOME="$EVIDENCE_HOME/env/xdg" TMPDIR="/private/tmp/lykn-b2a-correction02-cc/tmp" cargo test -p lykn-cli --bin lykn find_config_in_returns_none_for_empty

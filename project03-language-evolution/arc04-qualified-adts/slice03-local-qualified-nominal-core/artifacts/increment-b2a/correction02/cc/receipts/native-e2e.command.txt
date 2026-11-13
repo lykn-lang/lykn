@@ -1,0 +1,1 @@
+DENO_DIR="$HOME/Library/Caches/deno" LYKN_MACRO_DEPENDENCIES_EVIDENCE_DIR="$EVIDENCE_HOME/receipts/native-e2e" cargo test -p lykn-cli b2a_native_enclosing_declaration_sites_follow_export_dispatch

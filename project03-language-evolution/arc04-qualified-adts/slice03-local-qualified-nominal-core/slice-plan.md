@@ -3,7 +3,7 @@ project: project03-language-evolution
 arc: arc04-qualified-adts
 slice: slice03-local-qualified-nominal-core
 status: active
-version: "1.20"
+version: "1.21"
 depends-on: [slice01-contract-and-emission-design, slice02-existing-adt-correctness]
 ---
 
@@ -232,7 +232,7 @@ gates survive. No release edits/integration, remote CI, push or publication.
 | cc-prompt-iteration08.md | 2026-11-11 | iteration07 | Mandatory producer grammar, exactly-once function regions and ordinary malformed-header diagnostics | Independently accepted IC-01 at e80f613b/tree7376b33d; LC-02–08 remain open |
 | cc-prompt-iteration09.md | 2026-11-12 | iteration08 | B2a shared precise lexical regions, actual expanded visibility and explicit unsupported generator diagnostic | Independent HOLD bcb98482/tree72adf0ee; R01–03 and raw controls retained |
 | cc-prompt-iteration10.md | 2026-11-12 | iteration09 | B2a correction01: native redispatch/actual diagnostic gating, public class defaults, named kernel function scope | Independent HOLD804be5da/treed25f2b66 on R04; R01–03 focused replays pass |
-| cc-prompt-iteration11.md | 2026-11-13 | iteration10 | B2a correction02: shared actual enclosing-declaration sites across expansion/resolution/D2/shadow clients and real wrapper/default slots | Issued after separate Sol source-readiness; Luna owns source/build |
+| cc-prompt-iteration11.md | 2026-11-13 | iteration10 | B2a correction02: shared actual enclosing-declaration sites across expansion/resolution/D2/shadow clients and real wrapper/default slots | Clean595f672b/treedd518b1b returned; separate Sol software review active |
 
 The A correction loop used three refinement passes; B1 required no software
 correction. IC-01 is a distinct authorized usable prerequisite, not a retry
@@ -409,3 +409,16 @@ this source-ready; its blanket baseline-failure wording clarification is adopted
 Luna owns source/build for correction02, then Sol independently verifies.
 This is the second B2a formal correction; no loop history resets or row closes.
 The unanswered operator name policy and all original B/C/S06 obligations remain.
+
+2026-11-13 v1.21: root verified clean correction02 implementation f39bc18a,
+15 authorized paths and treedd518b1bf339aac75e25a8459c67804f0559de72.
+Actual message inspection contradicted CC's trailer claim: bare names lacked
+Co-authored-by labels. Root preserved f39 and added empty595f672b9991896754ba62a05c7c647dfaaeaa01
+with correct contiguous trailers, unchanged implementation tree and fresh
+committed-HEAD citation0. [Root-authorized scope clarifications](closing-report.md)
+include shared formHead relocation, native/public original-source macro
+collection, accepted kernel import projection and staged-browser project map.
+CC raw final1553/67steps plus482docs, cold14/45 and46503-byte gzip pass; original
+failed/setup/cache/config attempts remain. Separate Sol now owns source/build
+for independent software/metadata review. No B2-LX/LC closure or release change
+is inferred; B2-ID-NAME remains unanswered.

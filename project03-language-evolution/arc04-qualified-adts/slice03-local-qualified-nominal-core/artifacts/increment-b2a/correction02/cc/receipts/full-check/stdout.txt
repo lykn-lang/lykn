@@ -1,0 +1,231 @@
+[1;34mChecking for outdated dependencies...[0m
+
+
+[1;32m✓ All dependencies up to date[0m
+[1;34mChecking cited paths resolve in git...[0m
+[1;32m✓ Cited-path check passed[0m (64 documents on codex/qualified-adt-core; 601 historical citations accepted via scripts/cited-paths-census.tsv)
+[1;34mCleaning bin directory...[0m
+[1;32m✓ Clean complete[0m
+[1;34mCreating bin directory...[0m
+[1;32m✓ Directory created[0m
+[1;34mBuilding Lykn in release mode...[0m
+[1;36m• Compiling optimized workspace...[0m
+[1;36m• Copying binaries to ./bin/[0m
+  [1;32m✓[0m lykn (size: 3.3M)
+[1;32m✓ Release build complete[0m
+[1;36m→ Optimized binaries in ./bin/[0m
+[1;34mRunning linter checks...[0m
+[1;36m• Running clippy...[0m
+[1;32m✓ Clippy passed[0m
+[1;36m• Checking code formatting...[0m
+Diff in /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli/tests/macro_dependencies.rs:366:
+         &output_path,
+         &xdg,
+     );
+-    assert_eq!(compiled.status.code(), Some(0), "{name}: {:?}", compiled.stderr);
++    assert_eq!(
++        compiled.status.code(),
++        Some(0),
++        "{name}: {:?}",
++        compiled.stderr
++    );
+     let generated = generated.expect("successful compile must produce ESM");
+     let runtime = run_strict_recorded(&format!("{name}-runtime"), fixture.path(), &output_path);
+-    assert_eq!(runtime.status.code(), Some(0), "{name}: {:?}", runtime.stderr);
++    assert_eq!(
++        runtime.status.code(),
++        Some(0),
++        "{name}: {:?}",
++        runtime.stderr
++    );
+     assert_eq!(runtime.stdout, expected, "{name} runtime output");
+     assert!(runtime.stderr.is_empty(), "{name}: {:?}", runtime.stderr);
+     generated
+Diff in /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli/tests/macro_dependencies.rs:399:
+         &output_path,
+         &xdg,
+     );
+-    assert_eq!(compiled.status.code(), Some(0), "{name}: {:?}", compiled.stderr);
++    assert_eq!(
++        compiled.status.code(),
++        Some(0),
++        "{name}: {:?}",
++        compiled.stderr
++    );
+     let generated = generated.expect("successful import compile emits ESM");
+     assert!(String::from_utf8_lossy(&generated).contains("import array"));
+     let runtime = run_strict_recorded(&format!("{name}-runtime"), fixture.path(), &output_path);
+Diff in /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli/tests/macro_dependencies.rs:406:
+-    assert_eq!(runtime.status.code(), Some(0), "{name}: {:?}", runtime.stderr);
++    assert_eq!(
++        runtime.status.code(),
++        Some(0),
++        "{name}: {:?}",
++        runtime.stderr
++    );
+     assert_eq!(runtime.stdout, b"42\n");
+     assert!(runtime.stderr.is_empty());
+ }
+Diff in /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang/src/binding.rs:1611:
+ 
+     #[test]
+     fn d2_scope_uses_dispatched_export_sites_for_following_calls() {
+-        let callable_bind = read(
+-            "(export (bind bind (fn (:any left :any right) (= left eval)))) (bind eval 1)",
+-        )
+-        .expect("parse wrapped callable binding");
++        let callable_bind =
++            read("(export (bind bind (fn (:any left :any right) (= left eval)))) (bind eval 1)")
++                .expect("parse wrapped callable binding");
+         assert!(validate_reserved_names(&callable_bind).is_empty());
+ 
+-        let real_binding = read("(export (bind unrelated 1)) (bind eval 1)")
+-            .expect("parse real strict binding");
+-        assert!(validate_reserved_names(&real_binding).iter().any(|diagnostic| {
+-            diagnostic.message.contains("eval")
+-                && diagnostic.message.contains("strict-mode binding identifier")
+-        }));
++        let real_binding =
++            read("(export (bind unrelated 1)) (bind eval 1)").expect("parse real strict binding");
++        assert!(
++            validate_reserved_names(&real_binding)
++                .iter()
++                .any(|diagnostic| {
++                    diagnostic.message.contains("eval")
++                        && diagnostic
++                            .message
++                            .contains("strict-mode binding identifier")
++                })
++        );
+     }
+ 
+     #[test]
+Diff in /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang/src/resolver.rs:63:
+         "export" => {
+             let args = &values[1..];
+             if args.first().and_then(SExpr::as_atom) == Some("default") {
+-                return args.get(1).map_or_else(Vec::new, |payload| {
+-                    default_export_sites(payload, scope)
+-                });
++                return args
++                    .get(1)
++                    .map_or_else(Vec::new, |payload| default_export_sites(payload, scope));
+             }
+             args.first().map_or_else(Vec::new, |payload| {
+                 enclosing_declaration_sites(payload, scope)
+Diff in /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang/src/resolver.rs:90:
+     }
+     let base = head.strip_prefix("kernel:").unwrap_or(head);
+     if base == "async" {
+-        return values.get(1).map_or_else(Vec::new, |child| {
+-            default_export_sites(child, scope)
+-        });
++        return values
++            .get(1)
++            .map_or_else(Vec::new, |child| default_export_sites(child, scope));
+     }
+-    if !matches!(base, "func" | "genfunc" | "class" | "function" | "function*") {
++    if !matches!(
++        base,
++        "func" | "genfunc" | "class" | "function" | "function*"
++    ) {
+         return Vec::new();
+     }
+     direct_enclosing_sites(payload)
+Diff in /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang/src/resolver.rs:1233:
+ 
+     #[test]
+     fn enclosing_declaration_sites_follow_dispatch_and_consumed_export_slots() {
+-        let normal = read(
+-            "(export (func local :args () :body 1) (func ignored :args () :body 2))",
+-        )
+-        .expect("normal export");
++        let normal = read("(export (func local :args () :body 1) (func ignored :args () :body 2))")
++            .expect("normal export");
+         let names = enclosing_declaration_sites(&normal[0], &[])
+             .into_iter()
+             .map(|site| site.name)
+Diff in /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang/src/resolver.rs:1243:
+             .collect::<Vec<_>>();
+         assert_eq!(names, ["local"]);
+ 
+-        let escaped = read(
+-            "(kernel:export (kernel:function escaped () (return 1)))",
+-        )
+-        .expect("escaped export");
++        let escaped = read("(kernel:export (kernel:function escaped () (return 1)))")
++            .expect("escaped export");
+         assert_eq!(
+             enclosing_declaration_sites(&escaped[0], &[])
+                 .into_iter()
+Diff in /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang/src/resolver.rs:1255:
+             ["escaped"]
+         );
+ 
+-        let default = read("(export default (func direct :args () :body 1))")
+-            .expect("direct default");
++        let default =
++            read("(export default (func direct :args () :body 1))").expect("direct default");
+         assert_eq!(
+             enclosing_declaration_sites(&default[0], &[])
+                 .into_iter()
+Diff in /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang/src/resolver.rs:1265:
+             ["direct"]
+         );
+ 
+-        let expression = read(
+-            "(export default (? true (kernel:function local () (return 1)) undefined))",
+-        )
+-        .expect("default expression control");
++        let expression =
++            read("(export default (? true (kernel:function local () (return 1)) undefined))")
++                .expect("default expression control");
+         assert!(enclosing_declaration_sites(&expression[0], &[]).is_empty());
+ 
+         assert!(enclosing_declaration_sites(&normal[0], &["export".into()]).is_empty());
+Diff in /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang/src/resolver.rs:1275:
+ 
+-        let bound_call = read("(bind export (fn (:any x) x)) (export (func leaked :args () :body 1)) (leaked)")
+-            .expect("bound export call");
++        let bound_call =
++            read("(bind export (fn (:any x) x)) (export (func leaked :args () :body 1)) (leaked)")
++                .expect("bound export call");
+         let resolved = resolve(&bound_call);
+-        assert_eq!(last_head(&resolved.iter().map(ToString::to_string).collect::<Vec<_>>().join("\n")).1, NameRes::Unresolved);
++        assert_eq!(
++            last_head(
++                &resolved
++                    .iter()
++                    .map(ToString::to_string)
++                    .collect::<Vec<_>>()
++                    .join("\n")
++            )
++            .1,
++            NameRes::Unresolved
++        );
+     }
+ 
+     #[test]
+Diff in /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang/src/resolver.rs:1285:
+             "(func outer :args (:any eval) :body (export (bind bind (fn (:any left :any right) left))) (bind eval 1))",
+         )
+         .expect("parse wrapped callable");
+-        assert!(shadowing_sites(&callable).iter().all(|site| site.name != "eval"));
++        assert!(
++            shadowing_sites(&callable)
++                .iter()
++                .all(|site| site.name != "eval")
++        );
+ 
+         let declaration = read("(func outer :args (:any eval) :body (bind eval 1))")
+             .expect("parse actual binding");
+Diff in /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang/src/resolver.rs:1292:
+-        assert!(shadowing_sites(&declaration).iter().any(|site| site.name == "eval"));
++        assert!(
++            shadowing_sites(&declaration)
++                .iter()
++                .any(|site| site.name == "eval")
++        );
+     }
+ 
+     #[test]

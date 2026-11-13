@@ -1,0 +1,15 @@
+   Compiling lykn-lang v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang)
+   Compiling lykn-cli v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 12.19s
+     Running unittests src/lib.rs (target/debug/deps/lykn_cli-8a470da61c5d1dbe)
+     Running unittests src/main.rs (target/debug/deps/lykn-633f39fab2860422)
+     Running tests/async_exports.rs (target/debug/deps/async_exports-c55362a2e44ad97d)
+     Running tests/async_expression_values.rs (target/debug/deps/async_expression_values-ca9664e9a5eacb46)
+     Running tests/binding_scan_shadows_macros.rs (target/debug/deps/binding_scan_shadows_macros-fd50d569470d5725)
+     Running tests/compile_validation_parity.rs (target/debug/deps/compile_validation_parity-ed5da4aecd278839)
+     Running tests/contract_predicate_lowering.rs (target/debug/deps/contract_predicate_lowering-5224edfea80a9408)
+     Running tests/docs_pattern_gating.rs (target/debug/deps/docs_pattern_gating-ae4b027e538366e3)
+     Running tests/emission_failures.rs (target/debug/deps/emission_failures-ee1302ddd95a417d)
+     Running tests/lyk_runner_kernel_only.rs (target/debug/deps/lyk_runner_kernel_only-73b3a50bf9a68f89)
+     Running tests/macro_dependencies.rs (target/debug/deps/macro_dependencies-c2da4081568226dd)
+error: test failed, to rerun pass `-p lykn-cli --test macro_dependencies`

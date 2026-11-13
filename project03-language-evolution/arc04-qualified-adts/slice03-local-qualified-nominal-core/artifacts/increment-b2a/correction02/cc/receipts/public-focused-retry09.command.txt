@@ -1,0 +1,1 @@
+DENO_DIR="$HOME/Library/Caches/deno" XDG_CACHE_HOME="$EVIDENCE_HOME/env/xdg" NPM_CONFIG_CACHE="$EVIDENCE_HOME/env/npm" TMPDIR="$EVIDENCE_HOME/env/tmp" deno test --no-lock --config "$EVIDENCE_HOME/focused-current-imports.json" -A test/expander/lexical-regions.test.js

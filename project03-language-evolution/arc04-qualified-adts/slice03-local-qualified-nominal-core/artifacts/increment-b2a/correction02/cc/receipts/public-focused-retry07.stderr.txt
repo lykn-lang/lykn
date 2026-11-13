@@ -1,0 +1,2 @@
+Check test/expander/lexical-regions.test.js
+error: Test failed

@@ -1,0 +1,40 @@
+running 15 tests from ./test/expander/lexical-regions.test.js
+B2a source clauses isolate parameter names and retain own body sequence ... ok (27ms)
+B2a class methods isolate their parameter lists ... ok (17ms)
+B2a class method defaults expand once and execute ... ok (17ms)
+B2a class field initializer stays outside method parameters ... ok (409µs)
+B2a source Func post sees body declaration independent of keyword order ... ok (15ms)
+B2a rejects multi-clause generators before body macro expansion ... ok (1ms)
+B2a enclosing declaration sites follow dispatch and consumed export slots ... ok (458µs)
+B2a public export wrappers expose only their emitted declaration ... ok (114ms)
+B2a kernel import locals participate in enclosing dispatch ... ok (16ms)
+B2a public pass1 follows source binding dispatch without expanding early ... FAILED (17ms)
+B2a macro result declaration controls following macro dispatch ... ok (15ms)
+B2a shared macro AST object keeps binder and head occurrences distinct ... ok (254µs)
+B2a ordinary call operands do not share declarations ... ok (126µs)
+B2a Single result slots do not inherit sibling visibility ... ok (166µs)
+B2a macro head chains recheck surface and lexical priority ... ok (146µs)
+
+ ERRORS 
+
+B2a public pass1 follows source binding dispatch without expanding early => ./test/expander/lexical-regions.test.js:181:6
+error: Error: expandExpr: unexpected node type 'undefined'
+    throw new Error(`expandExpr: unexpected node type '${form.type}'`);
+          ^
+    at expandExprInner (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander-core.js:1912:11)
+    at expandAt (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander-core.js:1880:18)
+    at expandExprInner (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander-core.js:2131:12)
+    at expandAt (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander-core.js:1880:18)
+    at file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander-core.js:937:60
+    at Array.map (<anonymous>)
+    at expandChildrenPlan (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander-core.js:937:45)
+    at expandExprInner (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander-core.js:2295:34)
+    at expandAt (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander-core.js:1880:18)
+    at pass2ExpandAll (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander-core.js:2405:22)
+
+ FAILURES 
+
+B2a public pass1 follows source binding dispatch without expanding early => ./test/expander/lexical-regions.test.js:181:6
+
+FAILED | 14 passed | 1 failed (253ms)
+

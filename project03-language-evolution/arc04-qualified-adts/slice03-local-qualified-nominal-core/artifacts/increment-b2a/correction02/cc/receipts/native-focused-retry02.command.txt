@@ -1,0 +1,1 @@
+cargo test -p lykn-lang enclosing_declaration_sites_follow_dispatch_and_consumed_export_slots
