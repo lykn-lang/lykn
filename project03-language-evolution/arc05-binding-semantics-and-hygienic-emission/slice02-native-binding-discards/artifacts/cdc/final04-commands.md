@@ -1,5 +1,11 @@
 # Independent final04 commands and artifact index
 
+2026-11-14 root accounting correction: docs482/0 executed, fifteen annotated
+Skip/Fragment blocks and nine no-block input files. The earlier limit sentence
+below misclassifies the fifteen. See retained final04-make-check.stderr168–177
+and the [dated canonical correction](../../cdc-verification.md#documentation-accounting-correction--2026-11-14).
+No command, raw receipt, source pin or independent source verdict changes.
+
 Reviewer: OpenAI gpt-6.1-sol/high `/root/arc05_s02_cdc`.
 Source: `9e6fb1270c3efcbaa0f6ddb9f0fbfd3b2c1c825a`, tree
 `6d64692fde0c367e73deeda1ec1aca19e49d6b93`.

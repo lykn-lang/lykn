@@ -1,5 +1,14 @@
 # S02 CC closeout: native binding discards
 
+## Documentation accounting erratum —2026-11-14
+
+S03 root reconciliation found an earlier count interpretation error. The
+retained final04 stderr records nine no-block input files, 482 testable blocks
+and fifteen annotated Skip/Fragment blocks. Actual docs482/0 remains correct.
+The earlier descriptions equating fifteen with no-block entries are superseded
+by the [dated verification correction](cdc-verification.md#documentation-accounting-correction--2026-11-14).
+Original prose/receipts and all source/row dispositions remain preserved.
+
 ## Root final acceptance metadata —2026-11-14
 
 The doer attestations and correction history below remain preserved. Separate

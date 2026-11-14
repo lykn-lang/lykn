@@ -395,3 +395,19 @@ leaves the eventual planning closing-packet hash to the commit rather than
 inventing it; this is not a missing source receipt. No material metadata finding
 remains. This follow-up changed only this reviewer record, ran no runtime gate
 and made no Git/index/ledger mutation. Source/build remains with root.
+
+## Documentation accounting correction — 2026-11-14
+
+Root coordinator, during S03 reconciliation, checked the retained S02 raw
+`artifacts/cdc/final04-make-check.stderr:168–177`. Correct accounting is nine
+input files with no Lykn blocks, plus `Generated 22 test file(s) with 482
+block(s) (15 skipped)`. At S02 source9e6fb127, CLI
+`crates/lykn-cli/src/doctest.rs:690–697` counts Annotation::Skip and
+Annotation::Fragment blocks separately from no-block files. The earlier
+statements that fifteen meant no-block entries were incorrect. The actual
+executed documentation result remains482 passed/0 failed; fifteen annotated
+blocks were outside that executed population. The original interpretation
+above and raw receipts are preserved, with this dated correction superseding
+only that accounting. No source, ND status or other acceptance claim changes;
+the JSR network self-skip remains separate. S03's fresh proof uses these exact
+categories rather than inheriting the erroneous description.
