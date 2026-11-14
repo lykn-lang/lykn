@@ -12,6 +12,13 @@ related: [arc04-qualified-adts, arc06-adt-modules-and-library-integration]
 
 ## Authority and outcome
 
+Subsequent review2026-11-14: correction02 at3d21eab5 resolves R01–05 but is
+independently held for new R06: ordinary raw callable parameter structure reaches
+macro dispatch. [Correction03](slice03-public-binding-discards/cc-prompt-iteration03.md)
+uses existing resolved lexical regions, three exact paths and the same fourteen-
+path/nine-row/eight-group/M670 scope. No aggregate gate runs on held source;
+BS-03 and all later gates remain open. Earlier checkpoints below are retained.
+
 Current implementation review2026-11-14: S03 candidate30d8b77c is independently
 held for source child-boundary crossing, anonymous-generator layout, a false
 runtime-error oracle, required proof gaps and catch teaching. Its new8 green

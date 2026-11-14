@@ -1,5 +1,10 @@
 # Binding semantics and hygienic emission ledger
 
+2026-11-14 subsequent S03 review: R01–05 resolved at3d21eab5; sole new R06
+holds ordinary callable parameter/macro roles. Correction03 uses the existing
+region plan; all nine PB rows/BS-03 stay open. No aggregate gates or later
+acceptance inferred; prior source-first checkpoints below remain history.
+
 2026-11-14 S03 source-first review holds candidate30d8b77c for R01–05;
 [correction02](slice03-public-binding-discards/cc-prompt-iteration02.md) addresses
 actual child/layout defects, false oracle, promised proof and catch teaching.

@@ -1,0 +1,4 @@
+(set-symbol! globalThis "_" 99)
+(macro discardValue__private () `(captured-one captured-two))
+(bind arrow (=> (_) _))
+(console:log arrow:length (arrow 7))

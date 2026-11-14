@@ -3,13 +3,21 @@ project: project03-language-evolution
 arc: arc05-binding-semantics-and-hygienic-emission
 slice: slice03-public-binding-discards
 status: active
-version: "1.1"
+version: "1.2"
 depends-on: [slice02-native-binding-discards]
 ---
 
 # Remaining public/browser discard binding forms
 
-Current assignment2026-11-14: [correction02](cc-prompt-iteration02.md) addresses
+Current assignment2026-11-14: [correction03](cc-prompt-iteration03.md) addresses
+the sole new independent R06 at3d21eab5: an unmarked raw callable parameter
+container can reach macro dispatch. Existing resolved callable regions must
+protect structure without changing kernel sanctioning or lexical/macro priority.
+R01–05 are independently resolved; all nine PB rows remain open pending fresh
+final source/delivery gates. Exact three changed paths, same14 complete delivery,
+eight groups and M670 remain. Root holds source/build until dispatch.
+
+Previous assignment2026-11-14: [correction02](cc-prompt-iteration02.md) addresses
 the consolidated independent30d8b77c HOLD R01–05: source child-boundary crossing,
 actual anonymous-generator sentinel layout, a false runtime error oracle,
 required new-path proof and catch-array teaching. Same nine PB criteria and
@@ -338,7 +346,15 @@ corrections proceed autonomously, ambiguous design/evidence gaps return to root.
 
 ## Assignment history
 
-- 2026-11-14 correction02 `cc-prompt-iteration02.md`: current assignment for
+- 2026-11-14 correction03 `cc-prompt-iteration03.md`: follows correction02's
+  independent HOLD3d21eab5; only R06 remains, ordinary raw callable parameter
+  containers reaching macro dispatch. Exact binding.js/mirror/new-suite repair,
+  existing lexical region plan without granting kernel authority. Draft ready
+  for separate readiness; Sol readiness03 PASS after concrete priority examples
+  and current/history reconciliation. Issued for CC execution; source/build
+  transfers to Luna on dispatch. Earlier packets immutable.
+
+- 2026-11-14 correction02 `cc-prompt-iteration02.md`: prior assignment for
   independent R01–05 at30d8b77c/treeeed76325. Source-ready six-path own-slot/
   shared-layout/oracle/proof/guide correction; all nine PB rows unchanged/open.
   Root read complete candidate diff, reviewed witnesses and the consolidated
@@ -351,8 +367,8 @@ corrections proceed autonomously, ambiguous design/evidence gaps return to root.
   evidence lives under artifacts/cc/correction02 with prior packets intact.
   Fifteen annotated skip/fragment doc blocks and nine no-block inputs are
   distinct; JSR network self-skip/cache/download/tracing and lost interim
-  authoring-log limits remain explicit. All PB rows wait for Sol source-first
-  review and independent gates; root transfers source/build on dispatch.
+  authoring-log limits remain explicit. Independent source-first review resolves
+  R01–05 but holds sole new R06; aggregate gates stayed unrun. Superseded by03.
 - 2026-11-14 correction01 `cc-prompt-iteration01.md`: issued after
   initial CC handoff85ddca63. Root found noncontiguous trailers in both new local
   commits and an incorrect contiguous-trailer claim. No independent source review
@@ -384,6 +400,13 @@ NUMI, reader RDEO/RDCL, Arc04 local qualified and Project07/book/human/licence
 owners. Neither native/public discard acceptance nor guide edits close those.
 
 ## Version history
+
+- 2026-11-14 v1.2: Preserve independent3d HOLD/new R06 and issue bounded
+  correction03 for existing raw callable regions. Root readiness checked the
+  actual caller/region/layout chain, resolved kernel/typed/macro interactions,
+  retained the same delivery scope, and specified a pre-repair semantic red plus
+  actual Deno/browser/fragment/lax/priority controls. No open design decision or
+  delegated investigation; separate readiness review precedes source dispatch.
 
 - 2026-11-14 v1.1: Record independent30 HOLD and correction02 for actual child
   boundaries, writer-admitted generator layout, honest failure/coverage proof
