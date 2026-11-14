@@ -1,5 +1,12 @@
 # project03-language-evolution ledger
 
+Current2026-11-14: authorized release82 integration is independently accepted,
+RI-01–03 done. [Arc05 S06](arc05-binding-semantics-and-hygienic-emission/slice06-public-generated-name-hygiene/slice-plan.md)
+is issued from82 after actual public baseline and separate readiness PASS;
+all8PN/BS-06/P-BIND/P-QADT remain open. Luna6 High CC/Sol6.1 High CDC, Autonomous
+Mode through S06 independent close only. Release remains82; S07 and further
+integration/remote actions stay unopened. Older current labels below are history.
+
 Current2026-11-14: Arc05 S05 source/delivery is independently validated at82f1b65b.
 Native hygiene has actual canonical/fragment/CLI/JSON/package and final-gate
 proof. Separate NH-08 metadata PASS closes all8NH/BS-05; P-BIND/P-QADT and

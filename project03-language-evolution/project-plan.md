@@ -1,7 +1,7 @@
 ---
 project: project03-language-evolution
 status: research
-version: "1.70"
+version: "1.71"
 planned-release: "0.7.0"
 depends-on: ["project02-language-toolchain-alignment"]
 blocks: []
@@ -11,6 +11,16 @@ related: ["project04-c-lang", "project07-core-library-research"]
 # Language evolution
 
 ## Current approved structure —2026-11-13
+
+Current2026-11-14: the authorized [release82 integration](arc05-binding-semantics-and-hygienic-emission/slice05-native-generated-name-hygiene/artifacts/release-integration-82f1b65b.md)
+is independently accepted, RI-01–03 done. Release/0.6.x stays clean82f1b65b.
+[Arc05 S06](arc05-binding-semantics-and-hygienic-emission/slice06-public-generated-name-hygiene/slice-plan.md)
+is issued at planning83d75e45 after root actual public baseline and separate
+Sol readiness PASS. Fresh Luna6 High implements; Sol6.1 High independently
+reviews; root owns planning/index/rows. All8PN/BS-06/P-BIND/P-QADT remain open.
+Autonomous endpoint is S06 independent close/retrospective/routing, without
+S07, further release integration or remote action. Earlier no-S06/releasec60
+statements below preserve their earlier checkpoint meaning.
 
 Current2026-11-14: [Arc05 S05](arc05-binding-semantics-and-hygienic-emission/slice05-native-generated-name-hygiene/cdc-verification.md)
 source/delivery is independently validated at82f1b65b/tree4bb6bfc9. Native
@@ -1111,6 +1121,10 @@ with their source and status distinctions. A future
 implementation definition of done is not established by this migration.
 
 ## Version history
+
+- 2026-11-14 v1.71: Record independently accepted release82 integration and
+  issued Arc05 S06 public generated-name implementation, exact15 path delivery
+  and all8PN open; preserve later qualified/research/library gates.
 
 - 2026-11-14 v1.70: Carry independently validated Arc05 S05 native hygiene
   source/delivery at82 into Arc06 exact-range API audit and qualified/research
