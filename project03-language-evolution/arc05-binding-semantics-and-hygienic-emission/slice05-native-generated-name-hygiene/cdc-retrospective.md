@@ -78,7 +78,57 @@ including computed-key reads and static identifier escapes without selecting
 source binding or protected-root policy. This is a root/readiness design error,
 not evidence that CC ignored the original recipe. Conservative logical-name
 collection was insufficient while the writer admitted physical member text.
-The corrected draft is still pending readiness/implementation/independent proof.
+Separate final readiness accepted the actual-writer collector and consistent
+physical candidate keys before issue84779add. Correction01 is in implementation;
+independent implementation/gate proof is still pending.
+
+During correction01's pre-gate read, root caught helper assertions expecting
+raw rather than normalized runs, a preferred-name counter expectation, and a
+candidate-insertion control whose explicit reservation masked the behavior it
+claimed to test. CC corrected them before the dependent gate. The host alias
+suffix typo did reach retained attempt04 before correction. Attempts01/02
+retain a collapsible-if lint failure and missing test import; Clippy then passed.
+These are test/preflight authoring failures, not evidence of a new language
+contract defect. The bidirectional insertion control now calls preferred with
+the literal equivalent of an actually allocated escaped name.
+Root's proposed normalized `fooQMARKbar` expectation was itself wrong: the
+actual writer uses cap-next and emits `fooQMARKBar`. A retained unit failure
+caught this before the subsequent59-case pass. The writer-based implementation
+was correct; neither contributor's confident example substituted for its output.
+
+Retained attempt05 caught a second root recipe error: the existing pure-colon
+fixture is deliberately a no-invocation-support negative control, explicitly
+asserted by semantic_roles.rs505–510. The adapted fixture still emitted a direct
+call. Root read the actual ordered-argument planner and member lowering before
+supplying a completion-bearing argument `(do (if stop (return 92)) 3)`, which
+requires Lifted→member_invocation_statements and a real private request. The
+helper-presence assertion remains; the replacement checks early-return92 and
+foreign method result41. This is an input repair inside the unchanged criterion,
+not permission to accept a helper test that never invokes its producer.
+
+CLI attempt08 is different: check0/compile0 accepted the nested-awaited Source
+input, and generated JavaScript then failed syntax. Root challenged the initial
+"invalid fixture" description: no evidence establishes invalid Lykn or whether
+S05 introduced this failure. The original streams/generated text remain, and
+[D-2611-AWEX](../../../backlog/discoveries.md#d-2611-awex--native-awaited-threading-inside-a-call-emits-a-statement-block-as-an-expression)
+is routed into Arc02's unopened maintenance intake. The supported top-level
+producer shape subsequently passed actual CLI/JSON, not a repair of the nested
+case. Keep authoring mistakes distinct from admitted-source compiler failures.
+
+The first full invocation mistakenly added `docs` to `make check`, despite
+the docs-once instruction. It stopped in test-rust on four pinned-astring DNS
+failures before either documentation stage; no duplicate docs run occurred.
+Root authorized one corrected `make check` retry with the existing dependency
+network escalation and a separate M6 evidence directory. The full tool/session
+handles2693/68688 were retained and ownership remained serial, unlike the
+earlier lost-session invocation. Final retry results are still pending here.
+
+A root guide-diff command ran in planning and compared against imported source
+history, producing an inapplicable deletion listing. It was rerun in the named
+task source home; the actual guide delta is only the intended16-line addition.
+No deletion or product write occurred, and the wrong-home listing supplies no
+source evidence. Naming worktree ownership in prose did not prevent this query
+mistake; command-level workdir remains necessary.
 
 Two Clippy failures were retained before semantic/full/M6 execution. A nested
 exec session identifier was lost on an intermediate invocation; its numeric

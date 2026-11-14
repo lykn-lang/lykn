@@ -1,0 +1,77 @@
+   Compiling lykn-lang v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 6.61s
+     Running unittests src/lib.rs (target/debug/deps/lykn_lang-660f810f98f77866)
+
+running 59 tests
+test codegen::names::tests::camel_no_hyphens ... ok
+test codegen::names::tests::camel_double_leading ... ok
+test codegen::names::tests::camel_multiple_segments ... ok
+test codegen::names::tests::camel_simple ... ok
+test codegen::names::tests::camel_leading_hyphen ... ok
+test codegen::names::tests::edge_double_hyphen ... ok
+test codegen::names::tests::camel_single_char ... ok
+test codegen::names::tests::camel_trailing_hyphen ... ok
+test codegen::names::tests::camel_get_user ... ok
+test codegen::names::tests::camel_all_hyphens ... ok
+test codegen::names::tests::edge_empty_string ... ok
+test codegen::names::tests::edge_lone_bang ... ok
+test codegen::names::tests::edge_lone_qmark ... ok
+
+thread 'codegen::names::tests::physical_atom_census_keeps_normalized_runs_and_computed_reads' (109247872) panicked at crates/lykn-lang/src/codegen/names.rs:755:9:
+assertion failed: occupied.contains("fooQMARKbar")
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test codegen::names::tests::edge_lone_star ... ok
+test codegen::names::tests::edge_single_hyphen ... ok
+test codegen::names::tests::rule1_can_edit_question ... ok
+test codegen::names::tests::rule1_does_match_question ... ok
+test codegen::names::tests::rule1_empty_question ... ok
+test codegen::names::tests::rule1_even_question ... ok
+test codegen::names::tests::malformed_unicode_escapes_remain_safe_and_non_ascii_runs_are_conservative ... ok
+test codegen::names::tests::generated_name_allocator_uses_decoded_physical_candidate_keys ... ok
+test codegen::names::tests::physical_atom_census_decodes_static_unicode_escapes_before_scanning ... ok
+test codegen::names::tests::rule1_had_error_question ... ok
+test codegen::names::tests::rule1_has_items_question ... ok
+test codegen::names::tests::rule1_is_void_question ... ok
+test codegen::names::tests::rule1_should_retry_question ... ok
+test codegen::names::tests::rule1_valid_question ... ok
+test codegen::names::tests::rule1_was_modified_question ... ok
+test codegen::names::tests::physical_atom_census_keeps_normalized_runs_and_computed_reads ... FAILED
+test codegen::names::tests::rule1_will_succeed_question ... ok
+test codegen::names::tests::rule2_reset_bang ... ok
+test codegen::names::tests::rule2_set_bang ... ok
+test codegen::names::tests::rule2_swap_bang ... ok
+test codegen::names::tests::rule3_amp_rest ... ok
+test codegen::names::tests::rule3_dollar_ref_passthrough ... ok
+test codegen::names::tests::rule3_embedded_qmark ... ok
+test codegen::names::tests::rule3_eq_prefix ... ok
+test codegen::names::tests::rule3_json_from_string ... ok
+test codegen::names::tests::rule3_pct_scratch ... ok
+test codegen::names::tests::rule3_plus_constant_plus ... ok
+test codegen::names::tests::rule3_slash_embedded ... ok
+test codegen::names::tests::rule3_star_globals_star ... ok
+test codegen::names::tests::rule3_string_arrow_json ... ok
+test codegen::names::tests::rule4_thread_first ... ok
+test codegen::names::tests::rule4_thread_last ... ok
+test codegen::names::tests::rule5_swap_double_bang ... ok
+test codegen::names::tests::rule5_valid_double_qmark ... ok
+test codegen::names::tests::test_colon_console_log ... ok
+test codegen::names::tests::test_colon_deep_chain ... ok
+test codegen::names::tests::test_colon_math_pi ... ok
+test codegen::names::tests::test_colon_this_private ... ok
+test codegen::names::tests::test_colon_with_camel_case_segments ... ok
+test codegen::names::tests::test_emit_atom_false ... ok
+test codegen::names::tests::test_emit_atom_null ... ok
+test codegen::names::tests::test_emit_atom_plain_ident ... ok
+test codegen::names::tests::test_emit_atom_super ... ok
+test codegen::names::tests::test_emit_atom_this ... ok
+test codegen::names::tests::test_emit_atom_true ... ok
+test codegen::names::tests::test_emit_atom_undefined ... ok
+
+failures:
+
+failures:
+    codegen::names::tests::physical_atom_census_keeps_normalized_runs_and_computed_reads
+
+test result: FAILED. 58 passed; 1 failed; 0 ignored; 0 measured; 1158 filtered out; finished in 0.00s
+
+error: test failed, to rerun pass `-p lykn-lang --lib`

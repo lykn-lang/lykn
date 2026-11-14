@@ -24,6 +24,13 @@ its own finite contract and execution authority.
   as an expression. Future repair must preserve actual method-call negatives
   and use structural roles, with real Source/CLI/lint/delivery and guide impact.
   S04's admitted alternative declaration specimens do not repair this finding.
+- [D-2611-AWEX](../../backlog/discoveries.md#d-2611-awex--native-awaited-threading-inside-a-call-emits-a-statement-block-as-an-expression):
+  Arc05 S05 correction01 actual check0/compile0 accepted nested awaited
+  threading in a call argument, then Deno rejected the generated statement
+  block in expression position. Complete attempt08 is retained; preexistence
+  versus regression and public applicability are not independently established.
+  S05's top-level representative runtime/JSON fixtures do not repair it. Detail
+  the completion/await context and real delivery contract before source work.
 
 ## Browser compiler split for 0.6.x
 
@@ -145,6 +152,10 @@ No investigation/repair/review slices split this first result by process stage. 
 All original F1–F12, Project07/library/book/guide/human/licensing and other compiler/type/doc owners remain unchanged. No compiler fix, helper/K/walker/corpus/F6 run or publication is part of this arc's current item.
 
 ## Version history
+
+- 2026-11-14 v0.8: Retain S05's observed AWEX nested-await expression emission
+  failure as an unopened maintenance candidate; baseline comparison, design and
+  independent proof remain due. No source scope or gate changes.
 
 - 2026-11-14 v0.7: Explicitly retain unopened NUMI and MPVR maintenance
   candidates from Arc05; no source/experiment scope or acceptance changes.

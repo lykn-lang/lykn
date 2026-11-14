@@ -3,9 +3,11 @@
 2026-11-14 opening atc0ed4546. All eight criteria open; doer green is proposed-done.
 
 Current2026-11-14: initialfa6562a is preserved NOT accepted after actual
-attempt11 dotted-root TDZ. Plan v1.1/correction01 prepares shared physical
+attempt11 dotted-root TDZ. Plan v1.1/correction01 issues shared physical
 identifier occupancy at early/completion/ICU/host consumers, expanding7→10
 source paths without changing these eight criteria. All rows/BS-05 remain open.
+Separate final readiness PASS and committed issue84779add preceded dispatch
+to the same Luna CC;1/5 refinements spent. No implementation acceptance yet.
 
 | ID | Criterion | Verify | Significance | Origin | Status | Evidence |
 | --- | --- | --- | --- | --- | --- | --- |

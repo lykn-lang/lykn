@@ -1,0 +1,1 @@
+(macro redirect () `(car (cons 41 0))) (macro car (x) `99) (console:log (redirect))

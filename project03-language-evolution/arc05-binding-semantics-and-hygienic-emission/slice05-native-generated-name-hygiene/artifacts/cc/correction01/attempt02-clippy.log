@@ -1,0 +1,16 @@
+    Checking lykn-lang v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang)
+    Checking lykn-cli v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli)
+error[E0433]: cannot find type `PathBuf` in this scope
+   --> crates/lykn-lang/tests/generated_name_hygiene.rs:369:24
+    |
+369 |     let fixture_path = PathBuf::from(env!("CARGO_MANIFEST_DIR"))
+    |                        ^^^^^^^ use of undeclared type `PathBuf`
+    |
+help: consider importing this struct
+    |
+  1 + use std::path::PathBuf;
+    |
+
+For more information about this error, try `rustc --explain E0433`.
+error: could not compile `lykn-lang` (test "generated_name_hygiene") due to 1 previous error
+warning: build failed, waiting for other jobs to finish...

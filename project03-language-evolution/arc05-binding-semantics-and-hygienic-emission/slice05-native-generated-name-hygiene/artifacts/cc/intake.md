@@ -36,3 +36,88 @@ initial source/build owner returned a clean worktree and no active build/test
 jobs to root for source-design correction 01. See the bounded partial
 `closing-report.md` and `artifacts/cc/attempt11-focused-native.log`; no final
 M6/full-gate success is asserted.
+
+## Correction01 pre-edit intake and contract readback
+
+**Source state:** task branch `codex/qualified-adt-core` at clean
+`fa6562a13ffc1069c06bb98d81cc4561fee68e12`, tree
+`71c65689be1c8e3dbc2638aa5a7d60cee89944a0`, parent `c0ed4546...`.
+The initial proposed candidate, all prior failures and the partial close remain
+preserved. Correction01 is 1/5 and adds only the three plan-D codegen paths to
+the original seven; no edit has been made after dispatch yet. Planning worktree
+is `/Users/oubiwann/lab/lykn/lang/.worktrees/planning`, planning issue pin
+`84779add734f7eff8eeb57e59ebb2e0897b45f9f`; root owns its Git/index/rows.
+
+**Required material actually loaded before edits:**
+
+- Correction prompt `cc-prompt-iteration01.md`, full text, and plan v1.1
+  `slice-plan.md`, lines 1–437 (including plan D and the preserved A–C
+  contracts); slice `ledger.md`, all eight open rows; source `AGENTS.md`, full
+  file; partial `closing-report.md`, full file; existing intake, all 38 lines.
+- Prior finding receipt `artifacts/cc/attempt11-focused-native.txt` (all 11
+  lines) and `attempt11-focused-native.log` (all 71 lines). Source and tree
+  pins for both are the preserved candidate fa6562a/tree71.
+- At fa6562a/tree71: `emitter/gensym.rs` full relevant production and tests;
+  borrowed `emitter/source_names.rs` full 344 lines; the native product test
+  full 291 lines and CLI product test full 194 lines. Prior original-intake
+  producer/source and guidance reads remain applicable, including the named
+  seven-path implementation contracts, all producer cases and S04 failure/
+  reuse evidence.
+- At fa6562a/tree71: `codegen/names.rs` production allocator lines 1–61,
+  full normalizer lines 112–252, and actual `emit_atom`/member-chain lines
+  254–289; `JsWriter` construction/write/finish lines 1–170; complete
+  `host_references.rs` production (1–227); complete `host_invocation.rs`
+  production (1–169); `forms.rs` completion finalizer lines 358–410,
+  completion/ordinary atom reservation and marker traversal lines 4810–4870,
+  plus local pattern/next-name collectors and callers around 4696–4710 and
+  4866–4910; actual Rust reader lexer atom/string escape/advance routines
+  `reader/lexer.rs` lines 1–349. The complete repository-owned
+  `test/fixtures/ordered-member-calls/pure-colon-call.lykn` was loaded; its
+  actual shape saves receiver/call operands and invokes `receiver:read-entry`.
+  `protected_host.rs` kernel declaration/root collection lines 130–230 was
+  read only to retain its separate binder/root-policy boundary.
+- Installed Rust guideline AP-09/12/13, testing Discipline/Failure Triage,
+  engineering-methods guide07 required-reading/corrective-iteration sections,
+  and source `skills/lykn/SKILL.md` bindings/functions/generators/threading
+  sections were loaded for this correction.
+
+**Contract readback before implementation:**
+
+The initial bug is now an exact writer-to-collector mismatch. `emit_atom`
+normalizes the actual text through the current writer; colon segments and
+private-member prefixes can differ from the raw Surface/SExpr spelling, and
+legacy atoms can contain static dotted or computed-key expressions such as
+`box[t__gensym0]`. Therefore source occupancy has to emit first, then scan the
+physical text for conservative identifier-shaped runs; splitting raw dots or
+reserving only the first colon root is insufficient. Static `\\uXXXX` and
+`\\u{...}` escapes must decode before run extraction, including valid surrogate
+pairs, while the decoded tokens are never normalized a second time. Checked
+incremental parsing, UTF-8-safe boundaries and bounded malformed-escape
+handling prevent panic/quadratic suffix rescans; this does not validate JS or
+repair the inherited repeated-suffix cost inside `to_js_identifier`.
+
+One crate-private helper serves all five existing collectors: emitter
+`EmitterGensym.reserve`, forms `reserve_emitted_names`, ICU
+`GeneratedNameAllocator.reserve_expr`, host-reference prepare's atom visitor,
+and host-invocation `normalized_payload_names`. Existing traversal, literal
+string exclusion, ownership/address maps, order and strategy stay intact. The
+forms completion-marker leading return and descendant `has_markers` propagation
+must not be disturbed. Generated candidate identity uses the same physical
+key: early gensym and preferred candidates are passed through `emit_atom`,
+while ICU's preferred/suffix candidate is already emitted and gets only static
+escape decoding, never a second normalization. Returned spellings, suffix
+ordering and checked exhaustion behavior remain unchanged. The five consumers
+collect occupancy; they do not acquire binder authority or alias resolution.
+
+Tests must run actual generated programs for dotted/computed/escaped early
+producers and real late completion, ICU, intrinsic alias and invocation
+consumers, verifying each relevant producer actually exists. Early JSON must
+flow from real CLI kernel JSON through the current `compiler.js compile` client;
+raw ICU and native producers must not be described as public ICU/name parity.
+`protected_host` root selection, escaped source binder identity, AST/resolver,
+JS/browser compilation, public syntax and source-name rewriting are outside this
+correction and remain later S06/S07/LI-04 ownership. Exact ten-path scope and
+all eight NH criteria remain unchanged/open. Focused proof is followed by
+fresh-artifacts, a Clippy preflight, one fully captured final `make check`,
+actual M6 70/7 plus all 14 comparisons, exact commit, final-HEAD citations and
+fresh 81920-byte cap check; none is waived by earlier candidate evidence.

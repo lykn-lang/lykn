@@ -1,0 +1,2 @@
+Command: `LYKN_MACRO_DEPENDENCIES_EVIDENCE_DIR=<correction01/m6> make check docs`.
+Exit: 2. The command passed dependency checks, cited-path check, release build, lint/format/syntax, and early CLI library tests, then stopped in test-rust when four `binding_scan_shadows_macros` cases could not fetch the existing pinned `astring@1.9.0` due to DNS resolution failure for registry.npmjs.org. The docs target did not run. This first full attempt is preserved; a single network-enabled corrected `make check` retry passed as attempt14.

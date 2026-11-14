@@ -9,6 +9,13 @@ depends-on: [slice02-native-binding-discards, slice04-discard-aware-declarations
 
 # Native compiler-generated name hygiene
 
+Current handoff2026-11-14: correction01 is CC proposed-done at
+32749d97216cba269fb5e4a4d454e26ece6c11dc/treef4a955ab. The task is clean,
+no owned jobs remain and source/build returned to root for separate Sol review.
+All8NH/BS-05 remain open; one of five refinements spent. Exact c0ed→32749d97
+delivery has ten paths; fa→32749d97 correction changes seven of those paths.
+AWEX is separately recorded in backlog/Arc02; no repair or public parity claim.
+
 Current2026-11-14: initial candidatefa6562a13ffc1069c06bb98d81cc4561fee68e12,
 tree71c65689be1c8e3dbc2638aa5a7d60cee89944a0, is preserved clean and
 explicitly NOT accepted. Actual attempt11 exposes a design gap shared by root

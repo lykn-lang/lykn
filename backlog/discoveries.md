@@ -1547,3 +1547,32 @@ All source corrections remain open.
   applicability instead of assuming backend parity. Arc06 LI-04 owns resulting
   API/guide/book impact accounting. No repair slice, source expansion or new
   investigation matrix is authorized by this discovery record.
+
+## D-2611-AWEX — native awaited threading inside a call emits a statement block as an expression
+
+- **Discovered:**2026-11-14 during Arc05 S05 correction01 CLI/JSON fixture
+  authoring. This is a distinct observed generated-code failure, not proof that
+  the accepted Lykn source is invalid or that S05 introduced a regression.
+- **Observed:** in the named contract-predicate-lowering task worktree,
+  codex/qualified-adt-core, correction01 working tree overfa6562a, actual CLI
+  check0 and compile0 accepted `(console:log (some-> (await (Promise:resolve
+  await__gensym0.child)) (+ 1)))`. Generated output instead contains
+  `console.log({ const await__gensym3 = await ...`, a statement block in call
+  argument position. Deno exited1 with SyntaxError; exact complete source,
+  generated module, commands and streams are retained in
+  [attempt08](../project03-language-evolution/arc05-binding-semantics-and-hygienic-emission/slice05-native-generated-name-hygiene/artifacts/cc/correction01/attempt08-focused-cli.log).
+  Root inspected that actual receipt. This is CC runtime evidence, not fresh
+  independent reproduction or an established baseline/version comparison.
+- **S05 boundary:** no nested-await lowering repair. Existing top-level
+  `(some-> (await ...) (+ 1) (console:log))` fixtures exercise the same name
+  reservation producer and pass actual CLI/native/kernel-JSON consumers.
+  Substituting that shape does not repair or reject the nested source above.
+  Do not classify the failed module as a successful name-collision oracle.
+- **Owner/destination:** Project03 root/CDC,
+  [Arc02 maintenance](../project03-language-evolution/arc02-ad-hoc-maintenance/arc-plan.md),
+  unopened candidate. Re-entry requires pinned baseline/candidate comparison,
+  actual completion/effect/await-context design, checked/stripped values and
+  failures, actual native/CLI/JSON consumers and independently assessed public
+  applicability. Preserve the current failure and investigate before selecting
+  lowering or a diagnostic contract. Arc06 LI-04 retains resulting API/guide/book
+  impacts. This record opens no source repair, new matrix or release action.

@@ -14,11 +14,13 @@ related: [arc04-qualified-adts, arc06-adt-modules-and-library-integration]
 
 Current S05 correction2026-11-14: initialfa6562a is preserved clean and NOT
 accepted. Actual dotted-root TDZ exposed an original design/readiness omission.
-S05 v1.1 prepares one shared actual-emitted identifier occupancy helper across
+S05 v1.1 specifies one shared actual-emitted identifier occupancy helper across
 early/completion/ICU/host consumers; add only names/host_references/host_invocation
 codegen paths, seven→ten total, same8NH/BS-05 all open. This is correction01,
 1/5 on dispatch, not new source-binding/grammar/protected-root policy work.
-Root owns source/build during readiness; releasec60 and later owners unchanged.
+Separate final Sol readiness PASS preceded issued planning84779add and explicit
+correction01 dispatch. Luna CC now owns task source/build; root owns planning
+Git/index/status. Releasec60 and later owners are unchanged.
 
 Current authority2026-11-14: operator opens [S05 native generated-name hygiene](slice05-native-generated-name-hygiene/slice-plan.md)
 from acceptedc0ed4546, same Luna6 High CC / separate Sol6.1 High CDC,
@@ -189,8 +191,8 @@ affected delivery, necessary immediate documentation and independent review.
 | [S03 public remaining discard binding forms](slice03-public-binding-discards/slice-plan.md) — closedc60dea62 | Delivered corresponding public/browser behavior, preserved already-admitted non-atom/empty-list discard groups and raw/schema roles, and enforced the honest simple-multi boundary | Independent final9-row proof, focused66/full1578/docs482/M670/14/cites/size; original HOLDs and three refinements retained |
 | [S04 discard-aware declarations](slice04-discard-aware-declarations/slice-plan.md) — closedc0ed | Existing native Func/Bind/BindGroup/Type declarations now describe discard slots/defaults/rest, recursive data inputs and scalar/group/pattern exports; actual TS/CLI/package consumers | Independent all8DT source/gate/closing-metadata proof, root retrospective and later-owner routing |
 | [S05 native compiler-generated name hygiene](slice05-native-generated-name-hygiene/slice-plan.md) — active | Protect remaining compiler temporaries from source, foreign and generated-name collisions | Acceptedc0ed/S04; complete source/early/late producer census and separate readiness before dispatch |
-| S06 public compiler-generated name hygiene | Protect corresponding public producers while preserving private object identities and macro transport limits | Public discard roles; complete producer/finalizer census |
-| S07 native exact source-binding emission | Resolve binding occurrences and allocate safe JS names while retaining hoisting, TDZ, data/API names, foreign targets and JSON behavior | S05; settled source-name policy; actual native writer scopes |
+| S06 public compiler-generated name hygiene | Protect corresponding public producers while preserving private object identities and macro transport limits | Public discard roles; complete producer/finalizer census, actual physical atom names and candidate keys including member/computed/static-escape cases; native S05 protection alone does not prove public parity |
+| S07 native exact source-binding emission | Resolve binding occurrences and allocate safe JS names while retaining hoisting, TDZ, data/API names, foreign targets and JSON behavior | S05; settled source-name policy; actual native writer scopes; explicitly assess escaped SOURCE binding identity/protected-root classification separately from private generated-name occupancy |
 | S08 public exact source-binding emission | Deliver equivalent behavior through normal/fragment/browser/materialized entrances | S06; same language contract; public lifecycle/consumer census |
 
 The two backends can share a reviewed contract without pretending their

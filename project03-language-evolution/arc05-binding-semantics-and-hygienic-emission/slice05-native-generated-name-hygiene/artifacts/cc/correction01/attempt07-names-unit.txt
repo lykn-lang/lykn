@@ -1,0 +1,2 @@
+Command: `cargo test -p lykn-lang codegen::names::tests -- --nocapture`.
+Initial exit: 101 (59 matching tests, 58 passed, 1 failed) because the expected normalized atom used `fooQMARKbar`; the actual writer is authoritative and emits `fooQMARKBar` (capital B after the QMARK escape). Corrected expectation and reran successfully (59/59). Full initial output is `attempt07-names-unit-failed.log`; successful retry output is `attempt07-names-unit-pass.log`.
