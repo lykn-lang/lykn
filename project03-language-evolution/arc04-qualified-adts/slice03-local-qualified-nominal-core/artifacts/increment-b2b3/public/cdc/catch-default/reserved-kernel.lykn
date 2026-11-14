@@ -1,0 +1,3 @@
+(try (throw (array (array)))
+  (catch (array (default (array (default value (=> (eval) 1))) (array)))
+    (console:log (value 7))))

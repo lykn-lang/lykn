@@ -1,0 +1,29 @@
+   274	}
+   275	
+   276	function walkPatternDefaults(pattern, out, inScope, grammar) {
+   277	  if (pattern?.type !== "list") return;
+   278	  const head = pattern.values[0]?.type === "atom" ? pattern.values[0].value : "";
+   279	  if (head === "default") {
+   280	    const typed = grammar === PatternGrammar.TYPED_PARAMETER;
+   281	    if (grammar === PatternGrammar.BINDING_PATTERN) walkPatternDefaults(pattern.values[1], out, inScope, grammar);
+   282	    const value = pattern.values[typed ? 3 : 2];
+   283	    if (value) walk(value, out, inScope);
+   284	    return;
+   285	  }
+   286	  if (head === "rest" || (head === "spread" && grammar === PatternGrammar.BINDING_PATTERN)) {
+   287	    const typed = grammar === PatternGrammar.TYPED_PARAMETER;
+   288	    walkPatternDefaults(pattern.values[typed ? 2 : 1], out, inScope, grammar);
+   289	    return;
+   290	  }
+   291	  if (head !== "array" && head !== "object") return;
+   292	  for (const member of pattern.values.slice(1)) {
+   293	    if (member?.type !== "list") continue;
+   294	    const memberHead = member.values[0]?.type === "atom" ? member.values[0].value : "";
+   295	    if (memberHead === "alias") {
+   296	      const typed = grammar === PatternGrammar.TYPED_PARAMETER;
+   297	      walkPatternDefaults(member.values[typed ? 3 : 2], out, inScope, grammar);
+   298	      if (!typed && member.values[3]) walk(member.values[3], out, inScope);
+   299	    } else if (["default", "rest", "array", "object"].includes(memberHead) ||
+   300	      (memberHead === "spread" && grammar === PatternGrammar.BINDING_PATTERN)) {
+   301	      walkPatternDefaults(member, out, inScope, grammar);
+   302	    }

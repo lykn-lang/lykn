@@ -1,0 +1,8 @@
+B2-DISCARD-P: keep public discard bindings private
+
+Prepare callable and Bind patterns with private discard storage, preserve
+scope-visible type checks and source exports, and synchronize embedded output.
+
+Co-authored-by: Codex <noreply@openai.com>
+Co-authored-by: Billo AI <ai-engineering@billo.systems>
+

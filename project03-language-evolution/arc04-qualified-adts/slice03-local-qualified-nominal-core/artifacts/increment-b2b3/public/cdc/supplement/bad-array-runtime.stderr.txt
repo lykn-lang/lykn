@@ -1,0 +1,5 @@
+error: Uncaught (in promise) TypeError: take: arg '_' expected number, got string
+    throw new lyknIntrinsicTypeError0("take: arg '_' expected number, got " + typeof discardValue__gensym0);
+          ^
+    at take (file:///Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/arc04-qualified-adts/slice03-local-qualified-nominal-core/artifacts/increment-b2b3/public/cdc/supplement/bad-array.mjs:5:11)
+    at file:///Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/arc04-qualified-adts/slice03-local-qualified-nominal-core/artifacts/increment-b2b3/public/cdc/supplement/bad-array.mjs:9:13

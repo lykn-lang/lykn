@@ -1,0 +1,12 @@
+Check test/expander/binding-walker-parity.test.js
+Check test/reader/string-escapes.test.js
+Check test/reader/dispatch.test.js
+Check test/forms/discard-bindings.test.js
+Check test/forms/icu-generated-names.test.js
+Check test/forms/template-icu.test.js
+Check test/forms/icu-parser.test.js
+Check test/forms/host-reference-lowering.test.js
+Check test/forms/browser-host-reference-compile.test.js
+Check test/forms/protected-host-policy.test.js
+Check test/forms/reserved-binding-output.test.js
+Check test/forms/semantic-roles.test.js

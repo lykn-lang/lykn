@@ -1,0 +1,2 @@
+(func take :args ((array :number _)) :body 41)
+(console:log (take (array "bad")))

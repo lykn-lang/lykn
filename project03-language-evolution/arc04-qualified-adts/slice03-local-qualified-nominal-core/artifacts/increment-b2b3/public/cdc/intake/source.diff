@@ -1,0 +1,2061 @@
+diff --git a/crates/lykn-cli/tests/macro_dependencies.rs b/crates/lykn-cli/tests/macro_dependencies.rs
+index 250c0286..1d507ac6 100644
+--- a/crates/lykn-cli/tests/macro_dependencies.rs
++++ b/crates/lykn-cli/tests/macro_dependencies.rs
+@@ -1127,6 +1127,7 @@ fn m6_embedded_compiler_payload_matches_canonical_and_runs_from_cold_cache() {
+         repository.join("test/forms/reserved-binding-output.test.js"),
+         repository.join("test/forms/icu-generated-names.test.js"),
+         repository.join("test/expander/lexical-regions.test.js"),
++        repository.join("test/forms/discard-bindings.test.js"),
+     ];
+     let mut strict_public = Command::new(deno);
+     strict_public
+@@ -1157,7 +1158,7 @@ fn m6_embedded_compiler_payload_matches_canonical_and_runs_from_cold_cache() {
+         String::from_utf8_lossy(&public_result.stderr)
+     );
+     assert!(
+-        public_output.contains("ok | 55 passed | 0 failed"),
+-        "M6 must execute the derived 55-case retained, IC-01, B2a, and B2b2 public ICU materialized population (5 + 6 + 17 + 21 + 6), output: {public_output}"
++        public_output.contains("ok | 62 passed | 0 failed"),
++        "M6 must execute the derived 62-case retained, IC-01, B2a, B2b2, and B2-DISCARD-P materialized population (5 + 6 + 17 + 21 + 6 + 7), output: {public_output}"
+     );
+ }
+diff --git a/crates/lykn-lang/embedded/packages/lang/binding.js b/crates/lykn-lang/embedded/packages/lang/binding.js
+index 956da3a9..c1f8abc3 100644
+--- a/crates/lykn-lang/embedded/packages/lang/binding.js
++++ b/crates/lykn-lang/embedded/packages/lang/binding.js
+@@ -33,6 +33,7 @@ const SEQUENCE = { kind: "seq" };
+ const PatternGrammar = Object.freeze({
+   TYPED_PARAMETER: "typed-parameter",
+   BINDING_PATTERN: "binding-pattern",
++  CATCH_BINDING: "catch-binding",
+ });
+ 
+ /**
+@@ -184,7 +185,7 @@ function walk(form, out, inScope) {
+     const sites = bindingsIntroduced(form);
+     out.push(...sites);
+     const args = form.values.slice(1);
+-    if (args[0]) walkPatternDefaults(args[0], out, inScope, PatternGrammar.BINDING_PATTERN);
++    if (args[0]) walkPatternDefaults(args[0], out, inScope, PatternGrammar.CATCH_BINDING);
+     walkSequence(args.slice(1), out, extendNames(inScope, sites.map((site) => site.name)));
+     return;
+   }
+@@ -282,7 +283,7 @@ function walkPatternDefaults(pattern, out, inScope, grammar) {
+     if (value) walk(value, out, inScope);
+     return;
+   }
+-  if (head === "rest") {
++  if (head === "rest" || (head === "spread" && grammar === PatternGrammar.BINDING_PATTERN)) {
+     const typed = grammar === PatternGrammar.TYPED_PARAMETER;
+     walkPatternDefaults(pattern.values[typed ? 2 : 1], out, inScope, grammar);
+     return;
+@@ -295,7 +296,8 @@ function walkPatternDefaults(pattern, out, inScope, grammar) {
+       const typed = grammar === PatternGrammar.TYPED_PARAMETER;
+       walkPatternDefaults(member.values[typed ? 3 : 2], out, inScope, grammar);
+       if (!typed && member.values[3]) walk(member.values[3], out, inScope);
+-    } else if (["default", "rest", "array", "object"].includes(memberHead)) {
++    } else if (["default", "rest", "array", "object"].includes(memberHead) ||
++      (memberHead === "spread" && grammar === PatternGrammar.BINDING_PATTERN)) {
+       walkPatternDefaults(member, out, inScope, grammar);
+     }
+   }
+@@ -561,7 +563,7 @@ export function bindingsIntroduced(form) {
+       return matchClauseNames(args);
+     // DD-60 refinement #2 (2026-07-06): catch bindings, import locals, labels.
+     case "catch":
+-      return args.length > 0 ? patternNames(args[0], "catch-binding", PatternGrammar.BINDING_PATTERN) : [];
++      return args.length > 0 ? patternNames(args[0], "catch-binding", PatternGrammar.CATCH_BINDING) : [];
+     case "import":
+     case "kernel:import":
+       return importLocalNames(args);
+@@ -673,7 +675,9 @@ function kernelParamNames(list) {
+   const out = [];
+   for (const param of list.values) {
+     if (param?.type === "atom") {
+-      if (param.value !== "_") out.push({ name: param.value, kind: "param", node: param });
++      if (param.value !== "_" && !isCompilerPrivateAtom(param)) {
++        out.push({ name: param.value, kind: "param", node: param });
++      }
+       continue;
+     }
+     if (param?.type !== "list") continue;
+@@ -853,17 +857,20 @@ function patternNames(pat, kind, grammar) {
+   for (const el of pat.values.slice(1)) {
+     if (el.type === "keyword") continue;
+     if (el.type === "atom") {
+-      if (el.value !== "_") out.push({ name: el.value, kind, node: el });
++      if (el.value !== "_" && !isCompilerPrivateAtom(el)) {
++        out.push({ name: el.value, kind, node: el });
++      }
+     } else if (el.type === "list") {
+       const ih = el.values[0]?.type === "atom" ? el.values[0].value : "";
+-      if (ih === "rest" && el.values[1]) {
++      if ((ih === "rest" || (ih === "spread" && grammar === PatternGrammar.BINDING_PATTERN)) && el.values[1]) {
+         const binding = el.values[grammar === PatternGrammar.TYPED_PARAMETER ? 2 : 1];
+         if (binding) out.push(...patternNames(binding, kind, grammar));
+       } else if (ih === "alias") {
+         const typed = grammar === PatternGrammar.TYPED_PARAMETER;
+         const binding = el.values[typed ? 3 : 2];
+         if (binding) out.push(...patternNames(binding, kind, grammar));
+-      } else if (ih === "default") {
++      } else if (ih === "default" && el.values[1] &&
++        (grammar !== PatternGrammar.BINDING_PATTERN || el.values.length >= 3)) {
+         const binding = el.values[grammar === PatternGrammar.TYPED_PARAMETER ? 2 : 1];
+         if (binding) out.push(...patternNames(binding, kind, grammar));
+       } else if (ih === "array" || ih === "object") {
+diff --git a/crates/lykn-lang/embedded/packages/lang/classifier.js b/crates/lykn-lang/embedded/packages/lang/classifier.js
+index 0212ed4b..ef8db424 100644
+--- a/crates/lykn-lang/embedded/packages/lang/classifier.js
++++ b/crates/lykn-lang/embedded/packages/lang/classifier.js
+@@ -48,8 +48,9 @@ import {
+   isKeyword,
+   isPascalCase,
+   isStatementOnlyForm,
+-  paramNameNodes,
+-  paramTypeChecks,
++  prepareTypedParam,
++  prepareTypedBind,
++  lowerDiscardBindingPattern,
+   parseTypedParams,
+   sym,
+   toJsIdentifier,
+@@ -57,7 +58,7 @@ import {
+   wrapReturnLast,
+ } from "./surface-helpers.js";
+ import { isKernel, markKernel } from "./kernel-mark.js";
+-import { isMatchGuardSlot } from "./binding.js";
++import { bindingNamesInPattern, isMatchGuardSlot } from "./binding.js";
+ import { FUNC_CLAUSE_KEYS, genfnBodyLayout, parseKeywordClauses } from "./function-clauses.js";
+ export { FUNC_CLAUSE_KEYS, genfnBodyLayout, parseKeywordClauses } from "./function-clauses.js";
+ 
+@@ -346,26 +347,6 @@ function isArr(x) {
+   return x && x.type === "list" && Array.isArray(x.values);
+ }
+ 
+-function namesInPattern(pat) {
+-  if (pat?.type === "atom") return pat.value === "_" ? [] : [pat.value];
+-  if (!isArr(pat)) return [];
+-  const h = pat.values[0]?.type === "atom" ? pat.values[0].value : "";
+-  if (h !== "array" && h !== "object") return [];
+-  const out = [];
+-  for (const el of pat.values.slice(1)) {
+-    if (el.type === "keyword") continue;
+-    if (el.type === "atom") {
+-      if (el.value !== "_") out.push(el.value);
+-    } else if (isArr(el)) {
+-      const ih = el.values[0]?.type === "atom" ? el.values[0].value : "";
+-      if (ih === "rest" && el.values[1]) out.push(...namesInPattern(el.values[1]));
+-      else if (ih === "default" && el.values[2]) out.push(...namesInPattern(el.values[2]));
+-      else if (ih === "array" || ih === "object") out.push(...namesInPattern(el));
+-    }
+-  }
+-  return out;
+-}
+-
+ function parseBindGroup(args) {
+   const bindings = [];
+   const seen = new Set();
+@@ -395,7 +376,7 @@ function parseBindGroup(args) {
+       valueNode = args[i + 1];
+       i += 2;
+     }
+-    for (const name of namesInPattern(nameNode)) {
++    for (const { name } of bindingNamesInPattern(nameNode)) {
+       if (seen.has(name)) {
+         throw new Error(`bind group declares '${name}' more than once`);
+       }
+@@ -462,24 +443,28 @@ function emitBindKernelArgs(a, h) {
+       throw new Error("bind with type annotation requires 3 arguments");
+     }
+     const typeKw = a[0], nameNode = a[1], valueNode = a[2];
+-    const constDecl = array(sym("const"), nameNode, valueNode);
+-    if (typeKw.value === "any") return constDecl;
+     const literalType = getLiteralType(valueNode);
++    if (typeKw.value === "any") {
++      return array(sym("const"), lowerDiscardBindingPattern(nameNode), valueNode);
++    }
+     if (literalType !== null) {
+       if (!typeMatchesLiteral(typeKw.value, literalType)) {
+         throw new Error(
+           `bind '${nameNode.value}': type annotation is :${typeKw.value} but initializer is a ${literalType} literal.`,
+         );
+       }
+-      return constDecl;
++      return array(sym("const"), lowerDiscardBindingPattern(nameNode), valueNode);
+     }
+-    const check = buildTypeCheck(nameNode, typeKw, "bind", "");
+-    return check === null ? constDecl : array(sym("block"), constDecl, check);
++    const prepared = prepareTypedBind(nameNode, typeKw, "bind");
++    const constDecl = array(sym("const"), prepared.pattern, valueNode);
++    return prepared.checks.length === 0
++      ? constDecl
++      : [constDecl, ...prepared.checks];
+   }
+   if (a.length !== 2) {
+     throw new Error("bind requires exactly name/value or :type name/value arguments");
+   }
+-  return array(sym("const"), a[0], a[1]);
++  return array(sym("const"), lowerDiscardBindingPattern(a[0]), a[1]);
+ }
+ 
+ function emitCondChain(clauses, h) {
+@@ -679,11 +664,9 @@ export function emitSurfaceForm(node, h) {
+     }
+     case "Fn": {
+       const params = parseTypedParams(node.paramList);
+-      const pNames = params.flatMap((p) => paramNameNodes(p));
+-      const typeChecks = [];
+-      for (const p of params) {
+-        typeChecks.push(...paramTypeChecks(p, "anonymous"));
+-      }
++      const prepared = params.map((p) => prepareTypedParam(p, "anonymous"));
++      const pNames = prepared.map((p) => p.pattern);
++      const typeChecks = prepared.flatMap((p) => p.checks);
+       if (typeChecks.length > 0 || node.bodyForms.length > 1) {
+         return array(
+           sym("=>"),
+@@ -729,11 +712,12 @@ export function emitSurfaceForm(node, h) {
+       return emitBindKernelArgs(node.args, h);
+     }
+     case "BindGroup":
+-      return node.bindings.map((binding) => {
++      return node.bindings.flatMap((binding) => {
+         const args = binding.typeKw
+           ? [binding.typeKw, binding.nameNode, binding.valueNode]
+           : [binding.nameNode, binding.valueNode];
+-        return emitBindKernelArgs(args, h);
++        const emitted = emitBindKernelArgs(args, h);
++        return Array.isArray(emitted) ? emitted : [emitted];
+       });
+     case "Exports":
+       return array(sym("export"), array(sym("names"), ...node.names));
+@@ -789,11 +773,9 @@ export function emitSurfaceForm(node, h) {
+         : a[layout.yieldsPayloadIndex];
+       const bodyForms = a.slice(layout.bodyStart);
+       const params = parseTypedParams(node.paramList);
+-      const pNames = params.flatMap((p) => paramNameNodes(p));
+-      const typeChecks = [];
+-      for (const p of params) {
+-        typeChecks.push(...paramTypeChecks(p, "anonymous"));
+-      }
++      const prepared = params.map((p) => prepareTypedParam(p, "anonymous"));
++      const pNames = prepared.map((p) => p.pattern);
++      const typeChecks = prepared.flatMap((p) => p.checks);
+       let instrumentedBody = bodyForms;
+       if (
+         yieldsType && yieldsType.type === "keyword" &&
+@@ -855,15 +837,14 @@ export function buildSingleClauseFunc(funcName, funcNameNode, clauseArgs) {
+   if (argsClause && argsClause.length === 1 && isArray(argsClause[0])) {
+     params = parseTypedParams(argsClause[0]);
+   }
+-  const pNames = params.flatMap((p) => paramNameNodes(p));
++  const prepared = params.map((p) => prepareTypedParam(p, funcName));
++  const pNames = prepared.map((p) => p.pattern);
+ 
+   // Build function body statements
+   const bodyStmts = [];
+ 
+   // Type checks for params
+-  for (const p of params) {
+-    bodyStmts.push(...paramTypeChecks(p, funcName));
+-  }
++  bodyStmts.push(...prepared.flatMap((p) => p.checks));
+ 
+   // Pre-condition
+   if (preClause && preClause.length > 0) {
+@@ -1025,6 +1006,7 @@ export function buildMultiClauseFunc(funcName, funcNameNode, clauseLists) {
+ 
+   for (const clause of parsed) {
+     const { clauses, params } = clause;
++    const prepared = params.map((p) => prepareTypedParam(p, funcName));
+     const preClause = clauses.get("pre");
+     const postClause = clauses.get("post");
+     const bodyClause = clauses.get("body");
+@@ -1118,19 +1100,17 @@ export function buildMultiClauseFunc(funcName, funcNameNode, clauseLists) {
+       if (p.destructured) {
+         // const (object name1 name2) = get(args, i)
+         clauseBody.push(
+-          array(sym("const"), paramNameNodes(p)[0], argAccess),
++          array(sym("const"), prepared[i].pattern, argAccess),
+         );
+       } else {
+         clauseBody.push(
+-          array(sym("const"), p.name, argAccess),
++          array(sym("const"), prepared[i].actual ?? prepared[i].pattern, argAccess),
+         );
+       }
+     }
+ 
+     // Full type checks (with NaN exclusion etc.)
+-    for (const p of params) {
+-      clauseBody.push(...paramTypeChecks(p, funcName));
+-    }
++    clauseBody.push(...prepared.flatMap((p) => p.checks));
+ 
+     // Pre-condition
+     if (preClause && preClause.length > 0) {
+@@ -1250,15 +1230,14 @@ export function emitGenfuncMacro(args) {
+   if (argsClause && argsClause.length === 1 && isArray(argsClause[0])) {
+     params = parseTypedParams(argsClause[0]);
+   }
+-  const pNames = params.flatMap((p) => paramNameNodes(p));
++  const prepared = params.map((p) => prepareTypedParam(p, funcName));
++  const pNames = prepared.map((p) => p.pattern);
+ 
+   // Build generator body
+   const bodyStmts = [];
+ 
+   // Type checks for params
+-  for (const p of params) {
+-    bodyStmts.push(...paramTypeChecks(p, funcName));
+-  }
++  bodyStmts.push(...prepared.flatMap((p) => p.checks));
+ 
+   // Pre-condition
+   if (preClause && preClause.length > 0) {
+diff --git a/crates/lykn-lang/embedded/packages/lang/compiler.js b/crates/lykn-lang/embedded/packages/lang/compiler.js
+index 00c214b8..abf58851 100644
+--- a/crates/lykn-lang/embedded/packages/lang/compiler.js
++++ b/crates/lykn-lang/embedded/packages/lang/compiler.js
+@@ -1965,6 +1965,15 @@ function compilePattern(node) {
+             argument: compilePattern(rest[0]),
+           };
+ 
++        case 'spread':
++          if (rest.length !== 1) {
++            throw new Error('spread requires exactly 1 argument: (spread name)');
++          }
++          return {
++            type: 'RestElement',
++            argument: compilePattern(rest[0]),
++          };
++
+         case 'alias':
+           throw new Error('alias can only appear inside an object pattern');
+ 
+@@ -2006,12 +2015,12 @@ function compileObjectPattern(children) {
+ 
+       // (rest others) → RestElement
+       // A6-exempt: structural — object-pattern element grammar, not a form head.
+-      if (head.type === 'atom' && head.value === 'rest') {
++      if (head.type === 'atom' && (head.value === 'rest' || head.value === 'spread')) {
+         if (child.values.length !== 2) {
+-          throw new Error('rest requires exactly 1 argument');
++          throw new Error(`${head.value} requires exactly 1 argument`);
+         }
+         if (i !== children.length - 1) {
+-          throw new Error('rest must be the last element in an object pattern');
++          throw new Error(`${head.value} must be the last element in an object pattern`);
+         }
+         properties.push({
+           type: 'RestElement',
+@@ -2050,7 +2059,7 @@ function compileObjectPattern(children) {
+           throw new Error('alias: (alias key local) or (alias key local default)');
+         }
+ 
+-        const key = toJsIdentifier(child.values[1].value);
++        const key = compilePatternKey(child.values[1]);
+         let valueNode = compilePattern(child.values[2]);
+ 
+         if (child.values.length === 4) {
+@@ -2063,10 +2072,10 @@ function compileObjectPattern(children) {
+ 
+         properties.push({
+           type: 'Property',
+-          key: { type: 'Identifier', name: key },
++          key,
+           value: valueNode,
+           kind: 'init',
+-          computed: false,
++          computed: child.values[1]?.type === 'number',
+           shorthand: false,
+           method: false,
+         });
+@@ -2085,6 +2094,16 @@ function compileObjectPattern(children) {
+   return { type: 'ObjectPattern', properties };
+ }
+ 
++function compilePatternKey(node) {
++  if (node?.type === 'atom') {
++    return { type: 'Identifier', name: toJsIdentifier(node.value) };
++  }
++  if (node?.type === 'string' || node?.type === 'number' || node?.type === 'keyword') {
++    return compileExpr(node, 'expression');
++  }
++  throw new Error('object pattern alias key must be an atom or literal');
++}
++
+ // Compile children of (array ...) in pattern position → ArrayPattern
+ function compileArrayPattern(children) {
+   const elements = [];
+@@ -2108,12 +2127,12 @@ function compileArrayPattern(children) {
+ 
+       // (rest name) → RestElement (must be last)
+       // A6-exempt: structural — array-pattern element grammar, not a form head.
+-      if (head.type === 'atom' && head.value === 'rest') {
++      if (head.type === 'atom' && (head.value === 'rest' || head.value === 'spread')) {
+         if (child.values.length !== 2) {
+-          throw new Error('rest requires exactly 1 argument');
++          throw new Error(`${head.value} requires exactly 1 argument`);
+         }
+         if (i !== children.length - 1) {
+-          throw new Error('rest must be the last element in an array pattern');
++          throw new Error(`${head.value} must be the last element in an array pattern`);
+         }
+         elements.push({
+           type: 'RestElement',
+diff --git a/crates/lykn-lang/embedded/packages/lang/expander-core.js b/crates/lykn-lang/embedded/packages/lang/expander-core.js
+index 2a34b130..97da21c1 100644
+--- a/crates/lykn-lang/embedded/packages/lang/expander-core.js
++++ b/crates/lykn-lang/embedded/packages/lang/expander-core.js
+@@ -1822,13 +1822,20 @@ function simpleDirectBind(args) {
+   else if (args.length === 3 && args[0]?.type === 'keyword' && args[0].value === 'any') {
+     [, nameNode, valueNode] = args;
+   } else return null;
+-  if (nameNode?.type !== 'atom' || nameNode.value === '_' || nameNode.value.includes(':')) return null;
++  if (nameNode?.type !== 'atom' || nameNode.value.includes(':')) return null;
+   return { nameNode, valueNode };
+ }
+ 
+ function expandDirectBind(args, env) {
+-  const { nameNode, valueNode } = simpleDirectBind(args);
+-  const kernel = emitSurfaceForm({ type: 'Bind', args }, { sym, array, gensym, isKeyword, typeContext: env.typeContext });
++  const { valueNode } = simpleDirectBind(args);
++  const emitted = emitSurfaceForm(
++    { type: 'Bind', args },
++    { sym, array, gensym, isKeyword, typeContext: env.typeContext },
++  );
++  const emittedForms = Array.isArray(emitted) ? emitted : [emitted];
++  const kernel = emittedForms[0];
++  const preparedName = kernel.values[1];
++  const checks = emittedForms.slice(1);
+   const identity = {};
+   const use = { kind: 'Assign', identity };
+   const value = expandAt(valueNode, env, use);
+@@ -1836,12 +1843,14 @@ function expandDirectBind(args, env) {
+     isDirectTransfer(value) || isExpandedStatement(value);
+   if (!isRegion) {
+     kernel.values[2] = value;
+-    return markKernel(kernel);
++    const output = [markKernel(kernel), ...checks.map(markKernel)];
++    return output.length === 1 ? output[0] : output;
+   }
+   return [
+     markKernel(array(sym('let'), completionValueAtom(identity))),
+     directBlock(directResultStatements(value, use)),
+-    markKernel(array(sym('const'), nameNode, completionValueAtom(identity))),
++    markKernel(array(sym('const'), preparedName, completionValueAtom(identity))),
++    ...checks.map(markKernel),
+   ];
+ }
+ 
+@@ -2050,7 +2059,10 @@ function expandExprInner(form, env, use = "Legacy", computedMemberCallRequest =
+             { type: "Bind", args },
+             { sym, array, gensym, isKeyword, typeContext: cur.typeContext },
+           );
+-          pushExpanded(out, expandAt(markKernel(kernel), cur, "Legacy"));
++          const emitted = Array.isArray(kernel) ? kernel : [kernel];
++          for (const item of emitted) {
++            pushExpanded(out, expandAt(markKernel(item), cur, "Legacy"));
++          }
+           const names = bindingNamesInPattern(binding.nameNode).map((site) => site.name);
+           if (names.length) cur = extendEnv(cur, names);
+         }
+@@ -2131,6 +2143,38 @@ function expandExprInner(form, env, use = "Legacy", computedMemberCallRequest =
+     return expandAt(current, env, use, null, directCallArgumentRequest);
+   }
+ 
++  // Source inline exports need declaration-aware lowering, but only after the
++  // user macro fixed point above has had first refusal on the `export` head.
++  if (formHead(head) === "export" && !isKernel(form)) {
++    const declaration = form.values[1];
++    const declarationHead = declaration?.type === "list"
++      ? formHead(declaration.values[0])
++      : null;
++    if (declarationHead === "bind" && !env.bindings.has("bind") && !isKernel(declaration)) {
++      if (form.values.length !== 2) throw new Error("export: unrecognized form");
++      const bindNode = classifySurfaceForm("bind", declaration.values.slice(1));
++      if (bindNode?.type === "Bind" || bindNode?.type === "BindGroup") {
++        const sourcePatterns = bindNode.type === "Bind"
++          ? [bindNode.args[0]?.type === "keyword" ? bindNode.args[1] : bindNode.args[0]]
++          : bindNode.bindings.map((binding) => binding.nameNode);
++        const names = sourcePatterns.flatMap((pattern) =>
++          bindingNamesInPattern(pattern).map((site) => sym(site.name))
++        );
++        const expanded = expandAt(
++          declaration,
++          env,
++          "Statement",
++          null,
++          null,
++          RESULT_SLOT.SEQUENCE,
++        );
++        const declarations = Array.isArray(expanded) ? expanded : [expanded];
++        const exportNames = markKernel(array(sym("export"), array(sym("names"), ...names)));
++        return [...declarations.filter((item) => item !== null && item !== undefined), exportNames];
++      }
++    }
++  }
++
+   if (directCallArgumentRequest && formHead(head) === "spread") {
+     return expandDirectSpreadArgument(form, env, directCallArgumentRequest);
+   }
+diff --git a/crates/lykn-lang/embedded/packages/lang/surface-helpers.js b/crates/lykn-lang/embedded/packages/lang/surface-helpers.js
+index afbc96f9..dac2cb29 100644
+--- a/crates/lykn-lang/embedded/packages/lang/surface-helpers.js
++++ b/crates/lykn-lang/embedded/packages/lang/surface-helpers.js
+@@ -157,10 +157,14 @@ export function typeMatchesLiteral(typeName, literalType) {
+  * Returns a kernel (if (check) (throw (new TypeError msg))) form, or null for :any.
+  */
+ export function buildTypeCheck(paramNode, typeKw, funcName, label) {
++  return buildTypeCheckFor(paramNode, typeKw, funcName, label, paramNode.value);
++}
++
++function buildTypeCheckFor(paramNode, typeKw, funcName, label, sourceName) {
+   const typeName = typeKw.value;
+   if (typeName === "any") return null;
+ 
+-  const paramName = paramNode.value;
++  const paramName = sourceName;
+   const hasPunct = (s) => /[^a-zA-Z0-9_-]/.test(s);
+   const jsFuncName = toJsIdentifier(funcName);
+   const dispFunc = jsFuncName !== funcName && hasPunct(funcName)
+@@ -257,90 +261,185 @@ export function buildTypeCheck(paramNode, typeKw, funcName, label) {
+ 
+ // --- Param shape helpers ---
+ 
+-/** Get kernel param name nodes for a function signature. */
+-export function paramNameNodes(p) {
+-  if (p.destructured) {
+-    if (p.kind === "object") {
+-      const elems = p.fields.map((f) => {
+-        if (f.nested) {
+-          const innerKernel = paramNameNodes(f.pattern)[0];
+-          if (f.alias) {
+-            return array(sym("alias"), f.alias, innerKernel);
+-          }
+-          return innerKernel;
+-        }
+-        if (f.defaultValue) {
+-          return array(sym("default"), f.name, f.defaultValue);
+-        }
+-        return f.name;
+-      });
+-      return [array(sym("object"), ...elems)];
++function preparedValue(name) {
++  return name.value === "_"
++    ? compilerPrivateAtom({}, "discardValue")
++    : name;
++}
++
++function prepareLeaf(name, typeKw, funcName, label = "arg") {
++  const actual = preparedValue(name);
++  const check = buildTypeCheckFor(actual, typeKw, funcName, label, name.value);
++  return { actual, pattern: actual, checks: check ? [check] : [] };
++}
++
++function prepareRestChecks(collection, typeKw, funcName, sourceName) {
++  if (typeKw.value === "any") return [];
++  const element = compilerPrivateAtom({}, "discardElement");
++  const check = buildTypeCheckFor(element, typeKw, funcName, "rest arg", sourceName);
++  return check ? [array(sym("for-of"), element, collection, check)] : [];
++}
++
++/** Prepare one parsed parameter once for its emitted pattern and guards. */
++export function prepareTypedParam(p, funcName) {
++  if (!p.destructured) {
++    const leaf = prepareLeaf(p.name, p.typeKw, funcName, p.isRest ? "rest arg" : "arg");
++    if (p.defaultValue) {
++      return { ...leaf, pattern: array(sym("default"), leaf.actual, p.defaultValue) };
+     }
+-    if (p.kind === "array") {
+-      const elems = p.fields.map((f) => {
+-        if (f.skip) return sym("_");
+-        if (f.nested) {
+-          const innerKernel = paramNameNodes(f.pattern)[0];
+-          if (f.alias) {
+-            return array(sym("alias"), f.alias, innerKernel);
+-          }
+-          return innerKernel;
+-        }
+-        if (f.defaultValue) {
+-          return array(sym("default"), f.name, f.defaultValue);
++    if (p.isRest) {
++      return {
++        ...leaf,
++        pattern: array(sym("rest"), leaf.actual),
++        checks: prepareRestChecks(leaf.actual, p.typeKw, funcName, p.name.value),
++      };
++    }
++    return leaf;
++  }
++
++  const checks = [];
++  if (p.kind === "object") {
++    const fields = p.fields.map((field) => {
++      if (field.nested) {
++        const nested = prepareTypedParam(field.pattern, funcName);
++        checks.push(...nested.checks);
++        if (field.typeKw && field.typeKw.value !== "any") {
++          const check = buildTypeCheckFor(
++            field.alias,
++            field.typeKw,
++            funcName,
++            "arg",
++            field.alias.value,
++          );
++          if (check) checks.push(check);
+         }
+-        return f.name;
+-      });
+-      if (p.rest) {
+-        elems.push(array(sym("rest"), p.rest.name));
++        return field.alias
++          ? array(sym("alias"), field.alias, nested.pattern)
++          : nested.pattern;
++      }
++      if (field.skip) return field.name;
++      const leaf = prepareLeaf(field.name, field.typeKw, funcName);
++      checks.push(...leaf.checks);
++      if (field.defaultValue) {
++        return field.name.value === "_"
++          ? array(sym("alias"), field.name, array(sym("default"), leaf.actual, field.defaultValue))
++          : array(sym("default"), field.name, field.defaultValue);
+       }
+-      return [array(sym("array"), ...elems)];
++      return field.name.value === "_"
++        ? array(sym("alias"), field.name, leaf.actual)
++        : field.name;
++    });
++    return { actual: null, pattern: array(sym("object"), ...fields), checks };
++  }
++
++  const fields = p.fields.map((field) => {
++    if (field.skip) return field.name;
++    if (field.nested) {
++      const nested = prepareTypedParam(field.pattern, funcName);
++      checks.push(...nested.checks);
++      if (field.typeKw && field.typeKw.value !== "any") {
++        const check = buildTypeCheckFor(
++          field.alias,
++          field.typeKw,
++          funcName,
++          "arg",
++          field.alias.value,
++        );
++        if (check) checks.push(check);
++      }
++      return field.alias
++        ? array(sym("alias"), field.alias, nested.pattern)
++        : nested.pattern;
+     }
++    const leaf = prepareLeaf(field.name, field.typeKw, funcName);
++    checks.push(...leaf.checks);
++    return field.defaultValue
++      ? array(sym("default"), leaf.actual, field.defaultValue)
++      : leaf.actual;
++  });
++  if (p.rest) {
++    const rest = prepareLeaf(p.rest.name, p.rest.typeKw, funcName, "rest arg");
++    fields.push(array(sym("rest"), rest.actual));
++    checks.push(...prepareRestChecks(rest.actual, p.rest.typeKw, funcName, p.rest.name.value));
++  }
++  return { actual: null, pattern: array(sym("array"), ...fields), checks };
++}
++
++/** Lower a normal-source Bind pattern without changing value expressions. */
++export function lowerDiscardBindingPattern(pattern) {
++  if (pattern?.type === "atom") return preparedValue(pattern);
++  if (pattern?.type !== "list" || pattern.values.length === 0) return pattern;
++  const [head, ...parts] = pattern.values;
++  if (head?.type !== "atom") return pattern;
++  if (head.value === "array") {
++    return { ...pattern, values: [head, ...parts.map((part) =>
++      part?.type === "atom" && part.value === "_"
++        ? part
++        : lowerBindingPatternChild(part))] };
++  }
++  if (head.value === "object") {
++    return { ...pattern, values: [head, ...parts.map((part) => {
++      if (part?.type === "atom") {
++        return part.value === "_" ? array(sym("alias"), part, preparedValue(part)) : part;
++      }
++      if (part?.type !== "list" || part.values[0]?.type !== "atom") return part;
++      const memberHead = part.values[0].value;
++      if (memberHead === "default" && part.values.length === 3 && part.values[1]?.type === "atom" && part.values[1].value === "_") {
++        return array(sym("alias"), part.values[1], array(sym("default"), preparedValue(part.values[1]), part.values[2]), ...part.values.slice(3));
++      }
++      if (memberHead === "alias" && part.values.length >= 3) {
++        return { ...part, values: [part.values[0], part.values[1], lowerBindingPatternChild(part.values[2]), ...part.values.slice(3)] };
++      }
++      if (memberHead === "rest" || memberHead === "spread") {
++        if (part.values.length < 2) return part;
++        return { ...part, values: [part.values[0], lowerBindingPatternChild(part.values[1]), ...part.values.slice(2)] };
++      }
++      return part;
++    })] };
+   }
+-  // Simple param — handle default and rest
+-  if (p.defaultValue) {
+-    return [array(sym("default"), p.name, p.defaultValue)];
++  if ((head.value === "rest" || head.value === "spread") && parts.length > 0) {
++    return { ...pattern, values: [head, lowerBindingPatternChild(parts[0]), ...parts.slice(1)] };
+   }
+-  if (p.isRest) {
+-    return [array(sym("rest"), p.name)];
++  if (head.value === "default" && parts.length >= 2) {
++    return { ...pattern, values: [head, lowerBindingPatternChild(parts[0]), ...parts.slice(1)] };
+   }
+-  return [p.name];
++  return pattern;
+ }
+ 
+-/** Get type check assertions for a param. */
+-export function paramTypeChecks(p, funcName) {
+-  if (p.destructured) {
+-    const checks = [];
+-    const allFields = [
+-      ...p.fields.filter((f) => !f.skip),
+-      ...(p.rest ? [p.rest] : []),
+-    ];
+-    for (const f of allFields) {
+-      if (f.nested) {
+-        // Recurse into nested pattern for leaf-level checks
+-        checks.push(...paramTypeChecks(f.pattern, funcName));
+-        // Type-check the alias binding itself if not :any
+-        if (f.typeKw && f.typeKw.value !== "any") {
+-          const check = buildTypeCheck(f.alias, f.typeKw, funcName, "arg");
+-          if (check) checks.push(check);
+-        }
+-        continue;
+-      }
+-      const check = buildTypeCheck(f.name, f.typeKw, funcName, "arg");
+-      if (check) checks.push(check);
+-    }
+-    return checks;
++/** Prepare a normal-source Bind binder and its optional scalar annotation. */
++export function prepareTypedBind(pattern, typeKw, funcName = "bind") {
++  if (pattern?.type === "atom") {
++    const actual = preparedValue(pattern);
++    const check = typeKw
++      ? buildTypeCheckFor(actual, typeKw, funcName, "", pattern.value)
++      : null;
++    return { pattern: actual, actual, checks: check ? [check] : [] };
++  }
++  const check = buildTypeCheck(pattern, typeKw, funcName, "");
++  return {
++    pattern: lowerDiscardBindingPattern(pattern),
++    actual: pattern,
++    checks: check ? [check] : [],
++  };
++}
++
++function lowerBindingPatternChild(child) {
++  if (child?.type === "atom") return preparedValue(child);
++  if (child?.type !== "list" || child.values.length === 0) return child;
++  const head = child.values[0];
++  if ((head?.type === "atom" && (head.value === "rest" || head.value === "spread")) && child.values.length < 2) {
++    return child;
++  }
++  if (head?.type === "atom" && (head.value === "array" || head.value === "object")) {
++    return lowerDiscardBindingPattern(child);
++  }
++  if (head?.type === "atom" && (head.value === "rest" || head.value === "spread" || head.value === "default")) {
++    return lowerDiscardBindingPattern(child);
+   }
+-  // Rest param: per-element type check via for-of loop
+-  if (p.isRest) {
+-    if (p.typeKw.value === "any") return [];
+-    const elVar = gensym("el");
+-    const innerCheck = buildTypeCheck(elVar, p.typeKw, funcName, "rest arg");
+-    if (!innerCheck) return [];
+-    return [array(sym("for-of"), elVar, p.name, innerCheck)];
++  if (head?.type === "atom" && head.value === "alias" && child.values.length >= 3) {
++    return { ...child, values: [head, child.values[1], lowerBindingPatternChild(child.values[2]), ...child.values.slice(3)] };
+   }
+-  const check = buildTypeCheck(p.name, p.typeKw, funcName, "arg");
+-  return check ? [check] : [];
++  return child;
+ }
+ 
+ /**
+diff --git a/packages/lang/binding.js b/packages/lang/binding.js
+index 956da3a9..c1f8abc3 100644
+--- a/packages/lang/binding.js
++++ b/packages/lang/binding.js
+@@ -33,6 +33,7 @@ const SEQUENCE = { kind: "seq" };
+ const PatternGrammar = Object.freeze({
+   TYPED_PARAMETER: "typed-parameter",
+   BINDING_PATTERN: "binding-pattern",
++  CATCH_BINDING: "catch-binding",
+ });
+ 
+ /**
+@@ -184,7 +185,7 @@ function walk(form, out, inScope) {
+     const sites = bindingsIntroduced(form);
+     out.push(...sites);
+     const args = form.values.slice(1);
+-    if (args[0]) walkPatternDefaults(args[0], out, inScope, PatternGrammar.BINDING_PATTERN);
++    if (args[0]) walkPatternDefaults(args[0], out, inScope, PatternGrammar.CATCH_BINDING);
+     walkSequence(args.slice(1), out, extendNames(inScope, sites.map((site) => site.name)));
+     return;
+   }
+@@ -282,7 +283,7 @@ function walkPatternDefaults(pattern, out, inScope, grammar) {
+     if (value) walk(value, out, inScope);
+     return;
+   }
+-  if (head === "rest") {
++  if (head === "rest" || (head === "spread" && grammar === PatternGrammar.BINDING_PATTERN)) {
+     const typed = grammar === PatternGrammar.TYPED_PARAMETER;
+     walkPatternDefaults(pattern.values[typed ? 2 : 1], out, inScope, grammar);
+     return;
+@@ -295,7 +296,8 @@ function walkPatternDefaults(pattern, out, inScope, grammar) {
+       const typed = grammar === PatternGrammar.TYPED_PARAMETER;
+       walkPatternDefaults(member.values[typed ? 3 : 2], out, inScope, grammar);
+       if (!typed && member.values[3]) walk(member.values[3], out, inScope);
+-    } else if (["default", "rest", "array", "object"].includes(memberHead)) {
++    } else if (["default", "rest", "array", "object"].includes(memberHead) ||
++      (memberHead === "spread" && grammar === PatternGrammar.BINDING_PATTERN)) {
+       walkPatternDefaults(member, out, inScope, grammar);
+     }
+   }
+@@ -561,7 +563,7 @@ export function bindingsIntroduced(form) {
+       return matchClauseNames(args);
+     // DD-60 refinement #2 (2026-07-06): catch bindings, import locals, labels.
+     case "catch":
+-      return args.length > 0 ? patternNames(args[0], "catch-binding", PatternGrammar.BINDING_PATTERN) : [];
++      return args.length > 0 ? patternNames(args[0], "catch-binding", PatternGrammar.CATCH_BINDING) : [];
+     case "import":
+     case "kernel:import":
+       return importLocalNames(args);
+@@ -673,7 +675,9 @@ function kernelParamNames(list) {
+   const out = [];
+   for (const param of list.values) {
+     if (param?.type === "atom") {
+-      if (param.value !== "_") out.push({ name: param.value, kind: "param", node: param });
++      if (param.value !== "_" && !isCompilerPrivateAtom(param)) {
++        out.push({ name: param.value, kind: "param", node: param });
++      }
+       continue;
+     }
+     if (param?.type !== "list") continue;
+@@ -853,17 +857,20 @@ function patternNames(pat, kind, grammar) {
+   for (const el of pat.values.slice(1)) {
+     if (el.type === "keyword") continue;
+     if (el.type === "atom") {
+-      if (el.value !== "_") out.push({ name: el.value, kind, node: el });
++      if (el.value !== "_" && !isCompilerPrivateAtom(el)) {
++        out.push({ name: el.value, kind, node: el });
++      }
+     } else if (el.type === "list") {
+       const ih = el.values[0]?.type === "atom" ? el.values[0].value : "";
+-      if (ih === "rest" && el.values[1]) {
++      if ((ih === "rest" || (ih === "spread" && grammar === PatternGrammar.BINDING_PATTERN)) && el.values[1]) {
+         const binding = el.values[grammar === PatternGrammar.TYPED_PARAMETER ? 2 : 1];
+         if (binding) out.push(...patternNames(binding, kind, grammar));
+       } else if (ih === "alias") {
+         const typed = grammar === PatternGrammar.TYPED_PARAMETER;
+         const binding = el.values[typed ? 3 : 2];
+         if (binding) out.push(...patternNames(binding, kind, grammar));
+-      } else if (ih === "default") {
++      } else if (ih === "default" && el.values[1] &&
++        (grammar !== PatternGrammar.BINDING_PATTERN || el.values.length >= 3)) {
+         const binding = el.values[grammar === PatternGrammar.TYPED_PARAMETER ? 2 : 1];
+         if (binding) out.push(...patternNames(binding, kind, grammar));
+       } else if (ih === "array" || ih === "object") {
+diff --git a/packages/lang/classifier.js b/packages/lang/classifier.js
+index 0212ed4b..ef8db424 100644
+--- a/packages/lang/classifier.js
++++ b/packages/lang/classifier.js
+@@ -48,8 +48,9 @@ import {
+   isKeyword,
+   isPascalCase,
+   isStatementOnlyForm,
+-  paramNameNodes,
+-  paramTypeChecks,
++  prepareTypedParam,
++  prepareTypedBind,
++  lowerDiscardBindingPattern,
+   parseTypedParams,
+   sym,
+   toJsIdentifier,
+@@ -57,7 +58,7 @@ import {
+   wrapReturnLast,
+ } from "./surface-helpers.js";
+ import { isKernel, markKernel } from "./kernel-mark.js";
+-import { isMatchGuardSlot } from "./binding.js";
++import { bindingNamesInPattern, isMatchGuardSlot } from "./binding.js";
+ import { FUNC_CLAUSE_KEYS, genfnBodyLayout, parseKeywordClauses } from "./function-clauses.js";
+ export { FUNC_CLAUSE_KEYS, genfnBodyLayout, parseKeywordClauses } from "./function-clauses.js";
+ 
+@@ -346,26 +347,6 @@ function isArr(x) {
+   return x && x.type === "list" && Array.isArray(x.values);
+ }
+ 
+-function namesInPattern(pat) {
+-  if (pat?.type === "atom") return pat.value === "_" ? [] : [pat.value];
+-  if (!isArr(pat)) return [];
+-  const h = pat.values[0]?.type === "atom" ? pat.values[0].value : "";
+-  if (h !== "array" && h !== "object") return [];
+-  const out = [];
+-  for (const el of pat.values.slice(1)) {
+-    if (el.type === "keyword") continue;
+-    if (el.type === "atom") {
+-      if (el.value !== "_") out.push(el.value);
+-    } else if (isArr(el)) {
+-      const ih = el.values[0]?.type === "atom" ? el.values[0].value : "";
+-      if (ih === "rest" && el.values[1]) out.push(...namesInPattern(el.values[1]));
+-      else if (ih === "default" && el.values[2]) out.push(...namesInPattern(el.values[2]));
+-      else if (ih === "array" || ih === "object") out.push(...namesInPattern(el));
+-    }
+-  }
+-  return out;
+-}
+-
+ function parseBindGroup(args) {
+   const bindings = [];
+   const seen = new Set();
+@@ -395,7 +376,7 @@ function parseBindGroup(args) {
+       valueNode = args[i + 1];
+       i += 2;
+     }
+-    for (const name of namesInPattern(nameNode)) {
++    for (const { name } of bindingNamesInPattern(nameNode)) {
+       if (seen.has(name)) {
+         throw new Error(`bind group declares '${name}' more than once`);
+       }
+@@ -462,24 +443,28 @@ function emitBindKernelArgs(a, h) {
+       throw new Error("bind with type annotation requires 3 arguments");
+     }
+     const typeKw = a[0], nameNode = a[1], valueNode = a[2];
+-    const constDecl = array(sym("const"), nameNode, valueNode);
+-    if (typeKw.value === "any") return constDecl;
+     const literalType = getLiteralType(valueNode);
++    if (typeKw.value === "any") {
++      return array(sym("const"), lowerDiscardBindingPattern(nameNode), valueNode);
++    }
+     if (literalType !== null) {
+       if (!typeMatchesLiteral(typeKw.value, literalType)) {
+         throw new Error(
+           `bind '${nameNode.value}': type annotation is :${typeKw.value} but initializer is a ${literalType} literal.`,
+         );
+       }
+-      return constDecl;
++      return array(sym("const"), lowerDiscardBindingPattern(nameNode), valueNode);
+     }
+-    const check = buildTypeCheck(nameNode, typeKw, "bind", "");
+-    return check === null ? constDecl : array(sym("block"), constDecl, check);
++    const prepared = prepareTypedBind(nameNode, typeKw, "bind");
++    const constDecl = array(sym("const"), prepared.pattern, valueNode);
++    return prepared.checks.length === 0
++      ? constDecl
++      : [constDecl, ...prepared.checks];
+   }
+   if (a.length !== 2) {
+     throw new Error("bind requires exactly name/value or :type name/value arguments");
+   }
+-  return array(sym("const"), a[0], a[1]);
++  return array(sym("const"), lowerDiscardBindingPattern(a[0]), a[1]);
+ }
+ 
+ function emitCondChain(clauses, h) {
+@@ -679,11 +664,9 @@ export function emitSurfaceForm(node, h) {
+     }
+     case "Fn": {
+       const params = parseTypedParams(node.paramList);
+-      const pNames = params.flatMap((p) => paramNameNodes(p));
+-      const typeChecks = [];
+-      for (const p of params) {
+-        typeChecks.push(...paramTypeChecks(p, "anonymous"));
+-      }
++      const prepared = params.map((p) => prepareTypedParam(p, "anonymous"));
++      const pNames = prepared.map((p) => p.pattern);
++      const typeChecks = prepared.flatMap((p) => p.checks);
+       if (typeChecks.length > 0 || node.bodyForms.length > 1) {
+         return array(
+           sym("=>"),
+@@ -729,11 +712,12 @@ export function emitSurfaceForm(node, h) {
+       return emitBindKernelArgs(node.args, h);
+     }
+     case "BindGroup":
+-      return node.bindings.map((binding) => {
++      return node.bindings.flatMap((binding) => {
+         const args = binding.typeKw
+           ? [binding.typeKw, binding.nameNode, binding.valueNode]
+           : [binding.nameNode, binding.valueNode];
+-        return emitBindKernelArgs(args, h);
++        const emitted = emitBindKernelArgs(args, h);
++        return Array.isArray(emitted) ? emitted : [emitted];
+       });
+     case "Exports":
+       return array(sym("export"), array(sym("names"), ...node.names));
+@@ -789,11 +773,9 @@ export function emitSurfaceForm(node, h) {
+         : a[layout.yieldsPayloadIndex];
+       const bodyForms = a.slice(layout.bodyStart);
+       const params = parseTypedParams(node.paramList);
+-      const pNames = params.flatMap((p) => paramNameNodes(p));
+-      const typeChecks = [];
+-      for (const p of params) {
+-        typeChecks.push(...paramTypeChecks(p, "anonymous"));
+-      }
++      const prepared = params.map((p) => prepareTypedParam(p, "anonymous"));
++      const pNames = prepared.map((p) => p.pattern);
++      const typeChecks = prepared.flatMap((p) => p.checks);
+       let instrumentedBody = bodyForms;
+       if (
+         yieldsType && yieldsType.type === "keyword" &&
+@@ -855,15 +837,14 @@ export function buildSingleClauseFunc(funcName, funcNameNode, clauseArgs) {
+   if (argsClause && argsClause.length === 1 && isArray(argsClause[0])) {
+     params = parseTypedParams(argsClause[0]);
+   }
+-  const pNames = params.flatMap((p) => paramNameNodes(p));
++  const prepared = params.map((p) => prepareTypedParam(p, funcName));
++  const pNames = prepared.map((p) => p.pattern);
+ 
+   // Build function body statements
+   const bodyStmts = [];
+ 
+   // Type checks for params
+-  for (const p of params) {
+-    bodyStmts.push(...paramTypeChecks(p, funcName));
+-  }
++  bodyStmts.push(...prepared.flatMap((p) => p.checks));
+ 
+   // Pre-condition
+   if (preClause && preClause.length > 0) {
+@@ -1025,6 +1006,7 @@ export function buildMultiClauseFunc(funcName, funcNameNode, clauseLists) {
+ 
+   for (const clause of parsed) {
+     const { clauses, params } = clause;
++    const prepared = params.map((p) => prepareTypedParam(p, funcName));
+     const preClause = clauses.get("pre");
+     const postClause = clauses.get("post");
+     const bodyClause = clauses.get("body");
+@@ -1118,19 +1100,17 @@ export function buildMultiClauseFunc(funcName, funcNameNode, clauseLists) {
+       if (p.destructured) {
+         // const (object name1 name2) = get(args, i)
+         clauseBody.push(
+-          array(sym("const"), paramNameNodes(p)[0], argAccess),
++          array(sym("const"), prepared[i].pattern, argAccess),
+         );
+       } else {
+         clauseBody.push(
+-          array(sym("const"), p.name, argAccess),
++          array(sym("const"), prepared[i].actual ?? prepared[i].pattern, argAccess),
+         );
+       }
+     }
+ 
+     // Full type checks (with NaN exclusion etc.)
+-    for (const p of params) {
+-      clauseBody.push(...paramTypeChecks(p, funcName));
+-    }
++    clauseBody.push(...prepared.flatMap((p) => p.checks));
+ 
+     // Pre-condition
+     if (preClause && preClause.length > 0) {
+@@ -1250,15 +1230,14 @@ export function emitGenfuncMacro(args) {
+   if (argsClause && argsClause.length === 1 && isArray(argsClause[0])) {
+     params = parseTypedParams(argsClause[0]);
+   }
+-  const pNames = params.flatMap((p) => paramNameNodes(p));
++  const prepared = params.map((p) => prepareTypedParam(p, funcName));
++  const pNames = prepared.map((p) => p.pattern);
+ 
+   // Build generator body
+   const bodyStmts = [];
+ 
+   // Type checks for params
+-  for (const p of params) {
+-    bodyStmts.push(...paramTypeChecks(p, funcName));
+-  }
++  bodyStmts.push(...prepared.flatMap((p) => p.checks));
+ 
+   // Pre-condition
+   if (preClause && preClause.length > 0) {
+diff --git a/packages/lang/compiler.js b/packages/lang/compiler.js
+index 00c214b8..abf58851 100644
+--- a/packages/lang/compiler.js
++++ b/packages/lang/compiler.js
+@@ -1965,6 +1965,15 @@ function compilePattern(node) {
+             argument: compilePattern(rest[0]),
+           };
+ 
++        case 'spread':
++          if (rest.length !== 1) {
++            throw new Error('spread requires exactly 1 argument: (spread name)');
++          }
++          return {
++            type: 'RestElement',
++            argument: compilePattern(rest[0]),
++          };
++
+         case 'alias':
+           throw new Error('alias can only appear inside an object pattern');
+ 
+@@ -2006,12 +2015,12 @@ function compileObjectPattern(children) {
+ 
+       // (rest others) → RestElement
+       // A6-exempt: structural — object-pattern element grammar, not a form head.
+-      if (head.type === 'atom' && head.value === 'rest') {
++      if (head.type === 'atom' && (head.value === 'rest' || head.value === 'spread')) {
+         if (child.values.length !== 2) {
+-          throw new Error('rest requires exactly 1 argument');
++          throw new Error(`${head.value} requires exactly 1 argument`);
+         }
+         if (i !== children.length - 1) {
+-          throw new Error('rest must be the last element in an object pattern');
++          throw new Error(`${head.value} must be the last element in an object pattern`);
+         }
+         properties.push({
+           type: 'RestElement',
+@@ -2050,7 +2059,7 @@ function compileObjectPattern(children) {
+           throw new Error('alias: (alias key local) or (alias key local default)');
+         }
+ 
+-        const key = toJsIdentifier(child.values[1].value);
++        const key = compilePatternKey(child.values[1]);
+         let valueNode = compilePattern(child.values[2]);
+ 
+         if (child.values.length === 4) {
+@@ -2063,10 +2072,10 @@ function compileObjectPattern(children) {
+ 
+         properties.push({
+           type: 'Property',
+-          key: { type: 'Identifier', name: key },
++          key,
+           value: valueNode,
+           kind: 'init',
+-          computed: false,
++          computed: child.values[1]?.type === 'number',
+           shorthand: false,
+           method: false,
+         });
+@@ -2085,6 +2094,16 @@ function compileObjectPattern(children) {
+   return { type: 'ObjectPattern', properties };
+ }
+ 
++function compilePatternKey(node) {
++  if (node?.type === 'atom') {
++    return { type: 'Identifier', name: toJsIdentifier(node.value) };
++  }
++  if (node?.type === 'string' || node?.type === 'number' || node?.type === 'keyword') {
++    return compileExpr(node, 'expression');
++  }
++  throw new Error('object pattern alias key must be an atom or literal');
++}
++
+ // Compile children of (array ...) in pattern position → ArrayPattern
+ function compileArrayPattern(children) {
+   const elements = [];
+@@ -2108,12 +2127,12 @@ function compileArrayPattern(children) {
+ 
+       // (rest name) → RestElement (must be last)
+       // A6-exempt: structural — array-pattern element grammar, not a form head.
+-      if (head.type === 'atom' && head.value === 'rest') {
++      if (head.type === 'atom' && (head.value === 'rest' || head.value === 'spread')) {
+         if (child.values.length !== 2) {
+-          throw new Error('rest requires exactly 1 argument');
++          throw new Error(`${head.value} requires exactly 1 argument`);
+         }
+         if (i !== children.length - 1) {
+-          throw new Error('rest must be the last element in an array pattern');
++          throw new Error(`${head.value} must be the last element in an array pattern`);
+         }
+         elements.push({
+           type: 'RestElement',
+diff --git a/packages/lang/expander-core.js b/packages/lang/expander-core.js
+index 2a34b130..97da21c1 100644
+--- a/packages/lang/expander-core.js
++++ b/packages/lang/expander-core.js
+@@ -1822,13 +1822,20 @@ function simpleDirectBind(args) {
+   else if (args.length === 3 && args[0]?.type === 'keyword' && args[0].value === 'any') {
+     [, nameNode, valueNode] = args;
+   } else return null;
+-  if (nameNode?.type !== 'atom' || nameNode.value === '_' || nameNode.value.includes(':')) return null;
++  if (nameNode?.type !== 'atom' || nameNode.value.includes(':')) return null;
+   return { nameNode, valueNode };
+ }
+ 
+ function expandDirectBind(args, env) {
+-  const { nameNode, valueNode } = simpleDirectBind(args);
+-  const kernel = emitSurfaceForm({ type: 'Bind', args }, { sym, array, gensym, isKeyword, typeContext: env.typeContext });
++  const { valueNode } = simpleDirectBind(args);
++  const emitted = emitSurfaceForm(
++    { type: 'Bind', args },
++    { sym, array, gensym, isKeyword, typeContext: env.typeContext },
++  );
++  const emittedForms = Array.isArray(emitted) ? emitted : [emitted];
++  const kernel = emittedForms[0];
++  const preparedName = kernel.values[1];
++  const checks = emittedForms.slice(1);
+   const identity = {};
+   const use = { kind: 'Assign', identity };
+   const value = expandAt(valueNode, env, use);
+@@ -1836,12 +1843,14 @@ function expandDirectBind(args, env) {
+     isDirectTransfer(value) || isExpandedStatement(value);
+   if (!isRegion) {
+     kernel.values[2] = value;
+-    return markKernel(kernel);
++    const output = [markKernel(kernel), ...checks.map(markKernel)];
++    return output.length === 1 ? output[0] : output;
+   }
+   return [
+     markKernel(array(sym('let'), completionValueAtom(identity))),
+     directBlock(directResultStatements(value, use)),
+-    markKernel(array(sym('const'), nameNode, completionValueAtom(identity))),
++    markKernel(array(sym('const'), preparedName, completionValueAtom(identity))),
++    ...checks.map(markKernel),
+   ];
+ }
+ 
+@@ -2050,7 +2059,10 @@ function expandExprInner(form, env, use = "Legacy", computedMemberCallRequest =
+             { type: "Bind", args },
+             { sym, array, gensym, isKeyword, typeContext: cur.typeContext },
+           );
+-          pushExpanded(out, expandAt(markKernel(kernel), cur, "Legacy"));
++          const emitted = Array.isArray(kernel) ? kernel : [kernel];
++          for (const item of emitted) {
++            pushExpanded(out, expandAt(markKernel(item), cur, "Legacy"));
++          }
+           const names = bindingNamesInPattern(binding.nameNode).map((site) => site.name);
+           if (names.length) cur = extendEnv(cur, names);
+         }
+@@ -2131,6 +2143,38 @@ function expandExprInner(form, env, use = "Legacy", computedMemberCallRequest =
+     return expandAt(current, env, use, null, directCallArgumentRequest);
+   }
+ 
++  // Source inline exports need declaration-aware lowering, but only after the
++  // user macro fixed point above has had first refusal on the `export` head.
++  if (formHead(head) === "export" && !isKernel(form)) {
++    const declaration = form.values[1];
++    const declarationHead = declaration?.type === "list"
++      ? formHead(declaration.values[0])
++      : null;
++    if (declarationHead === "bind" && !env.bindings.has("bind") && !isKernel(declaration)) {
++      if (form.values.length !== 2) throw new Error("export: unrecognized form");
++      const bindNode = classifySurfaceForm("bind", declaration.values.slice(1));
++      if (bindNode?.type === "Bind" || bindNode?.type === "BindGroup") {
++        const sourcePatterns = bindNode.type === "Bind"
++          ? [bindNode.args[0]?.type === "keyword" ? bindNode.args[1] : bindNode.args[0]]
++          : bindNode.bindings.map((binding) => binding.nameNode);
++        const names = sourcePatterns.flatMap((pattern) =>
++          bindingNamesInPattern(pattern).map((site) => sym(site.name))
++        );
++        const expanded = expandAt(
++          declaration,
++          env,
++          "Statement",
++          null,
++          null,
++          RESULT_SLOT.SEQUENCE,
++        );
++        const declarations = Array.isArray(expanded) ? expanded : [expanded];
++        const exportNames = markKernel(array(sym("export"), array(sym("names"), ...names)));
++        return [...declarations.filter((item) => item !== null && item !== undefined), exportNames];
++      }
++    }
++  }
++
+   if (directCallArgumentRequest && formHead(head) === "spread") {
+     return expandDirectSpreadArgument(form, env, directCallArgumentRequest);
+   }
+diff --git a/packages/lang/surface-helpers.js b/packages/lang/surface-helpers.js
+index afbc96f9..dac2cb29 100644
+--- a/packages/lang/surface-helpers.js
++++ b/packages/lang/surface-helpers.js
+@@ -157,10 +157,14 @@ export function typeMatchesLiteral(typeName, literalType) {
+  * Returns a kernel (if (check) (throw (new TypeError msg))) form, or null for :any.
+  */
+ export function buildTypeCheck(paramNode, typeKw, funcName, label) {
++  return buildTypeCheckFor(paramNode, typeKw, funcName, label, paramNode.value);
++}
++
++function buildTypeCheckFor(paramNode, typeKw, funcName, label, sourceName) {
+   const typeName = typeKw.value;
+   if (typeName === "any") return null;
+ 
+-  const paramName = paramNode.value;
++  const paramName = sourceName;
+   const hasPunct = (s) => /[^a-zA-Z0-9_-]/.test(s);
+   const jsFuncName = toJsIdentifier(funcName);
+   const dispFunc = jsFuncName !== funcName && hasPunct(funcName)
+@@ -257,90 +261,185 @@ export function buildTypeCheck(paramNode, typeKw, funcName, label) {
+ 
+ // --- Param shape helpers ---
+ 
+-/** Get kernel param name nodes for a function signature. */
+-export function paramNameNodes(p) {
+-  if (p.destructured) {
+-    if (p.kind === "object") {
+-      const elems = p.fields.map((f) => {
+-        if (f.nested) {
+-          const innerKernel = paramNameNodes(f.pattern)[0];
+-          if (f.alias) {
+-            return array(sym("alias"), f.alias, innerKernel);
+-          }
+-          return innerKernel;
+-        }
+-        if (f.defaultValue) {
+-          return array(sym("default"), f.name, f.defaultValue);
+-        }
+-        return f.name;
+-      });
+-      return [array(sym("object"), ...elems)];
++function preparedValue(name) {
++  return name.value === "_"
++    ? compilerPrivateAtom({}, "discardValue")
++    : name;
++}
++
++function prepareLeaf(name, typeKw, funcName, label = "arg") {
++  const actual = preparedValue(name);
++  const check = buildTypeCheckFor(actual, typeKw, funcName, label, name.value);
++  return { actual, pattern: actual, checks: check ? [check] : [] };
++}
++
++function prepareRestChecks(collection, typeKw, funcName, sourceName) {
++  if (typeKw.value === "any") return [];
++  const element = compilerPrivateAtom({}, "discardElement");
++  const check = buildTypeCheckFor(element, typeKw, funcName, "rest arg", sourceName);
++  return check ? [array(sym("for-of"), element, collection, check)] : [];
++}
++
++/** Prepare one parsed parameter once for its emitted pattern and guards. */
++export function prepareTypedParam(p, funcName) {
++  if (!p.destructured) {
++    const leaf = prepareLeaf(p.name, p.typeKw, funcName, p.isRest ? "rest arg" : "arg");
++    if (p.defaultValue) {
++      return { ...leaf, pattern: array(sym("default"), leaf.actual, p.defaultValue) };
+     }
+-    if (p.kind === "array") {
+-      const elems = p.fields.map((f) => {
+-        if (f.skip) return sym("_");
+-        if (f.nested) {
+-          const innerKernel = paramNameNodes(f.pattern)[0];
+-          if (f.alias) {
+-            return array(sym("alias"), f.alias, innerKernel);
+-          }
+-          return innerKernel;
+-        }
+-        if (f.defaultValue) {
+-          return array(sym("default"), f.name, f.defaultValue);
++    if (p.isRest) {
++      return {
++        ...leaf,
++        pattern: array(sym("rest"), leaf.actual),
++        checks: prepareRestChecks(leaf.actual, p.typeKw, funcName, p.name.value),
++      };
++    }
++    return leaf;
++  }
++
++  const checks = [];
++  if (p.kind === "object") {
++    const fields = p.fields.map((field) => {
++      if (field.nested) {
++        const nested = prepareTypedParam(field.pattern, funcName);
++        checks.push(...nested.checks);
++        if (field.typeKw && field.typeKw.value !== "any") {
++          const check = buildTypeCheckFor(
++            field.alias,
++            field.typeKw,
++            funcName,
++            "arg",
++            field.alias.value,
++          );
++          if (check) checks.push(check);
+         }
+-        return f.name;
+-      });
+-      if (p.rest) {
+-        elems.push(array(sym("rest"), p.rest.name));
++        return field.alias
++          ? array(sym("alias"), field.alias, nested.pattern)
++          : nested.pattern;
++      }
++      if (field.skip) return field.name;
++      const leaf = prepareLeaf(field.name, field.typeKw, funcName);
++      checks.push(...leaf.checks);
++      if (field.defaultValue) {
++        return field.name.value === "_"
++          ? array(sym("alias"), field.name, array(sym("default"), leaf.actual, field.defaultValue))
++          : array(sym("default"), field.name, field.defaultValue);
+       }
+-      return [array(sym("array"), ...elems)];
++      return field.name.value === "_"
++        ? array(sym("alias"), field.name, leaf.actual)
++        : field.name;
++    });
++    return { actual: null, pattern: array(sym("object"), ...fields), checks };
++  }
++
++  const fields = p.fields.map((field) => {
++    if (field.skip) return field.name;
++    if (field.nested) {
++      const nested = prepareTypedParam(field.pattern, funcName);
++      checks.push(...nested.checks);
++      if (field.typeKw && field.typeKw.value !== "any") {
++        const check = buildTypeCheckFor(
++          field.alias,
++          field.typeKw,
++          funcName,
++          "arg",
++          field.alias.value,
++        );
++        if (check) checks.push(check);
++      }
++      return field.alias
++        ? array(sym("alias"), field.alias, nested.pattern)
++        : nested.pattern;
+     }
++    const leaf = prepareLeaf(field.name, field.typeKw, funcName);
++    checks.push(...leaf.checks);
++    return field.defaultValue
++      ? array(sym("default"), leaf.actual, field.defaultValue)
++      : leaf.actual;
++  });
++  if (p.rest) {
++    const rest = prepareLeaf(p.rest.name, p.rest.typeKw, funcName, "rest arg");
++    fields.push(array(sym("rest"), rest.actual));
++    checks.push(...prepareRestChecks(rest.actual, p.rest.typeKw, funcName, p.rest.name.value));
++  }
++  return { actual: null, pattern: array(sym("array"), ...fields), checks };
++}
++
++/** Lower a normal-source Bind pattern without changing value expressions. */
++export function lowerDiscardBindingPattern(pattern) {
++  if (pattern?.type === "atom") return preparedValue(pattern);
++  if (pattern?.type !== "list" || pattern.values.length === 0) return pattern;
++  const [head, ...parts] = pattern.values;
++  if (head?.type !== "atom") return pattern;
++  if (head.value === "array") {
++    return { ...pattern, values: [head, ...parts.map((part) =>
++      part?.type === "atom" && part.value === "_"
++        ? part
++        : lowerBindingPatternChild(part))] };
++  }
++  if (head.value === "object") {
++    return { ...pattern, values: [head, ...parts.map((part) => {
++      if (part?.type === "atom") {
++        return part.value === "_" ? array(sym("alias"), part, preparedValue(part)) : part;
++      }
++      if (part?.type !== "list" || part.values[0]?.type !== "atom") return part;
++      const memberHead = part.values[0].value;
++      if (memberHead === "default" && part.values.length === 3 && part.values[1]?.type === "atom" && part.values[1].value === "_") {
++        return array(sym("alias"), part.values[1], array(sym("default"), preparedValue(part.values[1]), part.values[2]), ...part.values.slice(3));
++      }
++      if (memberHead === "alias" && part.values.length >= 3) {
++        return { ...part, values: [part.values[0], part.values[1], lowerBindingPatternChild(part.values[2]), ...part.values.slice(3)] };
++      }
++      if (memberHead === "rest" || memberHead === "spread") {
++        if (part.values.length < 2) return part;
++        return { ...part, values: [part.values[0], lowerBindingPatternChild(part.values[1]), ...part.values.slice(2)] };
++      }
++      return part;
++    })] };
+   }
+-  // Simple param — handle default and rest
+-  if (p.defaultValue) {
+-    return [array(sym("default"), p.name, p.defaultValue)];
++  if ((head.value === "rest" || head.value === "spread") && parts.length > 0) {
++    return { ...pattern, values: [head, lowerBindingPatternChild(parts[0]), ...parts.slice(1)] };
+   }
+-  if (p.isRest) {
+-    return [array(sym("rest"), p.name)];
++  if (head.value === "default" && parts.length >= 2) {
++    return { ...pattern, values: [head, lowerBindingPatternChild(parts[0]), ...parts.slice(1)] };
+   }
+-  return [p.name];
++  return pattern;
+ }
+ 
+-/** Get type check assertions for a param. */
+-export function paramTypeChecks(p, funcName) {
+-  if (p.destructured) {
+-    const checks = [];
+-    const allFields = [
+-      ...p.fields.filter((f) => !f.skip),
+-      ...(p.rest ? [p.rest] : []),
+-    ];
+-    for (const f of allFields) {
+-      if (f.nested) {
+-        // Recurse into nested pattern for leaf-level checks
+-        checks.push(...paramTypeChecks(f.pattern, funcName));
+-        // Type-check the alias binding itself if not :any
+-        if (f.typeKw && f.typeKw.value !== "any") {
+-          const check = buildTypeCheck(f.alias, f.typeKw, funcName, "arg");
+-          if (check) checks.push(check);
+-        }
+-        continue;
+-      }
+-      const check = buildTypeCheck(f.name, f.typeKw, funcName, "arg");
+-      if (check) checks.push(check);
+-    }
+-    return checks;
++/** Prepare a normal-source Bind binder and its optional scalar annotation. */
++export function prepareTypedBind(pattern, typeKw, funcName = "bind") {
++  if (pattern?.type === "atom") {
++    const actual = preparedValue(pattern);
++    const check = typeKw
++      ? buildTypeCheckFor(actual, typeKw, funcName, "", pattern.value)
++      : null;
++    return { pattern: actual, actual, checks: check ? [check] : [] };
++  }
++  const check = buildTypeCheck(pattern, typeKw, funcName, "");
++  return {
++    pattern: lowerDiscardBindingPattern(pattern),
++    actual: pattern,
++    checks: check ? [check] : [],
++  };
++}
++
++function lowerBindingPatternChild(child) {
++  if (child?.type === "atom") return preparedValue(child);
++  if (child?.type !== "list" || child.values.length === 0) return child;
++  const head = child.values[0];
++  if ((head?.type === "atom" && (head.value === "rest" || head.value === "spread")) && child.values.length < 2) {
++    return child;
++  }
++  if (head?.type === "atom" && (head.value === "array" || head.value === "object")) {
++    return lowerDiscardBindingPattern(child);
++  }
++  if (head?.type === "atom" && (head.value === "rest" || head.value === "spread" || head.value === "default")) {
++    return lowerDiscardBindingPattern(child);
+   }
+-  // Rest param: per-element type check via for-of loop
+-  if (p.isRest) {
+-    if (p.typeKw.value === "any") return [];
+-    const elVar = gensym("el");
+-    const innerCheck = buildTypeCheck(elVar, p.typeKw, funcName, "rest arg");
+-    if (!innerCheck) return [];
+-    return [array(sym("for-of"), elVar, p.name, innerCheck)];
++  if (head?.type === "atom" && head.value === "alias" && child.values.length >= 3) {
++    return { ...child, values: [head, child.values[1], lowerBindingPatternChild(child.values[2]), ...child.values.slice(3)] };
+   }
+-  const check = buildTypeCheck(p.name, p.typeKw, funcName, "arg");
+-  return check ? [check] : [];
++  return child;
+ }
+ 
+ /**
+diff --git a/test/forms/discard-bindings.test.js b/test/forms/discard-bindings.test.js
+new file mode 100644
+index 00000000..ac369447
+--- /dev/null
++++ b/test/forms/discard-bindings.test.js
+@@ -0,0 +1,489 @@
++import {
++  assertEquals,
++  assertNotEquals,
++  assertStringIncludes,
++  assertThrows,
++} from "jsr:@std/assert";
++import { compileExpr, expand, expandExpr, lykn, read } from "lang/mod.js";
++import { resetMacros } from "lang/expander.js";
++import { compile } from "lang/compiler.js";
++import { compileLykn as browserCompileLykn } from "browser/compiler.js";
++
++async function executeModule(source, expected) {
++  const directory = await Deno.makeTempDir({ prefix: "lykn-discard-public-" });
++  const path = `${directory}/output.mjs`;
++  try {
++    await Deno.writeTextFile(path, `${source}\nexport {};\n`);
++    const result = await new Deno.Command(Deno.execPath(), {
++      args: [
++        "run",
++        "--no-config",
++        "--no-prompt",
++        "--no-npm",
++        "--cached-only",
++        path,
++      ],
++      cwd: directory,
++      stdout: "piped",
++      stderr: "piped",
++    }).output();
++    assertEquals(result.code, 0, new TextDecoder().decode(result.stderr));
++    assertEquals(new TextDecoder().decode(result.stderr), "");
++    assertEquals(new TextDecoder().decode(result.stdout), expected);
++  } finally {
++    await Deno.remove(directory, { recursive: true });
++  }
++}
++
++async function executeNamespace(source, consumer) {
++  const directory = await Deno.makeTempDir({ prefix: "lykn-discard-export-" });
++  try {
++    await Deno.writeTextFile(`${directory}/module.mjs`, `${source}\n`);
++    await Deno.writeTextFile(`${directory}/consumer.mjs`, `${consumer}\n`);
++    const result = await new Deno.Command(Deno.execPath(), {
++      args: [
++        "run",
++        "--no-config",
++        "--no-prompt",
++        "--no-npm",
++        "--cached-only",
++        `${directory}/consumer.mjs`,
++      ],
++      cwd: directory,
++      stdout: "piped",
++      stderr: "piped",
++    }).output();
++    return {
++      code: result.code,
++      stdout: new TextDecoder().decode(result.stdout),
++      stderr: new TextDecoder().decode(result.stderr),
++    };
++  } finally {
++    await Deno.remove(directory, { recursive: true });
++  }
++}
++
++async function executeFailure(source, expectedMessage) {
++  const directory = await Deno.makeTempDir({ prefix: "lykn-discard-failure-" });
++  const path = `${directory}/output.mjs`;
++  try {
++    await Deno.writeTextFile(path, `${source}\n`);
++    const result = await new Deno.Command(Deno.execPath(), {
++      args: [
++        "run",
++        "--no-config",
++        "--no-prompt",
++        "--no-npm",
++        "--cached-only",
++        path,
++      ],
++      cwd: directory,
++      stdout: "piped",
++      stderr: "piped",
++    }).output();
++    const stderr = new TextDecoder().decode(result.stderr);
++    assertNotEquals(
++      result.code,
++      0,
++      "invalid typed input unexpectedly succeeded",
++    );
++    assertStringIncludes(stderr, expectedMessage);
++    return stderr;
++  } finally {
++    await Deno.remove(directory, { recursive: true });
++  }
++}
++
++Deno.test("public callable and Bind discards keep private identity", async () => {
++  await executeModule(
++    lykn(`
++    (set-symbol! globalThis "_" 99)
++    (func normal-value :args (:number _value) :body _value)
++    (func named-discard :args (:any _) :body _)
++    (func pair-discard :args (:any _ :any _) :body _)
++    (bind lambda-discard (lambda (:any _) _))
++    (bind fn-discard (fn ((array :number _)) _))
++    (genfunc gen-discard :args (:any _) :yields :any :body (yield _))
++    (bind genfn-discard (genfn (:any _) :yields :any (yield _)))
++    (bind gen-iterator (gen-discard))
++    (bind genfn-iterator (genfn-discard))
++    (bind _ 7)
++    (console:log (named-discard 1) (pair-discard 1 2) (lambda-discard 2) (fn-discard #a(3))
++      (normal-value 7)
++      (get (gen-iterator:next) "value") (get (genfn-iterator:next) "value"))
++    (macro discardValue__private (value) \`(+ ,value 1))
++    (bind generated-name (fn (:any _) (discardValue__private 7)))
++    (bind generated-array-name (fn ((array :number _)) (discardValue__private 7)))
++    (bind discardValue__gensym0 17)
++    (console:log (generated-name 8) (+ discardValue__gensym0 _) (generated-array-name #a(8)))
++  `),
++    "99 99 99 99 7 99 99\n8 116 8\n",
++  );
++  resetMacros();
++  await executeModule(
++    lykn(`
++    (macro discardValue__private (value) \`(+ ,value 1))
++    (bind discardValue__private (fn (:number value) 27))
++    (console:log (discardValue__private 1))
++  `),
++    "27\n",
++  );
++});
++
++Deno.test("public discard guards, defaults, rests, and schema fields", async () => {
++  await executeModule(
++    lykn(`
++    (set-symbol! globalThis "_" 99)
++    (func accept-number :args (:number _) :body 1)
++    (func accept-object :args ((object :number _)) :body 2)
++    (func accept-array :args ((array :number _)) :body 3)
++    (func nested-rest :args ((array :number first (rest :number _))) :body first)
++    (func simple-rest :args ((rest :number _)) :body 4)
++    (func multi-discard
++      (:args (:number _) :body 6)
++      (:args (:string _) :body 7))
++    (bind default-count (cell 0))
++    (func next-default :args () :body (reset! default-count (+ default-count:value 1)) 7)
++    (func defaulted :args ((array (default :number _ (next-default)))) :body 5)
++    (func default-global :args ((array (default :number _ _))) :body _)
++    (func contract-global :args (:number _) :returns :number
++      :pre (= _ 99) :post (= ~ 99) :body _)
++    (type Sample (Sample :number _))
++    (console:log (accept-number 8) (accept-object (obj :_ 8))
++      (accept-array #a(8)) (nested-rest #a(1 2)) (simple-rest 1 2)
++      (multi-discard 8) (multi-discard "text"))
++    (console:log (defaulted #a(6)) default-count:value (defaulted #a()) default-count:value
++      (default-global #a()) (contract-global 1))
++    (console:log (get (Sample 7) "_") _)
++  `),
++    "1 2 3 1 4 6 7\n5 0 5 1 99 99\n7 99\n",
++  );
++  const badScalar = lykn(
++    `(func accept-number :args (:number _) :body 1) (console:log (accept-number "bad"))`,
++  );
++  await executeFailure(badScalar, "arg '_' expected number, got string");
++  const badObject = lykn(
++    `(func accept-object :args ((object :number _)) :body 2) (console:log (accept-object (obj :_ "bad")))`,
++  );
++  await executeFailure(badObject, "arg '_' expected number, got string");
++  const badRest = lykn(
++    `(func nested-rest :args ((array :number first (rest :number _))) :body first) (console:log (nested-rest #a(1 "bad")))`,
++  );
++  await executeFailure(badRest, "rest arg '_' expected number, got string");
++  const badSimpleRest = lykn(
++    `(func simple-rest :args ((rest :number _)) :body 4) (console:log (simple-rest 1 "bad"))`,
++  );
++  await executeFailure(
++    badSimpleRest,
++    "rest arg '_' expected number, got string",
++  );
++  const badMulti = lykn(
++    `(func choose (:args (:number _) :body 6) (:args (:string _) :body 7)) (console:log (choose NaN))`,
++  );
++  await executeFailure(badMulti, "expected number, got number");
++  const throwingDefault = lykn(`
++    (func explode-default :args () :body (throw (new Error "default boom")))
++    (func defaulted :args ((array (default :number _ (explode-default)))) :body 5)
++    (console:log (defaulted #a()))
++  `);
++  await executeFailure(throwingDefault, "default boom");
++  await executeModule(
++    lykn(`(bind :array (array first) #a(7)) (console:log first)`),
++    "7\n",
++  );
++  assertThrows(
++    () => lykn(`(bind :number (array first) input)`),
++    Error,
++  );
++});
++
++Deno.test("public typed Bind checks stay visible and preserve effects", async () => {
++  await executeModule(
++    lykn(`
++    (bind calls (cell 0))
++    (func next-seven :args () :body (reset! calls (+ calls:value 1)) 7)
++    (func run :args () :body
++      (bind :number answer (next-seven))
++      (console:log answer calls:value)
++      answer)
++    (console:log (run))
++    (func pair-check :args () :body
++      (bind :number first (next-seven) :number second (next-seven))
++      (console:log first second calls:value))
++    (pair-check)
++    (bind later-effects (cell 0))
++    (func bad-value :args () :body (reset! calls (+ calls:value 1)) "bad")
++    (func check-before-next :args () :body
++      (bind :number first (bad-value) :number second (reset! later-effects 1))
++      (console:log first second))
++    (try (check-before-next) (catch problem (console:log calls:value later-effects:value)))
++    (func guarded :args (:number input) :returns :number
++      :pre (> input 0) :post (= ~ 7) :body 7)
++    (console:log (guarded 2))
++    (func early-transfer :args () :body
++      (bind :number answer (do (return 41) 9))
++      answer)
++    (console:log (early-transfer))
++    (bind getter-reads (cell 0))
++    (bind getter-source (new Object))
++    (Object:defineProperty getter-source "_"
++      (obj :get (fn () (reset! getter-reads (+ getter-reads:value 1)) 7) :enumerable true))
++    (func read-discard :args ((object :number _)) :body 1)
++    (console:log (read-discard getter-source) getter-reads:value)
++    (bind iterator-steps (cell 0))
++    (bind iterator-value-reads (cell 0))
++    (bind iterator-closes (cell 0))
++    (bind iterator (obj))
++    (bind iterator-result (obj :done false))
++    (Object:defineProperty iterator-result "value"
++      (obj :get (fn () (reset! iterator-value-reads (+ iterator-value-reads:value 1)) 7) :enumerable true))
++    (Object:defineProperty iterator "next"
++      (obj :value (fn ()
++        (reset! iterator-steps (+ iterator-steps:value 1))
++        (if (< iterator-steps:value 3) iterator-result (obj :done true)))))
++    (Object:defineProperty iterator "return"
++      (obj :value (fn () (reset! iterator-closes (+ iterator-closes:value 1)) (obj :done true))))
++    (bind iterable (obj))
++    (Object:defineProperty iterable Symbol:iterator (obj :value (fn () iterator)))
++    (func bare-skip :args ((array _)) :body 2)
++    (func typed-skip :args ((array :number _)) :body 3)
++    (console:log (bare-skip iterable) iterator-value-reads:value iterator-closes:value)
++    (reset! iterator-steps 0)
++    (console:log (typed-skip iterable) iterator-value-reads:value iterator-closes:value)
++    (reset! iterator-steps 0)
++    (reset! iterator-value-reads 0)
++    (reset! iterator-closes 0)
++    (func bare-multiple-skip :args ((array _ _)) :body 4)
++    (func typed-multiple-skip :args ((array :number _ :number _)) :body 5)
++    (func bare-trailing-skip :args ((array _ _ _)) :body 6)
++    (console:log (bare-multiple-skip iterable) iterator-steps:value iterator-value-reads:value iterator-closes:value)
++    (reset! iterator-steps 0)
++    (reset! iterator-value-reads 0)
++    (reset! iterator-closes 0)
++    (console:log (typed-multiple-skip iterable) iterator-steps:value iterator-value-reads:value iterator-closes:value)
++    (reset! iterator-steps 0)
++    (reset! iterator-value-reads 0)
++    (reset! iterator-closes 0)
++    (console:log (bare-trailing-skip iterable) iterator-steps:value iterator-value-reads:value iterator-closes:value)
++    (bind target (obj :value 0))
++    (kernel:= target:value 9)
++    (kernel:= (array (get target "value")) #a(11))
++    (console:log target:value)
++  `),
++    "7 1\n7\n7 7 3\n4 0\n7\n41\n1 1\n2 0 1\n3 1 2\n4 2 0 1\n5 2 2 1\n6 3 0 0\n11\n",
++  );
++  await executeModule(
++    lykn(`
++    (bind order (array))
++    (func method-target :args (:any first :any second) :body
++      (order:push (array "method" this:offset first second))
++      0)
++    (bind receiver (obj :offset 30))
++    (Object:defineProperty receiver "run"
++      (obj :get (fn () (order:push "get") method-target)))
++    (func ordered-discard :args () :body
++      (bind _ (receiver:run
++        (do (order:push "arg1") 1)
++        (do (order:push "arg2") 2)))
++      (JSON:stringify order))
++    (func ordered-stop :args () :body
++      (bind _ (receiver:run
++        (do (order:push "arg1") 1)
++        (do (order:push "arg2") (return 41) 2)))
++      99)
++    (console:log (ordered-discard))
++    (order:splice 0)
++    (console:log (ordered-stop) (JSON:stringify order))
++  `),
++    '["get","arg1","arg2",["method",30,1,2]]\n41 ["get","arg1","arg2"]\n',
++  );
++  await executeModule(
++    lykn(`(func discard-transfer :args () :body (bind _ (do (return 41) 9)) 99)
++      (console:log (discard-transfer))`),
++    "41\n",
++  );
++  const expanded = expandExpr(read("(bind :number answer input)")[0]);
++  assertEquals(
++    Array.isArray(expanded),
++    true,
++    "typed nonliteral Bind must expand as sibling declaration and check",
++  );
++  assertEquals(
++    expanded.some((form) =>
++      form?.values?.[0]?.value === "const" &&
++      form.values[1]?.value === "answer"
++    ),
++    true,
++    "typed nonliteral Bind must leave its named declaration in the outer scope",
++  );
++  assertEquals(
++    expanded.some((form) => form?.values?.[0]?.value === "if"),
++    true,
++    "typed nonliteral Bind must retain an emitted runtime guard",
++  );
++});
++
++Deno.test("public source inline exports expose only source bindings", async () => {
++  const empty = lykn("(export (bind _ 7))");
++  assertStringIncludes(empty, "export {");
++  const emptyRun = await executeNamespace(
++    empty,
++    `import * as values from "./module.mjs"; console.log(JSON.stringify(Object.keys(values)));`,
++  );
++  assertEquals(emptyRun.code, 0, emptyRun.stderr);
++  assertEquals(emptyRun.stdout, "[]\n");
++
++  const mixed = lykn(`
++    (bind calls (cell 0))
++    (export (bind _ (reset! calls (+ calls:value 1)) :number visible 7))
++    (console:log calls:value)
++  `);
++  const mixedRun = await executeNamespace(
++    mixed,
++    `import * as values from "./module.mjs"; console.log(JSON.stringify(Object.keys(values))); console.log(values.visible);`,
++  );
++  assertEquals(mixedRun.code, 0, mixedRun.stderr);
++  assertEquals(mixedRun.stdout, '1\n["visible"]\n7\n');
++
++  const spreadExport = lykn(
++    `(export (bind (array first (spread tail)) #a(5 6 7)))`,
++  );
++  const spreadExportRun = await executeNamespace(
++    spreadExport,
++    `import * as values from "./module.mjs"; console.log(JSON.stringify(Object.keys(values))); console.log(values.first, JSON.stringify(values.tail));`,
++  );
++  assertEquals(spreadExportRun.code, 0, spreadExportRun.stderr);
++  assertEquals(spreadExportRun.stdout, '["first","tail"]\n5 [6,7]\n');
++
++  const bad = lykn(`(bind input "bad") (export (bind :number visible input))`);
++  const badRun = await executeNamespace(
++    bad,
++    `import * as values from "./module.mjs"; console.log(values.visible);`,
++  );
++  assertNotEquals(badRun.code, 0);
++  assertStringIncludes(badRun.stderr, "TypeError");
++  assertEquals(badRun.stderr.includes("SyntaxError"), false);
++  assertThrows(
++    () => lykn(`(export (bind visible 1) extra)`),
++    Error,
++    "export: unrecognized form",
++  );
++
++  await executeModule(
++    lykn(`
++    (macro export (value) \`(console:log ,value))
++    (export 41)
++  `),
++    "41\n",
++  );
++});
++
++Deno.test("public binding patterns preserve spread, keys, assignment, and legacy catch", async () => {
++  await executeModule(
++    lykn(`
++    (bind source (object ("first-name" 17) ("0" 23) (:normalized-key 31)))
++    (bind (object (alias "first-name" hyphen) (alias "0" zero) (alias normalized-key normalized)) source)
++    (bind (array first (spread tail)) #a(5 6 7))
++    (bind target (obj :value 0))
++    (kernel:= (array (get target "value")) #a(8))
++    (kernel:= target:value 9)
++    (bind value-copy (object (spread (obj :source 23))))
++    (bind values #a((fn (:number input) (+ input 1))))
++    (bind (array (spread (object (alias "0" array)))) values)
++    (console:log hyphen zero normalized first (get tail "0") target:value value-copy:source (array 7))
++  `),
++    "17 23 31 5 6 9 23 8\n",
++  );
++  await executeModule(
++    lykn(`
++      (bind source (object ("-1" 31)))
++      (bind (object (alias -1 negative)) source)
++      (console:log negative)
++    `),
++    "31\n",
++  );
++
++  await executeModule(
++    `const errorValue = { default: value => value + 1 };\n${
++      lykn(
++        `(try (throw errorValue) (catch (object (default array)) (console:log (array 7))))`,
++      )
++    }`,
++    "8\n",
++  );
++  await executeModule(
++    `const errorValue = { entry: value => value + 1 };\n${
++      lykn(
++        `(try (throw errorValue) (catch (object (entry caught)) (console:log (caught 7))))`,
++      )
++    }`,
++    "8\n",
++  );
++  assertThrows(
++    () =>
++      lykn(
++        `(bind (object (alias "value" repeated)) source (object (default repeated 2)) source2)`,
++      ),
++    Error,
++    "more than once",
++  );
++  assertThrows(
++    () =>
++      lykn(
++        `(bind (array (spread (object (alias "0" repeated)))) values (array repeated) other)`,
++      ),
++    Error,
++    "more than once",
++  );
++  assertThrows(
++    () => lykn(`(bind (array (spread (object (alias "0" class)))) values)`),
++    Error,
++    "reserved",
++  );
++  assertThrows(
++    () => lykn(`(bind (object (default _ 7 8)) input)`),
++    Error,
++  );
++  assertThrows(
++    () =>
++      lykn(
++        `(bind (array (spread (object (default value (fn (:any if) 1))))) input)`,
++      ),
++    Error,
++    "reserved word",
++  );
++});
++
++Deno.test("public finalized JSON and fragments retain independent private state", async () => {
++  const source = `(func calculate :args (:number _) :body 7)
++     (func pick :args ((array :number first :number _)) :body first)
++     (console:log (calculate 4) (pick #a(8 9)))`;
++  const expanded = expand(read(source));
++  const roundTrip = JSON.parse(JSON.stringify(expanded));
++  await executeModule(compile(roundTrip), "7 8\n");
++  assertThrows(() => lykn(`(func malformed :args (:number) :body 1)`), Error);
++  const recovered = lykn(
++    `(func good :args (:number _) :body 7) (console:log (good 4))`,
++  );
++  await executeModule(recovered, "7\n");
++  const fragment = expandExpr(read("(fn (:any value) 7)")[0]);
++  const compiledFragment = compileExpr(fragment);
++  assertEquals(compiledFragment.type, "ArrowFunctionExpression");
++});
++
++Deno.test("public browser delivery executes discard and nested rest behavior", async () => {
++  await executeModule(
++    browserCompileLykn(`
++    (set-symbol! globalThis "_" 99)
++    (func return-global :args (:number _) :body _)
++    (func nested :args ((array :number first (rest :number _))) :body first)
++    (func bind-value :args () :body (bind :number answer (+ 3 4)) answer)
++    (console:log (return-global 7) (nested #a(1 2)) (bind-value))
++  `),
++    "99 1 7\n",
++  );
++  const bad = browserCompileLykn(
++    `(func nested :args ((array :number first (rest :number _))) :body first) (console:log (nested #a(1 "bad")))`,
++  );
++  await executeFailure(bad, "rest arg '_' expected number, got string");
++});
+diff --git a/test/surface/fn-lambda_test.lykn b/test/surface/fn-lambda_test.lykn
+index f58d66ed..8fc773ea 100644
+--- a/test/surface/fn-lambda_test.lykn
++++ b/test/surface/fn-lambda_test.lykn
+@@ -68,14 +68,15 @@
+   "const f = x => x;")
+ 
+ (test
+-  "fn: _ as parameter name compiles"
++  "fn: discard parameter keeps arrow and return shape"
+   (bind result (compile "(fn (:any _) 42)"))
+-  (includes result "_ => 42"))
++  (includes result "=> 42"))
+ 
+ (test
+-  "fn: _ with other typed params"
++  "fn: discard with typed parameter keeps checks and body"
+   (bind result (compile "(fn (:any _ :number i) (+ i 1))"))
+-  (includes result "(_, i)"))
++  (includes result "typeof i !== \"number\"")
++  (includes result "return i + 1"))
+ 
+ (test
+   "fn: _ as parameter at runtime"

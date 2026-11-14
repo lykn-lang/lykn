@@ -3,11 +3,32 @@ project: project03-language-evolution
 arc: arc04-qualified-adts
 slice: slice03-local-qualified-nominal-core
 status: active
-version: "1.40"
+version: "1.41"
 depends-on: [slice01-contract-and-emission-design, slice02-existing-adt-correctness]
 ---
 
 # Local qualified nominal core
+
+2026-11-13 v1.41: independent Sol HOLDS public21 on R01 at unchanged clean
+dba24d40/tree0ad99ea5. New CatchBinding mode accidentally skips the old default-
+LEFT D2 traversal: valid nested raw-arrow input control compiles/runs0/output1;
+changing only input→eval wrongly compiles then runtime1/SyntaxError. Native
+already rejects eval. [Independent HOLD](artifacts/increment-b2b3/public/cdc/README.md)
+preserves causal source/witnesses; focused187/43steps and bounded supplements
+pass, while independent full/M6/citation/size remain deliberately UNRUN.
+Root verifies frozen archivefe8598a9ac2f16db2ce824e231559207ce571a4fe15e0f0bd14a25f48a16bc4c,
+122entries and archived/current README cmp0. Source/build returns clean to root.
+[Iteration22](cc-prompt-iteration22.md) restores only preexisting non-TypedParameter
+default-left traversal, keeping catch excluded from new canonical spread/RHS
+rules, with positive/strict-name negatives on public/browser and exact3paths.
+Separate Sol confirms source-ready; root issues22 with source/build transfer
+on actual dispatch. Earlier21 and all original
+failures remain; no broader catch grammar or reader repair is inferred.
+S06 audit inputs include replaced internal helper exports (paramNameNodes/
+paramTypeChecks→prepared helpers), unchanged public four-argument buildTypeCheck,
+ordinary-rest diagnostics now showing source parameter names and literal-key
+AST/emission changes. Their actual public/guide/book impact remains S06's job.
+B2-DISCARD-P and all broader gates remain open; native acceptance is unchanged.
 
 2026-11-13 v1.40: Luna returns public21 proposed-done at clean
 dba24d4063f34551c30590c884a495c8ca57298f/tree0ad99ea5838a463ee8aa680005fae472a0b8135c.
@@ -314,10 +335,11 @@ depth, supported native quotation paths, kernel-only D1 scope corrections and
 validation-only class-member queries. Existing source Func/class aggregate
 scope issues are explicit B2 inputs, not new IC-01 expansion claims.
 
-**Current assignment:** [iteration21](cc-prompt-iteration21.md), issued2026-11-13
-for B2-DISCARD-P against native accepted759567f9/tree52dd6558. Luna has returned
-clean proposed-donedba24d40/tree0ad99ea5; root owns source/build pending actual
-separate Sol review dispatch, and retains design/planning/Git/ledger.
+**Current assignment:** [iteration22](cc-prompt-iteration22.md), issued2026-11-13
+for public R01 against clean dba24d40/tree0ad99ea5. Root and separate Sol confirm
+source-ready; exclusive source/build transfers to Luna on actual dispatch.
+Root retains design/planning/Git/ledger; separate Sol reviews the corrected
+committed candidate. Predecessor21 remains held on R01; native759 is accepted.
 The accepted20 predecessor was issued
 2026-11-13 against accepted57c76c99cbed07ff992e78aac8afefa4bdf0b2ad/
 treef044d795e88c3dac8e84a73a557cf071edd5327c plus Luna's retained authorized18
@@ -367,7 +389,8 @@ gates survive. No release edits/integration, remote CI, push or publication.
 | cc-prompt-iteration18.md | 2026-11-13 | iteration17 | Operator discard policy, native Surface private values/guards and effects | Retained15-test/CLI checkpoint; refined by19 before full gate/commit, no independent acceptance |
 | cc-prompt-iteration19.md | 2026-11-13 | iteration18 | Source-only export names and canonical spread-pattern/projector parity, preserving catch extent | Retained23-test checkpoint; refined by20 after full01/02 oracle migrations, not accepted |
 | cc-prompt-iteration20.md | 2026-11-13 | iteration19 | Explicit native export JSON and actual public/native ESM parity oracle | Independently accepted759567f9/tree52dd6558 for B2-DISCARD-N only; exact8paths, parent scope remains open |
-| cc-prompt-iteration21.md | 2026-11-13 | iteration20 | Public prepared discard values/guards/scope/export/pattern delivery | CC proposed-donedba24d40/tree0ad99ea5, exact13 paths and final gates; separate Sol software review pending |
+| cc-prompt-iteration21.md | 2026-11-13 | iteration20 | Public prepared discard values/guards/scope/export/pattern delivery | Independent R01 HOLD atdba24d40/tree0ad99ea5; focused187/supplements retained, full gates unrun |
+| cc-prompt-iteration22.md | 2026-11-13 | iteration21 | Restore preexisting nested catch default-left validation while preserving grammar isolation | Issued after separate source-readiness; exact3paths, Luna then separate Sol |
 
 The A correction loop used three refinement passes; B1 required no software
 correction. IC-01 is a distinct authorized usable prerequisite, not a retry

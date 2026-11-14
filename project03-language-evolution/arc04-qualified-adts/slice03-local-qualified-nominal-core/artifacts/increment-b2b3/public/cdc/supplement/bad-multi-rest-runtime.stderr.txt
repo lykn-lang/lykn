@@ -1,0 +1,5 @@
+error: Uncaught (in promise) TypeError: choose: rest arg 'tail' expected number, got string
+        throw new lyknIntrinsicTypeError0("choose: rest arg 'tail' expected number, got " + typeof discardElement__gensym0);
+              ^
+    at choose (file:///Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/arc04-qualified-adts/slice03-local-qualified-nominal-core/artifacts/increment-b2b3/public/cdc/supplement/bad-multi-rest.mjs:12:15)
+    at file:///Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/arc04-qualified-adts/slice03-local-qualified-nominal-core/artifacts/increment-b2b3/public/cdc/supplement/bad-multi-rest.mjs:26:13

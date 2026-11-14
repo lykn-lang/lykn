@@ -1,0 +1,4 @@
+error: Uncaught (in promise) TypeError: bind '_': expected number, got string
+  throw new lyknIntrinsicTypeError0("bind '_': expected number, got " + typeof discardValue__gensym0);
+        ^
+    at file:///Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/arc04-qualified-adts/slice03-local-qualified-nominal-core/artifacts/increment-b2b3/public/cdc/supplement/bad-export.mjs:6:9

@@ -1,0 +1,4 @@
+(func choose
+  (:args ((array :number first (rest :number tail))) :body first)
+  (:args (:string _) :body 0))
+(console:log (choose (array 1 2 "bad")))

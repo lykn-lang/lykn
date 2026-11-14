@@ -1,0 +1,17 @@
+   178	    if (args[0]) walkPatternDefaults(args[0], out, inScope, PatternGrammar.BINDING_PATTERN);
+   179	    if (args[1]) walk(args[1], out, inScope);
+   180	    walkSequence(args.slice(2), out, extendNames(inScope, sites.map((site) => site.name)));
+   181	    return;
+   182	  }
+   183	
+   184	  if (headName === "catch") {
+   185	    const sites = bindingsIntroduced(form);
+   186	    out.push(...sites);
+   187	    const args = form.values.slice(1);
+   188	    if (args[0]) walkPatternDefaults(args[0], out, inScope, PatternGrammar.CATCH_BINDING);
+   189	    walkSequence(args.slice(1), out, extendNames(inScope, sites.map((site) => site.name)));
+   190	    return;
+   191	  }
+   192	
+   193	  if (headName === "const" || headName === "let" || headName === "var" ||
+   194	      headName === "kernel:const" || headName === "kernel:let" || headName === "kernel:var") {

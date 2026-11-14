@@ -1,0 +1,6 @@
+6:1: warning: unused binding 'compiled'
+  suggestion: prefix with underscore: _compiled
+3:1: warning: unused binding 'positive'
+  suggestion: prefix with underscore: _positive
+5:1: warning: unused binding 'negative'
+  suggestion: prefix with underscore: _negative

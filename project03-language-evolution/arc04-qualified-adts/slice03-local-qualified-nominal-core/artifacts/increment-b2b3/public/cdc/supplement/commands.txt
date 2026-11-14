@@ -1,0 +1,11 @@
+CWD=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+receipt=/Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/arc04-qualified-adts/slice03-local-qualified-nominal-core/artifacts/increment-b2b3/public/cdc/supplement
+target/release/lykn compile "$receipt/prepare.lykn" -o "$receipt/prepare.mjs"
+target/release/lykn compile "$receipt/consumer.lykn" -o "$receipt/consumer.mjs"
+deno run --frozen --cached-only --deny-net --no-prompt --allow-read="$receipt" --allow-write="$receipt" --config project.json "$receipt/prepare.mjs"
+CWD=/private/tmp/lykn-b2-discard-public-cdc
+deno run --no-config --cached-only --no-npm --no-remote --deny-net --no-prompt "$receipt/positive.mjs"
+deno run --no-config --cached-only --no-npm --no-remote --deny-net --no-prompt "$receipt/consumer.mjs"
+deno run --no-config --cached-only --no-npm --no-remote --deny-net --no-prompt "$receipt/bad-array.mjs"
+deno run --no-config --cached-only --no-npm --no-remote --deny-net --no-prompt "$receipt/bad-export.mjs"
+deno run --no-config --cached-only --no-npm --no-remote --deny-net --no-prompt "$receipt/bad-multi-rest.mjs"

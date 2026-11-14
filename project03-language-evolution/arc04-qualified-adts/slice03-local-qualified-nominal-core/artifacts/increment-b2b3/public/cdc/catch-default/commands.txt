@@ -1,0 +1,15 @@
+target/release/lykn check "$receipt/positive.lykn"
+target/release/lykn check "$receipt/reserved.lykn"
+target/release/lykn compile "$receipt/prepare.lykn" -o "$receipt/prepare.mjs"
+deno run --frozen --cached-only --deny-net --no-prompt --allow-read="$receipt" --allow-write="$receipt" --config project.json "$receipt/prepare.mjs"
+The typed-source fn variant above remains an attempted control: current legacy
+catch does not expand its parameter, leaving fn raw in generated code. It is
+not the accepted public positive and was not executed. The causal pair uses
+existing raw kernel arrow syntax (no new catch grammar).
+target/release/lykn check "$receipt/positive-kernel.lykn"
+target/release/lykn check "$receipt/reserved-kernel.lykn"
+target/release/lykn compile "$receipt/prepare-kernel.lykn" -o "$receipt/prepare-kernel.mjs"
+deno run --frozen --cached-only --deny-net --no-prompt --allow-read="$receipt" --allow-write="$receipt" --config project.json "$receipt/prepare-kernel.mjs"
+CWD=/private/tmp/lykn-b2-discard-public-cdc
+deno run --no-config --cached-only --no-npm --no-remote --deny-net --no-prompt "$receipt/positive-kernel.mjs"
+deno run --no-config --cached-only --no-npm --no-remote --deny-net --no-prompt "$receipt/reserved-kernel.mjs"

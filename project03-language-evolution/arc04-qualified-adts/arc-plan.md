@@ -2,11 +2,21 @@
 project: project03-language-evolution
 arc: arc04-qualified-adts
 status: active
-version: "1.25"
+version: "1.26"
 related: [project07-core-library-research]
 ---
 
 # Qualified ADTs
+
+2026-11-13 v1.26 current review: independent Sol HOLDS public21 atdba24d40 on
+R01, a lost preexisting nested catch-default validation walk. Actual valid raw
+arrow runs0 and prints1; reserved eval compiles then fails ESM with SyntaxError.
+Focused187 and bounded supplements pass, full/M6/citation/size intentionally
+unrun. [S03 iteration22](slice03-local-qualified-nominal-core/cc-prompt-iteration22.md)
+restores that traversal in exact3paths and preserves catch grammar isolation;
+issued after separate source-readiness, source/build transferring on actual
+dispatch. B2-DISCARD-P stays open, native
+acceptance and all nominal/API/docs/book/human gates remain unchanged.
 
 2026-11-13 v1.25 current handoff: public21 is CC proposed-done at clean
 dba24d40/tree0ad99ea5, exact13 source/test paths. Its final corrected-tree
@@ -166,6 +176,9 @@ Project07's original research evidence, final synthesis and library handoffs
 survive this detour, including every YAML and human-review obligation.
 
 ## Version history
+
+- 2026-11-13 v1.26: Record independent R01 HOLD on catch-default traversal and
+  source-ready issued22 correction, preserving all original evidence/parent gates.
 
 - 2026-11-13 v1.25: Record public21 proposed-donedba24d40 and final corrected
   gate evidence, exact reader-process cleanup and routed reader finding.

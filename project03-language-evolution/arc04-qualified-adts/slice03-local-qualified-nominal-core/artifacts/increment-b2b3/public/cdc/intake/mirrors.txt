@@ -1,0 +1,1 @@
+All five direct cmp commands returned0; empty tool stdout.

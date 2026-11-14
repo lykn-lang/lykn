@@ -1,0 +1,1 @@
+/Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/arc04-qualified-adts/slice03-local-qualified-nominal-core/artifacts/increment-b2b3/public/cdc/catch-default/positive-kernel.lykn: ok (1 top-level expressions)

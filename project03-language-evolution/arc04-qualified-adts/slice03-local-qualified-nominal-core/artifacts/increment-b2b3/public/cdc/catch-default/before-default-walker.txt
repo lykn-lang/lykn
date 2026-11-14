@@ -1,0 +1,28 @@
+}
+
+function walkPatternDefaults(pattern, out, inScope, grammar) {
+  if (pattern?.type !== "list") return;
+  const head = pattern.values[0]?.type === "atom" ? pattern.values[0].value : "";
+  if (head === "default") {
+    const typed = grammar === PatternGrammar.TYPED_PARAMETER;
+    if (grammar === PatternGrammar.BINDING_PATTERN) walkPatternDefaults(pattern.values[1], out, inScope, grammar);
+    const value = pattern.values[typed ? 3 : 2];
+    if (value) walk(value, out, inScope);
+    return;
+  }
+  if (head === "rest") {
+    const typed = grammar === PatternGrammar.TYPED_PARAMETER;
+    walkPatternDefaults(pattern.values[typed ? 2 : 1], out, inScope, grammar);
+    return;
+  }
+  if (head !== "array" && head !== "object") return;
+  for (const member of pattern.values.slice(1)) {
+    if (member?.type !== "list") continue;
+    const memberHead = member.values[0]?.type === "atom" ? member.values[0].value : "";
+    if (memberHead === "alias") {
+      const typed = grammar === PatternGrammar.TYPED_PARAMETER;
+      walkPatternDefaults(member.values[typed ? 3 : 2], out, inScope, grammar);
+      if (!typed && member.values[3]) walk(member.values[3], out, inScope);
+    } else if (["default", "rest", "array", "object"].includes(memberHead)) {
+      walkPatternDefaults(member, out, inScope, grammar);
+    }

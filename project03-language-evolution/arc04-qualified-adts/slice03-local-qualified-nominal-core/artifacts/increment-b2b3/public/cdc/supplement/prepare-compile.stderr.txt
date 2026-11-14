@@ -1,0 +1,14 @@
+8:1: warning: unused binding 'bad-array'
+  suggestion: prefix with underscore: _bad-array
+12:1: warning: unused binding 'bad-rest'
+  suggestion: prefix with underscore: _bad-rest
+10:1: warning: unused binding 'bad-export'
+  suggestion: prefix with underscore: _bad-export
+6:1: warning: unused binding 'exports-source'
+  suggestion: prefix with underscore: _exports-source
+21:1: warning: unused binding 'first-param'
+  suggestion: prefix with underscore: _first-param
+4:1: warning: unused binding 'positive'
+  suggestion: prefix with underscore: _positive
+16:1: warning: unused binding 'failed'
+  suggestion: prefix with underscore: _failed

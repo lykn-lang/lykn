@@ -1,0 +1,912 @@
+// DD-61 §A2 — the binding-position walker (JS).
+//
+// The single per-backend component that knows what binds: every DD-60 binding
+// position — params of func/fn/genfunc/genfn/lambda, bind, destructuring
+// patterns, loop bindings (for-of/for-in/for-await-of), class-method params,
+// and the kernel: declaration name slots. Both D2 (the reserved-word validator,
+// this slice) and D1 (the resolver env, slice05) are clients, so binding
+// knowledge lives in exactly one place per backend.
+//
+// Mirrors `crates/lykn-lang/src/binding.rs`; shape-parity is pinned by the
+// shared fixtures in `test/expander/binding-walker-parity.test.js`. It only
+// *identifies* positions — it changes no expansion behavior (that is slice05).
+
+import { RESERVED_WORDS } from "./reserved-words.js";
+import { toJsIdentifier } from "./identifier.js";
+import { formHead, isCompilerPrivateAtom } from "./compiler-private-atoms.js";
+import { isKernel } from "./kernel-mark.js";
+import { FUNC_CLAUSE_KEYS, parseKeywordClauses } from "./function-clauses.js";
+import { atOccurrencePath, classRegionLayout, functionRegionLayout } from "./lexical-regions.js";
+import { KERNEL_FORMS, KERNEL_ONLY_FORMS } from "./kernel-forms.js";
+
+/** @typedef {'param'|'bind'|'loop-binding'|'class-method-param'} BindingKind */
+/**
+ * @typedef {{ name: string, kind: BindingKind, node?: object }} BindingSite
+ * `node` is the binder's atom node (present for leaf name sites) — the
+ * resolution pass (slice10) tags it `def`. D2 (`validateReservedNames`) reads
+ * only `name`/`kind`, so `node` is purely additive.
+ */
+
+const DECL_HEADS = new Set(["const", "let", "var", "function", "function*"]);
+const ENCLOSING_KINDS = new Set(["bind", "import-local"]);
+const SEQUENCE = { kind: "seq" };
+const PatternGrammar = Object.freeze({
+  TYPED_PARAMETER: "typed-parameter",
+  BINDING_PATTERN: "binding-pattern",
+});
+
+/**
+ * Recursively walk `forms`, collecting every binding site in source order.
+ * @param {Array<object>} forms
+ * @returns {BindingSite[]}
+ */
+export function walkBindings(forms, { bindings = new Set() } = {}) {
+  const out = [];
+  walkSequence(forms, out, new Set(bindings));
+  return out;
+}
+
+function extendNames(inScope, names) {
+  if (names.length === 0) return inScope;
+  const next = new Set(inScope);
+  for (const name of names) next.add(name);
+  return next;
+}
+
+function walkSequence(forms, out, inScope) {
+  walkSequenceReturning(forms, out, inScope);
+}
+
+function walkSequenceReturning(forms, out, inScope) {
+  let current = new Set(inScope);
+  for (const form of forms) {
+    walk(form, out, current);
+    current = extendNames(current, enclosingDeclarationSites(form, current).map((site) => site.name));
+  }
+  return current;
+}
+
+function walk(form, out, inScope) {
+  if (form?.type === "cons") {
+    walk(form.car, out, inScope);
+    walk(form.cdr, out, inScope);
+    return;
+  }
+  if (form?.type !== "list") return;
+
+  const head = form.values[0];
+  const rawHead = head?.type === "atom" && head.binding === undefined
+    ? head.value
+    : null;
+  const headName = rawHead !== null && (isKernel(form) || !inScope.has(rawHead)) ? rawHead : null;
+  if (head?.type === "atom" && rawHead === "match") {
+    if (headName === null) {
+      // A bound or tagged `match` is a call. Its arguments are ordinary
+      // expressions in the incoming environment; call operands do not hoist.
+      for (const argument of form.values.slice(1)) walk(argument, out, inScope);
+      return;
+    }
+
+    // Patterns and :when markers are structure. Project every real pattern
+    // site exactly once before visiting executable source regions.
+    out.push(...bindingsIntroduced(form));
+    const args = form.values.slice(1);
+    if (args.length > 0) walk(args[0], out, inScope);
+    for (const clause of args.slice(1)) {
+      if (clause?.type !== "list" || clause.values.length === 0) continue;
+      const patternSites = matchPatternNames(clause.values[0]);
+      const clauseScope = extendNames(inScope, patternSites.map((site) => site.name));
+      const guard = isMatchGuardSlot(clause) ? clause.values[2] : null;
+      if (guard !== null) walk(guard, out, clauseScope);
+      const bodyStart = guard === null ? 1 : 3;
+      walkSequence(clause.values.slice(bodyStart), out, clauseScope);
+    }
+    return;
+  }
+
+  if (headName === "quote" || headName === "kernel:quote") return;
+  if (headName === "quasiquote" || headName === "kernel:quasiquote") {
+    if (form.values[1]) walkTemplate(form.values[1], out, inScope, 1);
+    return;
+  }
+  if (headName === "obj") {
+    const args = form.values.slice(1);
+    for (let i = 0; i < args.length; i += 2) {
+      const key = args[i];
+      const value = args[i + 1];
+      if (key?.type === "list") walk(key, out, inScope);
+      if (value) walk(value, out, inScope);
+    }
+    return;
+  }
+  if (headName === "object" || headName === "kernel:object") {
+    for (const property of form.values.slice(1)) {
+      if (property?.type !== "list") continue;
+      const marker = property.values[0];
+      const propertyHead = marker?.type === "atom" ? marker.value : "";
+      if (propertyHead === "spread") {
+        for (const value of property.values.slice(1)) walk(value, out, inScope);
+      } else if (marker?.type === "list" && marker.values[0]?.type === "atom" && marker.values[0].value === "computed") {
+        for (const key of marker.values.slice(1)) walk(key, out, inScope);
+        if (property.values[1]) walk(property.values[1], out, inScope);
+      } else if (marker?.type === "list") {
+        for (const value of property.values) walk(value, out, inScope);
+      } else if (property.values.length > 1) {
+        for (const value of property.values.slice(1)) walk(value, out, inScope);
+      }
+    }
+    return;
+  }
+  if (headName === "class" || headName === "class-expr") {
+    out.push(...bindingsIntroduced(form).filter((site) => site.kind === "bind"));
+    const classScope = extendNames(inScope, bindingsIntroduced(form)
+      .filter((site) => site.kind === "bind").map((site) => site.name));
+    const bases = form.values[2];
+    if (bases?.type === "list") {
+      for (const base of bases.values) walk(base, out, classScope);
+    }
+    const layout = classRegionLayout(form);
+    for (const member of layout?.members ?? []) {
+      walkClassMember(form, atOccurrencePath(form, member.path), out, classScope, true, member);
+    }
+    return;
+  }
+
+  if (headName === "func" || headName === "genfunc") {
+    walkSourceFunction(form, out, inScope);
+    return;
+  }
+
+  if (headName === null) {
+    // A computed callee and each operand are independent executable regions.
+    if (!Array.isArray(form.values)) throw new TypeError(`non-array AST list: ${JSON.stringify(form)}`);
+    for (const child of form.values) walk(child, out, inScope);
+    return;
+  }
+
+  if (headName === "bind") {
+    out.push(...bindingsIntroduced(form));
+    walkBindOperands(form.values.slice(1), out, inScope);
+    return;
+  }
+
+  if (["for-of", "for-in", "for-await-of"].includes(headName)) {
+    const sites = bindingsIntroduced(form);
+    out.push(...sites);
+    const args = form.values.slice(1);
+    if (args[0]) walkPatternDefaults(args[0], out, inScope, PatternGrammar.BINDING_PATTERN);
+    if (args[1]) walk(args[1], out, inScope);
+    walkSequence(args.slice(2), out, extendNames(inScope, sites.map((site) => site.name)));
+    return;
+  }
+
+  if (headName === "catch") {
+    const sites = bindingsIntroduced(form);
+    out.push(...sites);
+    const args = form.values.slice(1);
+    if (args[0]) walkPatternDefaults(args[0], out, inScope, PatternGrammar.BINDING_PATTERN);
+    walkSequence(args.slice(1), out, extendNames(inScope, sites.map((site) => site.name)));
+    return;
+  }
+
+  if (headName === "const" || headName === "let" || headName === "var" ||
+      headName === "kernel:const" || headName === "kernel:let" || headName === "kernel:var") {
+    out.push(...bindingsIntroduced(form));
+    const pattern = form.values[1];
+    if (pattern) walkPatternDefaults(pattern, out, inScope, PatternGrammar.BINDING_PATTERN);
+    for (const initializer of form.values.slice(2)) walk(initializer, out, inScope);
+    return;
+  }
+
+  const kernelFunction = ["function", "function*", "kernel:function", "kernel:function*", "=>", "kernel:=>", "kernel:lambda"].includes(headName) || (headName === "lambda" && isKernel(form));
+  const sourceFunction = ["fn", "genfn"].includes(headName) || (headName === "lambda" && !isKernel(form));
+  if (kernelFunction || sourceFunction) {
+    const sites = bindingsIntroduced(form);
+    out.push(...sites);
+    const functionScope = extendNames(inScope, sites.map((site) => site.name));
+    const layout = functionRegionLayout(form);
+    if (!layout) return;
+    for (const clause of layout.clauses) {
+      for (const path of clause.defaultPaths) {
+        const value = atOccurrencePath(form, path);
+        if (value) walk(value, out, functionScope);
+      }
+      for (const path of clause.prePaths) {
+        const value = atOccurrencePath(form, path);
+        if (value) walk(value, out, functionScope);
+      }
+      const body = clause.bodyPaths.map((path) => atOccurrencePath(form, path)).filter(Boolean);
+      walkSequence(body, out, functionScope);
+      for (const path of clause.postPaths) {
+        const value = atOccurrencePath(form, path);
+        if (value) walk(value, out, functionScope);
+      }
+    }
+    return;
+  }
+
+  const plan = bindingScopePlan(form, headName);
+  if (plan.kind === "call") {
+    for (const child of form.values.slice(1)) walk(child, out, inScope);
+    return;
+  }
+  out.push(...bindingsIntroduced(form));
+  const children = form.values;
+  if (plan.kind === "conditional") {
+    if (children.length > 1) walk(children[1], out, inScope);
+    for (const branch of children.slice(2)) walk(branch, out, inScope);
+    return;
+  }
+  if (plan.kind === "seq") {
+    walkSequence(children, out, inScope);
+    return;
+  }
+
+  const split = Math.min(plan.bodyStart, children.length);
+  for (const child of children.slice(0, split)) walk(child, out, inScope);
+  walkSequence(
+    children.slice(split),
+    out,
+    extendNames(inScope, plan.names),
+  );
+}
+
+function walkBindOperands(args, out, inScope) {
+  const current = new Set(inScope);
+  if (args.length === 2 || args.length === 3) {
+    const patternIndex = args.length === 2 ? 0 : 1;
+    walkPatternDefaults(args[patternIndex], out, current, PatternGrammar.BINDING_PATTERN);
+    walk(args[patternIndex + 1], out, current);
+    return;
+  }
+  if (args.length < 4) return;
+  for (let i = 0; i < args.length;) {
+    let patternIndex = i;
+    if (args[i]?.type === "keyword") patternIndex++;
+    const valueIndex = patternIndex + 1;
+    if (valueIndex >= args.length) return;
+    walkPatternDefaults(args[patternIndex], out, current, PatternGrammar.BINDING_PATTERN);
+    walk(args[valueIndex], out, current);
+    for (const site of patternNames(args[patternIndex], "bind", PatternGrammar.BINDING_PATTERN)) current.add(site.name);
+    i = valueIndex + 1;
+  }
+}
+
+function walkPatternDefaults(pattern, out, inScope, grammar) {
+  if (pattern?.type !== "list") return;
+  const head = pattern.values[0]?.type === "atom" ? pattern.values[0].value : "";
+  if (head === "default") {
+    const typed = grammar === PatternGrammar.TYPED_PARAMETER;
+    if (grammar === PatternGrammar.BINDING_PATTERN) walkPatternDefaults(pattern.values[1], out, inScope, grammar);
+    const value = pattern.values[typed ? 3 : 2];
+    if (value) walk(value, out, inScope);
+    return;
+  }
+  if (head === "rest") {
+    const typed = grammar === PatternGrammar.TYPED_PARAMETER;
+    walkPatternDefaults(pattern.values[typed ? 2 : 1], out, inScope, grammar);
+    return;
+  }
+  if (head !== "array" && head !== "object") return;
+  for (const member of pattern.values.slice(1)) {
+    if (member?.type !== "list") continue;
+    const memberHead = member.values[0]?.type === "atom" ? member.values[0].value : "";
+    if (memberHead === "alias") {
+      const typed = grammar === PatternGrammar.TYPED_PARAMETER;
+      walkPatternDefaults(member.values[typed ? 3 : 2], out, inScope, grammar);
+      if (!typed && member.values[3]) walk(member.values[3], out, inScope);
+    } else if (["default", "rest", "array", "object"].includes(memberHead)) {
+      walkPatternDefaults(member, out, inScope, grammar);
+    }
+  }
+}
+
+function walkClassMember(root, member, out, classScope, validation = false, layout = null) {
+  if (member?.type !== "list" || member.values.length === 0) return;
+  const head = member.values[0]?.type === "atom" ? member.values[0].value : "";
+  if (head === "static" || head === "async") {
+    if (layout?.inner) walkClassMember(root, atOccurrencePath(root, layout.inner.path), out, classScope, validation, layout.inner);
+    else for (const nested of member.values.slice(1)) walkClassMember(root, nested, out, classScope, validation);
+    return;
+  }
+  if (head === "field") {
+    for (const path of layout?.initPaths ?? []) {
+      const init = atOccurrencePath(root, path);
+      if (init) walk(init, out, classScope);
+    }
+    return;
+  }
+  const paramsIndex = head === "get" || head === "set" ? 2 : 1;
+  const params = member.values[paramsIndex];
+  if (params?.type !== "list") {
+    for (const child of member.values.slice(1)) walk(child, out, classScope);
+    return;
+  }
+  const sites = kernelParamNames(params).map((site) => ({ ...site, kind: "class-method-param" }));
+  out.push(...sites);
+  const methodScope = extendNames(classScope, sites.map((site) => site.name));
+  if (validation) {
+    for (const path of layout?.defaultPaths ?? []) {
+      const value = atOccurrencePath(root, path);
+      if (value) walk(value, out, methodScope);
+    }
+  }
+  if (layout) {
+    for (const path of layout.bodyPaths) {
+      const child = atOccurrencePath(root, path);
+      if (child) walk(child, out, methodScope);
+    }
+  } else for (const child of member.values.slice(paramsIndex + 1)) walk(child, out, methodScope);
+}
+
+function walkSourceFunction(form, out, inScope) {
+  const args = form.values.slice(1);
+  const name = args[0]?.type === "atom" && args[0].value !== "_"
+    ? [{ name: args[0].value, kind: "bind", node: args[0] }]
+    : [];
+  out.push(...name);
+  const functionScope = extendNames(inScope, name.map((site) => site.name));
+  const layout = functionRegionLayout(form);
+  if (!layout) return;
+  for (const clause of layout.clauses) {
+    const params = clause.paramsPath ? atOccurrencePath(form, clause.paramsPath) : null;
+    const sites = params ? paramListNames(params) : [];
+    out.push(...sites);
+    let clauseScope = extendNames(functionScope, sites.map((site) => site.name));
+    for (const path of clause.defaultPaths) {
+      const value = atOccurrencePath(form, path);
+      if (value) walk(value, out, clauseScope);
+    }
+    const pre = clause.prePaths.map((path) => atOccurrencePath(form, path))[0];
+    const post = clause.grammar === "SourceGenfunc"
+      ? null
+      : clause.postPaths.map((path) => atOccurrencePath(form, path))[0];
+    if (pre) walk(pre, out, clauseScope);
+    const body = clause.bodyPaths.map((path) => atOccurrencePath(form, path)).filter(Boolean);
+    clauseScope = walkSequenceReturning(body, out, clauseScope);
+    if (post) walk(post, out, clauseScope);
+  }
+}
+
+function walkTemplate(node, out, inScope, depth) {
+  if (node?.type !== "list") return;
+  const head = node.values[0]?.type === "atom" ? node.values[0].value : null;
+  if (head === "quasiquote") {
+    if (node.values[1]) walkTemplate(node.values[1], out, inScope, depth + 1);
+    return;
+  }
+  if (head === "unquote" || head === "unquote-splicing") {
+    if (depth === 1) {
+      if (node.values[1]) walk(node.values[1], out, inScope);
+    } else if (node.values[1]) {
+      walkTemplate(node.values[1], out, inScope, depth - 1);
+    }
+    return;
+  }
+  for (const child of node.values) walkTemplate(child, out, inScope, depth);
+}
+
+/** Extend an immutable source environment with a collection of names. */
+export function extendBindingEnv(env, names) {
+  if (names.length === 0) return env;
+  const next = new Set(env);
+  for (const name of names) next.add(name);
+  return next;
+}
+
+/** Value-scope names introduced by a form, excluding labels. */
+export function bodyScopeNames(form) {
+  return bindingsIntroduced(form)
+    .filter((site) => site.kind !== "label")
+    .map((site) => site.name);
+}
+
+/** Names visible to following siblings (`bind` and import locals). */
+export function hoistedNames(form) {
+  return bindingsIntroduced(form)
+    .filter((site) => site.kind !== "label" && ENCLOSING_KINDS.has(site.kind))
+    .map((site) => site.name);
+}
+
+/**
+ * Binding sites a dispatched form actually contributes to its sibling scope.
+ * Wrapper traversal follows the single payload slot consumed by export/async;
+ * default export accepts only a direct named declaration (or async wrapper).
+ */
+export function enclosingDeclarationSites(form, inScope) {
+  const head = form?.type === "list" ? formHead(form.values[0]) : null;
+  if (head === null || (inScope.has(head) && !isKernel(form))) return [];
+  const base = head.startsWith("kernel:") ? head.slice("kernel:".length) : head;
+  if (head.startsWith("kernel:") && !KERNEL_FORMS.has(base)) return [];
+
+  if (base === "export") {
+    const args = form.values.slice(1);
+    if (args[0]?.type === "atom" && args[0].value === "default") {
+      return args[1] ? defaultExportSites(args[1], inScope) : [];
+    }
+    return args[0] ? enclosingDeclarationSites(args[0], inScope) : [];
+  }
+  if (base === "async") {
+    return form.values[1]
+      ? enclosingDeclarationSites(form.values[1], inScope)
+      : [];
+  }
+  return directEnclosingSites(form);
+}
+
+function directEnclosingSites(form) {
+  return bindingsIntroduced(form)
+    .filter((site) => site.kind !== "label" && ENCLOSING_KINDS.has(site.kind));
+}
+
+function defaultExportSites(payload, inScope) {
+  const head = payload?.type === "list" ? formHead(payload.values[0]) : null;
+  if (head === null || (inScope.has(head) && !isKernel(payload))) return [];
+  const base = head.startsWith("kernel:") ? head.slice("kernel:".length) : head;
+  if (head.startsWith("kernel:") && !KERNEL_FORMS.has(base)) return [];
+  if (base === "async") {
+    return payload.values[1]
+      ? defaultExportSites(payload.values[1], inScope)
+      : [];
+  }
+  if (!["func", "genfunc", "class", "function", "function*"].includes(base)) return [];
+  return directEnclosingSites(payload);
+}
+
+/**
+ * Describe the source binding scope for a form. The caller supplies the
+ * already resolution-checked head name so this module stays independent of
+ * compiler dispatch and tagged/bound heads can pass null.
+ */
+export function bindingScopePlan(form, headName) {
+  if (form?.type !== "list" || form.values.length === 0) return SEQUENCE;
+  if (headName === null) return { kind: "call" };
+  if (headName === "class" || headName === "class-expr") {
+    const layout = classRegionLayout(form);
+    return layout ? { kind: "class", layout } : SEQUENCE;
+  }
+  if (headName === "do" || headName === "block" || headName === "seq") return SEQUENCE;
+  if (["function", "function*", "=>", "lambda"].includes(headName) && isKernel(form)) {
+    const layout = functionRegionLayout(form);
+    return layout ? { kind: "function", layout } : SEQUENCE;
+  }
+  const kernel = headName?.startsWith("kernel:")
+    ? headName.slice("kernel:".length)
+    : headName;
+  if (!KERNEL_FORMS.has(kernel) && !KERNEL_ONLY_FORMS.has(kernel) &&
+      !["func", "genfunc", "fn", "genfn", "lambda", "class", "class-expr"].includes(headName)) {
+    return { kind: "call" };
+  }
+  if (["function", "function*", "=>", "lambda"].includes(kernel)) {
+    return { kind: "body", names: bodyScopeNames(form), bodyStart: 0 };
+  }
+  switch (headName) {
+    case "if":
+      return { kind: "conditional" };
+    case "for-of":
+    case "for-in":
+    case "for-await-of":
+      return { kind: "body", names: bodyScopeNames(form), bodyStart: 3 };
+    case "if-let":
+    case "when-let":
+    case "match":
+      return { kind: "body", names: bodyScopeNames(form), bodyStart: 2 };
+    default: {
+      if (headName === "bind" || DECL_HEADS.has(kernel)) return SEQUENCE;
+      const names = bodyScopeNames(form);
+      return names.length === 0
+        ? SEQUENCE
+        : { kind: "body", names, bodyStart: 0 };
+    }
+  }
+}
+
+/** Whether a match clause has the classifier-owned optional guard slot. */
+export function isMatchGuardSlot(clause) {
+  return clause?.type === "list" && clause.values.length >= 3 &&
+    clause.values[1]?.type === "keyword" && clause.values[1].value === "when";
+}
+
+/**
+ * Names a single form introduces (non-recursive); [] if not a binding form.
+ * The D1 env-extension hook (slice05): "entering this form, these names bind".
+ * @param {object} form
+ * @returns {BindingSite[]}
+ */
+export function bindingsIntroduced(form) {
+  if (form?.type !== "list" || form.values.length === 0) return [];
+  const head = form.values[0];
+  if (head.type !== "atom") return [];
+  const name = head.value;
+  const args = form.values.slice(1);
+  switch (name) {
+    case "bind":
+      return bindNames(args);
+    case "func":
+    case "genfunc":
+      return funcClauseParamNames(args);
+    case "fn":
+    case "genfn":
+      return args.length > 0 ? paramListNames(args[0]) : [];
+    case "lambda":
+      return args.length > 0
+        ? isKernel(form)
+          ? kernelParamNames(args[0])
+          : paramListNames(args[0])
+        : [];
+    case "kernel:lambda":
+      return args.length > 0 ? kernelParamNames(args[0]) : [];
+    case "for-of":
+    case "for-in":
+    case "for-await-of":
+      return args.length > 0 ? patternNames(args[0], "loop-binding", PatternGrammar.BINDING_PATTERN) : [];
+    case "class":
+      return classNames(args);
+    case "type":
+      return typeConstructorNames(args);
+    case "function":
+    case "function*":
+    case "kernel:function":
+    case "kernel:function*":
+      return kernelFunctionNames(args);
+    case "=>":
+    case "kernel:=>":
+      return args.length > 0 ? kernelParamNames(args[0]) : [];
+    // DD-60 refinement (2026-07-06): if-let/when-let binding patterns and match
+    // clause patterns bind names too.
+    case "if-let":
+    case "when-let":
+      return ifLetPatternNames(args);
+    case "match":
+      return matchClauseNames(args);
+    // DD-60 refinement #2 (2026-07-06): catch bindings, import locals, labels.
+    case "catch":
+      return args.length > 0 ? patternNames(args[0], "catch-binding", PatternGrammar.BINDING_PATTERN) : [];
+    case "import":
+    case "kernel:import":
+      return importLocalNames(args);
+    case "label":
+    case "kernel:label":
+      return args[0]?.type === "atom" && args[0].value !== "_"
+        ? [{ name: args[0].value, kind: "label", node: args[0] }]
+        : [];
+    default: {
+      const kernel = name.startsWith("kernel:")
+        ? name.slice("kernel:".length)
+        : name;
+      if (DECL_HEADS.has(kernel) && args.length > 0) {
+        return patternNames(args[0], "bind", PatternGrammar.BINDING_PATTERN);
+      }
+      return [];
+    }
+  }
+}
+
+/** (bind name value) / (bind :type name value) / grouped bind pairs. */
+function bindNames(args) {
+  const out = [];
+  if (args.length === 2) return patternNames(args[0], "bind", PatternGrammar.BINDING_PATTERN);
+  if (args.length === 3) return patternNames(args[1], "bind", PatternGrammar.BINDING_PATTERN);
+  if (args.length < 4) return [];
+
+  let i = 0;
+  while (i < args.length) {
+    let slot;
+    if (args[i]?.type === "keyword") {
+      if (i + 2 >= args.length) return out;
+      slot = args[i + 1];
+      i += 3;
+    } else {
+      if (i + 1 >= args.length) return out;
+      slot = args[i];
+      i += 2;
+    }
+    out.push(...patternNames(slot, "bind", PatternGrammar.BINDING_PATTERN));
+  }
+  return out;
+}
+
+/** func/genfunc: the function NAME (a binder — sweep finding) + every param. */
+function funcClauseParamNames(args) {
+  const out = [];
+  // `(func NAME …)` / `(genfunc NAME …)` — NAME lowers to `function NAME`.
+  if (args[0]?.type === "atom" && args[0].value !== "_") {
+    out.push({ name: args[0].value, kind: "bind", node: args[0] });
+  }
+  // Multi-clause: each clause is a list whose head is a func-clause *key*
+  // keyword (`:args`/`:body`/…) — not a mere keyword (a type like `:any` in a
+  // single-clause param list must not be mistaken for a clause).
+  const clauses = args.filter(
+    (a) =>
+      a?.type === "list" && a.values[0]?.type === "keyword" &&
+      FUNC_CLAUSE_KEYS.has(a.values[0].value),
+  );
+  const scan = clauses.length > 0 ? clauses.map((c) => c.values) : [args];
+  for (const seq of scan) {
+    for (let i = 0; i < seq.length; i++) {
+      if (
+        seq[i]?.type === "keyword" && seq[i].value === "args" &&
+        seq[i + 1]?.type === "list"
+      ) {
+        out.push(...paramListNames(seq[i + 1]));
+      }
+    }
+  }
+  return out;
+}
+
+/** A `(:type name …)` param list → its bound names. */
+function paramListNames(list) {
+  if (list?.type !== "list") return [];
+  const out = [];
+  for (const el of list.values) {
+    if (el.type === "keyword") continue; // type annotation
+    if (el.type === "atom") {
+      if (el.value !== "_") out.push({ name: el.value, kind: "param", node: el });
+    } else if (el.type === "list") {
+      const h = el.values[0]?.type === "atom" ? el.values[0].value : "";
+      if (h === "rest" && el.values[1]) {
+        const binding = el.values[2];
+        if (binding) out.push(...patternNames(binding, "param", PatternGrammar.TYPED_PARAMETER));
+      } else if (h === "default") {
+        const binding = el.values[2];
+        if (binding) out.push(...patternNames(binding, "param", PatternGrammar.TYPED_PARAMETER));
+      } else if (h === "array" || h === "object") {
+        out.push(...patternNames(el, "param", PatternGrammar.TYPED_PARAMETER));
+      }
+    }
+  }
+  return out;
+}
+
+function kernelFunctionNames(args) {
+  if (args[0]?.type === "list") return kernelParamNames(args[0]);
+  const out = args[0]?.type === "atom" && args[0].value !== "_"
+    ? [{ name: args[0].value, kind: "bind", node: args[0] }]
+    : [];
+  if (args[1]?.type === "list") out.push(...kernelParamNames(args[1]));
+  return out;
+}
+
+function kernelParamNames(list) {
+  if (list?.type !== "list") return [];
+  const out = [];
+  for (const param of list.values) {
+    if (param?.type === "atom") {
+      if (param.value !== "_") out.push({ name: param.value, kind: "param", node: param });
+      continue;
+    }
+    if (param?.type !== "list") continue;
+    const head = param.values[0]?.type === "atom" ? param.values[0].value : "";
+    if (head === "rest" && param.values[1]) {
+      out.push(...patternNames(param.values[1], "param", PatternGrammar.BINDING_PATTERN));
+    } else if (head === "default" && param.values[1]) {
+      out.push(...patternNames(param.values[1], "param", PatternGrammar.BINDING_PATTERN));
+    } else if (head === "array" || head === "object") {
+      out.push(...patternNames(param, "param", PatternGrammar.BINDING_PATTERN));
+    }
+  }
+  return out;
+}
+
+/** Kernel parameter-list projection shared with class lexical consumers. */
+export function kernelParameterNames(list) {
+  return kernelParamNames(list);
+}
+
+/**
+ * Class binders: the class NAME (`class NAME` — a binder, sweep finding) + every
+ * method/constructor param. Field/method names are property names (reserved
+ * words legal), so not binders.
+ */
+function classNames(args) {
+  const out = [];
+  // (class NAME (bases) member…) — NAME is args[0].
+  if (args[0]?.type === "atom" && args[0].value !== "_") {
+    out.push({ name: args[0].value, kind: "bind", node: args[0] });
+  }
+  for (const member of args.slice(1)) {
+    if (member?.type !== "list") continue;
+    const params = member.values[1];
+    if (params?.type === "list") {
+      for (const p of params.values) {
+        if (p.type === "atom" && p.value !== "_") {
+          out.push({ name: p.value, kind: "class-method-param", node: p });
+        }
+      }
+    }
+  }
+  return out;
+}
+
+/**
+ * import local names — the default-import name and every named-specifier local.
+ * Mirrors the Rust `import_local_names` and codegen `emit_import`: `(import "m")`
+ * none, `(import "m" name)` default, `(import "m" (spec…))` named,
+ * `(import "m" name (spec…))` default+named. A spec is an atom (local = name)
+ * or `(alias original local)` (local = 3rd element).
+ */
+function importLocalNames(args) {
+  const out = [];
+  const second = args[1];
+  if (!second) return out; // side-effect import
+  if (second.type === "list") {
+    importSpecs(second.values, out);
+  } else if (second.type === "atom" && second.value !== "_") {
+    out.push({ name: second.value, kind: "import-local", node: second }); // default import
+    if (args[2]?.type === "list") importSpecs(args[2].values, out);
+  }
+  return out;
+}
+
+function importSpecs(specs, out) {
+  for (const spec of specs) {
+    if (spec.type === "atom") {
+      if (spec.value !== "_") {
+        out.push({ name: spec.value, kind: "import-local", node: spec });
+      }
+    } else if (
+      spec.type === "list" && spec.values[0]?.type === "atom" &&
+      spec.values[0].value === "alias" && spec.values[2]?.type === "atom"
+    ) {
+      out.push({ name: spec.values[2].value, kind: "import-local", node: spec.values[2] });
+    }
+  }
+}
+
+/**
+ * type: `(type NAME (CtorName :type field…) …)` lowers to `function CtorName(
+ * field…)` per constructor — the constructor name and every field are binders
+ * (sweep finding). The type name itself is erased (not a runtime binder).
+ */
+function typeConstructorNames(args) {
+  const out = [];
+  for (const ctor of args.slice(1)) {
+    if (ctor?.type === "atom" && ctor.value !== "_") {
+      out.push({ name: ctor.value, kind: "bind", node: ctor });
+    }
+  }
+  for (const ctor of args.slice(1)) {
+    if (ctor?.type !== "list" || ctor.values.length === 0) continue;
+    const head = ctor.values[0];
+    if (head.type === "atom" && head.value !== "_") {
+      out.push({ name: head.value, kind: "bind", node: head }); // constructor name
+    }
+    for (const field of ctor.values.slice(1)) {
+      if (field.type === "atom" && field.value !== "_") {
+        out.push({ name: field.value, kind: "param", node: field }); // field param
+      }
+    }
+  }
+  return out;
+}
+
+/** if-let/when-let: `(if-let (BINDING expr) …)` — BINDING is a match-pattern. */
+function ifLetPatternNames(args) {
+  const pair = args[0];
+  if (pair?.type !== "list" || pair.values.length === 0) return [];
+  return matchPatternNames(pair.values[0]);
+}
+
+/** match: `(match target (PAT body…) …)` — each clause's pattern binds. */
+function matchClauseNames(args) {
+  const out = [];
+  for (const clause of args.slice(1)) {
+    if (clause?.type === "list" && clause.values.length > 0) {
+      out.push(...matchPatternNames(clause.values[0]));
+    }
+  }
+  return out;
+}
+
+/**
+ * Names bound by a match/if-let/when-let pattern — mirrors the Rust
+ * `classify_pattern`: `_`, `true`/`false`/`null`/`undefined`, PascalCase heads,
+ * and literals bind nothing; lowercase atoms bind; constructor and `obj`
+ * sub-patterns recurse.
+ */
+function matchPatternNames(pat) {
+  if (pat?.type === "atom") {
+    if (isCompilerPrivateAtom(pat)) return [];
+    const v = pat.value;
+    if (
+      v === "_" || v === "true" || v === "false" || v === "null" ||
+      v === "undefined"
+    ) {
+      return [];
+    }
+    if (/^[A-Z]/.test(v)) return []; // PascalCase — nullary constructor
+    return [{ name: v, kind: "pattern", node: pat }];
+  }
+  if (pat?.type !== "list" || pat.values.length === 0) return [];
+  const head = pat.values[0];
+  if (head.type !== "atom") return [];
+  if (head.value === "obj") {
+    const out = [];
+    for (let i = 1; i + 1 < pat.values.length; i += 2) {
+      out.push(...matchPatternNames(pat.values[i + 1]));
+    }
+    return out;
+  }
+  if (/^[A-Z]/.test(head.value)) {
+    const out = [];
+    for (const sub of pat.values.slice(1)) out.push(...matchPatternNames(sub));
+    return out;
+  }
+  return [];
+}
+
+/** Leaf names bound by a pattern: an atom or an (array …)/(object …) form. */
+export function bindingNamesInPattern(pat, kind = "bind") {
+  return patternNames(pat, kind, PatternGrammar.BINDING_PATTERN);
+}
+
+function patternNames(pat, kind, grammar) {
+  if (pat?.type === "atom") {
+    if (isCompilerPrivateAtom(pat)) return [];
+    return pat.value === "_" ? [] : [{ name: pat.value, kind, node: pat }];
+  }
+  if (pat?.type !== "list") return [];
+  const h = pat.values[0]?.type === "atom" ? pat.values[0].value : "";
+  if (h !== "array" && h !== "object") return [];
+  const out = [];
+  for (const el of pat.values.slice(1)) {
+    if (el.type === "keyword") continue;
+    if (el.type === "atom") {
+      if (el.value !== "_") out.push({ name: el.value, kind, node: el });
+    } else if (el.type === "list") {
+      const ih = el.values[0]?.type === "atom" ? el.values[0].value : "";
+      if (ih === "rest" && el.values[1]) {
+        const binding = el.values[grammar === PatternGrammar.TYPED_PARAMETER ? 2 : 1];
+        if (binding) out.push(...patternNames(binding, kind, grammar));
+      } else if (ih === "alias") {
+        const typed = grammar === PatternGrammar.TYPED_PARAMETER;
+        const binding = el.values[typed ? 3 : 2];
+        if (binding) out.push(...patternNames(binding, kind, grammar));
+      } else if (ih === "default") {
+        const binding = el.values[grammar === PatternGrammar.TYPED_PARAMETER ? 2 : 1];
+        if (binding) out.push(...patternNames(binding, kind, grammar));
+      } else if (ih === "array" || ih === "object") {
+        out.push(...patternNames(el, kind, grammar));
+      }
+    }
+  }
+  return out;
+}
+
+const RESERVED_SET = new Set(RESERVED_WORDS);
+const KIND_PHRASE = {
+  "param": "function parameter",
+  "bind": "binding name",
+  "loop-binding": "loop binding",
+  "class-method-param": "class method parameter",
+  "pattern": "pattern binding",
+  "catch-binding": "catch binding",
+  "import-local": "imported name",
+  "label": "label",
+};
+
+/**
+ * DD-60 D2: throw on the first binding position whose name is a JS reserved
+ * word — before codegen can emit invalid JS at rc=0 (the ID-44 genus). Covers
+ * `export`ed names and `kernel:` declaration name slots (walkBindings sees all).
+ * @param {Array<object>} forms
+ */
+export function validateReservedNames(forms, options = {}) {
+  for (const site of walkBindings(forms, options)) {
+    const emittedName = toJsIdentifier(site.name);
+    if (RESERVED_SET.has(emittedName) ||
+      (site.kind !== "label" && (emittedName === "eval" || emittedName === "arguments"))) {
+      const strictName = emittedName === "eval" || emittedName === "arguments";
+      const changed = emittedName !== site.name;
+      const reason = strictName
+        ? `'${site.name}'${changed ? ` (emits '${emittedName}')` : ""} is forbidden as a strict-mode binding identifier`
+        : changed
+        ? `'${site.name}' emits the JavaScript reserved word '${emittedName}' and cannot be used as a lykn ${KIND_PHRASE[site.kind]}`
+        : `'${site.name}' is a JavaScript reserved word and cannot be used as a lykn ${KIND_PHRASE[site.kind]}`;
+      throw new Error(
+        `${reason}; rename it (e.g. \`${site.name}_\`)`,
+      );
+    }
+  }
+}

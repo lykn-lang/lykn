@@ -1428,3 +1428,31 @@ Git commit/diff context whitespace. Exact diagnostics are retained in
 artifacts/increment-b2b3/root/native-cdc-whitespace-check.txt; these evidence
 bytes are preserved, not reformatted or described as a clean whole-packet
 diff. Frozen reviewer archive remains unchanged.
+
+## Public discard candidate —dba24d40 —2026-11-13 —HOLD
+
+Separate Sol6.1High review holds B2-DISCARD-P at
+dba24d4063f34551c30590c884a495c8ca57298f/
+tree0ad99ea5838a463ee8aa680005fae472a0b8135c on R01: new CatchBinding mode
+drops preexisting default-left reserved-name traversal. A supported nested catch
+raw-arrow positive runs0/prints1; changing only parameter input→eval wrongly
+succeeds through public lykn and emits illegal strict-mode code, then runtime1
+SyntaxError. Native check retains its normal eval-binding rejection. Immutable
+759 caller/walker source confirms the lost recursive path; no old runtime claim.
+
+[Independent HOLD/index](artifacts/increment-b2b3/public/cdc/README.md) and
+[source review](artifacts/increment-b2b3/public/cdc/source-review.md) preserve
+exact fixtures, Lykn helpers, generated ESM, commands/env/streams/status and
+narrow correction recommendation. Canonical/embedded pairs share the defect.
+No reviewer source edit or source Git/index mutation. Native759 remains accepted.
+
+Useful independent fresh-artifacts0/focused187over43steps and bounded positive/
+negative default/rest/export/private-fragment supplements are retained, not
+promoted to acceptance. Full/docs/M6/citations/size deliberately unrun on known-
+bad candidate; CC final claims remain attested. First typed-source-fn catch
+control exposes existing parameter nonexpansion, is preserved/unexecuted and
+not used as the valid witness. Reader nonprogress input was not replayed;
+externalTERM143/early missing-source-snapshot limits remain correctly attributed
+in CC/root evidence. Source/build returns clean with no owned jobs for a root-
+authored correction; all raw/catch/name/owner/check/DTS/docs/LC02–08/B2b/S03
+follow-through stays open. No release action or ledger closure.

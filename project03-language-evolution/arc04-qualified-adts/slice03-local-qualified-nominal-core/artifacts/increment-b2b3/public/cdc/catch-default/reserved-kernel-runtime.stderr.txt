@@ -1,0 +1,4 @@
+error: Uncaught SyntaxError: Unexpected eval or arguments in strict mode
+} catch ([[value = eval => 1] = []]) {
+                   ^
+    at <anonymous> (file:///Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/arc04-qualified-adts/slice03-local-qualified-nominal-core/artifacts/increment-b2b3/public/cdc/catch-default/reserved-kernel.mjs:3:20)

@@ -1,0 +1,14 @@
+    if (args[1]) walk(args[1], out, inScope);
+    walkSequence(args.slice(2), out, extendNames(inScope, sites.map((site) => site.name)));
+    return;
+  }
+
+  if (headName === "catch") {
+    const sites = bindingsIntroduced(form);
+    out.push(...sites);
+    const args = form.values.slice(1);
+    if (args[0]) walkPatternDefaults(args[0], out, inScope, PatternGrammar.BINDING_PATTERN);
+    walkSequence(args.slice(1), out, extendNames(inScope, sites.map((site) => site.name)));
+    return;
+  }
+
