@@ -1,0 +1,1 @@
+/Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/debug/lykn compile /Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/arc05-binding-semantics-and-hygienic-emission/slice04-discard-aware-declarations/artifacts/cc/classifier-boundary/release-repro.lykn -o /private/tmp/lykn-arc05-s04-cc/tmp/release-repro.js

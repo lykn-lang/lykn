@@ -127,3 +127,49 @@ remains. The initial assignment is still unissued at this review cutoff and
 has spent zero implementation refinements. DT-01–08 and BS-04 stay open for
 CC evidence and separate implementation verification; root alone owns their
 eventual status/retrospective/bubble-up updates.
+
+## Boundary applicability check — 2026-11-14
+
+At root's request, performed a narrow read-only check while CC still owns the
+uncommitted four-path task delta above c60. No test/build, product edit, Git/index
+or ledger mutation was performed; this appendix is the sole additional write.
+This is neither an implementation acceptance nor a final-gate review.
+
+The retained `artifacts/cc/classifier-boundary/release-repro.lykn`, exact
+`release-command.txt` and separate stdout/stderr/status show the release CLI
+rejecting a first destructured argument followed by required named arguments:
+exit1, method-on-parenthesized-expression diagnostic at the parameter list.
+Unchanged `classifier/forms.rs:98–116,375–390` explains the failure: the generic
+recursive validator treats that list as a call. This is an inherited source
+admission defect, not malformed fixture syntax or new intended behavior.
+
+Current `discard_declarations.rs:183–190,262–270,328–337` instead uses a first
+destructured argument followed by named defaults `arg0`/`arg0_1`, plus required
+named `arg1` before a destructured argument. The retained
+`focused/final05/declaration-consumer.generated.d.ts` contains `arg0_2` and
+`arg1_1`, and the matching compile/check command/status receipts report success.
+These are inspected CC observations, not independently executed checks.
+
+This composition preserves the DT-01 collision obligation: both later defaults
+are still `ParamShape::Simple` meaningful names, and the current declaration
+reservation at `dts.rs:116–122` reads names independently of optionality flags.
+DT-02's admitted default-before-required, trailing-default/rest and nested input
+controls remain separate. Repairing the generic source validator would exceed
+the frozen source scope; root retains D-2611-MPVR/Arc02 maintenance and LI-04
+routing. No source-admission success is inferred for the rejected form.
+
+Correct proof attribution matters: the current required-later/destructure test
+at `dts.rs:694–707` constructs parameter shapes directly. The successful
+AnalyzedUnit test at `747–764` covers simple discarded/named parameters only.
+The composition is low-level shape proof plus admitted CLI/TS consumers, not an
+analyzed-unit proof of the rejected source arrangement. Root was informed; no
+additional test is needed merely to preserve the mistaken description.
+
+A separate promised witness is still missing at this cutoff: `slots` has
+discard indices0/1 and `_value` at2, so its later `arg2` does not challenge a
+generated label for discarded slot2. The frozen plan explicitly requires that
+opposition. Root received the scoped request for an actual admitted CLI/TS
+discard-at2/later-arg2 case before full gates. This does not invalidate the
+classifier-boundary workaround, but DT-01 proof remains incomplete until the
+witness is supplied and verified in the final candidate. All eight DT rows
+remain open.

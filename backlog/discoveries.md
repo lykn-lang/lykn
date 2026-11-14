@@ -1508,3 +1508,42 @@ All source corrections remain open.
   controls, preserve fractional/negative-zero/nonfinite behavior and verify
   native/public/JSON output as applicable. No slice, trial or source expansion
   is opened by this discovery record.
+
+## D-2611-MPVR — native method-call validation mistakes typed parameter structure for an expression
+
+- **Discovered:**2026-11-14 during Project03 Arc05 S04 declaration-consumer
+  authoring, after an actual CLI fixture failed before declaration emission.
+- **Where/source:** c60dea62, contract-predicate-lowering task branch and the
+  independently integrated release/0.6.x. Native
+  crates/lykn-lang/src/classifier/forms.rs check_method_on_expression98–116 and
+  walk_method_calls375–390, invoked by crates/lykn-cli/src/validation.rs.
+  The prevalidation walk traverses structural parameter-list containers as
+  expressions. A first destructuring list followed by a type keyword is then
+  mistaken for a parenthesized receiver followed by a method keyword.
+- **Observed witness:** a Func :args list beginning with an object parameter
+  followed by named typed parameters rejects with `method call on a
+  parenthesized expression is not supported`. CC reproduced the exact source
+  using the existing c60 release-WORKTREE default/debug CLI
+  (`.worktrees/0.6.x/target/debug/lykn`), exit1; this is not an optimized-binary
+  execution claim. Retained
+  [input and raw release receipts](../project03-language-evolution/arc05-binding-semantics-and-hygienic-emission/slice04-discard-aware-declarations/artifacts/cc/classifier-boundary/).
+  Root and separate Sol traced the unchanged code path. This is CC-reproduced
+  behavior plus independent source inspection, not independent repair acceptance
+  or a reader/parser diagnosis. Broader first-default/structured-parameter
+  exposures are a source-grounded risk, not an executed population census.
+- **S04 disposition:** no validator edit. Later named default parameters are
+  still ParamShape::Simple names and exercise the same declaration-reservation
+  producer through an admitted CLI/TypeScript path; a required named parameter
+  before the destructured slot supplies an opposing source control. Low-level
+  shape tests cover the required-after declaration producer. None establishes
+  that the rejected ordinary Source signature is repaired or supported.
+- **Owner/destination:** Project03 root/CDC, existing
+  [Arc02 maintenance](../project03-language-evolution/arc02-ad-hoc-maintenance/arc-plan.md)
+  unopened candidate. Detail a bounded role-aware validation repair before
+  execution: distinguish structural parameter containers from real executable
+  defaults/bodies, reuse actual function/member layouts where applicable, retain
+  real method-on-expression and guarded-match behavior, and verify actual CLI/
+  compiler/lint/delivery routes rather than keyword exemptions. Inspect public
+  applicability instead of assuming backend parity. Arc06 LI-04 owns resulting
+  API/guide/book impact accounting. No repair slice, source expansion or new
+  investigation matrix is authorized by this discovery record.

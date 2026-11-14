@@ -9,6 +9,22 @@ related: [arc01-compiler-semantic-integrity]
 
 # Ad hoc maintenance
 
+## Unopened maintenance candidates —2026-11-14
+
+The existing intake home now explicitly contains these routed findings; neither
+opens a slice, investigation or implementation. Future source-ready work needs
+its own finite contract and execution authority.
+
+- [D-2611-NUMI](../../backlog/discoveries.md#d-2611-numi--native-integral-number-formatting-range-risk):
+  source-grounded native integral f64→i64 formatting-range risk discovered in
+  Arc05 S02; independently scoped numeric-writer contract/reproduction is due.
+- [D-2611-MPVR](../../backlog/discoveries.md#d-2611-mpvr--native-method-call-validation-mistakes-typed-parameter-structure-for-an-expression):
+  CC reproduced a c60 CLI parameter-container false positive during Arc05 S04;
+  root/separate Sol traced method validation walking a structural argument list
+  as an expression. Future repair must preserve actual method-call negatives
+  and use structural roles, with real Source/CLI/lint/delivery and guide impact.
+  S04's admitted alternative declaration specimens do not repair this finding.
+
 ## Browser compiler split for 0.6.x
 
 The Operator added two compatibility-preserving compiler refactors before
@@ -129,6 +145,9 @@ No investigation/repair/review slices split this first result by process stage. 
 All original F1–F12, Project07/library/book/guide/human/licensing and other compiler/type/doc owners remain unchanged. No compiler fix, helper/K/walker/corpus/F6 run or publication is part of this arc's current item.
 
 ## Version history
+
+- 2026-11-14 v0.7: Explicitly retain unopened NUMI and MPVR maintenance
+  candidates from Arc05; no source/experiment scope or acceptance changes.
 
 - 2026-11-10 v0.6: Planned the two pre-release browser compiler
   splits in measured order and recorded the approved absolute cap.

@@ -211,6 +211,21 @@ streams and existing skip/warning/download/tracing limits. No optional docs run.
 
 ## Guidance application, readiness and closing
 
+2026-11-14 authoring checkpoint: the ordinary Source case with first
+destructured parameter followed by plain typed named parameters hits inherited
+CLI method-call prevalidation before DTS. CC reproduced this on immutable
+releasec60; root/separate Sol traced the role-blind container walk. The finding
+is [D-2611-MPVR](../../../backlog/discoveries.md#d-2611-mpvr--native-method-call-validation-mistakes-typed-parameter-structure-for-an-expression),
+routed to unopened Arc02 maintenance and later LI-04 impact accounting.
+No validator is changed or Source grammar acceptance claimed by S04. Admitted
+later named DEFAULT Simple parameters exercise the same pre-reservation name
+producer, and required named BEFORE destructuring supplies the opposing actual
+CLI/TS case. The required-after/destructure proof is a low-level ParamShape
+test, not a successful analyzed-unit Source witness. Separate Sol confirms
+this composition preserves DT-01/02; the unsupported ordinary Source form stays
+explicitly open. Initial assignment/specimens were recommendations, not a
+promise to repair its independent prevalidation prerequisite.
+
 Rust AP-09 AVOID: no user-reachable panic path introduced by declaration data;
 test expect with explanation is appropriate. AP-12/AP-13 AVOID: borrow the
 successful unit, reuse existing projections, allocate only actual strings/set

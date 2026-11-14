@@ -1,0 +1,4 @@
+(func anonymous-slot
+  :args ((object :number field) :string arg0 :number arg0_1)
+  :returns :void
+  :body 1)
