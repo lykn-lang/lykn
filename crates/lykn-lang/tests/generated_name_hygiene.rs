@@ -45,6 +45,13 @@ fn reconstructed_typed_nested_and_normalized_names_are_reserved_before_unit_emis
         (console:log (collide 99) (nested (obj)))";
     let (_, js) = compile(source);
     eprintln!("NATIVE_TYPED_NAME_SOURCE={source:?}\nNATIVE_TYPED_NAME_JS={js:?}");
+    let (first_function, _) = js
+        .split_once("function nested(")
+        .expect("later sibling function remains in generated module");
+    assert!(
+        first_function.contains("const result__gensym2 = 7;"),
+        "first function skips both its own and later sibling's parameter names: {first_function}"
+    );
     assert_eq!(run(&js, ""), "7 7\n");
 
     let nested_only = "(func nested :args ((object (default :number result__gensym0! 8))) :returns :number :body 7) (console:log (nested (obj)))";
@@ -56,6 +63,25 @@ fn reconstructed_typed_nested_and_normalized_names_are_reserved_before_unit_emis
         "helper skips absent nested leaf: {nested_js}"
     );
     assert_eq!(run(&nested_js, ""), "7\n");
+
+    let recursive = "(func recursive :args ((object (alias :array items (array (object (default :number result__gensym0! 8)))))) :returns :number :body 7) (console:log (recursive (obj :items #a((obj)))))";
+    for strip in [false, true] {
+        let (_, recursive_js) = compile_strip(recursive, strip);
+        eprintln!(
+            "NATIVE_RECURSIVE_DEFAULT_SOURCE={recursive:?} strip={strip}\nNATIVE_RECURSIVE_DEFAULT_JS={recursive_js:?}"
+        );
+        assert!(
+            recursive_js.contains("result__gensym0"),
+            "nested array/object leaf is reconstructed under its normalized source name: {recursive_js}"
+        );
+        if !strip {
+            assert!(
+                recursive_js.contains("const result__gensym1 = 7;"),
+                "checked result helper skips the absent recursive leaf: {recursive_js}"
+            );
+        }
+        assert_eq!(run(&recursive_js, ""), "7\n");
+    }
 
     let adjacent = "(func adjacent :args (:number result__gensym0 :number result__gensym1) :returns :number :body 7) (console:log (adjacent 99 100))";
     let (_, adjacent_js) = compile(adjacent);
@@ -227,27 +253,51 @@ fn shared_early_producers_preserve_opposing_source_values_and_effects() {
             "0\n1 1\ntrue 1\n"
         );
     }
+
+    let carrier_source = "(bind value_box__gensym0 99) (bind trace (array)) (bind actual (do (trace:push \"before\") (await (Promise:resolve 7)))) (console:log actual value_box__gensym0 (trace:join \",\"))";
+    for strip in [false, true] {
+        let (_, carrier_js) = compile_strip(carrier_source, strip);
+        eprintln!(
+            "NATIVE_ASYNC_CARRIER_SOURCE={carrier_source:?} strip={strip}\nNATIVE_ASYNC_CARRIER_JS={carrier_js:?}"
+        );
+        assert!(
+            carrier_js.contains("value_box__gensym1[0]"),
+            "canonical async do carrier unboxes through distinct allocated storage: {carrier_js}"
+        );
+        assert!(
+            carrier_js.contains("async") && carrier_js.contains("return ["),
+            "canonical async do carrier boxes the awaited value inside its async IIFE: {carrier_js}"
+        );
+        assert_eq!(run(&carrier_js, ""), "7 99 before\n");
+    }
 }
 
 #[test]
 fn standalone_form_reserves_its_typed_names_and_raw_codegen_remains_literal() {
     use lykn_lang::emitter::{context::EmitterContext, forms::emit_form};
-    let parsed =
-        reader::read("(func one :args (:any result__gensym0) :body result__gensym0)").unwrap();
+    let fragment_source = "(func one :args (:any t__gensym0) :body (some-> 7 (+ 1)))";
+    let parsed = reader::read(fragment_source).unwrap();
     let resolved = resolver::resolve(&parsed);
     let surface = classifier::classify(&resolved).unwrap();
     let mut ctx = EmitterContext::new(false);
     let emitted = emit_form(&surface[0], &mut ctx, &Default::default()).unwrap();
     let js = codegen::emit_module_js(&emitted).unwrap();
+    eprintln!("NATIVE_FRAGMENT_SOURCE={fragment_source:?}\nNATIVE_FRAGMENT_JS={js:?}");
     assert!(
-        js.contains("function one(result__gensym0)"),
-        "fragment emits its source parameter: {js}"
+        js.contains("function one(t__gensym0)"),
+        "fragment emits its reconstructed source parameter: {js}"
+    );
+    assert!(
+        js.contains("t__gensym1"),
+        "some-thread allocates after the absent-body reconstructed parameter: {js}"
     );
     assert_eq!(
-        ctx.gensym.next("result"),
-        "result__gensym1",
-        "single-form source census reserved the reconstructed parameter"
+        ctx.gensym.next("t"),
+        "t__gensym2",
+        "fragment context retains its source reservation and actual helper allocation"
     );
+    let executable_js = format!("{js}\nconsole.log(one(99));");
+    assert_eq!(run(&executable_js, ""), "8\n");
 
     let bad = reader::read("(func broken :args () :returns :number :post true :body (while false (console:log \"never\")))").unwrap();
     let bad_resolved = resolver::resolve(&bad);
