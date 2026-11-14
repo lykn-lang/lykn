@@ -3,11 +3,23 @@ project: project03-language-evolution
 arc: arc05-binding-semantics-and-hygienic-emission
 slice: slice02-native-binding-discards
 status: active
-version: "1.3"
+version: "1.4"
 depends-on: [slice01-public-source-discards]
 ---
 
 # Remaining native discard binding forms
+
+2026-11-14 pre-gate review holds28733980: R02/R04 corrected, R03 pipe Atom still
+emits invalid bare syntax, and R01 raw table still includes Source-only assign.
+[Correction04](cc-prompt-iteration04.md) is issued for a literal static-
+key representation in the NEW zero-name grouped admission branch and the last
+table mismatch. Three source paths/all9criteria remain; no broad naming/raw API
+rewrite. The classified static Atom/Keyword key becomes a normalized String
+literal, preserving spans, existing property names and all expression positions.
+Earlier punctuation-only source-readiness recommendations are superseded.
+Separate Sol reviewed and approved the validation-before-normalization branch,
+span/role/caller preservation, concrete tests and raw-table repair. Source/build
+transfers back to Luna on dispatch; implementation acceptance remains pending.
 
 2026-11-13 independent initial HOLD at3617a3ae records four findings: guide
 Source/raw-IR contradiction, wrong loop getter observation, member-expression
@@ -233,18 +245,26 @@ admission distinction. Separate Sol confirmed its complete amendment against
 the actual whitelist/escape classifier before issue. No implementation
 acceptance is claimed by either readiness review.
 
-Current assignment is cc-prompt-iteration03.md for independent R01–04. The
+Previous correction assignment was cc-prompt-iteration03.md for independent R01–04. The
 initial candidate and reviewer HOLD remain preserved; correction source scope
 is classifier/forms.rs, native remaining_discard_bindings.rs and guide00 only.
+
+Current assignment is cc-prompt-iteration04.md for the remaining static-key
+representation and table-label findings, with the same three source paths.
 
 | Prompt | Date | Predecessor | Purpose | State |
 | --- | --- | --- | --- | --- |
 | cc-prompt.md | 2026-11-13 | S01 accepted49982409 | Remaining native binding discards and explicit admission/signature dispositions | Executed in progress; superseded by refinement01 with all scope retained |
 | cc-prompt-iteration01.md | 2026-11-13 | cc-prompt.md, initial work in progress | Preserve full scope; make admitted literal numeric keys valid JS and retain existing Bool/Null key roles | Executed in progress; superseded by refinement02 with full scope retained |
 | cc-prompt-iteration02.md | 2026-11-13 | cc-prompt-iteration01.md, implementation in progress | Correct frontend admission assumptions; retain actual Source/raw-IR/unsupported-prefix distinction | Returned3617a3ae; independently held R01–04 |
-| cc-prompt-iteration03.md | 2026-11-13 | Candidate3617a3ae and independent R01–04 HOLD | Correct docs/oracles and static-key role guard, preserving all9criteria | Issued; Luna receives exclusive source/build on dispatch |
+| cc-prompt-iteration03.md | 2026-11-13 | Candidate3617a3ae and independent R01–04 HOLD | Correct docs/oracles and static-key role guard, preserving all9criteria | Returned28733980; pre-gate R02/R04 supported, R01/R03 held; malformed08ba message bytes retained |
+| cc-prompt-iteration04.md | 2026-11-14 | Candidate28733980 and pre-gate R01/R03 HOLD | Encode new grouped static keys as literal data; finish Source/raw table | Issued; Luna receives exclusive source/build on dispatch |
 
 ## Version history
+
+- 2026-11-14 v1.4: Retain2873pre-gate HOLD and corrected R02/R04; prepare
+  classifier-local literal static-key representation and final raw-table fix,
+  rather than continue punctuation blacklisting. Same3-path/9-row scope.
 
 - 2026-11-13 v1.3: Retain independent3617HOLD and four consolidated findings;
   prepare three-path correction with actual IteratorValue control and static

@@ -2,7 +2,7 @@
 project: project03-language-evolution
 arc: arc05-binding-semantics-and-hygienic-emission
 status: active
-version: "0.6"
+version: "0.7"
 planned-release: unassigned
 depends-on: []
 related: [arc04-qualified-adts, arc06-adt-modules-and-library-integration]
@@ -28,6 +28,15 @@ by the new zero-name guard (colon and dotted spellings); literal keys remain.
 Source/schema/iterator behavior is independently supported by focused execution,
 but full acceptance/final delivery gates wait for corrected code, docs and
 discriminating product oracles. No new feature or later slice is opened.
+
+Subsequent pre-gate review of28733980 supports the repaired iterator/lambda
+oracles but retains R03 (pipe Atom still produces invalid bare property syntax)
+and one raw-table label. Source-ready correction04 uses normalized String keys
+in the newly admitted zero-name group branch, after structural validation, to
+encode static data explicitly; member-expression Atom keys remain rejected and
+named/raw/schema/value/default paths stay unchanged. Same three files and nine
+criteria. Arc06 LI-04 retains this new feature's classified-IR key representation
+in its later API audit. No namespace or general identifier/range policy change.
 
 Current outcome2026-11-13: [S01 is independently closed](slice01-public-source-discards/cdc-verification.md)
 at4998240927909c3abc0172dfef2b56076b19f708, treeb18e75dc06888a771bd7f3aa92a3c2cb1a7e1dc8.
@@ -167,6 +176,10 @@ substitute helper-language exception. Reader RDEO/RDCL, Arc01 I4 and diagnostic
 work, whole-work audits and the separate book/human gates keep their owners.
 
 ## Version history
+
+- 2026-11-14 v0.7: S02 pre-gate2873 findings replace punctuation-only admission
+  assumptions with a source-ready literal static-data representation and a final
+  raw-table repair; preserve accepted subproof, history and later boundaries.
 
 - 2026-11-13 v0.6: Retain S02 independent3617HOLD and four findings; issue
   consolidated three-path correction03 after source-readiness approval, with
