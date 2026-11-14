@@ -1,0 +1,11 @@
+tree eed763256aada46c8bc5e7a848be09c7a1f7f19c
+parent 86c3d77f60af08438a184fdc4aad0beef66f17d2
+author Duncan McGreggor <oubiwann@gmail.com> 1794643186 -0600
+committer Duncan McGreggor <oubiwann@gmail.com> 1794643186 -0600
+
+test: cover class expression discard parameters
+
+Exercise class-expr method and constructor slots through public expansion.
+
+Co-authored-by: Codex <noreply@openai.com>
+Co-authored-by: Billo AI <ai-engineering@billo.systems>

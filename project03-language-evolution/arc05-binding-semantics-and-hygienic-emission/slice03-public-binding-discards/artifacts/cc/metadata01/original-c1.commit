@@ -1,0 +1,12 @@
+tree a35f249bdf71a8744f19be2f4af5376ae28b8413
+parent 9e6fb1270c3efcbaa0f6ddb9f0fbfd3b2c1c825a
+author Duncan McGreggor <oubiwann@gmail.com> 1794643033 -0600
+committer Duncan McGreggor <oubiwann@gmail.com> 1794643033 -0600
+
+feat: complete public binding discards
+
+Prepare public discard slots by source role while preserving raw IR, catch grammar, grouped aliases, and single-clause defaults.
+
+Co-authored-by: Codex <noreply@openai.com>
+
+Co-authored-by: Billo AI <ai-engineering@billo.systems>

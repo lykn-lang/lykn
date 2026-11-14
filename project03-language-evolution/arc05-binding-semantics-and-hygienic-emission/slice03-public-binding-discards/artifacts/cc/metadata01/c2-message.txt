@@ -1,0 +1,6 @@
+test: cover class expression discard parameters
+
+Exercise class-expr method and constructor slots through public expansion.
+
+Co-authored-by: Codex <noreply@openai.com>
+Co-authored-by: Billo AI <ai-engineering@billo.systems>
