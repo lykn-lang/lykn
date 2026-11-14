@@ -241,3 +241,38 @@ reviewer; only this record and necessary artifacts/cdc evidence were authored.
 Source is still clean30d8b77c/treeeed76325, release/0.6.x remains0829e892. All
 owned commands have completed. Exclusive source/build ownership returns to root
 for a consolidated bounded correction; S04/release/remote actions remain held.
+
+## Correction02 source-readiness — PASS — 2026-11-14
+
+Same independent Sol6.1 High reviewer read the complete199-line issued
+`cc-prompt-iteration02.md` and v1.1 plan's current-assignment, authority,
+preflight, assignment-history and version-history amendments before CC
+dispatch. This is a compact follow-up against the source/writer/region and
+oracle inspection recorded above, not acceptance of unwritten source.
+
+The six-path correction coherently addresses R01–05 while retaining all9 PB
+rows, the complete14-path delivery, eight new groups/M670 and existing gates.
+Removing both async and numeric-for parent recursion gives each child its own
+normal resolution/classification/preparation door; removing early lambda
+handling preserves typed Source parsing and source diagnostics. Reusing
+functionRegionLayout for actual own raw callable params avoids another index
+algorithm, provided its corrected params/body/name paths follow the unchanged
+writer's list-first versus non-list-first generator forms and real name test.
+This fits the already inspected compiler.js:825–912 and lexical-regions.js.
+
+The new oracles distinguish the reproduced defects: typed object admission and
+exact source TypeError labels, both facades and lexical initializer, actual
+async-arrow execution; sentinel foreign99/argument7 plus default/form-head
+scope and call/advance timing; valid throwing-helper defaults with actual error
+class/message; opposing spread callable/default behavior; raw fragment failure
+after allocation and same-context recovery; genuinely grouped nested effects
+and static/expression representation controls; exact namespace keys through
+both compilers. The prescribed catch wording distinguishes ordinary elision
+from legacy bare catch-array consumption without promising a new grammar.
+
+No consequential ambiguity remains in this correction's recipe or acceptance
+method. **PASS for the recorded CC dispatch.** Candidate30/HOLD, metadata01
+reconciliation, prior failed oracle and all evidence limits remain preserved.
+No source edit, runtime/build experiment or Git/index operation was performed
+for this readiness follow-up. Source/build remains root-owned until dispatch;
+implementation acceptance and every PB closure remain pending.
