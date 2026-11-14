@@ -864,6 +864,21 @@ Default export:
 (export default main-fn)
 ```
 
+### Generated TypeScript declarations
+
+When the native CLI emits a `.d.ts` file, parameter labels for `_` and
+anonymous destructured parameters are compiler-chosen labels. They describe
+the argument positions and types; they do not create Lykn source bindings or
+change runtime guards. `_value` remains an ordinary named parameter.
+
+Declaration exports follow the source bindings that an inline `bind` actually
+introduces. A module whose explicit exports consist only of handled,
+discard-only inline `bind`s has an empty TypeScript module surface
+(`export {}`). A default export or re-export prevents that marker. An ordinary
+source `bind` does not create a declaration by itself. Object keys and ADT
+fields named `_` remain data and schema fields when they appear in those
+shapes; discard handling does not remove those properties.
+
 ### dynamic-import
 
 ```lykn

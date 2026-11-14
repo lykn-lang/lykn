@@ -7,10 +7,12 @@
 use std::collections::HashSet;
 
 use crate::analysis::{AnalyzedUnit, type_registry::TypeRegistry};
+use crate::ast::sexpr::SExpr;
 use crate::ast::surface::{
     ArrayParamElement, Constructor, DestructuredField, FuncClause, ParamShape, SurfaceForm,
     TypeAnnotation,
 };
+use crate::binding::{BindingKind, binding_names_in_pattern};
 use crate::codegen::names::to_js_identifier;
 use crate::diagnostics::{Diagnostic, Severity};
 
@@ -42,7 +44,7 @@ pub fn param_shape_to_ts(shape: &ParamShape, registry: &TypeRegistry) -> String 
                         let name = to_js_identifier(&tp.name);
                         let ts_type = lykn_type_to_ts(&tp.type_ann, registry);
                         if tp.default_value.is_some() {
-                            format!("{name}?: {ts_type}")
+                            format!("{name}?: {ts_type} | undefined")
                         } else {
                             format!("{name}: {ts_type}")
                         }
@@ -61,18 +63,38 @@ pub fn param_shape_to_ts(shape: &ParamShape, registry: &TypeRegistry) -> String 
             format!("{{ {} }}", parts.join("; "))
         }
         ParamShape::DestructuredArray { elements, .. } => {
+            let last_required = elements.iter().rposition(|element| match element {
+                ArrayParamElement::Typed(tp) => tp.default_value.is_none(),
+                ArrayParamElement::Nested { .. } | ArrayParamElement::NestedWithAlias { .. } => {
+                    true
+                }
+                ArrayParamElement::Rest(_) | ArrayParamElement::Skip(_) => false,
+            });
             let mut parts: Vec<String> = Vec::new();
-            for elem in elements {
+            for (index, elem) in elements.iter().enumerate() {
                 match elem {
                     ArrayParamElement::Typed(tp) => {
-                        parts.push(lykn_type_to_ts(&tp.type_ann, registry));
+                        let ty = lykn_type_to_ts(&tp.type_ann, registry);
+                        if tp.default_value.is_some() {
+                            if last_required.is_none_or(|required| index > required) {
+                                parts.push(format!("({ty} | undefined)?"));
+                            } else {
+                                parts.push(format!("{ty} | undefined"));
+                            }
+                        } else {
+                            parts.push(ty);
+                        }
                     }
                     ArrayParamElement::Rest(tp) => {
                         let inner = lykn_type_to_ts(&tp.type_ann, registry);
                         parts.push(format!("...{inner}[]"));
                     }
                     ArrayParamElement::Skip(_) => {
-                        parts.push("unknown".to_string());
+                        if last_required.is_none_or(|required| index > required) {
+                            parts.push("(unknown | undefined)?".to_string());
+                        } else {
+                            parts.push("unknown".to_string());
+                        }
                     }
                     ArrayParamElement::Nested { pattern, .. }
                     | ArrayParamElement::NestedWithAlias { pattern, .. } => {
@@ -86,19 +108,62 @@ pub fn param_shape_to_ts(shape: &ParamShape, registry: &TypeRegistry) -> String 
 }
 
 fn emit_func_args(clauses_args: &[ParamShape], registry: &TypeRegistry) -> String {
+    let last_required = clauses_args.iter().rposition(|shape| match shape {
+        ParamShape::Simple(tp) => tp.default_value.is_none() && !tp.is_rest,
+        ParamShape::DestructuredObject { .. } | ParamShape::DestructuredArray { .. } => true,
+    });
+    let mut used_names: HashSet<String> = clauses_args
+        .iter()
+        .filter_map(|shape| match shape {
+            ParamShape::Simple(tp) if tp.name != "_" => Some(to_js_identifier(&tp.name)),
+            _ => None,
+        })
+        .collect();
+
     clauses_args
         .iter()
         .enumerate()
-        .map(|(i, shape)| {
+        .map(|(index, shape)| {
             let arg_name = match shape {
-                ParamShape::Simple(tp) => to_js_identifier(&tp.name),
-                _ => format!("arg{i}"),
+                ParamShape::Simple(tp) if tp.name != "_" => to_js_identifier(&tp.name),
+                _ => allocate_arg_name(index, &mut used_names),
             };
-            let arg_type = param_shape_to_ts(shape, registry);
-            format!("{arg_name}: {arg_type}")
+            match shape {
+                ParamShape::Simple(tp) if tp.is_rest => {
+                    let ty = lykn_type_to_ts(&tp.type_ann, registry);
+                    format!("...{arg_name}: {ty}[]")
+                }
+                ParamShape::Simple(tp) if tp.default_value.is_some() => {
+                    let ty = lykn_type_to_ts(&tp.type_ann, registry);
+                    if last_required.is_none_or(|required| index > required) {
+                        format!("{arg_name}?: {ty}")
+                    } else {
+                        format!("{arg_name}: {ty} | undefined")
+                    }
+                }
+                _ => {
+                    let arg_type = param_shape_to_ts(shape, registry);
+                    format!("{arg_name}: {arg_type}")
+                }
+            }
         })
         .collect::<Vec<_>>()
         .join(", ")
+}
+
+fn allocate_arg_name(index: usize, used_names: &mut HashSet<String>) -> String {
+    let base = format!("arg{index}");
+    if used_names.insert(base.clone()) {
+        return base;
+    }
+    let mut suffix = 1;
+    loop {
+        let candidate = format!("{base}_{suffix}");
+        if used_names.insert(candidate.clone()) {
+            return candidate;
+        }
+        suffix += 1;
+    }
 }
 
 pub fn emit_func_dts(
@@ -229,12 +294,25 @@ pub fn emit_dts_module(unit: &AnalyzedUnit, file_path: &str) -> (String, Vec<Dia
                     value,
                     ..
                 } => {
-                    if let Some(ann) = type_ann {
-                        if let Some(n) = name.as_atom() {
-                            out.push_str(&emit_bind_dts(n, ann, true, registry));
-                        }
-                    } else if let Some(n) = name.as_atom() {
-                        out.push_str(&emit_bind_inferred_dts(n, value, true));
+                    out.push_str(&emit_bind_pattern_dts(
+                        name,
+                        type_ann.as_ref(),
+                        value,
+                        true,
+                        None,
+                        registry,
+                    ));
+                }
+                SurfaceForm::BindGroup { bindings, .. } => {
+                    for binding in bindings {
+                        out.push_str(&emit_bind_pattern_dts(
+                            &binding.name,
+                            binding.type_ann.as_ref(),
+                            &binding.value,
+                            true,
+                            None,
+                            registry,
+                        ));
                     }
                 }
                 SurfaceForm::Type {
@@ -263,27 +341,25 @@ pub fn emit_dts_module(unit: &AnalyzedUnit, file_path: &str) -> (String, Vec<Dia
                 value,
                 ..
             } => {
-                if let Some(n) = name.as_atom()
-                    && named_exports.contains(n)
-                {
-                    if let Some(ann) = type_ann {
-                        out.push_str(&emit_bind_dts(n, ann, true, registry));
-                    } else {
-                        out.push_str(&emit_bind_inferred_dts(n, value, true));
-                    }
-                }
+                out.push_str(&emit_bind_pattern_dts(
+                    name,
+                    type_ann.as_ref(),
+                    value,
+                    true,
+                    Some(&named_exports),
+                    registry,
+                ));
             }
             SurfaceForm::BindGroup { bindings, .. } => {
                 for binding in bindings {
-                    if let Some(n) = binding.name.as_atom()
-                        && named_exports.contains(n)
-                    {
-                        if let Some(ann) = &binding.type_ann {
-                            out.push_str(&emit_bind_dts(n, ann, true, registry));
-                        } else {
-                            out.push_str(&emit_bind_inferred_dts(n, &binding.value, true));
-                        }
-                    }
+                    out.push_str(&emit_bind_pattern_dts(
+                        &binding.name,
+                        binding.type_ann.as_ref(),
+                        &binding.value,
+                        true,
+                        Some(&named_exports),
+                        registry,
+                    ));
                 }
             }
             SurfaceForm::Type {
@@ -300,7 +376,83 @@ pub fn emit_dts_module(unit: &AnalyzedUnit, file_path: &str) -> (String, Vec<Dia
         }
     }
 
+    if has_only_empty_inline_bind_exports(forms) {
+        out.push_str("export {};\n");
+    }
+
     (out, warnings)
+}
+
+fn emit_bind_pattern_dts(
+    pattern: &SExpr,
+    type_ann: Option<&TypeAnnotation>,
+    value: &SExpr,
+    exported: bool,
+    selected_names: Option<&HashSet<String>>,
+    registry: &TypeRegistry,
+) -> String {
+    let scalar_name = pattern.as_atom();
+    let mut out = String::new();
+    for binding in binding_names_in_pattern(pattern, BindingKind::Bind) {
+        if selected_names.is_some_and(|names| !names.contains(&binding.name)) {
+            continue;
+        }
+        if scalar_name == Some(binding.name.as_str()) {
+            if let Some(ann) = type_ann {
+                out.push_str(&emit_bind_dts(&binding.name, ann, exported, registry));
+            } else {
+                out.push_str(&emit_bind_inferred_dts(&binding.name, value, exported));
+            }
+        } else {
+            out.push_str(&emit_bind_dts(
+                &binding.name,
+                &TypeAnnotation {
+                    name: "any".to_string(),
+                    span: binding.span,
+                },
+                exported,
+                registry,
+            ));
+        }
+    }
+    out
+}
+
+fn is_empty_inline_bind_export(form: &SurfaceForm) -> bool {
+    match form {
+        SurfaceForm::Bind { name, .. } => {
+            binding_names_in_pattern(name, BindingKind::Bind).is_empty()
+        }
+        SurfaceForm::BindGroup { bindings, .. } => bindings
+            .iter()
+            .all(|binding| binding_names_in_pattern(&binding.name, BindingKind::Bind).is_empty()),
+        _ => false,
+    }
+}
+
+fn has_only_empty_inline_bind_exports(forms: &[SurfaceForm]) -> bool {
+    let mut saw_explicit_export = false;
+    for form in forms {
+        match form {
+            SurfaceForm::Export {
+                inner, extra_args, ..
+            } => {
+                saw_explicit_export = true;
+                if !extra_args.is_empty() || !is_empty_inline_bind_export(inner) {
+                    return false;
+                }
+            }
+            SurfaceForm::Exports { .. } => return false,
+            SurfaceForm::KernelPassthrough {
+                raw: SExpr::List { values, .. },
+                ..
+            } if values.first().and_then(SExpr::as_form_head) == Some("export") => {
+                return false;
+            }
+            _ => {}
+        }
+    }
+    saw_explicit_export
 }
 
 fn named_export_set(forms: &[SurfaceForm]) -> HashSet<String> {
@@ -416,6 +568,13 @@ mod tests {
         TypeRegistry::default()
     }
 
+    fn analyzed(source: &str) -> AnalyzedUnit {
+        let read = crate::reader::read(source).expect("fixture reads");
+        let resolved = crate::resolver::resolve(&read);
+        let classified = crate::classifier::classify(&resolved).expect("fixture classifies");
+        crate::analysis::analyze(classified).expect("fixture analyzes")
+    }
+
     #[test]
     fn test_type_number() {
         assert_eq!(lykn_type_to_ts(&ann("number"), &reg()), "number");
@@ -491,7 +650,7 @@ mod tests {
         };
         assert_eq!(
             param_shape_to_ts(&shape, &reg()),
-            "{ host: string; ssl?: boolean }"
+            "{ host: string; ssl?: boolean | undefined }"
         );
     }
 
@@ -505,6 +664,122 @@ mod tests {
             span: s(),
         };
         assert_eq!(param_shape_to_ts(&shape, &reg()), "[string, ...number[]]");
+    }
+
+    #[test]
+    fn test_destructured_array_default_and_skip_optional_positions() {
+        let shape = ParamShape::DestructuredArray {
+            elements: vec![
+                ArrayParamElement::Typed(TypedParam {
+                    default_value: Some(crate::ast::sexpr::SExpr::Number {
+                        value: 1.0,
+                        span: s(),
+                    }),
+                    ..tp("number", "first")
+                }),
+                ArrayParamElement::Skip(s()),
+                ArrayParamElement::Typed(tp("string", "last")),
+                ArrayParamElement::Skip(s()),
+            ],
+            span: s(),
+        };
+        assert_eq!(
+            param_shape_to_ts(&shape, &reg()),
+            "[number | undefined, unknown, string, (unknown | undefined)?]"
+        );
+    }
+
+    #[test]
+    fn test_func_args_reserve_meaningful_names_before_allocating_discards() {
+        let args = vec![
+            ParamShape::Simple(tp("number", "_")),
+            ParamShape::DestructuredObject {
+                fields: vec![DestructuredField::Simple(tp("string", "field"))],
+                span: s(),
+            },
+            ParamShape::Simple(tp("number", "arg0")),
+            ParamShape::Simple(tp("string", "_value")),
+            ParamShape::Simple(tp("boolean", "arg0_1")),
+        ];
+        assert_eq!(
+            emit_func_args(&args, &reg()),
+            "arg0_2: number, arg1: { field: string }, arg0: number, _value: string, arg0_1: boolean"
+        );
+    }
+
+    #[test]
+    fn test_func_args_describe_defaults_before_required_and_rest() {
+        let args = vec![
+            ParamShape::Simple(TypedParam {
+                default_value: Some(crate::ast::sexpr::SExpr::Number {
+                    value: 1.0,
+                    span: s(),
+                }),
+                ..tp("number", "_")
+            }),
+            ParamShape::Simple(tp("string", "required")),
+            ParamShape::Simple(TypedParam {
+                name: "tail".to_string(),
+                is_rest: true,
+                ..tp("boolean", "tail")
+            }),
+        ];
+        assert_eq!(
+            emit_func_args(&args, &reg()),
+            "arg0: number | undefined, required: string, ...tail: boolean[]"
+        );
+    }
+
+    #[test]
+    fn test_module_exports_from_successful_analyzed_unit_project_source_bindings() {
+        let unit = analyzed(
+            "(export (bind (object (alias _ count) _ (spread rest)) (obj :_ 7 :extra \"field\")))\n",
+        );
+        let (dts, warnings) = emit_dts_module(&unit, "fixture.lykn");
+        assert_eq!(
+            dts,
+            "export const count: unknown;\nexport const rest: unknown;\n"
+        );
+        assert!(warnings.is_empty());
+    }
+
+    #[test]
+    fn test_successful_fresh_analyzed_units_have_local_labels_and_keep_warnings() {
+        let source = "(export (func first :args (:number _ :number arg0) :body 1))\n(export (func second :args (:number _ :number arg0) :body 2))\n";
+        let first_unit = analyzed(source);
+        let second_unit = analyzed(source);
+        let (first, warnings) = emit_dts_module(&first_unit, "first.lykn");
+        let (second, second_warnings) = emit_dts_module(&second_unit, "second.lykn");
+        assert_eq!(first, second);
+        assert!(first.contains("first(arg0_1: number, arg0: number): unknown;"));
+        assert!(first.contains("second(arg0_1: number, arg0: number): unknown;"));
+        assert_eq!(warnings.len(), 2);
+        assert_eq!(second_warnings.len(), 2);
+        assert!(
+            warnings
+                .iter()
+                .all(|warning| warning.severity == Severity::Warning)
+        );
+        assert!(
+            second_warnings
+                .iter()
+                .all(|warning| warning.severity == Severity::Warning)
+        );
+    }
+
+    #[test]
+    fn test_empty_module_marker_requires_only_handled_empty_inline_exports() {
+        let empty = analyzed("(export (bind _ 99))\n");
+        assert_eq!(emit_dts_module(&empty, "empty.lykn").0, "export {};\n");
+
+        let mixed = analyzed("(export (bind _ 99))\n(export default-value)\n");
+        assert!(emit_dts_module(&mixed, "mixed.lykn").0.is_empty());
+
+        let escaped = analyzed("(export (bind _ 99))\n(kernel:export default-value)\n");
+        assert!(emit_dts_module(&escaped, "escaped.lykn").0.is_empty());
+
+        let local = analyzed("(bind _ 99)\n");
+        assert!(emit_dts_module(&local, "local.lykn").0.is_empty());
     }
 
     #[test]

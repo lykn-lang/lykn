@@ -47,6 +47,12 @@ provides type annotations, contracts, and multi-clause dispatch.
 and return values, supports `:pre`/`:post` contracts, and supports
 multi-clause dispatch for overloading.
 
+For exported `func` declarations included in native CLI TypeScript output,
+compiler-chosen labels describe `_` and anonymous destructured parameter slots.
+They preserve each argument's position and type without creating source
+bindings. The declarations describe supported default and rest inputs; runtime
+guards keep their existing source behavior. `_value` remains an ordinary name.
+
 **See also**: `01-core-idioms.md` ID-09
 
 ---
@@ -1074,6 +1080,9 @@ with more than one clause. Put defaults/rest inside a destructured parameter
 when that pattern fits the API, or use a single-clause function for an ordinary
 default/rest parameter. Dispatch selection does not infer omitted-argument or
 variadic behavior.
+
+Generated declaration parameter labels do not change this rule: each fixed
+overload retains its declared argument slots and types.
 
 ---
 
