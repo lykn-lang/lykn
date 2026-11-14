@@ -1,0 +1,5 @@
+error: Uncaught (in promise) ReferenceError: Cannot access '___gensym0' before initialization
+  const {drop: ___gensym0, ...rest__gensym1} = ___gensym0.child;
+                                               ^
+    at file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/lykn/arc05-s06-root/dissoc-review.mjs:8:48
+    at file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/lykn/arc05-s06-root/dissoc-review.mjs:10:3

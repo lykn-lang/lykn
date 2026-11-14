@@ -1,0 +1,8 @@
+Check test/forms/public-generated-names.test.js
+Check test/forms/icu-generated-names.test.js
+Check test/forms/lazy-protected-invocation.test.js
+Check test/forms/remaining-discard-bindings.test.js
+Check test/forms/dd-37-classifier-pilot.test.js
+Check test/forms/host-reference-lowering.test.js
+Check test/forms/browser-host-reference-compile.test.js
+error: Test failed

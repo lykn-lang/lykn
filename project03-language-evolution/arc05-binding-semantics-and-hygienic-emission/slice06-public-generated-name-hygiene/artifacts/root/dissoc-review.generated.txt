@@ -1,0 +1,11 @@
+globalThis["___gensym0"] = {
+  child: {
+    keep: 7,
+    drop: 99
+  }
+};
+console.log(JSON.stringify((() => {
+  const {drop: ___gensym0, ...rest__gensym1} = ___gensym0.child;
+  return rest__gensym1;
+})()));
+

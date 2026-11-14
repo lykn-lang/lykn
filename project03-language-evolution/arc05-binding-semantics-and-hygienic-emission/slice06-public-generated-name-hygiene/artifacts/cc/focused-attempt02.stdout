@@ -1,0 +1,138 @@
+running 8 tests from ./test/forms/public-generated-names.test.js
+physical identifier keys and allocator handle normalization and Unicode boundaries ... ok (2ms)
+whole-source typed and recursive result storage preserves actual values ... FAILED (105ms)
+threading, discard, conditional and both Match producers avoid capture ... ok (71ms)
+overloads contracts and typed yields retain arguments values and timing ... ok (58ms)
+fragment and standalone ordinary-name builders own their inputs ... FAILED (15ms)
+macro results reserve at barriers and nested public entries recover ... ok (14ms)
+late completion ICU and lazy invocation preserve private identities ... FAILED (14ms)
+public browser and post-expansion transport keep output and namespace boundaries ... FAILED (14ms)
+running 6 tests from ./test/forms/icu-generated-names.test.js
+public ICU hoists reserve compiled source identifiers ... ok (76ms)
+public ICU selectors and hoists share one generated-name set ... ok (43ms)
+public ICU keeps once-only effects and original exceptions ... ok (31ms)
+public ICU preserves lazy and eager branch evaluation ... ok (15ms)
+public ICU fragments and repeated calls keep independent state ... ok (42ms)
+browser ICU ESM and private Reflect calls preserve capture anchors ... ok (45ms)
+running 4 tests from ./test/forms/lazy-protected-invocation.test.js
+lazy protected invocation preserves the no-request compiler path ... ok (5ms)
+lazy protected invocation validates plans and recovers after rejection ... ok (1ms)
+lazy protected invocation checks source module binding roles ... ok (2ms)
+lazy protected invocation materializes all four public proof inputs ... ok (9ms)
+running 8 tests from ./test/forms/remaining-discard-bindings.test.js
+S03 public declarations and loop binders discard without losing effects ... ok (101ms)
+S03 public callable and class parameter slots preserve arity and laziness ... ok (234ms)
+S03 public catch keeps the writer's expression-binding grammar ... ok (31ms)
+S03 spread parameters project source names and preserve fallback lookup ... ok (33ms)
+S03 public zero-name grouped patterns keep static alias keys ... ok (34ms)
+S03 multi-clause signature guard is early and one-clause builders delegate ... ok (59ms)
+S03 raw compiler IR stays literal while source expansion prepares discards ... ok (134ms)
+S03 browser compilation and staged source facade share public behavior ... ok (163ms)
+running 1 test from ./test/forms/dd-37-classifier-pilot.test.js
+DD-37 pilot: new classifier path produces same kernel as old macro path for (not x) ... ok (4ms)
+running 7 tests from ./test/forms/host-reference-lowering.test.js
+owned host references are lowered hygienically in complete units ... ok (7ms)
+no-request output and source-shaped names do not select private references ... ok (309µs)
+normalized source identifiers reserve generated reference aliases ... ok (1ms)
+unfinished private host references fail on the fragment compiler path ... ok (408µs)
+one owned value reference can head multiple calls and shares one alias ... ok (4ms)
+expandExpr materializes owned references as complete multi-form output ... ok (829µs)
+public emitted ESM uses real guard and no-match intrinsics under module shadowing ... ok (5ms)
+running 1 test from ./test/forms/browser-host-reference-compile.test.js
+browser compiler emits ESM with owned host references that an ESM consumer can run ... ok (15ms)
+
+ ERRORS 
+
+whole-source typed and recursive result storage preserves actual values => ./test/forms/public-generated-names.test.js:121:6
+error: AssertionError: Values are not equal: error: Uncaught (in promise) TypeError: defaults: arg 'nested' expected number, got object
+    throw new lyknIntrinsicTypeError0("defaults: arg 'nested' expected number, got " + typeof nested);
+          ^
+    at defaults (file:///private/tmp/lykn-arc05-s06-cc/tmp/lykn-public-generated-names-d908cbcdedcdd796/output.mjs:7:11)
+    at file:///private/tmp/lykn-arc05-s06-cc/tmp/lykn-public-generated-names-d908cbcdedcdd796/output.mjs:15:13
+
+
+
+    [Diff] Actual / Expected
+
+
+-   1
++   0
+
+  throw new AssertionError(message);
+        ^
+    at assertEquals (https://jsr.io/@std/assert/1.0.19/equals.ts:67:9)
+    at executeModule (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/public-generated-names.test.js:58:5)
+    at async file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/public-generated-names.test.js:153:3
+
+fragment and standalone ordinary-name builders own their inputs => ./test/forms/public-generated-names.test.js:226:6
+error: AssertionError: Values are not equal: error: Uncaught (in promise) ReferenceError: value is not defined
+  const target__gensym2 = value;
+                          ^
+    at file:///private/tmp/lykn-arc05-s06-cc/tmp/lykn-public-generated-names-185b7efa9fde06f9/output.mjs:16:27
+    at file:///private/tmp/lykn-arc05-s06-cc/tmp/lykn-public-generated-names-185b7efa9fde06f9/output.mjs:21:3
+
+
+
+    [Diff] Actual / Expected
+
+
+-   1
++   0
+
+  throw new AssertionError(message);
+        ^
+    at assertEquals (https://jsr.io/@std/assert/1.0.19/equals.ts:67:9)
+    at executeModule (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/public-generated-names.test.js:58:5)
+    at async file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/public-generated-names.test.js:253:3
+
+late completion ICU and lazy invocation preserve private identities => ./test/forms/public-generated-names.test.js:313:6
+error: AssertionError: Values are not equal: error: Uncaught (in promise) ReferenceError: Cannot access '_v0' before initialization
+  const _v0 = _v0.child;
+              ^
+    at file:///private/tmp/lykn-arc05-s06-cc/tmp/lykn-public-generated-names-462375c65d9e46f1/output.mjs:5:15
+    at file:///private/tmp/lykn-arc05-s06-cc/tmp/lykn-public-generated-names-462375c65d9e46f1/output.mjs:8:3
+
+
+
+    [Diff] Actual / Expected
+
+
+-   1
++   0
+
+  throw new AssertionError(message);
+        ^
+    at assertEquals (https://jsr.io/@std/assert/1.0.19/equals.ts:67:9)
+    at executeModule (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/public-generated-names.test.js:58:5)
+    at async file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/public-generated-names.test.js:314:3
+
+public browser and post-expansion transport keep output and namespace boundaries => ./test/forms/public-generated-names.test.js:338:6
+error: AssertionError: Values are not equal: error: Uncaught (in promise) ReferenceError: Cannot access '_v0' before initialization
+  const _v0 = _v0.child;
+              ^
+    at file:///private/tmp/lykn-arc05-s06-cc/tmp/lykn-public-generated-names-cbbdab9fa063d2be/output.mjs:5:15
+    at file:///private/tmp/lykn-arc05-s06-cc/tmp/lykn-public-generated-names-cbbdab9fa063d2be/output.mjs:8:3
+
+
+
+    [Diff] Actual / Expected
+
+
+-   1
++   0
+
+  throw new AssertionError(message);
+        ^
+    at assertEquals (https://jsr.io/@std/assert/1.0.19/equals.ts:67:9)
+    at executeModule (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/public-generated-names.test.js:58:5)
+    at async file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/public-generated-names.test.js:341:3
+
+ FAILURES 
+
+whole-source typed and recursive result storage preserves actual values => ./test/forms/public-generated-names.test.js:121:6
+fragment and standalone ordinary-name builders own their inputs => ./test/forms/public-generated-names.test.js:226:6
+late completion ICU and lazy invocation preserve private identities => ./test/forms/public-generated-names.test.js:313:6
+public browser and post-expansion transport keep output and namespace boundaries => ./test/forms/public-generated-names.test.js:338:6
+
+FAILED | 31 passed | 4 failed (1s)
+
