@@ -2,7 +2,7 @@
 project: project03-language-evolution
 arc: arc05-binding-semantics-and-hygienic-emission
 status: active
-version: "0.10"
+version: "0.11"
 planned-release: unassigned
 depends-on: []
 related: [arc04-qualified-adts, arc06-adt-modules-and-library-integration]
@@ -11,6 +11,15 @@ related: [arc04-qualified-adts, arc06-adt-modules-and-library-integration]
 # Binding semantics and hygienic emission
 
 ## Authority and outcome
+
+Final delivery2026-11-14: [S03 independently closes](slice03-public-binding-discards/cdc-verification.md#final-correction03-verdict--accept--2026-11-14)
+atc60dea62d126bb07557a7f4f7183662dec3f6a58/tree9c247edc. All9 PB and
+BS-03 close with actual public/browser/fragment/materialized behavior, immediate
+guides and full gates. Root completed [retrospective](slice03-public-binding-discards/cdc-retrospective.md)
+and downstream routing. BS-01–03 are done; BS-04–09 remain open. S04 is the
+next candidate, unopened; release0829e892 and remote/integration boundaries stay.
+The approved roadmap needs no structural amendment. Earlier issue/HOLD/source
+ownership checkpoints below remain history, superseded by this final handback.
 
 Subsequent review2026-11-14: correction02 at3d21eab5 resolves R01–05 but is
 independently held for new R06: ordinary raw callable parameter structure reaches
@@ -123,7 +132,7 @@ remain part of BS-01's acceptance scope; fixing R01 alone is not acceptance.
 
 ## Candidate slice roadmap
 
-S01 is now delivered; the later entries are capability boundaries, not
+S01–03 are now delivered; the later entries are capability boundaries, not
 implementation-ready assignments or existing slice directories. Before opening one, inspect current source, finish
 its design and size its reading/code/proof packet with correction headroom.
 Split further before issue if it cannot fit. Each slice includes implementation,
@@ -133,7 +142,7 @@ affected delivery, necessary immediate documentation and independent review.
 | --- | --- | --- |
 | [S01 public Source discard completion](slice01-public-source-discards/slice-plan.md) — closed49982409 | Restored nested catch-default validation and independently finished the existing public discard contract across canonical/browser/materialized paths | Native759, held publicdba, original21 scope and R01 witness; original failures preserved |
 | [S02 native remaining discard binding forms](slice02-native-binding-discards/slice-plan.md) — closed9e6fb127 | Completed canonical admitted native catch/loop/callable/method roles, grouped static-key admission and honest simple-multi diagnostics; actual Source/raw-IR entrances distinguished | Accepted49982409 baseline and final independent9-row/gate proof; original HOLDs/refinements retained |
-| [S03 public remaining discard binding forms](slice03-public-binding-discards/slice-plan.md) — active | Deliver corresponding public/browser behavior, preserve already-admitted non-atom/empty-list discard groups and raw/schema roles, and enforce the honest simple-multi boundary | Accepted9e6fb127; source-grounded producer/catch/one-clause/projection design and independent readiness PASS before CC issue |
+| [S03 public remaining discard binding forms](slice03-public-binding-discards/slice-plan.md) — closedc60dea62 | Delivered corresponding public/browser behavior, preserved already-admitted non-atom/empty-list discard groups and raw/schema roles, and enforced the honest simple-multi boundary | Independent final9-row proof, focused66/full1578/docs482/M670/14/cites/size; original HOLDs and three refinements retained |
 | S04 discard-aware declarations | Keep parameters, schema fields and exported declarations consistent with actual discard behavior | S02/S03 semantics; actual TypeScript declaration consumer |
 | S05 native compiler-generated name hygiene | Protect remaining compiler temporaries from source, foreign and generated-name collisions | Native discard roles; complete producer/reservation census |
 | S06 public compiler-generated name hygiene | Protect corresponding public producers while preserving private object identities and macro transport limits | Public discard roles; complete producer/finalizer census |
@@ -191,7 +200,7 @@ early source-owner queries from the later runtime binding/name plan.
 
 ## Verification, handoff and limits
 
-The [ledger](ledger.md) carries BS-01/02 done and BS-03–09 open. Independent acceptance must
+The [ledger](ledger.md) carries BS-01–03 done and BS-04–09 open. Independent acceptance must
 cover actual changed consumers, meaningful negative controls, repository checks
 and embedded parity. Preserve final-source citations, existing size policy,
 cache/network limits, original failures and exact commit scope. Test count
@@ -199,19 +208,23 @@ alone is not scope coverage. Arc close verifies composition, not just child
 pointers; accepted outputs feed Arc04 activation and Arc06 integration.
 
 Use the existing planning/source homes. Root owns design and planning Git/index;
-S01 implementation is Luna6 High with separate Sol6.1 High review under the
-explicit2026-11-13 resume; later slices need their own opening. Preserve prior refinement
+S01–03 implementation used Luna6 High with separate Sol6.1 High review under
+their explicit operator openings; later slices need their own opening. Preserve prior refinement
 history; new filenames do not reset exhausted allowances. An iteration refines
 one delivery; a new capability receives its own slice.
 
-Source/build work is authorized only by the source-ready S02 assignment once
-issued. No separate
+S03 source/build returned clean after independent acceptance. Subsequent source
+work needs its own authorized source-ready assignment. No separate
 probe/experiment/merge/push/publication/licence/dependency action follows from
 this roadmap. Helpers use Lykn under repository guidance; no Python or
 substitute helper-language exception. Reader RDEO/RDCL, Arc01 I4 and diagnostic
 work, whole-work audits and the separate book/human gates keep their owners.
 
 ## Version history
+
+- 2026-11-14 v0.11: S03 completes BS-03 at independently acceptedc60dea62.
+  Retain all nine criteria and R01–06 history; root retrospective and downstream
+  API/IR/research routing complete. No structural roadmap change or S04 opening.
 
 - 2026-11-14 v0.10: S03 source-first review holds30 and drives one consolidated
   six-path correction02 for actual producer/layout defects, discriminating proof

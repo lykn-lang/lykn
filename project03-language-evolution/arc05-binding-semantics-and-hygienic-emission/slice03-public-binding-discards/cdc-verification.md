@@ -402,3 +402,147 @@ remain. No consequential readiness ambiguity remains.
 build/gate, source edit or Git/index action occurred in this readiness review.
 Only this reviewer record was appended. Root retains source/build until CC
 dispatch; all9 PB rows and implementation acceptance remain pending.
+
+## Final correction03 verdict — ACCEPT — 2026-11-14
+
+**Accept the complete S03 source delivery at
+c60dea62d126bb07557a7f4f7183662dec3f6a58, tree
+9c247edcf632ef2e038078a2833e727db949730d.** Same independently selected
+OpenAI gpt-6.1-sol/high CDC context; Luna6 High remained the separate
+implementer. All substantive R01–06 findings are resolved. The complete source
+delivery remains exactly14 authorized paths, with the final correction confined
+to binding.js, its mirror and the existing eight-group suite. Source acceptance
+does not close root's remaining metadata/retrospective/bubble-up duties or
+authorize S04, arc/project acceptance, integration or release.
+
+### Final inspection and fresh independent proof
+
+Read the actual three-path correction and all108 added test lines, current
+correction03 intake/contract readback/execution and closing handoff, plan/ledger
+current state and the actual scope/layout/dispatch consumers. Earlier complete
+14-path review, correction02 source/oracle reconciliation and readiness03
+remain applicable after inspecting the narrow final delta. Raw HEAD object and
+history show c60→3d→30→86→9e, correct tree/parent and adjacent coauthors; clean
+source and exact14-path baseline scope were rechecked after final gates. No
+reviewed commit was amended. All five canonical/embedded pairs compare equal.
+
+R06 now selects the structural function region for already resolved raw
+function/function*/arrow heads while lambda remains marked-only. Source syntax
+is not sanctioned merely to avoid the bug. The actual final ordinary arrow,
+explicit-lax named/sentinel generator and unmarked fragment tests preserve
+arity1/result99 and prove same-prefix user macro invocation count0. Actual raw
+generator default macro expands once; the fallback captures phase1 at call,
+while body execution starts only on `.next()` after phase10. Supplied/missing
+outputs12/8, one fallback and body count0→2 discriminate the timing and scope.
+Legitimate function-named macro and lexically bound typed lambda still win.
+The independent old prefix witnesses and valid CC65/1 semantic red remain
+preserved rather than replaced by the final green result.
+
+Exact commands, environment, raw stream/status stems, source conditions and
+retention limits are in
+[artifacts/cdc/correction03/final-gates.md](artifacts/cdc/correction03/final-gates.md).
+All following results were independently executed at final c60 bytes:
+
+1. `make fresh-artifacts`0 before staged consumers.
+2. Exact original four-file focused command0:66 passed/0 failed, comprising
+   8 S03,7 retained discards,21 lexical-region and30 walker-parity tests.
+3. One complete final `make check`0: build/lint/format and workspace Rust passed,
+   including lykn-lang1205/0; full product1578 passed/67steps/0failed;
+   docs482 passed/0failed. Complete5779-line stdout and177-line stderr retained.
+4. Actual M6 copied standalone delivery0; actual strict child70/0 over the
+   seven prescribed files. Saved child config maps lang to new embedded
+   materialization and browser to staged output. All14 canonical/embedded/
+   materialized comparison receipts were read:28 true equality assertions,
+   no false result. The count is62 retained+8 S03, not a count-only acceptance.
+5. Final-HEAD `make check-cited-paths`0:64 documents/601 historical citations.
+6. Fresh final-HEAD `make bundle-size-check`0:48689 gzip bytes below81920;
+   baseline27630, delta21059. Actual warning/download conditions are retained.
+
+### Evidence applicability and limits
+
+Final focused/full/M6 supersede held-candidate passing counts as final behavior
+proof. R01–05's earlier independent source reconciliation is retained because
+the final delta changes only raw callable region selection and adds its direct
+tests; the affected runtime controls were freshly rerun anyway. Native S02
+implementation/fixtures are unchanged in the14-path S03 delta, retaining its
+accepted semantic boundary at9e; fresh native/workspace/product gates corroborate
+preservation. Earlier exact baseline contrasts and failed candidates remain
+historical at their original pins. Metadata01 original-object/adjacent-trailer
+reconciliation remains bounded and valid; no CC attestation is promoted by
+this retention rule.
+
+The full product output still self-reports the existing JSR end-to-end skip
+because jsr.io is unreachable; network/publication success is not claimed.
+Documentation accounting is482 testable/executed blocks,15 separately excluded
+Skip/Fragment annotations and nine no-block input files, across22 generated
+test files. Those categories were checked against actual streams and the
+unchanged doctest counter, including root's independently reconciled dated S02
+erratum. The original erroneous historical prose remains visible and superseded
+only for its count interpretation.
+
+M6 used a warm shared DENO_DIR and distinct cold owned materialization XDG.
+Its actual strict command/config/status/outputs are inspected; nested macro
+child argv is explicitly not separately traced. Size checking reported two
+esbuild registry downloads and four existing astring condition-order warning
+occurrences. No entire-offline claim or new dependency/lock change is inferred.
+Browser proof is actual facade compile-to-ESM and execution of produced modules,
+not a browser run/load/CSP execution-policy claim. Optional Cargo docs and a
+duplicate docs run were not performed.
+
+### All nine PB dispositions
+
+| Row | Final independent disposition | Evidence / coverage boundary |
+| --- | --- | --- |
+| PB-01 | Accept; source-reconciled and freshly reproduced. | Declarations/loops, foreign99/_value7, exact initializer/effects, iterator-result getter hole0/named2 and early next1/return1, for-in/await-of and numeric initializer once with immediate break. No new discarded numeric counter. |
+| PB-02 | Accept; R01/R02/R03/R06 resolved. | Admitted named/list-first/sentinel/arrow/async/typed Source/class/class-expr roles, wrappers/object values, arity/default/laziness/call-vs-next timing, real Error/TypeError and preserved source labels; ordinary anonymous function grammar not widened. |
+| PB-03 | Accept; source-reconciled and freshly reproduced. | Actual legacy scalar/array/object/pair/computed/default/rest/spread/alias-named-property roles, live consumption and retained legacy8, suffix/finally/direct return, S01 nested strict-name negatives; R05 guide distinguishes bare catch-array values from declaration elision. |
+| PB-04 | Accept; R01/R04/R06 resolved. | Real spread-bound form-head call and nested default expansion/laziness, reserved controls, unmarked/escaped fragment and whole failure/recovery, private-prefix count0, schema/data/JSON and existing identity/host preservation. No prefix-based authority or deep copying before finalization. |
+| PB-05 | Accept; source-reconciled and freshly reproduced. | Existing empty/all-discard/empty-list admission, grouped nested default/rest/getter/initializer effects, normalized static Atom/Keyword/String/Unicode/numeric keys and metadata/RHS controls; early colon/dot errors and typed/duplicate restrictions, named/single/raw boundaries preserved. |
+| PB-06 | Accept; source-reconciled and freshly reproduced. | Shared exact early multi-clause simple default/rest guard across real public/classify/emit/build entrances, mixed clauses and RHS macro0; direct/source single-clause defaults/rest, nested/fixed/type-priority/pre/post preservation. S09 remains unopened for overload support. |
+| PB-07 | Accept; R01/R02/R04/R05/R06 resolved. | Strict/explicit-lax/escape and unsupported-prefix controls; literal raw7 vs expanded99, actual schema7/type error, properties/assignments/JSON, exact dual-facade source-only namespaces and truthful immediate guides. Broader API/book/human obligations remain. |
+| PB-08 | Accept; fresh final-source gates. | Focused66/0; full1578/67/docs482/0/native1205/0; actual M670/14, final64/601 citations and48689/81920 gzip. Correct skip/cache/download/warning/tracing limits recorded above. |
+| PB-09 | Reviewer source/evidence duties satisfied; root closing duties pending. | Independent nine-row verdict, all six findings resolved, clean/no-jobs handback and preserved source/prompt/failed evidence. Root retains retrospective/ledger/BS-03/bubble-up and final metadata reconciliation before full slice close. |
+
+### Final source handback
+
+All owned sessions completed naturally0. No product/test/Git/index/ledger edit
+was made by this reviewer; only the reviewer record and necessary artifacts/cdc
+evidence were authored. Source remains cleanc60dea62/tree9c247edc, with
+release/0.6.x0829e892 unchanged. Exclusive source/build ownership returns to
+root. Root may complete authorized S03 closing metadata and retrospective;
+S04, later naming/DTS/S09/Arc06 API/IR, qualified/library/book/human/licence,
+release/propagation/remote actions retain their recorded owners and gates.
+
+## Closing metadata review — PASS — 2026-11-14
+
+Same independent Sol6.1 High reviewer inspected the complete proposed closing
+diff across15 tracked files, the full123-line root retrospective and final
+evidence index. Clipped combined reads were recovered with bounded file-group
+reads. S03 v1.3 closed/all9 PB done and Arc05 BS-03 done agree with the accepted
+c60dea62/tree9c247edc source verdict. Root's actual retrospective, closing
+prefix, BS-03/Project03/Arc04/Arc06/Project07 reconciliation now satisfy PB-09's
+remaining closing duties; the exact planning commit remains root-owned.
+
+Cardinalities are9 PB,9 BS,6 LI and15 original retired Arc04 S03 rows. BS-01–03
+are done, BS-04–09 open; all six LI rows remain open. Retired ledger diff only
+adds a dated checkpoint, preserving all15 original row statuses/evidence and
+the bounded759/499 acceptances. P-BIND/P-QADT remain open. Arc06 LI-04 records
+the explicit9e→c60 helper/layout/region/static-key/signature/raw-source/guide
+audit inputs; all later declaration/DTS/naming/S09/qualified/library/research/
+reader/book/human/licence obligations retain their owners. No S04 or later
+implementation/experiment/release action is opened by these updates.
+
+Meaningful relative links resolve to the reviewed records, and the final
+verdict heading matches the referenced anchor. All four issued prompts are
+present with no current diff; earlier failed/HOLD/metadata objects and distinct
+final conditions remain preserved. The retrospective candidly includes root,
+implementer and reviewer mistakes, missing historical log/snapshot limits,
+the S02 doc-count erratum and the wrong-release query, without claiming a
+controlled process improvement. No receipt or missing planning hash is invented.
+
+Read-only final source checks still show cleanc60dea62/tree9c247edc and
+release/0.6.x0829e892. No runtime/source gate was repeated and no source, test,
+Git/index or ledger mutation was made in this metadata review. Only this
+reviewer disposition was appended; no owned jobs remain. **PASS for root to
+commit the exact reviewed closing packet.** S03 is fully closeable; broader
+arc/project/composition and release gates remain open.

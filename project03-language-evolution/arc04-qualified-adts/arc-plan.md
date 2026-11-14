@@ -2,13 +2,21 @@
 project: project03-language-evolution
 arc: arc04-qualified-adts
 status: replanning
-version: "2.2"
+version: "2.3"
 related: [arc05-binding-semantics-and-hygienic-emission, arc06-adt-modules-and-library-integration, project07-core-library-research]
 ---
 
 # Qualified ADTs
 
 ## Current v2.0 scope and authority
+
+Current checkpoint2026-11-14: [Arc05 S03](../arc05-binding-semantics-and-hygienic-emission/slice03-public-binding-discards/cdc-verification.md#final-correction03-verdict--accept--2026-11-14)
+independently delivers remaining public/browser binding discards atc60dea62.
+BS-01–03 are done; declaration/naming/composition and local qualified features
+retain their owners and open gates. The retired S03 keeps all15 original row
+dispositions and bounded native759/public499 evidence. Arc04 implementation
+remains paused, S04 binding declarations unopened and release0829e892 unchanged.
+Earlier status checkpoints below are historical.
 
 Current checkpoint2026-11-14: [Arc05 S02](../arc05-binding-semantics-and-hygienic-emission/slice02-native-binding-discards/cdc-verification.md#final-correction04-verdict--accept--2026-11-14)
 independently accepts remaining admitted native binding discards at9e6fb127.
@@ -292,6 +300,9 @@ Project07's original research evidence, final synthesis and library handoffs
 survive this detour, including every YAML and human-review obligation.
 
 ## Version history
+
+- 2026-11-14 v2.3: Record accepted Arc05 S03 public/browser binding prerequisite
+  c60dea62 without broadening retired-row evidence or activating qualified ADTs.
 
 - 2026-11-14 v2.2: Record independently accepted Arc05 S02 native-binding
   prerequisite9e6fb127; no structural roadmap or qualified-feature change.

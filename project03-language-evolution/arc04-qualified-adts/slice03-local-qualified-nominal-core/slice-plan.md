@@ -3,13 +3,17 @@ project: project03-language-evolution
 arc: arc04-qualified-adts
 slice: slice03-local-qualified-nominal-core
 status: re-scoped
-version: "2.2"
+version: "2.3"
 depends-on: [slice01-contract-and-emission-design, slice02-existing-adt-correctness]
 ---
 
 # Local qualified nominal core
 
 ## Transfer-maintenance version history
+
+- 2026-11-14 v2.3: Record independently accepted Arc05 S03 public/browser
+  checkpointc60dea62. All15 original dispositions, retired status, bounded
+  native759/public499 evidence and later declaration/naming/owner gates remain.
 
 - 2026-11-14 v2.2: Record independently accepted Arc05 S02 native-binding
   checkpoint9e6fb127. Retired status, original row dispositions and all later
@@ -21,6 +25,14 @@ depends-on: [slice01-contract-and-emission-design, slice02-existing-adt-correctn
   operator-approved three-arc carry-forward map. Prior history remains below.
 
 ## Current role: historical execution record and carry-forward map
+
+Current outcome2026-11-14: [Arc05 S03](../../arc05-binding-semantics-and-hygienic-emission/slice03-public-binding-discards/cdc-verification.md#final-correction03-verdict--accept--2026-11-14)
+closes BS-03 atc60dea62 for remaining public/browser discard forms, grouped-key
+roles and explicit unsupported simple-signature diagnostics. This complements
+S02 native parity without retroactively enlarging native759/public499 acceptance
+or closing another original LC row. Discard declarations, general naming,
+qualified owner and final composition remain open; historical22 stays unexecuted,
+this container retired and release0829e892 unchanged.
 
 Current outcome2026-11-14: [Arc05 S02](../../arc05-binding-semantics-and-hygienic-emission/slice02-native-binding-discards/cdc-verification.md#final-correction04-verdict--accept--2026-11-14)
 closes BS-02 at9e6fb127, completing the admitted native catch/loop/callable/

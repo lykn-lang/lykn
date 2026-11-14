@@ -1,5 +1,11 @@
 # S03 local qualified nominal core ledger
 
+2026-11-14 subsequent checkpoint: [Arc05 S03](../../arc05-binding-semantics-and-hygienic-emission/slice03-public-binding-discards/cdc-verification.md#final-correction03-verdict--accept--2026-11-14)
+independently closes BS-03 atc60dea62. All15 original statuses/evidence below
+remain unchanged; native759/public499 are not retroactively broadened. DTS,
+naming, qualified owners and composition retain later gates. This container
+stays retired,22 unexecuted and release0829e892 unchanged.
+
 2026-11-14 subsequent checkpoint: [Arc05 S02](../../arc05-binding-semantics-and-hygienic-emission/slice02-native-binding-discards/cdc-verification.md#final-correction04-verdict--accept--2026-11-14)
 independently closes BS-02 at9e6fb127 for remaining admitted native binding
 discards and grouped/static-key/signature dispositions. All15 original rows

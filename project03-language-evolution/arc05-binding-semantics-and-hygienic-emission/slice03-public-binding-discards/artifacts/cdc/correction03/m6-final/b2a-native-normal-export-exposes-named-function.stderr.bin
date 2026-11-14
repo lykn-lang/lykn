@@ -1,0 +1,2 @@
+1:9: warning: exported function `array` has no `:returns` annotation; .d.ts will use `unknown`
+  suggestion: add `:returns :type` to `array`

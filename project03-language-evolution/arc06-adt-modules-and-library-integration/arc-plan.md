@@ -2,7 +2,7 @@
 project: project03-language-evolution
 arc: arc06-adt-modules-and-library-integration
 status: planned
-version: "0.2"
+version: "0.3"
 planned-release: unassigned
 depends-on: []
 related: [arc04-qualified-adts, arc05-binding-semantics-and-hygienic-emission, project07-core-library-research]
@@ -11,6 +11,17 @@ related: [arc04-qualified-adts, arc05-binding-semantics-and-hygienic-emission, p
 # ADT modules and library integration
 
 ## Authority and useful result
+
+2026-11-14 carry-forward: [Arc05 S03](../arc05-binding-semantics-and-hygienic-emission/slice03-public-binding-discards/cdc-verification.md#final-correction03-verdict--accept--2026-11-14)
+is independently accepted atc60dea62. LI-04 must include exact source range
+9e6fb127→c60dea62: the new prepareSourceDiscardBindings helper export, existing
+functionRegionLayout/bindingScopePlan behavior, bounded static Atom/Keyword→String
+classified alias keys and preserved metadata, direct one-clause builder behavior,
+early unsupported simple multi-clause diagnostics, raw/source/fragment/JSON and
+actual browser/materialized entrances, and guides00/06. Public legacy catch
+expression roles and ordinary array-binding elision must stay distinct in the
+audit. This adds inputs only; all six LI rows and library/book/human gates
+remain open, with no implementation/experiment or release action authorized.
 
 2026-11-14 carry-forward: [Arc05 S02](../arc05-binding-semantics-and-hygienic-emission/slice02-native-binding-discards/cdc-verification.md#final-correction04-verdict--accept--2026-11-14)
 is independently accepted at9e6fb127. LI-04 must audit its bounded classified-IR
@@ -103,6 +114,9 @@ merge/push/release, dependency adoption or licence choice is authorized now.
 Repository Lykn-only helper rules apply; no Python exception.
 
 ## Version history
+
+- 2026-11-14 v0.3: Carry accepted S03 API/helper/layout/classified-IR/signature/
+  guide inputs into the existing LI-04 audit; all six criteria stay open.
 
 - 2026-11-14 v0.2: Carry accepted S02 static-key IR/API and guide impacts into
   LI-04 without opening a slice or changing the existing roadmap/gates.

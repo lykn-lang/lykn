@@ -1,7 +1,7 @@
 ---
 project: project03-language-evolution
 status: research
-version: "1.65"
+version: "1.66"
 planned-release: "0.7.0"
 depends-on: ["project02-language-toolchain-alignment"]
 blocks: []
@@ -11,6 +11,15 @@ related: ["project04-c-lang", "project07-core-library-research"]
 # Language evolution
 
 ## Current approved structure —2026-11-13
+
+Final delivery2026-11-14: [Arc05 S03](arc05-binding-semantics-and-hygienic-emission/slice03-public-binding-discards/cdc-verification.md#final-correction03-verdict--accept--2026-11-14)
+independently closes all9PB/BS-03 atc60dea62/tree9c247edc. Remaining admitted
+public/browser discard forms, grouped-key representation, early unsupported
+simple multi signatures and immediate guides have actual full/materialized proof.
+Root retrospective and Arc04/Arc06/Project07 routing are complete. BS-01–03 done;
+BS-04–09, P-BIND/P-QADT, qualified/module/library/research/book/human gates stay
+open. No S04 or release integration is opened; release0829e892 is unchanged.
+Older opening/HOLD checkpoints below remain historical.
 
 Subsequent authority2026-11-14: the operator opens
 [Arc05 S03](arc05-binding-semantics-and-hygienic-emission/slice03-public-binding-discards/slice-plan.md)
@@ -1066,6 +1075,10 @@ with their source and status distinctions. A future
 implementation definition of done is not established by this migration.
 
 ## Version history
+
+- 2026-11-14 v1.66: Arc05 S03 independently closes all9PB/BS-03 atc60dea62;
+  reconcile retrospective and API/IR/research carry-forward without broadening
+  older acceptance, changing the roadmap or opening S04/release work.
 
 - 2026-11-14 v1.65: Open operator-selected Arc05 S03 public/browser discards
   for source-ready implementation and independent close, preserving S02 input

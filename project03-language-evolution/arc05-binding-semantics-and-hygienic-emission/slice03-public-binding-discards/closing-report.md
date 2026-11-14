@@ -1,5 +1,46 @@
 # S03 CC implementation handoff
 
+## Root final closing metadata —2026-11-14
+
+The original doer statements and dated corrections below remain historical.
+Separate Sol6.1 High [accepts final correction03](cdc-verification.md#final-correction03-verdict--accept--2026-11-14)
+at c60dea62d126bb07557a7f4f7183662dec3f6a58,
+tree9c247edcf632ef2e038078a2833e727db949730d. Source is clean on the task
+branch; release/0.6.x stays0829e892. All nine PB criteria close with independent
+source/runtime evidence and root follow-through. Separate Sol's
+[closing metadata PASS](cdc-verification.md#closing-metadata-review--pass--2026-11-14)
+confirms PB-09 before the planning commit. No integration, S04 opening or
+external action follows.
+
+Independent final proof: focused66/0; complete make check0 with native
+lykn-lang1205/0, product1578/67steps/0 and docs482/0; actual M670/0 with
+all14 canonical/embedded/materialized comparisons; final citations64/601;
+fresh48689-byte gzip below81920. Fifteen annotated Skip/Fragment blocks,
+nine no-block inputs, unreachable-JSR self-skip, shared warm Deno cache,
+esbuild downloads/astring warnings and untraced nested child argv remain
+distinct limits. Browser proof is compile-to-ESM plus execution of produced
+modules, without a browser loader/CSP claim.
+
+The [root retrospective](cdc-retrospective.md) includes author/readiness and
+review mistakes as well as implementation corrections. BS-03 is delivered;
+BS-04–09 and P-BIND/P-QADT stay open. Arc04 local qualified work remains
+paused; its retired S03 keeps all15 original row dispositions and accepted
+native759/public499 checkpoints. Arc06 LI-04 receives the exact9e→c60 source
+range, new helper export, grouped-key classified-IR representation, actual
+callable layouts/region selection, early signature diagnostics and immediate
+guide impacts. All six LI criteria and Project07 research/library/reader/book/
+human/licence obligations remain open with their existing owners. S09 overload
+design remains unopened. No structural roadmap amendment is required.
+
+All durable supporting evidence is in artifacts/cc and artifacts/cdc, including
+baseline red, raw metadata01 objects, both held source-review packets, each
+correction's failed/final conditions and final independent gates. All issued
+prompts remain in the slice root. No missing old snapshots/logs are reconstructed.
+Source14 paths are those explicitly authorized in slice-plan.md; final3 are
+binding.js/mirror/new suite. The closing planning commit contains this slice's
+plan/ledger/reports/retrospective/reviewer evidence and named parent routing
+files only; its own hash is supplied by Git after commit, not invented here.
+
 Date: 2026-11-14
 
 ## Source delivery

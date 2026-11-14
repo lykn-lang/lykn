@@ -1,0 +1,4 @@
+Check test/expander/lexical-regions.test.js
+Check test/expander/binding-walker-parity.test.js
+Check test/forms/remaining-discard-bindings.test.js
+Check test/forms/discard-bindings.test.js

@@ -1,5 +1,11 @@
 # project03-language-evolution ledger
 
+Final2026-11-14: [Arc05 S03](arc05-binding-semantics-and-hygienic-emission/slice03-public-binding-discards/cdc-verification.md#final-correction03-verdict--accept--2026-11-14)
+independently closes all9PB/BS-03 atc60dea62/tree9c247edc, with root
+retrospective and parent routing. BS-01–03 are done; P-BIND/P-QADT and remaining
+binding/qualified/composition/library/book/human criteria stay open. Source is
+task-only; S04 unopened and release0829e892 unchanged. Earlier notes are history.
+
 2026-11-14 subsequent authority: [Arc05 S03](arc05-binding-semantics-and-hygienic-emission/slice03-public-binding-discards/slice-plan.md)
 is operator-opened for public/browser discard completion, Luna6 High CC and
 separate Sol6.1 High CDC, Autonomous Mode. BS-03/P-BIND/P-QADT and every other

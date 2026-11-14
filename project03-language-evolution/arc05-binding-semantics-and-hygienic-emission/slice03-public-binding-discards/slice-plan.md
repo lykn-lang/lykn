@@ -2,14 +2,28 @@
 project: project03-language-evolution
 arc: arc05-binding-semantics-and-hygienic-emission
 slice: slice03-public-binding-discards
-status: active
-version: "1.2"
+status: closed
+version: "1.3"
 depends-on: [slice02-native-binding-discards]
 ---
 
 # Remaining public/browser discard binding forms
 
-Current assignment2026-11-14: [correction03](cc-prompt-iteration03.md) addresses
+Final outcome2026-11-14: separate Sol6.1 High independently
+[accepts correction03](cdc-verification.md#final-correction03-verdict--accept--2026-11-14)
+at c60dea62d126bb07557a7f4f7183662dec3f6a58,
+tree9c247edcf632ef2e038078a2833e727db949730d. All nine PB criteria are
+accounted for; root completed retrospective/BS-03/downstream reconciliation.
+Separate Sol's [closing metadata PASS](cdc-verification.md#closing-metadata-review--pass--2026-11-14)
+confirms PB-09 before this packet's commit.
+Focused66/0, full1578/67/docs482/0, actual M670/14, final64/601 citations and
+fresh48689/81920 gzip passed independently. Exact14-path delivery and three-
+path final correction, original HOLDs/failures/prompts and evidence limits stay
+visible. S04 and release0829e892 are unchanged; no later work is opened.
+The current assignment is accepted correction03. Earlier issue/HOLD text below
+is retained as dated execution history, not the current ownership/status.
+
+Issued assignment2026-11-14: [correction03](cc-prompt-iteration03.md) addresses
 the sole new independent R06 at3d21eab5: an unmarked raw callable parameter
 container can reach macro dispatch. Existing resolved callable regions must
 protect structure without changing kernel sanctioning or lexical/macro priority.
@@ -363,6 +377,9 @@ corrections proceed autonomously, ambiguous design/evidence gaps return to root.
   Root inspected the actual three-path diff and raw final summaries; no row
   closes on attestation. Source/build transfers to separate Sol on dispatch.
   Earlier packets immutable.
+  Final independent verdict ACCEPTc60dea62; root closing packet completes
+  retrospective/parent routing; the same Sol's closing metadata PASS confirms
+  PB-09 before the exact planning commit. No source/build jobs remain; root owns handback.
 
 - 2026-11-14 correction02 `cc-prompt-iteration02.md`: prior assignment for
   independent R01–05 at30d8b77c/treeeed76325. Source-ready six-path own-slot/
@@ -410,6 +427,10 @@ NUMI, reader RDEO/RDCL, Arc04 local qualified and Project07/book/human/licence
 owners. Neither native/public discard acceptance nor guide edits close those.
 
 ## Version history
+
+- 2026-11-14 v1.3: Close all nine PB criteria at independently acceptedc60dea62;
+  complete root retrospective and BS-03/Arc04/Arc06/Project07 carry-forward.
+  Preserve R01–06, all four prompts, raw failures and unchanged later gates.
 
 - 2026-11-14 v1.2: Preserve independent3d HOLD/new R06 and issue bounded
   correction03 for existing raw callable regions. Root readiness checked the
