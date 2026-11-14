@@ -1,8 +1,8 @@
 ---
 project: project03-language-evolution
 arc: arc05-binding-semantics-and-hygienic-emission
-status: planned
-version: "0.1"
+status: active
+version: "0.2"
 planned-release: unassigned
 depends-on: []
 related: [arc04-qualified-adts, arc06-adt-modules-and-library-integration]
@@ -13,8 +13,11 @@ related: [arc04-qualified-adts, arc06-adt-modules-and-library-integration]
 ## Authority and outcome
 
 2026-11-13: the operator approves this separate binding arc after the Arc04
-S03 reconciliation. This is planning authority. Implementation remains paused;
-no slice is opened and no contributor is dispatched by this plan.
+S03 reconciliation. The subsequent operator instruction opens
+[S01 public Source discards](slice01-public-source-discards/slice-plan.md) for
+implementation and independent close only: fresh Luna6 High CC and separate
+Sol6.1 High CDC, Autonomous Mode. Root owns planning and serial source/build
+handoffs. S02 and later remain roadmap entries; no release action is authorized.
 
 Deliver coherent discard bindings and preserve exact Lykn source identities
 through JavaScript emission, without changing property/API names or observable
@@ -57,7 +60,7 @@ affected delivery, necessary immediate documentation and independent review.
 
 | Candidate | Useful delivery | Specific prerequisites |
 | --- | --- | --- |
-| S01 public Source discard completion | Restore nested catch-default validation and independently finish the existing public discard contract across canonical/browser/materialized paths | Native759, held publicdba, original21 scope and R01 witness |
+| [S01 public Source discard completion](slice01-public-source-discards/slice-plan.md) — active | Restore nested catch-default validation and independently finish the existing public discard contract across canonical/browser/materialized paths | Native759, held publicdba, original21 scope and R01 witness |
 | S02 native remaining discard binding forms | Complete native catch/loop/raw-callable/method roles; explicitly resolve grouped all-discard non-atom Bind admission and the existing simple-multi default/rest boundary | S01 stable baseline; explicit consumed-role/API contract before issue |
 | S03 public remaining discard binding forms | Deliver corresponding public/browser behavior, preserve already-admitted non-atom discard groups, and explicitly resolve the public simple-multi default/rest boundary | S02's reviewed shared contract; public consumer census, data/schema and private finalization |
 | S04 discard-aware declarations | Keep parameters, schema fields and exported declarations consistent with actual discard behavior | S02/S03 semantics; actual TypeScript declaration consumer |
@@ -95,8 +98,8 @@ alone is not scope coverage. Arc close verifies composition, not just child
 pointers; accepted outputs feed Arc04 activation and Arc06 integration.
 
 Use the existing planning/source homes. Root owns design and planning Git/index;
-prospective implementation is Luna6 High with separate Sol6.1 High review,
-subject to an explicit implementation resume. Preserve prior refinement
+S01 implementation is Luna6 High with separate Sol6.1 High review under the
+explicit2026-11-13 resume; later slices need their own opening. Preserve prior refinement
 history; new filenames do not reset exhausted allowances. An iteration refines
 one delivery; a new capability receives its own slice.
 

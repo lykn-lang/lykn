@@ -11,6 +11,13 @@ depends-on: [slice01-contract-and-emission-design, slice02-existing-adt-correctn
 
 ## Current role: historical execution record and carry-forward map
 
+2026-11-13 subsequent authority: the operator opens
+[Arc05 S01](../../arc05-binding-semantics-and-hygienic-emission/slice01-public-source-discards/slice-plan.md)
+to complete public Source discards with Luna6 High CC / Sol6.1 High CDC.
+S03 stays retired and its issued22 remains unexecuted. B2-DISCARD-P remains
+open until that slice's independent acceptance; all other carry-forward owners
+and statuses remain intact. The following pause is the restructuring checkpoint.
+
 2026-11-13 v2.0: the operator approves a dedicated binding arc, a recorded
 remaining ADT feature roadmap and a downstream integration arc. S03 is retired
 as an execution container. It is NOT complete, and no acceptance row changes

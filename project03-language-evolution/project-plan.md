@@ -12,14 +12,18 @@ related: ["project04-c-lang", "project07-core-library-research"]
 ## Current approved structure —2026-11-13
 
 The operator approves three distinct planning homes after S03 reconciliation.
-This creates/updates arc roadmaps and ledgers only. Implementation stays paused:
-no new slice, CC prompt, source/build/probe/experiment or release action is
-opened. Task source is clean at dba24d40; latest accepted checkpoint759567f9,
-release/0.6.x0829e892. Public discard R01 remains held,22 remains unexecuted.
+The subsequent operator instruction opens
+[Arc05 S01](arc05-binding-semantics-and-hygienic-emission/slice01-public-source-discards/slice-plan.md)
+to finish public Source discards, with Luna6 High CC and separate Sol6.1 High CDC
+in Autonomous Mode. Its endpoint is independent slice close/report; later slices,
+ADT activation, experiments and release actions remain unresumed. Task source
+starts clean at dba24d40; latest accepted checkpoint759567f9,
+release/0.6.x0829e892. Public discard R01 remains held until S01 acceptance;
+historical S03 assignment22 remains unexecuted.
 
 | Arc | Coherent outcome | Current planning state |
 | --- | --- | --- |
-| [Arc05 binding semantics and hygienic emission](arc05-binding-semantics-and-hygienic-emission/arc-plan.md) | Complete discard semantics/declarations and preserve source/compiler binding identities through emitted JS | Eight candidate slices, all new rows open; first future slice finishes held public discard work |
+| [Arc05 binding semantics and hygienic emission](arc05-binding-semantics-and-hygienic-emission/arc-plan.md) | Complete discard semantics/declarations and preserve source/compiler binding identities through emitted JS | S01 active for held public discard completion; all rows open, seven later candidates remain roadmap only |
 | [Arc04 qualified ADTs](arc04-qualified-adts/arc-plan.md) | Closed owner/case semantics, coherent local qualified values/matching/guards, declarations and trusted initialization | Existing identity retained; S01/S02 and bounded prerequisites accepted; remaining local candidates S08–S13 are roadmap only |
 | [Arc06 ADT modules and library integration](arc06-adt-modules-and-library-integration/arc-plan.md) | Imported ABI, selective emission, actual build/JSON composition and API/docs/book/human handoff | Planning stub receives former Arc04 S04–S07 responsibilities, preserving the existing experiment checkpoint |
 

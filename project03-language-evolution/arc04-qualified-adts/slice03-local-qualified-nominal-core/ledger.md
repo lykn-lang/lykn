@@ -1,5 +1,10 @@
 # S03 local qualified nominal core ledger
 
+2026-11-13 subsequent authority: [Arc05 S01](../../arc05-binding-semantics-and-hygienic-emission/slice01-public-source-discards/slice-plan.md)
+is active for public Source discard completion. This is routing, not acceptance:
+B2-DISCARD-P and all other unfinished rows below remain open. Historical22
+is not resumed; its intended R01 correction is now assigned by S01's own prompt.
+
 2026-11-13 v2.0: S03 is re-scoped as historical execution record, not closed.
 The [carry-forward map](slice-plan.md) assigns all eight unfinished criteria
 and additional staged obligations to Arc05, remaining Arc04 and Arc06. All

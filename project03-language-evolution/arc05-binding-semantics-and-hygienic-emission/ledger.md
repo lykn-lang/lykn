@@ -1,5 +1,9 @@
 # Binding semantics and hygienic emission ledger
 
+2026-11-13: [S01](slice01-public-source-discards/slice-plan.md) is active under
+operator-selected Luna6 High CC / Sol6.1 High CDC, Autonomous Mode. BS-01 remains
+open pending full independent acceptance; this does not open S02 or later work.
+
 Planning only, 2026-11-13. All rows open; historical S03 acceptances are inputs,
 not retrospective completion of these new deliveries. No slice is opened.
 

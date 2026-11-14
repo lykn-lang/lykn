@@ -17,7 +17,10 @@ remaining local ADT feature roadmap below. General bindings move to
 modules, selective emission and library/API/docs handoff move to
 [Arc06](../arc06-adt-modules-and-library-integration/arc-plan.md).
 
-This is planning/restructuring authority, with implementation still paused.
+Arc04 implementation remains paused. A subsequent operator instruction resumes
+only [Arc05 S01](../arc05-binding-semantics-and-hygienic-emission/slice01-public-source-discards/slice-plan.md)
+for public discard completion and independent close. The following restructuring
+checkpoint remains historical:
 No slice is opened,22 is not resumed, and no source/build/probe/experiment or
 release action follows. Task source remains clean at dba24d40 with public
 discard R01 held; native759 is the latest accepted checkpoint and release is
