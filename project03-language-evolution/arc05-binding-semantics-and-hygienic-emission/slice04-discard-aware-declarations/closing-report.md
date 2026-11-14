@@ -127,3 +127,155 @@ this report.
 
 Independent Sol review and root retrospective remain outstanding. All rows stay
 open in the planning ledger until their owners record their disposition.
+
+## CC correction01 implementation and final-pin close — 2026-11-14
+
+Correction01 was issued after the independent source-first HOLD found missing
+R01/R02 consumer proofs, not a demonstrated emitter defect. Intake and
+source-cited contract readback are appended to
+`artifacts/cc/intake.md` (correction01 section; prompt line-count correction
+records 144 lines loaded in full). No correction changed the authorized
+four-path S04 product scope. Correction01 itself changed only
+`crates/lykn-cli/tests/discard_declarations.rs`, retaining its four test groups.
+No implementation/docs/runtime/AST/classifier/macro/dependency/lock/M6 source
+was changed.
+
+R01 added real inline and named multi-pair BindGroups to the existing export
+test. Generated declarations assert typed scalars and `unknown` destructured
+leaves; the strict TypeScript consumer checks exact `keyof typeof` names,
+positive values, and absent discard/unselected names. Runtime keys and projected
+values include both group paths. Existing scalar, schema/data, discard-only,
+sidecar replacement, raw export veto and non-module controls remain in the same
+group.
+
+R02 added exported `nestedInput` to the shared CLI/package fixture, exercising
+the actual nested Object→Array→Object shape, optional defaulted `_`,
+default-before-required tuple position and typed rest. Its generated DTS contains
+`{ items: [{ _?: number | undefined; label: string }, boolean | undefined,
+number, ...string[]] }`. Strict/exact-optional Deno consumers accept both
+provided-value cases and reject a string `_`, missing `label`, and numeric rest
+item. Checked and stripped outputs agree and execute under foreign `_ = 99` to
+`[99,"ok",5,["kept"]]` and `[99,"second",6,[]]`; observed input array
+lengths remain 4/4 and 3/3. The actual `lykn build` package declaration remains
+byte-identical to CLI output for identical source and its consumer calls the
+nested declaration. `items` is only the object property key, never a local in
+the Lykn body.
+
+### Correction01 evidence and gates
+
+- `artifacts/cc/correction01/fresh-artifacts/`: `make fresh-artifacts` status 0.
+- `artifacts/cc/correction01/focused/`: focused
+  `cargo test -p lykn-cli --test discard_declarations -- --nocapture` passed
+  all 4 groups. Actual Deno checks used strict, `exactOptionalPropertyTypes`,
+  `skipLibCheck:false`, offline/cached local declarations. The unguarded wrong
+  slot control remained an actual TS2345 rejection. Runtime receipts preserve
+  both checked and stripped output. The two `unused binding` warnings are from
+  the newly added named group’s deliberately unselected `grouped-hidden` and
+  `grouped-nested-hidden` fixture bindings; they are not a pre-existing repo
+  warning baseline.
+- `artifacts/cc/correction01/preflight/`: `cargo fmt --all --check` and
+  `cargo check -p lykn-cli --all-targets` passed after formatting. An initial
+  format check failed on line wrapping in three changed assertions; direct
+  `rustfmt --edition 2024` corrected those lines and the full format check then
+  passed. The initial failed format output is retained in this task transcript,
+  not as a separate raw file; no byte-for-byte raw failure artifact is claimed.
+- `artifacts/cc/correction01/gates/make-check-final/`: one final `make check`
+  with docs, executed against source commit `8ed7761e834583c7c524783d7614ffb7c53a1420`
+  (tree `7d8b3359fa570b2e8322996dbe8b648f02af58da`), status 0. It reported 40
+  Cargo harness result rows, 1,786 passed / 0 failed / 0 ignored; 99 `.lykn`
+  test inputs compiled; product suite 1,578 passed across 67 steps; docs 482
+  passed / 0 failed. Docs accounting is 15 annotation/fragment skips and 9
+  input files with no Lykn blocks. Clippy, format, syntax and source lint passed.
+  The in-run citation check saw 64 documents and 601 accepted historical
+  citations.
+- The first full `make check` did not set the optional macro-dependencies
+  receipt variable. Its unchanged 14-test harness, including M6, passed, but
+  that invocation did not save the M6 command/config/comparison receipts.
+  `artifacts/cc/correction01/m6/` preserves the one subsequent focused existing
+  M6 test run (status 0; 1 passed, 13 filtered) with receipts enabled. It used
+  Deno 2.9.6, an owned cold XDG materialization cache, cached Deno dependencies,
+  no npm, and seven explicit local public-test paths. The strict materialized
+  run exited 0 with 70 passed / 0 failed. Fourteen named file comparisons
+  individually record canonical=embedded and canonical=materialized true. The
+  run's full command, config, status, stdout/stderr, inputs and generated output
+  are retained; no selected-test population was inferred from an exit code.
+- `artifacts/cc/correction01/gates/c0ed-final-head/cited-paths/`: final
+  replacement-HEAD `make check-cited-paths` status 0, 64 documents / 601
+  accepted historical citations.
+- `artifacts/cc/correction01/gates/c0ed-final-head/bundle-size/`: fresh final
+  replacement-HEAD `make bundle-size-check` status 0 against 81,920-byte gzip
+  budget: raw 379,173 B, minified 181,014 B, gzip 48,689 B. Deno 2.9.6,
+  TypeScript 6.0.3. The command emitted esbuild download notices and repeated
+  existing astring `browser`-condition ordering warnings; no project dependency
+  or lockfile changed.
+
+The first source commit `8ed7761e834583c7c524783d7614ffb7c53a1420` contained a
+blank paragraph between its two required co-author trailers. This metadata
+failure is preserved as the raw original object under
+`artifacts/root-metadata01/original-8ed7761.commit`, with its command message
+and coordinator rationale in that directory's README. CC did not amend or
+recreate it. After clean handback, root preserved the exact original object and
+created `c0ed454610f3a384196e4fa003335373819fb2fd` using the same tree, parent,
+author/committer identity and timestamps, changing only the inter-trailer blank
+line, then compare-and-swapped only the task ref. The original and replacement
+raw objects and message are retained in `artifacts/root-metadata01/`. No focused,
+full, or M6 runtime tests were repeated for this metadata-only repair; those
+results remain attributed to 8ed and its identical tree. The two final-HEAD
+gates above were freshly run on c0ed.
+
+Final task source pin is `c0ed454610f3a384196e4fa003335373819fb2fd`, tree
+`7d8b3359fa570b2e8322996dbe8b648f02af58da`, parent
+`918f2e9c4237770fc7b2e0e950d726e735e95198`, branch
+`codex/qualified-adt-core`. Exactly one path changed in the correction commit:
+`crates/lykn-cli/tests/discard_declarations.rs` (54 insertions, 10 deletions);
+the final source tree is clean. No jobs remain. Release/0.6.x remains c60. No
+S05, merge, push, remote update or publication was performed. Root owns planning
+Git/index/ledger state.
+
+## Correction01 CC row proposals for separate review
+
+These proposals are not acceptance; all eight ledger rows remain open until
+their owners record disposition.
+
+| Row | CC proposal | Correction01 evidence and limits |
+| --- | --- | --- |
+| DT-01 | Proposed done | Retained repeated typed discard positions, named-label/suffix oppositions and allocator evidence; actual nested parameter consumer now also proves discarded default values do not capture `_`. The required-simple-after-destructure CLI spelling remains rejected by inherited prevalidation and is not claimed emitted. |
+| DT-02 | Proposed done | Retained defaults/rest/tuple/object controls; the actual generated recursive input type now covers optional nested `_`, default-before-required tuple slot and typed rest with positive and negative strict/exact-optional calls. |
+| DT-03 | Proposed done | Actual inline and named multi-pair BindGroups now assert typed scalar and unknown leaf declarations, exact namespace keys, hidden-name rejection and runtime projected values, alongside the preserved veto/sidecar/empty controls. |
+| DT-04 | Proposed done | Existing schema/data/constructor `_`, `_value`, overload/warning and non-module controls remain; correction01 changed only tests and introduced no emitter or schema behavior. |
+| DT-05 | Proposed done | Actual CLI generated declaration, checked/stripped byte equality and executed JS plus `lykn build` package byte equality and nested generated-DTS consumer are exercised. Native successful-unit and prior low-level receipts remain as originally attributed. |
+| DT-06 | Proposed done | Offline Deno consumers use actual generated `.d.ts`, strict/exact optional settings, positive calls and three nested expect-error controls; the unguarded wrong-type control produced TS2345; runtime values, foreign `_`, and caller lengths are observed. |
+| DT-07 | Proposed done | Fresh artifacts, focused four-group test, final `make check`, 40 Cargo harness rows / 1,786 Rust tests, 99 `.lykn` inputs, 1,578 product tests / 67 steps, 482 docs, seven-path M6 70/0 and 14 comparisons, final c0ed cited-path check and fresh 48,689-byte gzip size all pass. Initial formatter failure, first-M6 optional-capture omission, and original commit-message metadata failure are retained separately and corrected/attributed. |
+| DT-08 | Open pending | Independent Sol review, root retrospective and remaining S04-to-Arc/API/IR/research routing remain separate owners. CC returns the full eight-row proposal set and inventory; no higher-scale acceptance is claimed. |
+
+## Correction01 bubble-up and limits
+
+1. Preserve D-2611-MPVR and the Arc02 candidate for the ordinary required-simple-
+   after-destructure CLI prevalidation boundary. This correction did not alter
+   validator/runtime grammar or claim that rejected spelling reached DTS.
+2. Retain the prior downstream owners for broader class/generator/default/
+   re-export/package declaration routes, source-name lowering, browser-facing
+   declaration entrypoints, full language API inventory, qualified pattern
+   state/IR provenance, and human guide/book review. Correction01 adds the
+   specified grouped export and recursive-input witnesses only.
+3. Keep the two new unused-group fixture warnings, earlier format attempt,
+   omitted optional M6 capture on the first full check, and original 8ed trailer
+   metadata condition distinct from successful reruns or root's metadata-only
+   repair. The required c0ed final-HEAD citations and size gates are fresh.
+
+Independent Sol review and root retrospective remain outstanding. CC's
+proposals do not change the ledger or independently accept S04.
+
+## Root handoff attribution — 2026-11-14
+
+Root verified clean finalc0ed/tree7d8b, unchanged four-path c60 delivery and
+zero original8ed-to-replacement byte diff after clean/no-jobs CC handback.
+The correction01 phrase "no npm" above is not a demonstrated blanket dependency
+claim: the captured strict-public command uses cached-only Deno, the standalone
+macro child argv is not separately traced, and the shared DENO_DIR is warm.
+No new repository dependency/lockfile was introduced. M6's config is an import
+map, distinct from the explicitly strict/exactOptionalPropertyTypes/
+skipLibCheck:false local DTS-consumer config. Actual profiles and warning/cache
+limits remain binding. No additional runtime run is required for this wording
+clarification. All eight DT rows stay open pending independent source/gate
+review and root final retrospective/bubble-up reconciliation.

@@ -1,0 +1,4 @@
+9:21: warning: unused binding 'grouped-nested-hidden'
+  suggestion: prefix with underscore: _grouped-nested-hidden
+7:39: warning: unused binding 'grouped-hidden'
+  suggestion: prefix with underscore: _grouped-hidden

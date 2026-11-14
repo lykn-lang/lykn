@@ -217,3 +217,96 @@ historical citations. Fresh `make bundle-size-check` passed against the 81,920
 byte gzip limit: raw 379,173 bytes, minified 181,014 bytes, gzip 48,689 bytes.
 That size command downloaded esbuild into the Deno cache and captured astring
 package-condition warnings; it made no project dependency or lockfile change.
+
+## CC correction01 intake and contract readback — 2026-11-14
+
+### Assignment/source revalidation
+
+Loaded the complete canonical correction prompt at
+`.../slice04-discard-aware-declarations/cc-prompt-iteration01.md`. The active
+assignment is Correction01, refinement 1/5, and permits only
+`crates/lykn-cli/tests/discard_declarations.rs` on the task branch. Task HEAD is
+`918f2e9c4237770fc7b2e0e950d726e735e95198`, tree
+`37b1cd6e7a457caf94933a35cdac54335c7afb66`; `git status --short` was empty.
+Release remains c60 and root owns planning index/status. Prior 918 independent
+HOLD, all-eight row walk, first close and root location correction remain
+retained; this record is appended, not substituted.
+
+### Required reading delivered
+
+- **Required-full:** correction01 prompt (complete, 70 lines); source
+  `AGENTS.md` (complete); `slice-plan.md` (complete, 300 lines); `ledger.md`
+  (complete, 14 lines); current `discard_declarations.rs` (complete, 817 lines);
+  independent HOLD in `cdc-verification.md` (complete, 339 lines); original
+  `cc-prompt.md` (complete, 140 lines); canonical `closing-report.md`
+  (complete, 129 lines, including root's location notice).
+- **Required-section:** plan A–D and row proof map; original prompt's helper,
+  commit and return rules; closing report's handoff/retention limits; `dts.rs`
+  `param_shape_to_ts`, `emit_func_args`, module Bind/BindGroup and helper paths
+  (loaded complete in source ranges 1–205 and 270–470); relevant AST parameter
+  definitions in `surface.rs` (complete relevant declarations in 1–115 and
+  145–310); actual classifier BindGroup parser (`forms.rs` 1344–1390), full
+  typed parameter parser (`2781–2955`), nested object parameter parser
+  (`2964–3132`), array destructure parser and rest parser (`3132–3341`);
+  nested parameter emitter (`emitter/forms.rs` 3710–3945) and
+  `emit_alias_pattern` (`codegen/emit.rs` 1360–1425). The latter establishes
+  `items` as an object property alias, not a leaf binding; the nested function
+  body must use `_`, `label`, `total`, and `tail` only.
+- **Required guidance:** testing skill entrypoint; complete Testing Discipline
+  and Validation Gates guides, including Proportionate Proof and preservation
+  of actual failures; Engineering Methods required-reading/CC-intake contract
+  (guide 07, lines 240–445); Rust Guidelines skill entrypoint and complete
+  AP-09, AP-12 and AP-13 extents; work-verification Independent Verification
+  `Evidence During Correction Review`; project-management canonical worktree
+  `Existing records and supporting evidence` section. These direct the test to
+  prove public producer behavior, not implementation details; retain the 918
+  red/HOLD and other attempts; separate new candidate evidence from retained
+  applicable evidence and never relabel prior receipts as fresh.
+- **Prior boundary-applicability:** loaded the complete source-readiness and
+  boundary-applicability discussion in `cdc-verification.md`; required-after-
+  destructure CLI prevalidation remains a separately attributed inherited
+  finding and is not repaired or used as a specimen here.
+
+One initial combined guidance read exceeded available output and was discarded;
+all named required extents above were recovered in bounded reads before edits.
+No unresolved required material remains. No structured Required-data query was
+assigned in this correction.
+
+### Contract readback before edits
+
+The independent 918 HOLD did not demonstrate a production defect: it identified
+missing behavioral proofs. DT/BS obligations remain open; CC adds tests only.
+For R01, the existing export group must exercise actual multi-pair inline and
+named BindGroups. Typed scalar pairs prove their inferred TypeScript types;
+untyped destructured leaves remain `unknown`. Exact public namespace keys and
+runtime values must prove that inline groups project every legal binding and
+named groups select only the requested bindings, excluding discards and
+unselected pairs. Preserve existing scalar, pattern, empty-sidecar, veto,
+reexport and schema controls.
+
+For R02, one valid exported function must exercise the actual nested
+Object→Array→Object path, optional defaulted `_` object field, default-before-
+required tuple slot and typed rest through generated DTS, strict/exact optional
+TypeScript inputs, checked/stripped compile, runtime and package equality. Its
+body references `_`, `label`, `total`, and `tail`; `items` is only the source
+property key. Runtime with foreign `_ = 99` distinguishes discarded values
+from captured locals, and caller arrays are measured before/after. Positive
+opposing provided-value cases plus wrong nested `_`, missing required label
+and wrong rest type must establish both acceptance and rejection at the actual
+consumer. Keep to the existing four test groups and shared test flows. If a new
+valid specimen shows an emitter defect, preserve its red evidence and return to
+root; no implementation edits are authorized in this refinement.
+
+The test path must run against fresh generated artifacts before consumers,
+then focused CLI tests, one final `make check`/docs run, actual M6/all14
+comparisons, and final-HEAD cited-path and fresh bundle-size gates. Preserve
+complete command streams, exact status, warning/profile/cache/skip facts and
+historical attempts. Commit only this named test file with adjacent trailers;
+return exact pin/tree, clean/no jobs and all eight row proposals. Root alone
+maintains planning Git/index/row status. Independent Sol review and acceptance
+remain separate; no S05, merge, push, publication or release movement.
+
+Receipt correction (2026-11-14): the correction01 prompt is 144 lines, not 70.
+It was loaded completely in the initial full read and then recovered in explicit
+contiguous ranges 1–75 and 76–155 after root's count check; no omitted prompt
+text remains. The earlier line-count shorthand in this intake was mistaken.

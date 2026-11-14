@@ -269,6 +269,14 @@ issued. Each refinement uses a new cc-prompt-iterationNN.md and retained finding
   before issue; caller-owned length observations preserve the intended oracle.
   All8 DT/BS-04 remain open. Exclusive task source/build transfers to Luna CC
   on dispatch; planning Git/index/status remain root-owned.
+  Returned clean/no-jobs atc0ed454610f3a384196e4fa003335373819fb2fd,
+  tree7d8b3359fa570b2e8322996dbe8b648f02af58da, parent918. Exact test-only
+  correction and original four-path delivery remain. CC attests focused4/full
+  Rust1786/product1578/67/docs482/M670/all14 and finalc0ed64/601 citations/
+  gzip48689. Original unreviewed8ed metadata failure and root identical-tree
+  message recreation remain preserved in artifacts/root-metadata01. Prior
+  runtime gates stay attributed to8ed; no tests rerun for message-only repair.
+  Source/build returns to root for separate Sol source-first review, all8open.
 
 - 2026-11-14 initial cc-prompt.md: source-ready from independently integratedc60.
   Separate Sol [readiness PASS](cdc-verification.md#source-readiness-verdict--pass--2026-11-14)

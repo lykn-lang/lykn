@@ -1,0 +1,10 @@
+tree 7d8b3359fa570b2e8322996dbe8b648f02af58da
+parent 918f2e9c4237770fc7b2e0e950d726e735e95198
+author Duncan McGreggor <oubiwann@gmail.com> 1794678409 -0600
+committer Duncan McGreggor <oubiwann@gmail.com> 1794678409 -0600
+
+Extend grouped and nested declaration tests
+
+Co-authored-by: Codex <noreply@openai.com>
+
+Co-authored-by: Billo AI <ai-engineering@billo.systems>

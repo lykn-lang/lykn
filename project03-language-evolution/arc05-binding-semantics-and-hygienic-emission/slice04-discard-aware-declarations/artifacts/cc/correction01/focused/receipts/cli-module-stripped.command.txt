@@ -1,0 +1,5 @@
+program="/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/lykn"
+args=["compile", "/private/tmp/lykn-arc05-s04-cc/tmp/.tmpCwhIz9/input.lykn", "--strip-assertions", "-o", "/private/tmp/lykn-arc05-s04-cc/tmp/.tmpCwhIz9/module-stripped.js"]
+cwd=Some("/private/tmp/lykn-arc05-s04-cc/tmp/.tmpCwhIz9")
+env_overrides=
+
