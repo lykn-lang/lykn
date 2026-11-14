@@ -1,0 +1,38 @@
+running 7 tests from ./test/forms/discard-bindings.test.js
+public callable and Bind discards keep private identity ... ok (43ms)
+public discard guards, defaults, rests, and schema fields ... ok (125ms)
+public typed Bind checks stay visible and preserve effects ... ok (51ms)
+public source inline exports expose only source bindings ... ok (70ms)
+public binding patterns preserve spread, keys, assignment, and legacy catch ... FAILED (34ms)
+public finalized JSON and fragments retain independent private state ... ok (29ms)
+public browser delivery executes discard and nested rest behavior ... ok (29ms)
+
+ ERRORS 
+
+public binding patterns preserve spread, keys, assignment, and legacy catch => ./test/forms/discard-bindings.test.js:381:6
+error: AssertionError: Values are not equal: error: SyntaxError: Unexpected token `-`. Expected identifier, string literal, numeric literal or [ for the computed key
+  |
+4 | const {-1: negative} = source;
+  |        ~
+    at file:///private/tmp/lykn-b2-discard-public-cc/tmp/lykn-discard-public-4f513627c6c21a30/output.mjs:4:8
+
+
+
+    [Diff] Actual / Expected
+
+
+-   1
++   0
+
+  throw new AssertionError(message);
+        ^
+    at assertEquals (https://jsr.io/@std/assert/1.0.19/equals.ts:67:9)
+    at executeModule (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/discard-bindings.test.js:30:5)
+    at async file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/discard-bindings.test.js:397:3
+
+ FAILURES 
+
+public binding patterns preserve spread, keys, assignment, and legacy catch => ./test/forms/discard-bindings.test.js:381:6
+
+FAILED | 6 passed | 1 failed (385ms)
+

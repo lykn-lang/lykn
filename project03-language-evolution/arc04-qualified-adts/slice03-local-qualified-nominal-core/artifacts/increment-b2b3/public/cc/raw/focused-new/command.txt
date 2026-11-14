@@ -1,0 +1,2 @@
+cwd=/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering
+command=env DENO_DIR=/Users/oubiwann/Library/Caches/deno XDG_CACHE_HOME=/private/tmp/lykn-b2-discard-public-cc/xdg NPM_CONFIG_CACHE=/private/tmp/lykn-b2-discard-public-cc/npm TMPDIR=/private/tmp/lykn-b2-discard-public-cc/tmp deno test -A --cached-only --no-prompt --config /private/tmp/lykn-b2-discard-public-cc/focused-deno.json test/forms/discard-bindings.test.js

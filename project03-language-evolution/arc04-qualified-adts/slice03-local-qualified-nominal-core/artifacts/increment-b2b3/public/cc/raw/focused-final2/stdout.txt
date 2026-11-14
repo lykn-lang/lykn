@@ -1,0 +1,40 @@
+running 7 tests from ./test/forms/discard-bindings.test.js
+public callable and Bind discards keep private identity ... ok (44ms)
+public discard guards, defaults, rests, and schema fields ... ok (125ms)
+public typed Bind checks stay visible and preserve effects ... FAILED (32ms)
+public source inline exports expose only source bindings ... ok (73ms)
+public binding patterns preserve spread, keys, assignment, and legacy catch ... ok (44ms)
+public finalized JSON and fragments retain independent private state ... ok (30ms)
+public browser delivery executes discard and nested rest behavior ... ok (28ms)
+
+ ERRORS 
+
+public typed Bind checks stay visible and preserve effects => ./test/forms/discard-bindings.test.js:200:6
+error: AssertionError: Values are not equal: error: Uncaught (in promise) TypeError: Cannot read properties of undefined (reading 'offset')
+      return arg + this.offset;
+                        ^
+    at Object.<anonymous> (file:///private/tmp/lykn-b2-discard-public-cc/tmp/lykn-discard-public-afb2725b7bc92629/output.mjs:198:25)
+    at lyknHostReflectApply0 (file:///private/tmp/lykn-b2-discard-public-cc/tmp/lykn-discard-public-afb2725b7bc92629/output.mjs:5:18)
+    at orderedDiscard (file:///private/tmp/lykn-b2-discard-public-cc/tmp/lykn-discard-public-afb2725b7bc92629/output.mjs:215:34)
+    at file:///private/tmp/lykn-b2-discard-public-cc/tmp/lykn-discard-public-afb2725b7bc92629/output.mjs:221:13
+
+
+
+    [Diff] Actual / Expected
+
+
+-   1
++   0
+
+  throw new AssertionError(message);
+        ^
+    at assertEquals (https://jsr.io/@std/assert/1.0.19/equals.ts:67:9)
+    at executeModule (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/discard-bindings.test.js:30:5)
+    at async file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/discard-bindings.test.js:201:3
+
+ FAILURES 
+
+public typed Bind checks stay visible and preserve effects => ./test/forms/discard-bindings.test.js:200:6
+
+FAILED | 6 passed | 1 failed (382ms)
+

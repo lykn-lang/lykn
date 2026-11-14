@@ -1,0 +1,5 @@
+Check test/expander/binding-walker-parity.test.js
+Check test/expander/macro-entry-diagnostics-parity.test.js
+Check test/forms/icu-generated-names.test.js
+Check test/forms/reserved-binding-output.test.js
+Check test/forms/semantic-roles.test.js

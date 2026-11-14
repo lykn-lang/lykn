@@ -1451,3 +1451,36 @@ which explicitly contains both findings and the existing NE-T02 design input.
 Project07 Arc03 retains its research/correction coordination. Earlier owner
 entries remain provenance. RDEO and RTCK retain their reader/guide destinations.
 All source corrections remain open.
+
+### `D-2611-RDCL` — public reader makes no progress on an unmatched close
+
+- **What/where:** At `759567f92bd145b5fbd0fbd4273aef368e52aeba`,
+  `packages/lang/reader.js:344–349` returns null for `)` without advancing
+  the input position; the top-level loop at393–397 repeats while input remains.
+  An unmatched top-level close therefore has a nonterminating source path.
+  The native reader already returns `unexpected ')'` in
+  `crates/lykn-lang/src/reader/parser.rs:88–91` and has the negative test at498.
+  Source home is `.worktrees/contract-predicate-lowering`,
+  `codex/qualified-adt-core`; the public reader is unchanged during S03/21.
+- **How found:** cdc-review during Project03/Arc04/S03 public discard tests,
+  following an incomplete CC focused invocation containing malformed source.
+  Root inspected the source path; root has not run a separately supervised
+  minimal witness. The incomplete invocation is not a numeric runtime result.
+- **Guess:** serious — a malformed input can hang public compilation and differs
+  from native rejection. Exact runtime supervision/reproduction remains due.
+- **Kind:** bug. **Status:** routed, correction open.
+- **Parent:** `D-2611-RDEO`, the separately preserved unclosed-list acceptance.
+  These are distinct malformed-input failures; neither closes the other.
+- **Owner/destination:** Project07 CDC, existing reader correction under
+  [Arc03 A3-04](../project07-core-library-research/arc03-findings-and-integration/arc-plan.md).
+  Include an externally bounded original witness, precise rejection and
+  balanced list/quote/comment/dispatch neighbors, both readers and actual
+  public/browser/materialized consumers. No reader edit is authorized by
+  Project03's thirteen-path discard assignment; detail the repair separately.
+- **Evidence:** The pinned source above and the retained
+  [public CC record](../project03-language-evolution/arc04-qualified-adts/slice03-local-qualified-nominal-core/artifacts/increment-b2b3/public/cc/index.md).
+  Root later [identified and terminated the exact stalled child](../project03-language-evolution/arc04-qualified-adts/slice03-local-qualified-nominal-core/artifacts/increment-b2b3/root/public-process-cleanup.md);
+  the wrapper then recorded143 after external TERM. The earlier incomplete
+  observation and source snapshot remain intact.
+  Source inspection and CC's incomplete observation are not independent
+  software reproduction or repair acceptance.

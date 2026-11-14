@@ -1,0 +1,4 @@
+running 7 tests from ./test/forms/discard-bindings.test.js
+public callable and Bind discards keep private identity ... ok (47ms)
+public discard guards, defaults, rests, and schema fields ... ok (112ms)
+public typed Bind checks stay visible and preserve effects ...

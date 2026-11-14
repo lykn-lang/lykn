@@ -1,0 +1,95 @@
+running 7 tests from ./test/forms/discard-bindings.test.js
+public callable and Bind discards keep private identity ... FAILED (32ms)
+public discard guards, defaults, rests, and schema fields ... FAILED (2ms)
+public typed Bind checks stay visible and preserve effects ... FAILED (706µs)
+public source inline exports expose only source bindings ... FAILED (14ms)
+public binding patterns preserve spread, keys, assignment, and legacy catch ... FAILED (22ms)
+public finalized JSON and fragments retain independent private state ... ok (30ms)
+public browser delivery executes discard and nested rest behavior ... ok (29ms)
+
+ ERRORS 
+
+public callable and Bind discards keep private identity => ./test/forms/discard-bindings.test.js:96:6
+error: Error: duplicate macro definition: 'discardValue__private'
+    throw new Error(`duplicate macro definition: '${name}'`);
+          ^
+    at registerMacroForm (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander-core.js:619:11)
+    at pass1RegisterMacros (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander-core.js:2393:9)
+    at expandWithMacroImports (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander-core.js:2524:22)
+    at expand (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander.js:22:10)
+    at lykn (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/mod.js:24:18)
+    at file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/discard-bindings.test.js:119:5
+
+public discard guards, defaults, rests, and schema fields => ./test/forms/discard-bindings.test.js:128:6
+error: Error: set! requires a property path (e.g., obj:prop), not a bare binding. Use (bind x val) for new bindings, (reset! cell val) for cells.
+        throw new Error(
+              ^
+    at classifySurfaceForm (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/classifier.js:106:15)
+    at expandExprInner (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander-core.js:2017:21)
+    at expandAt (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander-core.js:1889:18)
+    at expandFunctionRegions (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander-core.js:1047:9)
+    at expandChildrenPlan (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander-core.js:936:40)
+    at expandExprInner (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander-core.js:2339:34)
+    at expandAt (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander-core.js:1889:18)
+    at expandExprInner (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander-core.js:2100:14)
+    at expandAt (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander-core.js:1889:18)
+    at pass2ExpandAll (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander-core.js:2449:22)
+
+public typed Bind checks stay visible and preserve effects => ./test/forms/discard-bindings.test.js:187:6
+error: Error: set! requires a property path (e.g., obj:prop), not a bare binding. Use (bind x val) for new bindings, (reset! cell val) for cells.
+        throw new Error(
+              ^
+    at classifySurfaceForm (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/classifier.js:106:15)
+    at expandExprInner (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander-core.js:2017:21)
+    at expandAt (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander-core.js:1889:18)
+    at expandFunctionRegions (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander-core.js:1047:9)
+    at expandChildrenPlan (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander-core.js:936:40)
+    at expandExprInner (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander-core.js:2339:34)
+    at expandAt (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander-core.js:1889:18)
+    at expandExprInner (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander-core.js:2100:14)
+    at expandAt (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander-core.js:1889:18)
+    at pass2ExpandAll (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander-core.js:2449:22)
+
+public source inline exports expose only source bindings => ./test/forms/discard-bindings.test.js:257:6
+error: Error: set! requires a property path (e.g., obj:prop), not a bare binding. Use (bind x val) for new bindings, (reset! cell val) for cells.
+        throw new Error(
+              ^
+    at classifySurfaceForm (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/classifier.js:106:15)
+    at expandExprInner (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander-core.js:2017:21)
+    at expandAt (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander-core.js:1889:18)
+    at file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander-core.js:2263:67
+    at Array.map (<anonymous>)
+    at expandExprInner (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander-core.js:2263:54)
+    at expandAt (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander-core.js:1889:18)
+    at expandExprInner (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander-core.js:2064:31)
+    at expandAt (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander-core.js:1889:18)
+    at expandExprInner (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander-core.js:2163:26)
+
+public binding patterns preserve spread, keys, assignment, and legacy catch => ./test/forms/discard-bindings.test.js:302:6
+error: AssertionError: Values are not equal.
+
+
+    [Diff] Actual / Expected
+
+
+-   17 23 31 5 6 0 23 8\n
++   17 23 31 5 6 9 23 8\n
+    
+
+
+  throw new AssertionError(message);
+        ^
+    at assertEquals (https://jsr.io/@std/assert/1.0.19/equals.ts:67:9)
+    at executeModule (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/discard-bindings.test.js:31:5)
+    at async file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/discard-bindings.test.js:303:3
+
+ FAILURES 
+
+public callable and Bind discards keep private identity => ./test/forms/discard-bindings.test.js:96:6
+public discard guards, defaults, rests, and schema fields => ./test/forms/discard-bindings.test.js:128:6
+public typed Bind checks stay visible and preserve effects => ./test/forms/discard-bindings.test.js:187:6
+public source inline exports expose only source bindings => ./test/forms/discard-bindings.test.js:257:6
+public binding patterns preserve spread, keys, assignment, and legacy catch => ./test/forms/discard-bindings.test.js:302:6
+
+FAILED | 2 passed | 5 failed (134ms)
+

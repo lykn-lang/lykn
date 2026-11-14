@@ -1,0 +1,4 @@
+js_path="/private/tmp/lykn-b2-discard-public-cc/tmp/.tmpkOk0sh/header.mjs"
+js_exists=false
+dts_path="/private/tmp/lykn-b2-discard-public-cc/tmp/.tmpkOk0sh/header.d.ts"
+dts_exists=false

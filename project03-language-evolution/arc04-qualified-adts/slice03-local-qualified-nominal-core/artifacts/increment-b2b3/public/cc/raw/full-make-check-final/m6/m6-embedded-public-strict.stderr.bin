@@ -1,0 +1,6 @@
+Check test/expander/lexical-regions.test.js
+Check test/forms/embedded-adt-pattern.test.js
+Check test/forms/surface-type-context.test.js
+Check test/forms/reserved-binding-output.test.js
+Check test/forms/icu-generated-names.test.js
+Check test/forms/discard-bindings.test.js

@@ -1,0 +1,83 @@
+running 7 tests from ./test/forms/discard-bindings.test.js
+public callable and Bind discards keep private identity ... ok (47ms)
+public discard guards, defaults, rests, and schema fields ... FAILED (28ms)
+public typed Bind checks stay visible and preserve effects ... FAILED (2ms)
+public source inline exports expose only source bindings ... FAILED (30ms)
+public binding patterns preserve spread, keys, assignment, and legacy catch ... FAILED (43ms)
+public finalized JSON and fragments retain independent private state ... ok (30ms)
+public browser delivery executes discard and nested rest behavior ... ok (29ms)
+
+ ERRORS 
+
+public discard guards, defaults, rests, and schema fields => ./test/forms/discard-bindings.test.js:130:6
+error: AssertionError: Values are not equal: error: Uncaught (in promise) TypeError: Cannot create property 'value' on number '0'
+  defaultCount.value = defaultCount + 1;
+                     ^
+    at nextDefault (file:///private/tmp/lykn-b2-discard-public-cc/tmp/lykn-discard-public-22a923995af63a7f/output.mjs:61:22)
+    at defaulted (file:///private/tmp/lykn-b2-discard-public-cc/tmp/lykn-discard-public-22a923995af63a7f/output.mjs:64:45)
+    at file:///private/tmp/lykn-b2-discard-public-cc/tmp/lykn-discard-public-22a923995af63a7f/output.mjs:104:43
+
+
+
+    [Diff] Actual / Expected
+
+
+-   1
++   0
+
+  throw new AssertionError(message);
+        ^
+    at assertEquals (https://jsr.io/@std/assert/1.0.19/equals.ts:67:9)
+    at executeModule (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/discard-bindings.test.js:30:5)
+    at async file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/discard-bindings.test.js:131:3
+
+public typed Bind checks stay visible and preserve effects => ./test/forms/discard-bindings.test.js:189:6
+error: Error: set! requires a property path (e.g., obj:prop), not a bare binding. Use (bind x val) for new bindings, (reset! cell val) for cells.
+        throw new Error(
+              ^
+    at classifySurfaceForm (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/classifier.js:106:15)
+    at expandExprInner (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander-core.js:2017:21)
+    at expandAt (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander-core.js:1889:18)
+    at expandFunctionRegions (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander-core.js:1047:9)
+    at expandChildrenPlan (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander-core.js:936:40)
+    at expandExprInner (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander-core.js:2339:34)
+    at expandAt (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander-core.js:1889:18)
+    at expandExprInner (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander-core.js:2100:14)
+    at expandAt (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander-core.js:1889:18)
+    at expandChildrenPlan (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander-core.js:981:11)
+
+public source inline exports expose only source bindings => ./test/forms/discard-bindings.test.js:259:6
+error: AssertionError: Values are not equal: error: Uncaught (in promise) TypeError: Cannot create property 'value' on number '0'
+const discardValue__gensym0 = calls.value = calls + 1;
+                                          ^
+    at file:///private/tmp/lykn-b2-discard-public-cc/tmp/lykn-discard-export-11a04ef46771dbc4/module.mjs:2:43
+
+
+
+    [Diff] Actual / Expected
+
+
+-   1
++   0
+
+  throw new AssertionError(message);
+        ^
+    at assertEquals (https://jsr.io/@std/assert/1.0.19/equals.ts:67:9)
+    at file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/discard-bindings.test.js:278:3
+
+public binding patterns preserve spread, keys, assignment, and legacy catch => ./test/forms/discard-bindings.test.js:304:6
+error: AssertionError: Expected function to throw.
+    throw new AssertionError(msg);
+          ^
+    at assertThrows (https://jsr.io/@std/assert/1.0.19/throws.ts:108:11)
+    at file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/discard-bindings.test.js:337:3
+
+ FAILURES 
+
+public discard guards, defaults, rests, and schema fields => ./test/forms/discard-bindings.test.js:130:6
+public typed Bind checks stay visible and preserve effects => ./test/forms/discard-bindings.test.js:189:6
+public source inline exports expose only source bindings => ./test/forms/discard-bindings.test.js:259:6
+public binding patterns preserve spread, keys, assignment, and legacy catch => ./test/forms/discard-bindings.test.js:304:6
+
+FAILED | 3 passed | 4 failed (215ms)
+

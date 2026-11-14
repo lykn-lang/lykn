@@ -1,5 +1,17 @@
 # Arc03 — Findings and integration
 
+2026-11-13 `D-2611-RDCL` joins the existing A3-04 reader correction beside
+RDEO. During Project03 Arc04/S03 discard testing, an unmatched-close fixture
+stalled a public invocation. Root source review at759567f9 identifies
+`reader.js` returning null for `)` without advancing, followed by the repeating
+top-level loop; native already rejects the token. This is source-grounded
+triage plus an incomplete CC observation, not an independently supervised
+minimal reproduction. The [discovery register](../../backlog/discoveries.md)
+retains that distinction and the exact source locations. Detail both reader
+defects together with bounded negative controls and normal public/browser/
+embedded delivery proof before implementation. Project03's current discard
+assignment does not gain reader paths or close either finding.
+
 2026-11-11 NPAT/ZVAR source correction is independently closed in
 Project03 [Arc04 S02](../../project03-language-evolution/arc04-qualified-adts/slice02-existing-adt-correctness/cdc-verification.md#corrected-candidate-independent-source-and-runtime-verification--2026-11-11)
 at task `0829e892`, including final documentary acceptance. Unchanged original
@@ -210,6 +222,10 @@ Full gates required an isolated cache for an existing package test under the
 CDC sandbox; this is not authority to add npm research dependencies.
 
 ## Version History
+
+- 2026-11-13 v1.19: Route source-identified unmatched-close nonprogress
+  D-2611-RDCL to the existing A3-04 reader owner beside RDEO; preserve the
+  incomplete observation and separate reproduction/implementation gates.
 
 - 2026-11-11 v1.18: Record independently closed NPAT/ZVAR repair at
   Project03 Arc04 S02 task 0829e892. Preserve original

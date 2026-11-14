@@ -2,11 +2,23 @@
 project: project03-language-evolution
 arc: arc04-qualified-adts
 status: active
-version: "1.24"
+version: "1.25"
 related: [project07-core-library-research]
 ---
 
 # Qualified ADTs
+
+2026-11-13 v1.25 current handoff: public21 is CC proposed-done at clean
+dba24d40/tree0ad99ea5, exact13 source/test paths. Its final corrected-tree
+full gate, actual embedded62/14, citation and47747-byte gzip gates pass;
+separate Sol software acceptance is pending. B2-DISCARD-P remains open.
+Original authoring failures, the numeric-key emitter correction and exact
+stalled-reader cleanup remain in the [S03 CC record](slice03-local-qualified-nominal-core/artifacts/increment-b2b3/public/cc/index.md).
+The source-identified unmatched-close reader finding D-2611-RDCL joins existing
+Project07 reader correction RDEO; it is not silently added to public21 or
+accepted as repaired. Native discard acceptance and every broader S03 gate
+remain unchanged. Root retains planning authority and owns source/build until
+actual independent-review dispatch.
 
 2026-11-11 current work: [S03 local qualified nominal core](slice03-local-qualified-nominal-core/slice-plan.md)
 is open from independently integrated release `0829e892`. The finite protected-
@@ -154,6 +166,10 @@ Project07's original research evidence, final synthesis and library handoffs
 survive this detour, including every YAML and human-review obligation.
 
 ## Version history
+
+- 2026-11-13 v1.25: Record public21 proposed-donedba24d40 and final corrected
+  gate evidence, exact reader-process cleanup and routed reader finding.
+  Preserve independent software acceptance and all parent obligations.
 
 - 2026-11-13 v1.17. Accept B2-UNIT only at5554a4d6 after corrected privacy proof,
   new Rustdoc/provenance and qualified retention of independent compiled-code

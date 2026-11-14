@@ -3,11 +3,30 @@ project: project03-language-evolution
 arc: arc04-qualified-adts
 slice: slice03-local-qualified-nominal-core
 status: active
-version: "1.39"
+version: "1.40"
 depends-on: [slice01-contract-and-emission-design, slice02-existing-adt-correctness]
 ---
 
 # Local qualified nominal core
+
+2026-11-13 v1.40: Luna returns public21 proposed-done at clean
+dba24d4063f34551c30590c884a495c8ca57298f/tree0ad99ea5838a463ee8aa680005fae472a0b8135c.
+Root verifies the exact13 paths, contiguous trailers and CC index SHA256
+37787c4ce912eef86e0a73d85cf12fbbcf50d03a5c0d8ad65772939d04571fe6.
+The [CC record](artifacts/increment-b2b3/public/cc/index.md) retains original
+fixture failures, an in-scope negative numeric-key emission defect and final
+corrected-tree focused7/full1201library/1570product67steps/482docs/M6actual62+14,
+post-HEADcites64/601 and47747gzip under81920. Existing Deno cache and pinned
+esbuild download limits are explicit. Early retries did not preserve exact
+test-source snapshots; later snapshots do not retroactively fill that gap.
+Root [cleans up the exact stalled reader process](artifacts/increment-b2b3/root/public-process-cleanup.md),
+with actual external-TERM143 distinct from its earlier incomplete observation.
+New D-2611-RDCL is routed beside RDEO to the existing Project07 reader owner;
+no reader edit or independent minimal reproduction is claimed here.
+All CC source/build ownership returns to root with no known owned jobs.
+Separate Sol software validation is next; B2-DISCARD-P remains OPEN. Native
+acceptance and all raw/catch/annotation/name/owner/check/DTS/API/docs/book/human/
+LC02–08/B2b/S03 obligations remain unchanged.
 
 2026-11-13 v1.39: root prepares the public parsed-callable/Bind counterpart at
 native accepted759567f9. Independent source census confirms five consumers,
@@ -296,8 +315,9 @@ validation-only class-member queries. Existing source Func/class aggregate
 scope issues are explicit B2 inputs, not new IC-01 expansion claims.
 
 **Current assignment:** [iteration21](cc-prompt-iteration21.md), issued2026-11-13
-for B2-DISCARD-P against native accepted759567f9/tree52dd6558. Luna now owns
-source/build, root design/planning/Git/ledger, separate Sol final review.
+for B2-DISCARD-P against native accepted759567f9/tree52dd6558. Luna has returned
+clean proposed-donedba24d40/tree0ad99ea5; root owns source/build pending actual
+separate Sol review dispatch, and retains design/planning/Git/ledger.
 The accepted20 predecessor was issued
 2026-11-13 against accepted57c76c99cbed07ff992e78aac8afefa4bdf0b2ad/
 treef044d795e88c3dac8e84a73a557cf071edd5327c plus Luna's retained authorized18
@@ -347,7 +367,7 @@ gates survive. No release edits/integration, remote CI, push or publication.
 | cc-prompt-iteration18.md | 2026-11-13 | iteration17 | Operator discard policy, native Surface private values/guards and effects | Retained15-test/CLI checkpoint; refined by19 before full gate/commit, no independent acceptance |
 | cc-prompt-iteration19.md | 2026-11-13 | iteration18 | Source-only export names and canonical spread-pattern/projector parity, preserving catch extent | Retained23-test checkpoint; refined by20 after full01/02 oracle migrations, not accepted |
 | cc-prompt-iteration20.md | 2026-11-13 | iteration19 | Explicit native export JSON and actual public/native ESM parity oracle | Independently accepted759567f9/tree52dd6558 for B2-DISCARD-N only; exact8paths, parent scope remains open |
-| cc-prompt-iteration21.md | 2026-11-13 | iteration20 | Public prepared discard values/guards/scope/export/pattern delivery | Active;13exact paths, Luna implementation then separate Sol review |
+| cc-prompt-iteration21.md | 2026-11-13 | iteration20 | Public prepared discard values/guards/scope/export/pattern delivery | CC proposed-donedba24d40/tree0ad99ea5, exact13 paths and final gates; separate Sol software review pending |
 
 The A correction loop used three refinement passes; B1 required no software
 correction. IC-01 is a distinct authorized usable prerequisite, not a retry

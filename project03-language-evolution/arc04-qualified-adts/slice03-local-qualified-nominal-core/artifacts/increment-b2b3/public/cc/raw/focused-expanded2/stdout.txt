@@ -1,0 +1,32 @@
+running 7 tests from ./test/forms/discard-bindings.test.js
+public callable and Bind discards keep private identity ... ok (57ms)
+public discard guards, defaults, rests, and schema fields ... ok (113ms)
+public typed Bind checks stay visible and preserve effects ... FAILED (5ms)
+public source inline exports expose only source bindings ... ok (72ms)
+public binding patterns preserve spread, keys, assignment, and legacy catch ... ok (42ms)
+public finalized JSON and fragments retain independent private state ... ok (30ms)
+public browser delivery executes discard and nested rest behavior ... ok (30ms)
+
+ ERRORS 
+
+public typed Bind checks stay visible and preserve effects => ./test/forms/discard-bindings.test.js:192:6
+error: Error: bind requires 2 arguments, 3 typed arguments, or grouped name/value pairs
+          throw new Error(
+                ^
+    at classifySurfaceForm (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/classifier.js:273:17)
+    at expandExprInner (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander-core.js:2017:21)
+    at expandAt (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander-core.js:1889:18)
+    at expandFunctionRegions (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander-core.js:1047:9)
+    at expandChildrenPlan (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander-core.js:936:40)
+    at expandExprInner (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander-core.js:2339:34)
+    at expandAt (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander-core.js:1889:18)
+    at expandExprInner (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander-core.js:2100:14)
+    at expandAt (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander-core.js:1889:18)
+    at pass2ExpandAll (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander-core.js:2449:22)
+
+ FAILURES 
+
+public typed Bind checks stay visible and preserve effects => ./test/forms/discard-bindings.test.js:192:6
+
+FAILED | 6 passed | 1 failed (354ms)
+

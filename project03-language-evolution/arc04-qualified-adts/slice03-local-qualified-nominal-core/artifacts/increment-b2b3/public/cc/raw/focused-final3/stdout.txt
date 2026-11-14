@@ -1,0 +1,11 @@
+running 7 tests from ./test/forms/discard-bindings.test.js
+public callable and Bind discards keep private identity ... ok (46ms)
+public discard guards, defaults, rests, and schema fields ... ok (122ms)
+public typed Bind checks stay visible and preserve effects ... ok (50ms)
+public source inline exports expose only source bindings ... ok (71ms)
+public binding patterns preserve spread, keys, assignment, and legacy catch ... ok (42ms)
+public finalized JSON and fragments retain independent private state ... ok (28ms)
+public browser delivery executes discard and nested rest behavior ... ok (30ms)
+
+ok | 7 passed | 0 failed (396ms)
+

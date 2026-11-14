@@ -1,0 +1,33 @@
+running 7 tests from ./test/forms/discard-bindings.test.js
+public callable and Bind discards keep private identity ... ok (42ms)
+public discard guards, defaults, rests, and schema fields ... ok (108ms)
+public typed Bind checks stay visible and preserve effects ... FAILED (25ms)
+public source inline exports expose only source bindings ... ok (56ms)
+public binding patterns preserve spread, keys, assignment, and legacy catch ... ok (42ms)
+public finalized JSON and fragments retain independent private state ... ok (28ms)
+public browser delivery executes discard and nested rest behavior ... ok (29ms)
+
+ ERRORS 
+
+public typed Bind checks stay visible and preserve effects => ./test/forms/discard-bindings.test.js:189:6
+error: AssertionError: Values are not equal.
+
+
+    [Diff] Actual / Expected
+
+
+-   const
++   if
+
+
+  throw new AssertionError(message);
+        ^
+    at assertEquals (https://jsr.io/@std/assert/1.0.19/equals.ts:67:9)
+    at file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/discard-bindings.test.js:256:3
+
+ FAILURES 
+
+public typed Bind checks stay visible and preserve effects => ./test/forms/discard-bindings.test.js:189:6
+
+FAILED | 6 passed | 1 failed (335ms)
+

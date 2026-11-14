@@ -1,0 +1,79 @@
+running 7 tests from ./test/forms/discard-bindings.test.js
+public callable and Bind discards keep private identity ... ok (58ms)
+public discard guards, defaults, rests, and schema fields ... FAILED (30ms)
+public typed Bind checks stay visible and preserve effects ... FAILED (22ms)
+public source inline exports expose only source bindings ... FAILED (30ms)
+public binding patterns preserve spread, keys, assignment, and legacy catch ... ok (46ms)
+public finalized JSON and fragments retain independent private state ... ok (30ms)
+public browser delivery executes discard and nested rest behavior ... ok (31ms)
+
+ ERRORS 
+
+public discard guards, defaults, rests, and schema fields => ./test/forms/discard-bindings.test.js:130:6
+error: AssertionError: Values are not equal.
+
+
+    [Diff] Actual / Expected
+
+
+    1 2 3 1 4 6 7\n
+-   5 0 5 [object Object]1 99 99\n
++   5 0 5 1 99 99\n
+    7 99\n
+    
+
+
+  throw new AssertionError(message);
+        ^
+    at assertEquals (https://jsr.io/@std/assert/1.0.19/equals.ts:67:9)
+    at executeModule (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/discard-bindings.test.js:32:5)
+    at async file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/discard-bindings.test.js:131:3
+
+public typed Bind checks stay visible and preserve effects => ./test/forms/discard-bindings.test.js:189:6
+error: AssertionError: Values are not equal: error: SyntaxError: Expression expected
+    |
+135 | }), const iterable = {};, Object.defineProperty(iterable, Symbol.iterator, {
+    |     ~~~~~
+    at file:///private/tmp/lykn-b2-discard-public-cc/tmp/lykn-discard-public-9217817f324d1c1f/output.mjs:135:5
+
+
+
+    [Diff] Actual / Expected
+
+
+-   1
++   0
+
+  throw new AssertionError(message);
+        ^
+    at assertEquals (https://jsr.io/@std/assert/1.0.19/equals.ts:67:9)
+    at executeModule (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/discard-bindings.test.js:30:5)
+    at async file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/discard-bindings.test.js:190:3
+
+public source inline exports expose only source bindings => ./test/forms/discard-bindings.test.js:259:6
+error: AssertionError: Values are not equal.
+
+
+    [Diff] Actual / Expected
+
+
+-   { value: "[object Object]1" }\n
++   1\n
+    ["visible"]\n
+    7\n
+    
+
+
+  throw new AssertionError(message);
+        ^
+    at assertEquals (https://jsr.io/@std/assert/1.0.19/equals.ts:67:9)
+    at file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/discard-bindings.test.js:279:3
+
+ FAILURES 
+
+public discard guards, defaults, rests, and schema fields => ./test/forms/discard-bindings.test.js:130:6
+public typed Bind checks stay visible and preserve effects => ./test/forms/discard-bindings.test.js:189:6
+public source inline exports expose only source bindings => ./test/forms/discard-bindings.test.js:259:6
+
+FAILED | 4 passed | 3 failed (253ms)
+

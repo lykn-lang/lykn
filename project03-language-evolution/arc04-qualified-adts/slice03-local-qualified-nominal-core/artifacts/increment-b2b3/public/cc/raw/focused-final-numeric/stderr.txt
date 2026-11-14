@@ -1,0 +1,1 @@
+Check test/forms/discard-bindings.test.js

@@ -1,0 +1,4 @@
+js_path="/private/tmp/lykn-b2-discard-public-cc/tmp/.tmpDw0sHN/genfn-body.mjs"
+js_exists=false
+dts_path="/private/tmp/lykn-b2-discard-public-cc/tmp/.tmpDw0sHN/genfn-body.d.ts"
+dts_exists=false
