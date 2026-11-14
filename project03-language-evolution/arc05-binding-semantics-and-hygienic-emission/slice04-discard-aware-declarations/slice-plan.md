@@ -3,11 +3,21 @@ project: project03-language-evolution
 arc: arc05-binding-semantics-and-hygienic-emission
 slice: slice04-discard-aware-declarations
 status: active
-version: "1.0"
+version: "1.1"
 depends-on: [slice02-native-binding-discards, slice03-public-binding-discards]
 ---
 
 # Discard-aware TypeScript declarations
+
+Current assignment2026-11-14: correction01 `cc-prompt-iteration01.md` addresses
+the independent918 source-first HOLD: missing positive inline/named BindGroup
+declaration consumers and recursive parameter-shape/default consumers. No
+emitter defect was demonstrated; independent aggregate gates stayed unrun.
+Only the existing CLI integration test changes; same four-path complete
+delivery/eight DT rows/M670 population remain. Candidate918, initial prompt,
+failed authoring/gate conditions and scope boundaries remain preserved.
+Refinement1/5, separately readiness-approved and issued with the committed
+open set; source/build transfers exclusively to Luna CC on dispatch.
 
 2026-11-14 operator authorizes releasec60 fast-forward/independent validation,
 then S04 if green, Luna6 High CC and Sol6.1 High CDC, Autonomous Mode.
@@ -38,7 +48,8 @@ discard semantics remain the accepted S02/S03 input.
   readiness PASS and committed open set. No concurrent product mutation/build.
   New evidence uses artifacts/cc and artifacts/cdc here only where needed for
   reading intake, semantic red/failures and complete final gate proof.
-- Five refinement passes maximum; initial assignment has0 refinements spent.
+- Five refinement passes maximum; correction01 spends1/5 on dispatch; the
+  initial assignment spent0 refinements.
   Fix obvious scoped issues autonomously; genuine unresolved contract/evidence
   gaps return to root before dependent work. No historical budget resets.
 
@@ -249,6 +260,16 @@ issued. Each refinement uses a new cc-prompt-iterationNN.md and retained finding
 
 ## Assignment history
 
+- 2026-11-14 correction01 `cc-prompt-iteration01.md`: issued test-only
+  refinement1/5 after independent918 HOLD R01/02. Positive typed/inferred/destructured
+  inline/named groups and recursive Object→Array→Object input/default/rest
+  cases extend the existing four CLI groups. No production or validator change;
+  separate Sol correction01 readiness PASS precedes committed issue/dispatch.
+  The nested alias property-key/local-binding specimen error was corrected
+  before issue; caller-owned length observations preserve the intended oracle.
+  All8 DT/BS-04 remain open. Exclusive task source/build transfers to Luna CC
+  on dispatch; planning Git/index/status remain root-owned.
+
 - 2026-11-14 initial cc-prompt.md: source-ready from independently integratedc60.
   Separate Sol [readiness PASS](cdc-verification.md#source-readiness-verdict--pass--2026-11-14)
   after pre-issue raw KernelPassthrough export-veto correction, concrete valid
@@ -266,8 +287,14 @@ issued. Each refinement uses a new cc-prompt-iterationNN.md and retained finding
   doer report location to canonical closing-report.md after clean handoff;
   both location mistakes and root's relative-path prompt ambiguity remain
   retrospective inputs. All8 DT rows await separate Sol source/gate review.
+  Subsequent independent918 verdict HOLD R01/02, no aggregate gates executed;
+  initial assignment superseded by correction01, with all original records intact.
 
 ## Version history
+
+- 2026-11-14 v1.1: Preserve independent918 HOLD and prepare consolidated
+  test-only correction01 for the original grouped-export/recursive-input proof
+  obligations. Same scope/rows, no source defect asserted or gate waived.
 
 - 2026-11-14 v1.0: Prepare operator-authorized S04 after independently green
   c60 release integration, retaining the bounded discard declaration contract.

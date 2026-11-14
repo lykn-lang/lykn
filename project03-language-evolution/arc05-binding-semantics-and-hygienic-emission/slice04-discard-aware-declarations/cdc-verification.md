@@ -173,3 +173,167 @@ discard-at2/later-arg2 case before full gates. This does not invalidate the
 classifier-boundary workaround, but DT-01 proof remains incomplete until the
 witness is supplied and verified in the final candidate. All eight DT rows
 remain open.
+
+## Initial implementation verdict — HOLD — 2026-11-14
+
+Separate Sol reviewer received exclusive task source/build at clean
+`918f2e9c4237770fc7b2e0e950d726e735e95198`, tree
+`37b1cd6e7a457caf94933a35cdac54335c7afb66`, parent c60. Read-only Git checks
+confirm exactly the four allowed paths and adjacent required trailers. Release
+integration remains c60; no release mutation is authorized. The current planning
+packet is `fcd0cae1`. Root remains owner of plans, index, ledger statuses and
+retrospective/bubble-up work.
+
+**Hold for two missing promised behavior witnesses.** The inspected emitter
+matches the intended allocation, optionality, projection and conservative raw
+export rules. No emitter defect is claimed from this source pass. However,
+existing green tests and CC final output do not establish the complete frozen
+contract below. No independent focused test, build, full gate, citation or size
+run was started: resolve these source/proof gaps before aggregate reproduction.
+
+### R01 — Positive grouped export projection is unproved — DT-03/06
+
+The complete new test file's export fixture at
+`crates/lykn-cli/tests/discard_declarations.rs:443–448` uses separate scalar
+Bind forms and Bind patterns. The only actual grouped form, at `535`, consists
+of two zero-name patterns. Both its expected runtime binding projection and its
+declaration namespace are empty. The final08 `exports.generated.d.ts` contains
+only the separate scalar/pattern exports. There is no inline **or named**
+BindGroup fixture with visible projected names in the native unit tests or the
+CLI consumer population.
+
+Consequently, either changed group entrance at `emitter/dts.rs:306–317,353–364`
+could omit every declaration and still satisfy the current new export tests.
+This misses frozen plan C and the explicit inline/named scalar/group/pattern
+mapping in DT-03; empty-group marker proof cannot substitute for positive group
+projection.
+
+Required correction: extend the existing product test protocol with positive
+inline and named groups mixing discards and visible names. Include typed and
+literal scalar output, a destructured `unknown` leaf, and named selection from
+original source names before normalization. Check exact generated declarations,
+actual TS value namespace/types and exact executed runtime namespace/values;
+unselected locals, `_` and property keys must be absent. Reuse the current test
+file, TempDir and generated-DTS/namespace checks. No new helper framework,
+runtime/compiler source path or public API is needed.
+
+### R02 — Recursive parameter shapes are unproved — DT-02/04/06
+
+The complete `declaration_source` at `discard_declarations.rs:149–207` includes
+only one-level object and array parameters. None traverses a nested alias into
+an object/array or includes a nested object/array element. Native parameter
+fixtures likewise contain only Simple object fields and Typed/Rest/Skip array
+elements. The final08 generated declaration witness confirms that population.
+Thus the frozen plan B/mapping's recursive caller-input obligation and the
+close report's nested claim are not established by those green checks.
+
+Required correction: add a small admitted recursive parameter specimen through
+the existing actual CLI and generated-DTS consumer. An object alias containing
+an array with a default before a required nested object and a rest tail can
+exercise the interacting rules in one specimen. Preserve an actual data key
+`_`, required nested fields and explicit undefined at defaults under the owned
+strict/exactOptionalPropertyTypes/skipLibCheck:false configuration. Assert the
+expected nested declaration, positive calls and a credible nested missing-field
+or wrong-type rejection; execute the generated callable to observe the retained
+input/default behavior. Keep the independent method-prevalidation defect
+outside this repair and do not describe a low-level constructed shape as an
+admitted CLI source witness.
+
+### Confirmed observations and retained limits
+
+The earlier boundary composition remains applicable. The final source now has
+three discarded slots, including slot2 opposed by later meaningful `arg2`, and
+suffix reservations opposing `arg0`/`arg0_1`. It has a true discarded parameter
+whose body reads the foreign global `_`, with 7-versus-99 checked/stripped and
+package runtime controls. Current constructor checks exercise both typed input
+and required `_` output data, with an exact actual TypeError oracle. These are
+sound inspected test designs; execution is still CC-attested at this cutoff.
+
+The preserved c60 red was inspected directly: compiler-produced duplicate `_`
+DTS, valid type-only import/typeof/declare client, strict/exact/skipLibCheck:false
+configuration, real offline command and exactly two TS2300 diagnostics, nested
+exit1 and Rust witness exit0. The distinct invalid TS1361 attempt remains
+explicit. The final08 unguarded bad caller reports TS2345. Neither a malformed
+consumer nor an error excerpt is being substituted for semantic proof.
+
+Read the complete final four-path delta and new CLI test `1–817`, current DTS
+production source `1–540` plus its complete changed tests and the earlier fully
+read baseline tests; complete frozen prompt140, current plan273, ledger14,
+intake219 and canonical closing129; baseline red and final08 generated DTS,
+checker commands/status/diagnostics. The source guidance and caller/grammar
+dependencies recorded in readiness remain applicable because their product
+paths are unchanged. This is not a claim to have inspected every CC aggregate
+stream or to have reproduced any CC gate. Earlier location errors, failed
+attempts and missing interim test snapshots remain preserved as reported.
+
+### Eight-row disposition at the initial HOLD
+
+| Row | Independent disposition |
+| --- | --- |
+| DT-01 | Source/test design supports the repaired slot and local-allocation contract; independent execution pending. |
+| DT-02 | HOLD R02: recursive shape proof missing; current one-level default/rest tests remain proposed-done. |
+| DT-03 | HOLD R01: positive inline/named group projection proof missing. |
+| DT-04 | Source/schema preservation appears coherent; recursive data-key/default proof remains R02 and execution pending. |
+| DT-05 | Actual native/file/package routes and equality assertions inspected; independent execution pending. |
+| DT-06 | Actual valid red and TS2345 attestation inspected; R01/R02 consumer populations incomplete and independent execution pending. |
+| DT-07 | No independent gates executed on held candidate; CC streams remain attested, not reproduced. |
+| DT-08 | HOLD continues; independent final disposition, root retrospective and parent routing remain pending. |
+
+All eight ledger rows and BS-04 remain open. Return exclusive task source/build
+to root with no owned jobs; only this review record was written. Root should
+preserve this candidate/report, issue one consolidated numbered correction
+within the existing five-refinement budget, and retain the same four-path
+scope and later owners. No S05, release/remote action, qualified/library,
+licence, book or human acceptance follows from this review.
+
+## Correction01 source-readiness — PASS — 2026-11-14
+
+Reviewed the complete unissued `cc-prompt-iteration01.md` and current v1.1
+slice plan against unchanged clean918/tree37b1cd6e. Root retains source/build;
+no test, runtime, build, product, Git/index or ledger action was taken by this
+review. The one-test-file correction adequately addresses R01/R02 while keeping
+the four-path S04 delivery, four CLI test groups, all eight DT criteria, M670
+population, five-refinement budget and later owners intact. This is readiness
+for correction1/5, not implementation acceptance or a new correction count.
+
+R01's inline and named groups use the actual multi-pair grammar, scalar typed
+pairs and untyped destructuring pairs. Expected number/string/unknown outputs,
+original hyphenated-name selection, exact TypeScript/runtime namespaces and
+hidden/discard exclusions discriminate omitted group output and unfiltered
+named output through the existing consumers.
+
+R02's Object-alias → Array → Object specimen traverses the actual recursive
+variants. Its required nested object/label and required total keep the boolean
+default positional as `boolean | undefined`; rest remains `string[]`; optional
+object property `_` explicitly admits undefined. The positive and nested
+wrong-type/missing-field/rest negatives fit the owned strict/exact/skipLibCheck
+configuration. One top-level destructured parameter avoids the separately held
+method-prevalidation spelling. No runtime or source-validation change is needed.
+
+One consequential pre-issue specimen error was corrected during readiness:
+the original body read `items:length`, although the alias emits a property key
+mapped to a nested pattern, not an additional local `items` binding.
+`emitter/forms.rs:3850–3872` constructs `(alias items (array ...))`, and
+`codegen/emit.rs:1382–1402` writes the key followed by the nested binding pattern.
+Root removed that body read, required these producer/writer definitions in
+intake, and moved original-array length observations to the actual caller.
+The two function returns are `[99,"ok",5,["kept"]]` and
+`[99,"second",6,[]]`, with caller lengths respectively4/4 and3/3 before/after.
+The first expected-array prose initially omitted its final closing bracket;
+root corrected it and I confirmed the exact revised text before this cutoff.
+
+Loaded complete original/revised correction draft, complete revised plan,
+current ledger and prior HOLD/boundary records; rechecked group parser
+`forms.rs:1338–1389`, recursive object parser `2964–3046`, array parser
+`3132–3228`, typed shape definitions `surface.rs:1–103`, declaration recursion
+`dts.rs:35–107`, complete parameter preparation `emitter/forms.rs:3718–3938`,
+and pattern writers `codegen/emit.rs:377–479,1380–1414`. Earlier complete parser,
+caller and scope inspection remains applicable to unchanged source paths.
+Actual runtime/checker results remain to be produced by CC and independently
+verified. Absolute canonical intake/closing paths and append-only evidence
+rules now make the previously mistaken locations explicit.
+
+No remaining substantive readiness gap. Root may commit and issue the corrected
+draft under existing authority. The initial918 implementation HOLD stays in
+force until a new immutable candidate and its complete evidence are reviewed;
+DT-01–08 and BS-04 remain open, with no S05 or release/remote advancement.

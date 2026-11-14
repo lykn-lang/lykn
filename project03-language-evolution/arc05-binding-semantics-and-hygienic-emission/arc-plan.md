@@ -12,6 +12,12 @@ related: [arc04-qualified-adts, arc06-adt-modules-and-library-integration]
 
 ## Authority and outcome
 
+Current S04 review2026-11-14: candidate918f2e9 is independently held for
+missing positive grouped-export and recursive-parameter consumers, not a
+demonstrated emitter defect. [Correction01](slice04-discard-aware-declarations/cc-prompt-iteration01.md)
+changes only the existing CLI test; same four-path delivery/eight DT rows and
+unopened later gates. No independent aggregate gate ran on held918; BS-04 open.
+
 Subsequent authority2026-11-14: operator authorized exact releasec60 fast-forward,
 fresh validation/independent review and S04 if green. [Local integration is
 accepted](slice03-public-binding-discards/artifacts/release-integration-c60dea62.md#independent-release-verdict--accept--2026-11-14),

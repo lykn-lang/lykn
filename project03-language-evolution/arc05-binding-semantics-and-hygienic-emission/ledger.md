@@ -1,5 +1,9 @@
 # Binding semantics and hygienic emission ledger
 
+2026-11-14 S04 source-first HOLD918: grouped-export and recursive-parameter
+proof gaps require bounded test-only correction01. No emitter defect asserted;
+all8DT/BS-04 stay open and no independent aggregate gates ran on held source.
+
 2026-11-14 subsequent authority: c60 local release integration RI-01–03 is
 independently accepted; [S04](slice04-discard-aware-declarations/slice-plan.md)
 opens under Luna6 High CC / separate Sol6.1 High CDC, Autonomous Mode.
