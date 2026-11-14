@@ -1,0 +1,16 @@
+
+running 4 tests
+test constructor_discard_fields_remain_typed_data ... ok
+test lykn_build_package_emits_the_same_discard_declarations ... ok
+test inline_and_named_binding_exports_match_runtime_and_empty_module_rules ... ok
+test generated_declarations_typecheck_real_discard_default_rest_and_pattern_inputs ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.13s
+
+
+running 2 tests
+test actual_package_build_keeps_source_exports_and_overloaded_calls ... ok
+test actual_lykn_lyk_check_compile_strip_and_kernel_json_compiler_consumer ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.30s
+

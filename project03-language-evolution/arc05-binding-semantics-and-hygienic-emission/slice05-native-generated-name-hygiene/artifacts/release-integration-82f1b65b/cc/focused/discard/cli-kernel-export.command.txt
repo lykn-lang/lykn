@@ -1,0 +1,5 @@
+program="/Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/release/lykn"
+args=["compile", "/private/tmp/lykn-release-82f1b65b-cc/tmp/.tmpXlav9z/kernel-export.lykn", "-o", "/private/tmp/lykn-release-82f1b65b-cc/tmp/.tmpXlav9z/kernel-export.js"]
+cwd=Some("/private/tmp/lykn-release-82f1b65b-cc/tmp/.tmpXlav9z")
+env_overrides=
+

@@ -1,0 +1,5 @@
+program="/Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/debug/lykn"
+args=["compile", "/private/tmp/lykn-release-82f1b65b-cc/tmp/.tmp0eCeXA/input.lykn", "--strip-assertions", "-o", "/private/tmp/lykn-release-82f1b65b-cc/tmp/.tmp0eCeXA/module-stripped.js"]
+cwd=Some("/private/tmp/lykn-release-82f1b65b-cc/tmp/.tmp0eCeXA")
+env_overrides=
+
