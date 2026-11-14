@@ -501,6 +501,133 @@ fn grouped_member_expression_alias_keys_are_rejected_before_codegen() {
 }
 
 #[test]
+fn grouped_discard_static_alias_keys_are_normalized_literal_data() {
+    use lykn_lang::ast::sexpr::SExpr;
+    use lykn_lang::ast::surface::SurfaceForm;
+
+    let source = r#"
+        (bind
+          (object
+            (alias | _)
+            (alias some-name _)
+            (alias :keyword-name _)
+            (alias "some-name" _)
+            (alias café-name _)
+            (alias absent-name (default _ (bump))))
+          record
+          (array _ _) sequence)
+        (console:log _ reads defaultCalls)
+    "#;
+    let parsed = reader::read(source).expect("static-key fixture reads");
+    let resolved = resolver::resolve(&parsed);
+    let original_members = resolved[0].as_list().expect("bind form is a list")[1]
+        .as_list()
+        .expect("original object pattern is a list");
+    let classified = classifier::classify(&resolved).expect("static keys classify");
+    let SurfaceForm::BindGroup { bindings, .. } = &classified[0] else {
+        panic!("expected grouped bind, got {:?}", classified[0]);
+    };
+    let normalized_members = bindings[0]
+        .name
+        .as_list()
+        .expect("classified object pattern is a list");
+    let expected = [
+        "|",
+        "someName",
+        "keywordName",
+        "some-name",
+        "caféName",
+        "absentName",
+    ];
+    for (index, expected_key) in expected.iter().enumerate() {
+        let original_alias = original_members[index + 1]
+            .as_list()
+            .expect("original alias is a list");
+        let normalized_alias = normalized_members[index + 1]
+            .as_list()
+            .expect("normalized alias is a list");
+        match &normalized_alias[1] {
+            SExpr::String { value, span } => {
+                assert_eq!(value, expected_key);
+                assert_eq!(*span, original_alias[1].span());
+            }
+            other => panic!("expected normalized String key, got {other:?}"),
+        }
+    }
+    let original_default_alias = original_members[6]
+        .as_list()
+        .expect("original default alias is a list");
+    let normalized_default_alias = normalized_members[6]
+        .as_list()
+        .expect("normalized default alias is a list");
+    assert_eq!(normalized_default_alias[2], original_default_alias[2]);
+    let default = normalized_default_alias[2]
+        .as_list()
+        .expect("default target is a list");
+    assert_eq!(default[2].as_list().unwrap()[0].as_atom(), Some("bump"));
+
+    let js = compile_through_json(source);
+    let output = run(
+        &js,
+        "globalThis._ = 99; globalThis.reads = 0; globalThis.defaultCalls = 0; globalThis.record = {get [\"|\"]() { reads++; return 1; }, get someName() { reads++; return 2; }, get keywordName() { reads++; return 3; }, get [\"some-name\"]() { reads++; return 4; }, get caféName() { reads++; return 5; }, get absentName() { reads++; return undefined; }}; globalThis.bump = () => { defaultCalls++; return 8; }; globalThis.sequence = [1, 2];",
+        "",
+    );
+    eprintln!(
+        "GROUPED_STATIC_ALIAS_JSON source={source:?} generated={js:?} exit={:?} stdout={:?} stderr={:?}",
+        output.status.code(),
+        String::from_utf8_lossy(&output.stdout),
+        String::from_utf8_lossy(&output.stderr)
+    );
+    assert!(
+        output.status.success(),
+        "{}",
+        String::from_utf8_lossy(&output.stderr)
+    );
+    assert_eq!(stdout(&output), "99 6 1\n");
+    assert!(output.stderr.is_empty());
+}
+
+#[test]
+fn named_group_alias_atom_keeps_its_original_representation() {
+    use lykn_lang::ast::sexpr::SExpr;
+    use lykn_lang::ast::surface::SurfaceForm;
+
+    let source = "(bind (object (alias some-name existing)) record (array _ _) sequence) (console:log existing _)";
+    let forms = reader::read(source).expect("named alias fixture reads");
+    let resolved = resolver::resolve(&forms);
+    let classified = classifier::classify(&resolved).expect("named alias remains admitted");
+    let SurfaceForm::BindGroup { bindings, .. } = &classified[0] else {
+        panic!("expected grouped bind, got {:?}", classified[0]);
+    };
+    let pattern = bindings[0]
+        .name
+        .as_list()
+        .expect("named object pattern is a list");
+    let alias = pattern[1].as_list().expect("named alias is a list");
+    assert!(matches!(&alias[1], SExpr::Atom(_) if alias[1].as_atom() == Some("some-name")));
+
+    let js = compile(source);
+    let output = run(
+        &js,
+        "globalThis._ = 99; globalThis.record = {someName: 7}; globalThis.sequence = [1, 2];",
+        "",
+    );
+    eprintln!(
+        "NAMED_GROUP_ALIAS source={source:?} generated={js:?} exit={:?} stdout={:?} stderr={:?}",
+        output.status.code(),
+        String::from_utf8_lossy(&output.stdout),
+        String::from_utf8_lossy(&output.stderr)
+    );
+    assert!(
+        output.status.success(),
+        "{}",
+        String::from_utf8_lossy(&output.stderr)
+    );
+    assert_eq!(stdout(&output), "7 99\n");
+    assert!(output.stderr.is_empty());
+}
+
+#[test]
 fn grouped_numeric_alias_key_emits_a_valid_javascript_property() {
     let source = "(bind (object (alias -1 _)) record (array _ _) sequence) (console:log _ reads)";
     let js = compile(source);

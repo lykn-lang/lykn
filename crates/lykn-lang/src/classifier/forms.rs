@@ -1356,17 +1356,21 @@ fn parse_bind_group(args: &[SExpr], span: Span) -> Result<Vec<BindBinding>, Diag
                 name.span(),
             ));
         }
-        if binding_names_in_pattern(name, BindingKind::Bind).is_empty()
-            && name.as_atom() != Some("_")
-            && !is_structurally_valid_discard_pattern(name)
-        {
+        let introduces_no_names = binding_names_in_pattern(name, BindingKind::Bind).is_empty();
+        let newly_admitted_discard_pattern = introduces_no_names && name.as_atom() != Some("_");
+        if newly_admitted_discard_pattern && !is_structurally_valid_discard_pattern(name) {
             return Err(err(
                 "bind group name must be an atom or destructuring pattern",
                 name.span(),
             ));
         }
+        let name = if newly_admitted_discard_pattern {
+            literalize_discard_alias_keys(name)
+        } else {
+            name.clone()
+        };
         bindings.push(BindBinding {
-            name: name.clone(),
+            name,
             type_ann,
             value: value.clone(),
             span,
@@ -1429,6 +1433,130 @@ fn is_static_discard_alias_key(key: &SExpr) -> bool {
         | SExpr::Bool { .. }
         | SExpr::Null { .. } => true,
         _ => false,
+    }
+}
+
+fn literalize_discard_alias_keys(pattern: &SExpr) -> SExpr {
+    let SExpr::List { values, span } = pattern else {
+        return pattern.clone();
+    };
+    let mut values = values.clone();
+    match values.first().and_then(SExpr::as_atom) {
+        Some("array") => {
+            for member in values.iter_mut().skip(1) {
+                *member = literalize_discard_array_member(member);
+            }
+        }
+        Some("object") => {
+            for member in values.iter_mut().skip(1) {
+                *member = literalize_discard_object_member(member);
+            }
+        }
+        _ => return pattern.clone(),
+    }
+    SExpr::List {
+        values,
+        span: *span,
+    }
+}
+
+fn literalize_discard_binding_target(target: &SExpr) -> SExpr {
+    if target.as_list().is_some() {
+        literalize_discard_alias_keys(target)
+    } else {
+        target.clone()
+    }
+}
+
+fn literalize_discard_binding_element(element: &SExpr) -> SExpr {
+    let Some(values) = element.as_list() else {
+        return literalize_discard_binding_target(element);
+    };
+    if values.first().and_then(SExpr::as_atom) != Some("default") || values.len() != 3 {
+        return literalize_discard_binding_target(element);
+    }
+    let mut values = values.to_vec();
+    values[1] = literalize_discard_binding_target(&values[1]);
+    SExpr::List {
+        values,
+        span: element.span(),
+    }
+}
+
+fn literalize_discard_array_member(member: &SExpr) -> SExpr {
+    let Some(values) = member.as_list() else {
+        return member.clone();
+    };
+    match values.first().and_then(SExpr::as_atom) {
+        Some("array" | "object") => literalize_discard_alias_keys(member),
+        Some("default") if values.len() == 3 => {
+            let mut values = values.to_vec();
+            values[1] = literalize_discard_binding_target(&values[1]);
+            SExpr::List {
+                values,
+                span: member.span(),
+            }
+        }
+        Some("rest" | "spread") if values.len() == 2 => {
+            let mut values = values.to_vec();
+            values[1] = literalize_discard_binding_target(&values[1]);
+            SExpr::List {
+                values,
+                span: member.span(),
+            }
+        }
+        _ => member.clone(),
+    }
+}
+
+fn literalize_discard_object_member(member: &SExpr) -> SExpr {
+    let Some(values) = member.as_list() else {
+        return member.clone();
+    };
+    match values.first().and_then(SExpr::as_atom) {
+        Some("default") if values.len() == 3 => {
+            let mut values = values.to_vec();
+            values[1] = literalize_discard_binding_target(&values[1]);
+            SExpr::List {
+                values,
+                span: member.span(),
+            }
+        }
+        Some("alias") if values.len() == 3 || values.len() == 4 => {
+            let mut values = values.to_vec();
+            values[1] = literalize_static_discard_alias_key(&values[1]);
+            values[2] = literalize_discard_binding_element(&values[2]);
+            SExpr::List {
+                values,
+                span: member.span(),
+            }
+        }
+        Some("rest" | "spread") if values.len() == 2 => {
+            let mut values = values.to_vec();
+            values[1] = literalize_discard_binding_target(&values[1]);
+            SExpr::List {
+                values,
+                span: member.span(),
+            }
+        }
+        _ => member.clone(),
+    }
+}
+
+fn literalize_static_discard_alias_key(key: &SExpr) -> SExpr {
+    let normalized = match key {
+        SExpr::Atom(_) => key.as_atom().map(crate::codegen::names::to_js_identifier),
+        SExpr::Keyword { .. } => key
+            .as_keyword()
+            .map(crate::codegen::names::to_js_identifier),
+        _ => None,
+    };
+    match normalized {
+        Some(value) => SExpr::String {
+            value,
+            span: key.span(),
+        },
+        None => key.clone(),
     }
 }
 
