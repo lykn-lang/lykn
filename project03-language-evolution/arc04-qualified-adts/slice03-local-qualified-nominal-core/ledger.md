@@ -1,5 +1,12 @@
 # S03 local qualified nominal core ledger
 
+2026-11-14 subsequent checkpoint: [Arc05 S02](../../arc05-binding-semantics-and-hygienic-emission/slice02-native-binding-discards/cdc-verification.md#final-correction04-verdict--accept--2026-11-14)
+independently closes BS-02 at9e6fb127 for remaining admitted native binding
+discards and grouped/static-key/signature dispositions. All15 original rows
+below keep their existing statuses and bounded evidence; native759 is not
+retroactively broadened. BS-03 public parity, DTS, naming and qualified owner/
+composition gates remain open. S03 stays retired and release0829e892 unchanged.
+
 2026-11-13 subsequent outcome: [Arc05 S01](../../arc05-binding-semantics-and-hygienic-emission/slice01-public-source-discards/cdc-verification.md)
 independently accepts the complete public Source discard checkpoint at49982409.
 B2-DISCARD-P closes; other unfinished rows below remain open. Historical22

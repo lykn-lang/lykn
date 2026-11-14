@@ -9,6 +9,14 @@ related: ["project02-language-toolchain-alignment", "project03-language-evolutio
 
 # Core library research
 
+2026-11-14 compiler prerequisite update: [Project03 Arc05 S02](../project03-language-evolution/arc05-binding-semantics-and-hygienic-emission/slice02-native-binding-discards/cdc-verification.md#final-correction04-verdict--accept--2026-11-14)
+independently accepts remaining admitted native binding discards and immediate
+Source/raw-IR guide clarifications at9e6fb127. Public parity and qualified ADTs
+remain later work. File/module authoring, JSON/library composition, reader
+repairs, final research synthesis, book/human and licence gates remain open.
+No research trial resumes and release0829e892 is unchanged. Earlier checkpoints
+retain their historical meaning.
+
 2026-11-13 compiler prerequisite update: [Project03 Arc05 S01](../project03-language-evolution/arc05-binding-semantics-and-hygienic-emission/slice01-public-source-discards/cdc-verification.md)
 independently accepts public Source discards at49982409 and resolves R01.
 Qualified ADTs, library/decoder composition, research synthesis and human/book

@@ -1,5 +1,11 @@
 # project03-language-evolution ledger
 
+2026-11-14: [Arc05 S02](arc05-binding-semantics-and-hygienic-emission/slice02-native-binding-discards/cdc-verification.md#final-correction04-verdict--accept--2026-11-14)
+independently accepts all9ND rows at9e6fb127. BS-02 closes alongside BS-01;
+P-BIND/P-QADT/composition and every other unfinished criterion remain open.
+Actual Source/raw-IR distinction and the new grouped static-key representation
+carry to Arc06 LI-04. Source task-only; release stays0829e892 and S03 is unopened.
+
 2026-11-13: [Arc05 S01](arc05-binding-semantics-and-hygienic-emission/slice01-public-source-discards/cdc-verification.md)
 independently closes the full public Source discard checkpoint at49982409,
 including R01 and final delivery gates. BS-01 and original B2-DISCARD-P are done;

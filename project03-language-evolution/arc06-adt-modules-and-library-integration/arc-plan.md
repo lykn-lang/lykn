@@ -2,7 +2,7 @@
 project: project03-language-evolution
 arc: arc06-adt-modules-and-library-integration
 status: planned
-version: "0.1"
+version: "0.2"
 planned-release: unassigned
 depends-on: []
 related: [arc04-qualified-adts, arc05-binding-semantics-and-hygienic-emission, project07-core-library-research]
@@ -11,6 +11,16 @@ related: [arc04-qualified-adts, arc05-binding-semantics-and-hygienic-emission, p
 # ADT modules and library integration
 
 ## Authority and useful result
+
+2026-11-14 carry-forward: [Arc05 S02](../arc05-binding-semantics-and-hygienic-emission/slice02-native-binding-discards/cdc-verification.md#final-correction04-verdict--accept--2026-11-14)
+is independently accepted at9e6fb127. LI-04 must audit its bounded classified-IR
+change: static Atom/Keyword alias keys in newly admitted zero-name BindGroups
+become literal String nodes after structural validation, preserving spans and
+existing identifier normalization. Include negative numeric-key emission,
+native early unsupported SIMPLE multi-clause default/rest diagnostics and the
+actual Source versus raw-IR admission/guide distinction. This adds inputs to
+the existing explicit-range API/IR/docs audit, not completion or implementation
+authority here. All six LI rows remain open; release stays0829e892.
 
 2026-11-13: the operator requests a recorded home for the downstream third
 group after approving the binding arc and the remaining ADT feature roadmap.
@@ -93,6 +103,9 @@ merge/push/release, dependency adoption or licence choice is authorized now.
 Repository Lykn-only helper rules apply; no Python exception.
 
 ## Version history
+
+- 2026-11-14 v0.2: Carry accepted S02 static-key IR/API and guide impacts into
+  LI-04 without opening a slice or changing the existing roadmap/gates.
 
 - 2026-11-13 v0.1: Record operator-requested downstream arc stub, transferring
   former Arc04 S04–S07 responsibilities without altering their contracts/gates.

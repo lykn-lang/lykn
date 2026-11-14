@@ -3,7 +3,7 @@ project: project03-language-evolution
 arc: arc04-qualified-adts
 slice: slice03-local-qualified-nominal-core
 status: re-scoped
-version: "2.1"
+version: "2.2"
 depends-on: [slice01-contract-and-emission-design, slice02-existing-adt-correctness]
 ---
 
@@ -11,6 +11,9 @@ depends-on: [slice01-contract-and-emission-design, slice02-existing-adt-correctn
 
 ## Transfer-maintenance version history
 
+- 2026-11-14 v2.2: Record independently accepted Arc05 S02 native-binding
+  checkpoint9e6fb127. Retired status, original row dispositions and all later
+  public/declaration/naming/owner responsibilities remain unchanged.
 - 2026-11-13 v2.1: Arc05 S01 independently delivers the complete inherited
   public discard checkpoint49982409; reconcile B2-DISCARD-P and retain this
   container's retired status, original failures and remaining LC owners.
@@ -18,6 +21,15 @@ depends-on: [slice01-contract-and-emission-design, slice02-existing-adt-correctn
   operator-approved three-arc carry-forward map. Prior history remains below.
 
 ## Current role: historical execution record and carry-forward map
+
+Current outcome2026-11-14: [Arc05 S02](../../arc05-binding-semantics-and-hygienic-emission/slice02-native-binding-discards/cdc-verification.md#final-correction04-verdict--accept--2026-11-14)
+closes BS-02 at9e6fb127, completing the admitted native catch/loop/callable/
+method and grouped-discard portions of the staged obligations below. Native
+top-level SIMPLE multi-clause default/rest receives an explicit unsupported
+diagnostic; full dispatch semantics remain a later Arc05 candidate. BS-03
+public parity, discard DTS, naming and qualified owner work remain open. No
+original ledger row is broadened or newly closed here; S03 stays retired,
+issued22 unexecuted and release0829e892 unchanged.
 
 Current outcome2026-11-13: [Arc05 S01 independently closes](../../arc05-binding-semantics-and-hygienic-emission/slice01-public-source-discards/cdc-verification.md)
 the full public Source discard checkpoint at49982409, resolving R01 and closing

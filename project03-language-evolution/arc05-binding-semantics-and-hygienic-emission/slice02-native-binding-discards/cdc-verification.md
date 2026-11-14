@@ -237,3 +237,161 @@ the preserved input and `pipe-static-key.generated.mjs`. All commands used the
 same source cwd/warm Deno/owned CDC cache environment listed above. No tool
 session remains running. Source/build returns clean to root for the consolidated
 static-role and remaining table-label correction; final gates were not started.
+
+## Final correction04 verdict — ACCEPT — 2026-11-14
+
+**Accept the complete S02 source delivery at
+`9e6fb1270c3efcbaa0f6ddb9f0fbfd3b2c1c825a`, tree
+`6d64692fde0c367e73deeda1ec1aca19e49d6b93`.** All substantive R01–04 findings
+are resolved. This is the same independently selected OpenAI gpt-6.1-sol/high
+CDC context; Luna6 High remained the separate implementer. The initial3617
+HOLD,2873 pre-gate HOLD, failed pipe condition, interrupted130 attempt and
+unexecuted authoring specimens above remain unchanged history. Root still owns
+retrospective, status/ledger close and bubble-up adoption. Source acceptance does
+not close the arc/project/release or authorize S03/integration/publication.
+
+### Final source inspection before gates
+
+Read complete issued prompt04/current plan v1.4/nine-row ledger and appended CC
+correction04 index/closing sections, the complete2873→9e three-path diff and
+necessary whole S02 producer/writer/normalizer/finalizer source already mapped
+above. The final delivery still changes exactly the ten allowed paths relative
+to49982409. There is no dispatch, JS/embedded, dependency or configuration edit.
+Final source/doc/oracle readiness was reached before staging/focused/full gates.
+
+The new classifier branch records the empty binding-name condition before
+validation and literalizes only a newly admitted zero-name pattern after its
+structural check succeeds. Bare `_` and already-admitted named patterns retain
+their representations. Atom/Keyword alias keys become String literals via the
+existing normalizer with their original spans. Nested object/array targets,
+default-left and rest/spread targets recurse; default RHS and optional alias
+defaults remain cloned expressions. No global/Source value, schema or raw API
+walk was added. Tests inspect the actual classified key nodes/spans, unchanged
+default RHS and original named-branch Atom; runtime/JSON proves normalized
+property identity and getter/default effects. This solves the pipe syntax
+failure by representing static data, not by widening a punctuation blacklist.
+Colon/dot member-Atom negatives still run before normalization.
+
+R01 now has coherent strict Source versus direct raw IR prose and an actual raw
+`=` assignment row. The adjacent Source class example still uses `assign`.
+Typed Source lambda, literal raw lambda, and rejected kernel:lambda/class/
+class-expr remain distinct. R02's permanent iterator result getter and fresh
+non-hole control distinguish0 from2 reads while retaining outer early close.
+R04 now supplies7 against foreign99 and asserts literal raw lambda spelling.
+
+### Fresh independently reproduced final-source evidence
+
+Exact commands/environment, source conditions, numeric statuses, raw streams,
+session outcomes and artifact inventory are in
+[artifacts/cdc/final04-commands.md](artifacts/cdc/final04-commands.md). All
+following observations are fresh at9e6fb127; no source edit occurred afterward.
+
+1. `make fresh-artifacts`0 preceded staged consumers.
+2. Focused native0:24 new remaining-discard tests and23 existing discard tests.
+   Focused CLI0:2 new tests and2 existing variadic-for tests. These execute real
+   checked/strip Source/.lyk compilation, ESM, diagnostics and finalized JSON.
+3. Pure Lykn static pipe roles compile0/runtime0, exact stdout `99 3` newline,
+   empty stderr: actual grouped Atom/Keyword/String keys each read the same
+   live getter once. This supplements the permanent24 tests' AST/normalization/
+   Unicode/default/JSON controls without adding a research harness.
+4. Both balanced member-key fixtures independently fail actual CLI check,
+   checked compile and strip compile: six statuses1, intended early group
+   diagnostic at1:7, empty stdout and no JS output. These do not rely on a
+   later syntax error.
+5. One successful final `make check`0, docs included once: build/lint/format and
+   workspace Rust tests passed, including lykn-lang lib1205; full product1570
+   passed/67steps/0failed; docs482passed/0failed,22 generated files. Fifteen
+   entries have no Lykn blocks; they are not fifteen skipped executable tests.
+6. Fresh inner M6 under separate precreated `m6-final04`: standalone embedded
+   delivery0; strict mapped public62passed/0failed; all14 canonical/embedded/
+   materialized comparisons true. Actual child command/config/status/output
+   and each comparison were inspected, not inferred from outer success. The
+   lang mapping uses materialized embedded bytes; browser uses staged output.
+7. Final-HEAD cited paths0:64 documents and601 historical citations. Fresh
+   bundle gate0:47747 gzip bytes below81920, baseline27630, delta+20117.
+
+### Fresh versus retained proof and limits
+
+The final native/CLI/full/M6 sets supersede doer attestation and earlier focused
+counts for final-source verification. Fresh legacy23 retains type-check errors,
+schema `_` field7, lazy defaults, typed rest, fixed/nested multi dispatch,
+export/effect and fragment failure/reuse coverage. Full workspace Rust provides
+affected binding/default projection, emission/private/host regressions. Final
+native24 includes the corrected permanent loop/lambda oracles and source/raw
+boundaries; tests are not accepted merely for being green.
+
+Retain the independently reproduced supplement02 observation at3617 only after
+applicability review: its raw call arity/order/_value, generator timing,
+iterator/catch and candidate-colon paths are unchanged. Its one newly admitted
+object alias key `:value` now becomes String `value`, the exact same property
+identity. The new permanent JSON/key and three-role pipe consumer prove that
+representation boundary at final source; no helper/control-flow/fixture input
+changed. Thus supplement02's exact protocol/effect observations remain useful
+independent proof at their original pin, not a claim they were rerun at9e.
+S01's public acceptance remains baseline evidence because no public/mirror
+implementation changed, with fresh final M6 and full product corroboration.
+
+The actual full output still says `(skipped — jsr.io not reachable)` for the
+JSR end-to-end fixture. It self-reports ok under its existing skip handling;
+network publication/end-to-end success is not claimed. Warm DENO_DIR, fresh
+owned M6 XDG and existing cached-only child options are explicit. Size checking
+fetched existing esbuild registry data and emitted four astring package-condition
+ordering warnings, while returning0. This was not entirely offline. No new
+dependency/permission bypass or number-range experiment occurred. NUMI and all
+downstream library/book/human/general naming obligations retain their owners.
+
+### All nine ND dispositions
+
+| Row | Final independent disposition | Evidence and limit |
+| --- | --- | --- |
+| ND-01 | Accept; reproduced and source-reconciled. | Final declarations/numeric-for initializer/for-in/of/await-of, new live hole0/named2 oracle and outer next1/return1, legacy protocol controls. Numeric-for test proves discard initializer plus immediate-break termination, not a new counter facility. |
+| ND-02 | Accept; reproduced plus applicable independent supplement. | Actual admitted callable/generator/async/object/class families, `_value`/arity/order/advance supplement, default/rest/spread positives; typed Source lambda and raw literal lambda7 against foreign99 are separate. |
+| ND-03 | Accept; reproduced plus applicable protocol supplement. | Legacy catch8, default/pair/computed/shorthand/rest/subwriter roles and selected-last/finally/direct-return behavior; supplement distinguishes catch value2 from declaration-hole value1. No catch grammar feature added. |
+| ND-04 | Accept; fresh and source-reconciled. | Shared spread projection/default-path tests, named/form-body resolution, final JSON, legacy schema/fragment/private/host and candidate-colon proof; finalizers unchanged and producer preparation remains local. |
+| ND-05 | Accept; R03 resolved, freshly reproduced. | Valid structural empty/nested/default/rest/grouped literals, reject malformed/member expressions, normalized static key AST/spans and Unicode/normalizer/unchanged String/default/named controls, real getter/default effects and JSON. Numeric formatting range remains existing bounded behavior. |
+| ND-06 | Accept; reproduced and predicate inspected. | Classify and direct-AST default/rest errors, actual CLI check/checked/strip negatives, mixed clause coverage; shared predicate examines every top-level Simple param. Single/nested/fixed cases stay supported; no new variadic selection semantics. |
+| ND-07 | Accept; R01/R04 resolved and actual entrances proved. | Correct Source/raw table and API docs, native Source/.lyk/escape CLI runtime, strict member diagnostics, unsupported kernel lambda/class/class-expr negatives, literal raw/schema controls. |
+| ND-08 | Accept; fresh final-source gates. | Focused24+23/2+2, successful full/lib1205/product1570/67/docs482, actual M662/14, final64/601 citations and47747/81920 gzip. All raw skip/cache/warning limits retained. |
+| ND-09 | Reviewer requirements satisfied; root closing duties pending. | Independent9-row acceptance, source/history/oracle findings resolved, original candidates/attempts retained, clean/no-jobs handback. Root owns retrospective/ledger/status close and bubble-up; no wider acceptance inferred. |
+
+### Final artifact and ownership handback
+
+Final evidence stems are `final04-*`, six `colon-*`/`dotted-*` CLI triplets and
+`m6-final04/`, indexed in the command record. Source pin/status/commit and exact
+delivery diff are retained separately from initial candidate snapshots. The
+original malformed08ba commit object independently hashes to
+`08ba3743440aaccdbfd1a999ca47fe296a92c720`; current correction commits have valid
+contiguous trailers, without rewriting that failed metadata history.
+
+Source9e6fb127/tree6d64692f is clean. All final sessions completed naturally0;
+earlier session1768 remains the explicitly interrupted130 attempt. No production
+edit, source/planning Git/index or ledger mutation was made by this reviewer.
+Source/build ownership returns to root. The useful delivery is accepted on the
+task branch; release remains0829e892. Root may finish the authorized S02 closing
+metadata and retrospective, with BS-03 onward, S09 design re-entry, Arc06 LI-04
+classified-IR/API audit and other existing owners retained.
+
+## Closing metadata review — PASS — 2026-11-14
+
+The same independent Sol6.1 High reviewer inspected the current tracked closing
+diff, full root retrospective and final04 command/evidence index. Recovered
+clipped combined output through bounded file-group reads before this verdict.
+All nine ND rows close with the accepted9e6fb127 evidence; BS-02 closure is
+supported. Root's retrospective, downstream routing and status reconciliation
+now fulfill ND-09's remaining closing duties. Earlier cutoff/HOLD text above
+retains its historical meaning.
+
+Ledger cardinalities remain S02 nine, Arc05 nine, retired Arc04 S03 fifteen
+criteria (excluding the header), and Arc06 six. The original fifteen S03 rows
+are untouched; its diff only adds a dated subsequent checkpoint. BS-03–09,
+LI-01–06, P-BIND/P-QADT and broader composition remain open. Arc06 LI-04 retains
+the new classified-key representation, numeric spelling, signature diagnostic
+and Source/raw-IR/API/guide impacts; Project07 routing retains research/reader/
+library/book/human/licence gates. No S03 or integration authority is inferred.
+
+Live read-only Git checks confirm clean source9e6fb127/tree6d64692f and release
+0829e892999890e8877dec5e35cd249753e1be5d unchanged. The closing report correctly
+leaves the eventual planning closing-packet hash to the commit rather than
+inventing it; this is not a missing source receipt. No material metadata finding
+remains. This follow-up changed only this reviewer record, ran no runtime gate
+and made no Git/index/ledger mutation. Source/build remains with root.

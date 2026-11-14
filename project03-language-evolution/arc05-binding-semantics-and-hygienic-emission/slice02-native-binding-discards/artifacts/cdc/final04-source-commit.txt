@@ -1,0 +1,13 @@
+commit 9e6fb1270c3efcbaa0f6ddb9f0fbfd3b2c1c825a
+Author:     Duncan McGreggor <oubiwann@gmail.com>
+AuthorDate: Sat Nov 14 00:34:38 2026 -0600
+Commit:     Duncan McGreggor <oubiwann@gmail.com>
+CommitDate: Sat Nov 14 00:34:38 2026 -0600
+
+    fix: normalize grouped discard alias keys
+    
+    Preserve static alias names in newly admitted grouped discard patterns.
+    Keep Source and raw kernel IR examples distinct in the surface guide.
+    
+    Co-authored-by: Codex <noreply@openai.com>
+    Co-authored-by: Billo AI <ai-engineering@billo.systems>

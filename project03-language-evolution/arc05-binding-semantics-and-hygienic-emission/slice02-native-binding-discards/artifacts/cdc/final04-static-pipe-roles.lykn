@@ -1,0 +1,12 @@
+(set! globalThis:_ 99)
+(bind metrics (obj :reads 0))
+(bind record (obj))
+(Object:defineProperty record "|"
+  (obj :get (kernel:=> () (block
+    (set! metrics:reads (+ metrics:reads 1))
+    (return 7)))))
+(bind
+  (object (alias | _)) record
+  (object (alias :| _)) record
+  (object (alias "|" _)) record)
+(console:log _ metrics:reads)

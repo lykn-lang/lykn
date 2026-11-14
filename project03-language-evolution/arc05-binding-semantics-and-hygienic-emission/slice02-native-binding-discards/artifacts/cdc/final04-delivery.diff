@@ -1,0 +1,1814 @@
+diff --git a/crates/lykn-cli/tests/remaining_discard_bindings.rs b/crates/lykn-cli/tests/remaining_discard_bindings.rs
+new file mode 100644
+index 00000000..20580880
+--- /dev/null
++++ b/crates/lykn-cli/tests/remaining_discard_bindings.rs
+@@ -0,0 +1,156 @@
++use std::fs;
++use std::path::PathBuf;
++use std::process::{Command, Output};
++
++use tempfile::TempDir;
++
++fn execute(command: &mut Command) -> Output {
++    command.output().expect("start lykn process")
++}
++
++fn repository_root() -> PathBuf {
++    PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../..")
++}
++
++#[test]
++fn source_kernel_escape_and_lyk_fixtures_check_compile_and_run_as_esm() {
++    let temp = TempDir::new().expect("create fixture directory");
++    let executable = env!("CARGO_BIN_EXE_lykn");
++    for extension in ["lykn", "lyk"] {
++        let source = "(bind pick (kernel:=> (_ _) _)) (console:log (pick 7 8))";
++        let source_path = temp.path().join(format!("discard.{extension}"));
++        fs::write(&source_path, source).expect("write positive fixture");
++        let check = execute(
++            Command::new(executable)
++                .current_dir(temp.path())
++                .arg("check")
++                .arg(&source_path),
++        );
++        eprintln!(
++            "DISCARD_CLI_CHECK extension={extension} source={source:?} exit={:?} stdout={:?} stderr={:?}",
++            check.status.code(),
++            String::from_utf8_lossy(&check.stdout),
++            String::from_utf8_lossy(&check.stderr),
++        );
++        assert!(
++            check.status.success(),
++            "{extension} check stderr: {}",
++            String::from_utf8_lossy(&check.stderr)
++        );
++        assert!(
++            check.stdout.is_empty(),
++            "{extension} check stdout: {}",
++            String::from_utf8_lossy(&check.stdout)
++        );
++        assert!(
++            String::from_utf8_lossy(&check.stderr).ends_with(": ok (2 top-level expressions)\n"),
++            "{extension} check stderr: {}",
++            String::from_utf8_lossy(&check.stderr)
++        );
++
++        for strip in [false, true] {
++            let output_path = temp.path().join(format!("discard-{strip}.mjs"));
++            let mut command = Command::new(executable);
++            command
++                .current_dir(temp.path())
++                .arg("compile")
++                .arg(&source_path);
++            if strip {
++                command.arg("--strip-assertions");
++            }
++            let compile = execute(command.arg("-o").arg(&output_path));
++            let generated = fs::read_to_string(&output_path).unwrap_or_default();
++            eprintln!(
++                "DISCARD_CLI_COMPILE extension={extension} strip={strip} source={source:?} exit={:?} stdout={:?} stderr={:?} generated={generated:?}",
++                compile.status.code(),
++                String::from_utf8_lossy(&compile.stdout),
++                String::from_utf8_lossy(&compile.stderr),
++            );
++            assert!(
++                compile.status.success(),
++                "{extension} compile strip={strip} stderr: {}",
++                String::from_utf8_lossy(&compile.stderr)
++            );
++            assert!(
++                compile.stdout.is_empty(),
++                "{extension} compile stdout: {}",
++                String::from_utf8_lossy(&compile.stdout)
++            );
++            assert!(
++                compile.stderr.is_empty(),
++                "{extension} compile stderr: {}",
++                String::from_utf8_lossy(&compile.stderr)
++            );
++
++            let module_url = format!("file://{}", output_path.display());
++            let runtime = execute(
++                Command::new("deno")
++                    .current_dir(repository_root())
++                    .args(["eval", "--config", "project.json", "--ext=js"])
++                    .arg(format!("globalThis._ = 99; await import({module_url:?});")),
++            );
++            eprintln!(
++                "DISCARD_CLI_RUNTIME extension={extension} strip={strip} exit={:?} stdout={:?} stderr={:?}",
++                runtime.status.code(),
++                String::from_utf8_lossy(&runtime.stdout),
++                String::from_utf8_lossy(&runtime.stderr),
++            );
++            assert!(
++                runtime.status.success(),
++                "{extension} runtime stderr: {}",
++                String::from_utf8_lossy(&runtime.stderr)
++            );
++            assert_eq!(runtime.stdout, b"99\n", "{extension} strip={strip}");
++            assert!(
++                runtime.stderr.is_empty(),
++                "{extension} runtime stderr: {}",
++                String::from_utf8_lossy(&runtime.stderr)
++            );
++        }
++    }
++}
++
++#[test]
++fn multi_clause_simple_default_is_rejected_by_check_and_both_compile_modes() {
++    const MESSAGE: &str = "multi-clause func does not support top-level default or rest parameters";
++    let temp = TempDir::new().expect("create negative fixture directory");
++    let source =
++        "(func f (:args ((default :any value 7)) :body 1) (:args (:string other) :body 2))";
++    let source_path = temp.path().join("multi-default.lykn");
++    fs::write(&source_path, source).expect("write negative fixture");
++    let executable = env!("CARGO_BIN_EXE_lykn");
++    let check = execute(
++        Command::new(executable)
++            .current_dir(temp.path())
++            .arg("check")
++            .arg(&source_path),
++    );
++    assert!(!check.status.success());
++    assert!(
++        String::from_utf8_lossy(&check.stderr).contains(MESSAGE),
++        "{}",
++        String::from_utf8_lossy(&check.stderr)
++    );
++    assert!(check.stdout.is_empty());
++
++    for strip in [false, true] {
++        let output_path = temp.path().join(format!("rejected-{strip}.mjs"));
++        let mut command = Command::new(executable);
++        command
++            .current_dir(temp.path())
++            .arg("compile")
++            .arg(&source_path);
++        if strip {
++            command.arg("--strip-assertions");
++        }
++        let compile = execute(command.arg("-o").arg(&output_path));
++        assert!(!compile.status.success());
++        assert!(
++            String::from_utf8_lossy(&compile.stderr).contains(MESSAGE),
++            "{}",
++            String::from_utf8_lossy(&compile.stderr)
++        );
++        assert!(compile.stdout.is_empty());
++        assert!(!output_path.exists());
++    }
++}
+diff --git a/crates/lykn-lang/src/binding.rs b/crates/lykn-lang/src/binding.rs
+index 477a0973..3b87e3fd 100644
+--- a/crates/lykn-lang/src/binding.rs
++++ b/crates/lykn-lang/src/binding.rs
+@@ -869,7 +869,7 @@ pub(crate) fn kernel_param_names(params: &SExpr) -> Vec<BindingOccurrence<'_>> {
+                 });
+             }
+             SExpr::List { values, .. } => match values.first().and_then(SExpr::as_atom) {
+-                Some("rest" | "default") => {
++                Some("rest" | "spread" | "default") => {
+                     if let Some(binding) = values.get(1) {
+                         pattern_occurrences_with_grammar(
+                             binding,
+@@ -1702,6 +1702,27 @@ mod tests {
+         );
+     }
+ 
++    #[test]
++    fn kernel_spread_parameter_projection_and_reserved_validation_agree() {
++        let params = read("((spread (object (default value 7))) _) ").expect("parse params");
++        assert_eq!(
++            kernel_param_names(&params[0])
++                .into_iter()
++                .map(|site| site.atom.as_atom().expect("projected atom"))
++                .collect::<Vec<_>>(),
++            vec!["value"]
++        );
++
++        let reserved = read("(kernel:=> ((spread eval)) 1)").expect("parse reserved binder");
++        let diagnostics = validate_reserved_names(&reserved);
++        assert!(diagnostics.iter().any(|diagnostic| {
++            diagnostic.message.contains("eval")
++                && diagnostic
++                    .message
++                    .contains("strict-mode binding identifier")
++        }));
++    }
++
+     #[test]
+     fn catch_binding_projection_keeps_legacy_expression_object_extent() {
+         let default = read("(object (default array))").expect("parse catch pattern");
+diff --git a/crates/lykn-lang/src/classifier/forms.rs b/crates/lykn-lang/src/classifier/forms.rs
+index 05431f3b..790e02a1 100644
+--- a/crates/lykn-lang/src/classifier/forms.rs
++++ b/crates/lykn-lang/src/classifier/forms.rs
+@@ -1356,16 +1356,21 @@ fn parse_bind_group(args: &[SExpr], span: Span) -> Result<Vec<BindBinding>, Diag
+                 name.span(),
+             ));
+         }
+-        if binding_names_in_pattern(name, BindingKind::Bind).is_empty()
+-            && name.as_atom() != Some("_")
+-        {
++        let introduces_no_names = binding_names_in_pattern(name, BindingKind::Bind).is_empty();
++        let newly_admitted_discard_pattern = introduces_no_names && name.as_atom() != Some("_");
++        if newly_admitted_discard_pattern && !is_structurally_valid_discard_pattern(name) {
+             return Err(err(
+                 "bind group name must be an atom or destructuring pattern",
+                 name.span(),
+             ));
+         }
++        let name = if newly_admitted_discard_pattern {
++            literalize_discard_alias_keys(name)
++        } else {
++            name.clone()
++        };
+         bindings.push(BindBinding {
+-            name: name.clone(),
++            name,
+             type_ann,
+             value: value.clone(),
+             span,
+@@ -1380,6 +1385,230 @@ fn parse_bind_group(args: &[SExpr], span: Span) -> Result<Vec<BindBinding>, Diag
+     Ok(bindings)
+ }
+ 
++fn is_structurally_valid_discard_pattern(pattern: &SExpr) -> bool {
++    let Some(values) = pattern.as_list() else {
++        return false;
++    };
++    match values.first().and_then(SExpr::as_atom) {
++        Some("array") => valid_discard_array_members(&values[1..]),
++        Some("object") => valid_discard_object_members(&values[1..]),
++        _ => false,
++    }
++}
++
++fn is_discard_binding_target(pattern: &SExpr) -> bool {
++    if pattern.as_atom() == Some("_") {
++        return true;
++    }
++    let Some(values) = pattern.as_list() else {
++        return false;
++    };
++    match values.first().and_then(SExpr::as_atom) {
++        Some("array") => valid_discard_array_members(&values[1..]),
++        Some("object") => valid_discard_object_members(&values[1..]),
++        _ => false,
++    }
++}
++
++fn is_discard_binding_element(pattern: &SExpr) -> bool {
++    if is_discard_binding_target(pattern) {
++        return true;
++    }
++    let Some(values) = pattern.as_list() else {
++        return false;
++    };
++    values.first().and_then(SExpr::as_atom) == Some("default")
++        && values.len() == 3
++        && is_discard_binding_target(&values[1])
++}
++
++fn is_static_discard_alias_key(key: &SExpr) -> bool {
++    match key {
++        SExpr::Atom(_) => key
++            .as_atom()
++            .is_some_and(|value| !value.contains(':') && !value.contains('.')),
++        SExpr::Keyword { .. }
++        | SExpr::String { .. }
++        | SExpr::Number { .. }
++        | SExpr::Bool { .. }
++        | SExpr::Null { .. } => true,
++        _ => false,
++    }
++}
++
++fn literalize_discard_alias_keys(pattern: &SExpr) -> SExpr {
++    let SExpr::List { values, span } = pattern else {
++        return pattern.clone();
++    };
++    let mut values = values.clone();
++    match values.first().and_then(SExpr::as_atom) {
++        Some("array") => {
++            for member in values.iter_mut().skip(1) {
++                *member = literalize_discard_array_member(member);
++            }
++        }
++        Some("object") => {
++            for member in values.iter_mut().skip(1) {
++                *member = literalize_discard_object_member(member);
++            }
++        }
++        _ => return pattern.clone(),
++    }
++    SExpr::List {
++        values,
++        span: *span,
++    }
++}
++
++fn literalize_discard_binding_target(target: &SExpr) -> SExpr {
++    if target.as_list().is_some() {
++        literalize_discard_alias_keys(target)
++    } else {
++        target.clone()
++    }
++}
++
++fn literalize_discard_binding_element(element: &SExpr) -> SExpr {
++    let Some(values) = element.as_list() else {
++        return literalize_discard_binding_target(element);
++    };
++    if values.first().and_then(SExpr::as_atom) != Some("default") || values.len() != 3 {
++        return literalize_discard_binding_target(element);
++    }
++    let mut values = values.to_vec();
++    values[1] = literalize_discard_binding_target(&values[1]);
++    SExpr::List {
++        values,
++        span: element.span(),
++    }
++}
++
++fn literalize_discard_array_member(member: &SExpr) -> SExpr {
++    let Some(values) = member.as_list() else {
++        return member.clone();
++    };
++    match values.first().and_then(SExpr::as_atom) {
++        Some("array" | "object") => literalize_discard_alias_keys(member),
++        Some("default") if values.len() == 3 => {
++            let mut values = values.to_vec();
++            values[1] = literalize_discard_binding_target(&values[1]);
++            SExpr::List {
++                values,
++                span: member.span(),
++            }
++        }
++        Some("rest" | "spread") if values.len() == 2 => {
++            let mut values = values.to_vec();
++            values[1] = literalize_discard_binding_target(&values[1]);
++            SExpr::List {
++                values,
++                span: member.span(),
++            }
++        }
++        _ => member.clone(),
++    }
++}
++
++fn literalize_discard_object_member(member: &SExpr) -> SExpr {
++    let Some(values) = member.as_list() else {
++        return member.clone();
++    };
++    match values.first().and_then(SExpr::as_atom) {
++        Some("default") if values.len() == 3 => {
++            let mut values = values.to_vec();
++            values[1] = literalize_discard_binding_target(&values[1]);
++            SExpr::List {
++                values,
++                span: member.span(),
++            }
++        }
++        Some("alias") if values.len() == 3 || values.len() == 4 => {
++            let mut values = values.to_vec();
++            values[1] = literalize_static_discard_alias_key(&values[1]);
++            values[2] = literalize_discard_binding_element(&values[2]);
++            SExpr::List {
++                values,
++                span: member.span(),
++            }
++        }
++        Some("rest" | "spread") if values.len() == 2 => {
++            let mut values = values.to_vec();
++            values[1] = literalize_discard_binding_target(&values[1]);
++            SExpr::List {
++                values,
++                span: member.span(),
++            }
++        }
++        _ => member.clone(),
++    }
++}
++
++fn literalize_static_discard_alias_key(key: &SExpr) -> SExpr {
++    let normalized = match key {
++        SExpr::Atom(_) => key.as_atom().map(crate::codegen::names::to_js_identifier),
++        SExpr::Keyword { .. } => key
++            .as_keyword()
++            .map(crate::codegen::names::to_js_identifier),
++        _ => None,
++    };
++    match normalized {
++        Some(value) => SExpr::String {
++            value,
++            span: key.span(),
++        },
++        None => key.clone(),
++    }
++}
++
++fn valid_discard_array_members(members: &[SExpr]) -> bool {
++    for (index, member) in members.iter().enumerate() {
++        if member.as_atom() == Some("_") {
++            continue;
++        }
++        let Some(parts) = member.as_list() else {
++            return false;
++        };
++        match parts.first().and_then(SExpr::as_atom) {
++            Some("array" | "object") if is_structurally_valid_discard_pattern(member) => {}
++            Some("default") if parts.len() == 3 && is_discard_binding_target(&parts[1]) => {}
++            Some("rest" | "spread")
++                if parts.len() == 2
++                    && index + 1 == members.len()
++                    && is_discard_binding_target(&parts[1]) => {}
++            _ => return false,
++        }
++    }
++    true
++}
++
++fn valid_discard_object_members(members: &[SExpr]) -> bool {
++    for (index, member) in members.iter().enumerate() {
++        if member.as_atom() == Some("_") {
++            continue;
++        }
++        let Some(parts) = member.as_list() else {
++            return false;
++        };
++        match parts.first().and_then(SExpr::as_atom) {
++            Some("default") if parts.len() == 3 && parts[1].as_atom() == Some("_") => {}
++            Some("alias")
++                if (parts.len() == 3 || parts.len() == 4)
++                    && is_static_discard_alias_key(&parts[1])
++                    && if parts.len() == 3 {
++                        is_discard_binding_element(&parts[2])
++                    } else {
++                        is_discard_binding_target(&parts[2])
++                    } => {}
++            Some("rest" | "spread")
++                if parts.len() == 2
++                    && index + 1 == members.len()
++                    && parts[1].as_atom() == Some("_") => {}
++            _ => return false,
++        }
++    }
++    true
++}
++
+ fn bind_binding_arg_slots(args: &[SExpr]) -> Vec<(usize, usize, Option<TypeAnnotation>)> {
+     let mut slots = Vec::new();
+     match args.len() {
+@@ -1697,6 +1926,12 @@ fn classify_func<'tree>(
+         for clause_expr in rest {
+             clauses.push(parse_func_clause(clause_expr, span, capture)?);
+         }
++        if let Some(parameter_span) = multi_clause_simple_default_rest(&clauses) {
++            return Err(err(
++                "multi-clause func does not support top-level default or rest parameters",
++                parameter_span,
++            ));
++        }
+         return Ok(SurfaceForm::Func {
+             name: name.0,
+             name_span: name.1,
+@@ -1735,6 +1970,20 @@ fn classify_func<'tree>(
+     })
+ }
+ 
++pub(crate) fn multi_clause_simple_default_rest(clauses: &[FuncClause]) -> Option<Span> {
++    (clauses.len() > 1).then_some(())?;
++    clauses.iter().find_map(|clause| {
++        clause.args.iter().find_map(|parameter| match parameter {
++            ParamShape::Simple(parameter)
++                if parameter.default_value.is_some() || parameter.is_rest =>
++            {
++                Some(parameter.name_span)
++            }
++            _ => None,
++        })
++    })
++}
++
+ pub(crate) fn is_func_clause_key(name: &str) -> bool {
+     crate::lexical_regions::is_func_clause_key(name)
+ }
+diff --git a/crates/lykn-lang/src/codegen/emit.rs b/crates/lykn-lang/src/codegen/emit.rs
+index 7513505a..952a4c01 100644
+--- a/crates/lykn-lang/src/codegen/emit.rs
++++ b/crates/lykn-lang/src/codegen/emit.rs
+@@ -1383,7 +1383,13 @@ fn emit_alias_pattern(w: &mut JsWriter, args: &[SExpr]) -> Result<(), LyknError>
+     // (alias original local) → original: local
+     // (alias original local default) → original: local = default
+     if args.len() >= 2 {
+-        emit_expr(w, &args[0], 0)?;
++        if matches!(&args[0], SExpr::Number { value, .. } if value.is_sign_negative()) {
++            w.write("[");
++            emit_expr(w, &args[0], 0)?;
++            w.write("]");
++        } else {
++            emit_expr(w, &args[0], 0)?;
++        }
+         w.write(": ");
+         emit_pattern(w, &args[1])?;
+         if args.len() >= 3 {
+@@ -1825,6 +1831,18 @@ mod tests {
+         assert_eq!(emit_to_string(&num(42.0)), "42");
+     }
+ 
++    #[test]
++    fn negative_numeric_alias_keys_use_computed_pattern_spelling() {
++        let alias = list(vec![atom("alias"), num(-1.0), atom("_")]);
++        assert_eq!(emit_to_string(&alias), "[-1]: _");
++
++        let negative_zero = list(vec![atom("alias"), num(-0.0), atom("_")]);
++        assert_eq!(emit_to_string(&negative_zero), "[0]: _");
++
++        let positive_zero = list(vec![atom("alias"), num(0.0), atom("_")]);
++        assert_eq!(emit_to_string(&positive_zero), "0: _");
++    }
++
+     #[test]
+     #[allow(clippy::approx_constant)] // 3.14 is a sample float, not π
+     fn test_emit_number_float() {
+diff --git a/crates/lykn-lang/src/codegen/mod.rs b/crates/lykn-lang/src/codegen/mod.rs
+index 4331d10e..fc54085a 100644
+--- a/crates/lykn-lang/src/codegen/mod.rs
++++ b/crates/lykn-lang/src/codegen/mod.rs
+@@ -41,7 +41,11 @@ use format::JsWriter;
+ /// Emit a module (list of kernel forms) as JavaScript source text.
+ ///
+ /// Each top-level form is emitted as a statement. The resulting string is
+-/// ready to be written to a `.js` file.
++/// ready to be written to a `.js` file. This low-level API writes the supplied
++/// kernel IR literally: Source-level discard preparation belongs to the native
++/// emitter, so a caller supplying an arrow parameter named `_` gets that
++/// identifier unchanged. Generated schema fields and other IR consumers rely
++/// on this boundary.
+ pub fn emit_module_js(forms: &[SExpr]) -> Result<String, LyknError> {
+     emit_module_with_invocations(forms, &[])
+ }
+@@ -324,6 +328,13 @@ mod tests {
+         assert!(js.contains("greet(\"world\");"));
+     }
+ 
++    #[test]
++    fn raw_codegen_keeps_supplied_underscore_parameter_literal() {
++        let arrow = list(vec![atom("=>"), list(vec![atom("_")]), atom("_")]);
++        let forms = vec![list(vec![atom("const"), atom("pick"), arrow])];
++        assert_eq!(emit_module_js(&forms).unwrap(), "const pick = _ => _;\n");
++    }
++
+     #[test]
+     fn test_emit_module_js_class() {
+         let ctor = list(vec![
+diff --git a/crates/lykn-lang/src/emitter/forms.rs b/crates/lykn-lang/src/emitter/forms.rs
+index 2fbce6bb..048bf70c 100644
+--- a/crates/lykn-lang/src/emitter/forms.rs
++++ b/crates/lykn-lang/src/emitter/forms.rs
+@@ -898,10 +898,12 @@ fn emit_direct_try_children(
+             ctx.expr_context = saved_context;
+         }
+     }
+-    SExpr::List {
++    let mut emitted = SExpr::List {
+         values: emitted,
+         span,
+-    }
++    };
++    lower_kernel_discard_roles(&mut emitted, ctx);
++    emitted
+ }
+ 
+ fn emit_kernel_children(
+@@ -932,9 +934,193 @@ fn emit_kernel_children(
+         new_values.push(emit_expr(child, ctx, registry));
+     }
+     ctx.expr_context = saved_ctx;
+-    SExpr::List {
++    let mut emitted = SExpr::List {
+         values: new_values,
+         span,
++    };
++    lower_kernel_discard_roles(&mut emitted, ctx);
++    emitted
++}
++
++/// Prepare only the binding slots consumed by the raw kernel writer. Children
++/// have already been emitted with their ordinary value/property contexts.
++fn lower_kernel_discard_roles(expr: &mut SExpr, ctx: &mut EmitterContext) {
++    let SExpr::List { values, .. } = expr else {
++        return;
++    };
++    let Some(head) = values.first().and_then(SExpr::as_atom) else {
++        return;
++    };
++    match head {
++        "const" | "let" | "var" => {
++            if let Some(binding) = values.get_mut(1) {
++                *binding = lower_discard_binding_pattern(binding, ctx);
++            }
++        }
++        "for-of" | "for-in" | "for-await-of" => {
++            if let Some(binding) = values.get_mut(1) {
++                *binding = lower_discard_binding_pattern(binding, ctx);
++            }
++        }
++        "for" => {
++            if let Some(SExpr::List { values: init, .. }) = values.get_mut(1)
++                && matches!(
++                    init.first().and_then(SExpr::as_atom),
++                    Some("const" | "let" | "var")
++                )
++                && let Some(binding) = init.get_mut(1)
++            {
++                *binding = lower_discard_binding_pattern(binding, ctx);
++            }
++        }
++        "function" | "function*" | "=>" | "lambda" => {
++            let params_index = if matches!(head, "function" | "function*")
++                && values.get(1).is_some_and(|name| name.as_atom().is_some())
++            {
++                2
++            } else {
++                1
++            };
++            lower_kernel_parameter_list(values.get_mut(params_index), ctx);
++        }
++        "try" => lower_legacy_catch_clauses(values, ctx),
++        _ => {}
++    }
++}
++
++fn lower_kernel_parameter_list(params: Option<&mut SExpr>, ctx: &mut EmitterContext) {
++    let Some(SExpr::List { values, .. }) = params else {
++        return;
++    };
++    for parameter in values {
++        *parameter = lower_discard_binding_pattern(parameter, ctx);
++    }
++}
++
++fn lower_legacy_catch_clauses(values: &mut [SExpr], ctx: &mut EmitterContext) {
++    let selected = values
++        .iter()
++        .enumerate()
++        .skip(1)
++        .filter_map(|(index, clause)| {
++            (clause.as_list()?.first()?.as_atom() == Some("catch")).then_some(index)
++        })
++        .next_back();
++    if let Some(index) = selected
++        && let SExpr::List { values: clause, .. } = &mut values[index]
++        && let Some(binding) = clause.get_mut(1)
++    {
++        *binding = lower_legacy_catch_binding(binding, ctx);
++    }
++}
++
++/// Catch parameters use the legacy expression-pattern writer. Preserve its
++/// property/value slots while giving source `_` a private binding identity.
++fn lower_legacy_catch_binding(expr: &SExpr, ctx: &mut EmitterContext) -> SExpr {
++    if expr.as_atom() == Some("_") {
++        return SExpr::completion_value_atom(ctx.next_completion_value_id(), expr.span());
++    }
++    let SExpr::List { values, span } = expr else {
++        return expr.clone();
++    };
++    let Some(head) = values.first().and_then(SExpr::as_atom) else {
++        return expr.clone();
++    };
++    if head == "array" {
++        let mut lowered = values.clone();
++        for member in lowered.iter_mut().skip(1) {
++            *member = if member.as_atom() == Some("_") {
++                SExpr::completion_value_atom(ctx.next_completion_value_id(), member.span())
++            } else if let Some(parts) = member.as_list() {
++                match parts.first().and_then(SExpr::as_atom) {
++                    Some("spread") if parts.len() >= 2 => {
++                        let mut mapped = parts.to_vec();
++                        mapped[1] = lower_legacy_catch_binding(&parts[1], ctx);
++                        SExpr::List {
++                            values: mapped,
++                            span: member.span(),
++                        }
++                    }
++                    Some("default" | "rest" | "alias") => {
++                        lower_discard_binding_pattern(member, ctx)
++                    }
++                    _ => lower_legacy_catch_binding(member, ctx),
++                }
++            } else {
++                member.clone()
++            };
++        }
++        return SExpr::List {
++            values: lowered,
++            span: *span,
++        };
++    }
++    if head != "object" {
++        if matches!(head, "default" | "rest") && values.len() >= 2 {
++            let mut lowered = values.clone();
++            lowered[1] = lower_discard_binding_pattern(&values[1], ctx);
++            return SExpr::List {
++                values: lowered,
++                span: *span,
++            };
++        }
++        if head == "alias" && values.len() >= 3 {
++            let mut lowered = values.clone();
++            lowered[2] = lower_discard_binding_pattern(&values[2], ctx);
++            return SExpr::List {
++                values: lowered,
++                span: *span,
++            };
++        }
++        if head == "spread" && values.len() >= 2 {
++            let mut lowered = values.clone();
++            lowered[1] = lower_legacy_catch_binding(&values[1], ctx);
++            return SExpr::List {
++                values: lowered,
++                span: *span,
++            };
++        }
++        return expr.clone();
++    }
++
++    let mut lowered = Vec::with_capacity(values.len());
++    lowered.push(values[0].clone());
++    for member in values.iter().skip(1) {
++        match member {
++            SExpr::Atom(_) if member.as_atom() == Some("_") => {
++                lowered.push(list(vec![
++                    atom("_"),
++                    SExpr::completion_value_atom(ctx.next_completion_value_id(), member.span()),
++                ]));
++            }
++            SExpr::List {
++                values: parts,
++                span: part_span,
++            } if !parts.is_empty() => {
++                if parts.first().and_then(SExpr::as_atom) == Some("spread") && parts.len() >= 2 {
++                    let mut mapped = parts.clone();
++                    mapped[1] = lower_legacy_catch_binding(&parts[1], ctx);
++                    lowered.push(SExpr::List {
++                        values: mapped,
++                        span: *part_span,
++                    });
++                } else {
++                    let mut mapped = parts.clone();
++                    if let Some(value) = mapped.get_mut(1) {
++                        *value = lower_legacy_catch_binding(value, ctx);
++                    }
++                    lowered.push(SExpr::List {
++                        values: mapped,
++                        span: *part_span,
++                    });
++                }
++            }
++            _ => lowered.push(member.clone()),
++        }
++    }
++    SExpr::List {
++        values: lowered,
++        span: *span,
+     }
+ }
+ 
+@@ -2896,6 +3082,19 @@ fn lower_discard_binding_pattern(expr: &SExpr, ctx: &mut EmitterContext) -> SExp
+         SExpr::Atom(_) if expr.as_atom() == Some("_") => {
+             SExpr::completion_value_atom(ctx.next_completion_value_id(), expr.span())
+         }
++        SExpr::List { values, span }
++            if matches!(
++                values.first().and_then(SExpr::as_atom),
++                Some("default" | "rest" | "spread")
++            ) && values.len() >= 2 =>
++        {
++            let mut lowered = values.clone();
++            lowered[1] = lower_discard_binding_pattern(&values[1], ctx);
++            SExpr::List {
++                values: lowered,
++                span: *span,
++            }
++        }
+         SExpr::List { values, span }
+             if values.first().and_then(SExpr::as_atom) == Some("object") =>
+         {
+@@ -3798,6 +3997,15 @@ fn emit_func(
+     ctx: &mut EmitterContext,
+     registry: &TypeRegistry,
+ ) -> Vec<SExpr> {
++    if let Some(parameter_span) =
++        crate::classifier::forms::multi_clause_simple_default_rest(clauses)
++    {
++        ctx.record_fatal(codegen_error(
++            "multi-clause func does not support top-level default or rest parameters",
++            parameter_span,
++        ));
++        return Vec::new();
++    }
+     if clauses.len() == 1 {
+         vec![emit_func_single(name, &clauses[0], span, ctx, registry)]
+     } else {
+@@ -5311,6 +5519,11 @@ fn emit_class_member_form(
+         } => {
+             let mut member_items: Vec<SExpr> =
+                 prefix.iter().map(|e| emit_expr(e, ctx, registry)).collect();
++            if let Some(SExpr::List { values: params, .. }) = member_items.last_mut() {
++                for parameter in params {
++                    *parameter = lower_discard_binding_pattern(parameter, ctx);
++                }
++            }
+ 
+             let saved = ctx.in_class_body;
+             let saved_direct_region = ctx.direct_return_region;
+diff --git a/crates/lykn-lang/src/lexical_regions.rs b/crates/lykn-lang/src/lexical_regions.rs
+index 447c4482..0796ac16 100644
+--- a/crates/lykn-lang/src/lexical_regions.rs
++++ b/crates/lykn-lang/src/lexical_regions.rs
+@@ -354,6 +354,13 @@ fn collect_default_paths(node: &SExpr, path: &[usize], typed: bool, out: &mut Ve
+                 collect_default_paths(&values[1], &nested, typed, out);
+             }
+         }
++        Some("rest") | Some("spread") if !typed => {
++            if let Some(nested) = values.get(1) {
++                let mut nested_path = path.to_vec();
++                nested_path.push(1);
++                collect_default_paths(nested, &nested_path, typed, out);
++            }
++        }
+         Some("rest") => {
+             let nested_index = if typed { 2 } else { 1 };
+             if let Some(nested) = values.get(nested_index) {
+@@ -373,6 +380,9 @@ fn collect_default_paths(node: &SExpr, path: &[usize], typed: bool, out: &mut Ve
+                     Some("default" | "rest" | "array" | "object") => {
+                         collect_default_paths(member, &member_path, typed, out)
+                     }
++                    Some("spread") if !typed => {
++                        collect_default_paths(member, &member_path, typed, out)
++                    }
+                     Some("alias") => {
+                         let nested_index = if typed { 3 } else { 2 };
+                         if let Some(nested) = parts.get(nested_index) {
+@@ -524,3 +534,27 @@ pub(crate) fn at_path<'a>(root: &'a SExpr, path: &OccurrencePath) -> Option<&'a
+         _ => None,
+     })
+ }
++
++#[cfg(test)]
++mod tests {
++    use super::*;
++    use crate::reader;
++
++    #[test]
++    fn untyped_spread_defaults_retain_nested_value_paths() {
++        let forms = reader::read(
++            "(kernel:=> ((spread (object (default value (lookup)) (default nested (other))))) value)",
++        )
++        .expect("spread parameter parses");
++        let regions = function_regions(&forms[0]).expect("kernel arrow regions");
++        let clause = &regions.clauses[0];
++        assert_eq!(clause.default_paths.len(), 2);
++        let values = clause
++            .default_paths
++            .iter()
++            .filter_map(|path| at_path(&forms[0], path))
++            .map(ToString::to_string)
++            .collect::<Vec<_>>();
++        assert_eq!(values, ["(lookup)", "(other)"]);
++    }
++}
+diff --git a/crates/lykn-lang/tests/remaining_discard_bindings.rs b/crates/lykn-lang/tests/remaining_discard_bindings.rs
+new file mode 100644
+index 00000000..3f5eab6f
+--- /dev/null
++++ b/crates/lykn-lang/tests/remaining_discard_bindings.rs
+@@ -0,0 +1,820 @@
++use std::process::Command;
++
++use lykn_lang::{analysis, classifier, codegen, emitter, reader, resolver};
++
++fn compile(source: &str) -> String {
++    let forms = reader::read(source).expect("fixture reads");
++    let resolved = resolver::resolve(&forms);
++    let classified = classifier::classify(&resolved).expect("fixture classifies");
++    let unit = analysis::analyze(classified).expect("fixture analyzes");
++    let kernel = emitter::emit(&unit, false).expect("fixture emits");
++    codegen::emit_module_js(&kernel).expect("fixture generates JavaScript")
++}
++
++fn compile_through_json(source: &str) -> String {
++    let forms = reader::read(source).expect("fixture reads");
++    let resolved = resolver::resolve(&forms);
++    let classified = classifier::classify(&resolved).expect("fixture classifies");
++    let unit = analysis::analyze(classified).expect("fixture analyzes");
++    let json = emitter::emit_json(&unit, false).expect("whole-unit JSON emission succeeds");
++    let values: Vec<serde_json::Value> = serde_json::from_str(&json).expect("JSON parses");
++    let kernel = values
++        .iter()
++        .map(lykn_lang::expander::env::protocol_json_to_sexpr)
++        .collect::<Result<Vec<_>, _>>()
++        .expect("emitted JSON reads back");
++    codegen::emit_module_js(&kernel).expect("round-tripped JavaScript generates")
++}
++
++fn run(js: &str, prelude: &str, suffix: &str) -> std::process::Output {
++    let script = format!("{prelude}\n{js}\n{suffix}");
++    Command::new("deno")
++        .arg("eval")
++        .arg("--config")
++        .arg("project.json")
++        .arg("--ext=js")
++        .arg(script)
++        .current_dir(env!("CARGO_MANIFEST_DIR").to_string() + "/../..")
++        .output()
++        .expect("Deno is required for discard runtime evidence")
++}
++
++fn stdout(output: &std::process::Output) -> String {
++    String::from_utf8(output.stdout.clone()).expect("Deno stdout is UTF-8")
++}
++
++#[test]
++fn raw_arrow_discards_leave_foreign_underscore_visible() {
++    let source = "(bind pick (kernel:=> (_ _) _)) (console:log (pick 7 8))";
++    let js = compile(source);
++    let output = run(&js, "globalThis._ = 99;", "");
++    eprintln!(
++        "RAW_ARROW_DISCARD source={source:?} generated={js:?} exit={:?} stdout={:?} stderr={:?}",
++        output.status.code(),
++        String::from_utf8_lossy(&output.stdout),
++        String::from_utf8_lossy(&output.stderr)
++    );
++    assert!(
++        output.status.success(),
++        "{}",
++        String::from_utf8_lossy(&output.stderr)
++    );
++    assert_eq!(stdout(&output), "99\n");
++    assert!(
++        output.stderr.is_empty(),
++        "{}",
++        String::from_utf8_lossy(&output.stderr)
++    );
++}
++
++#[test]
++fn named_raw_function_keeps_its_name_and_discards_each_parameter() {
++    let source = "(kernel:function choose (_ _) (return _)) (console:log (choose 7 8))";
++    let js = compile(source);
++    let output = run(&js, "globalThis._ = 99;", "");
++    eprintln!(
++        "RAW_NAMED_FUNCTION source={source:?} generated={js:?} exit={:?} stdout={:?} stderr={:?}",
++        output.status.code(),
++        String::from_utf8_lossy(&output.stdout),
++        String::from_utf8_lossy(&output.stderr)
++    );
++    assert!(
++        output.status.success(),
++        "{}",
++        String::from_utf8_lossy(&output.stderr)
++    );
++    assert_eq!(stdout(&output), "99\n");
++    assert!(output.stderr.is_empty());
++}
++
++#[test]
++fn raw_lambda_generator_async_generator_and_callable_property_roles_work() {
++    let source = r#"
++        (bind lambda_value (lambda (:any _) _))
++        (kernel:function* named_generator (_) (yield _))
++        (bind anonymous_generator (kernel:function* (_) (yield _)))
++        (bind async_generator (async (kernel:function* (_) (yield _))))
++        (bind callable_object (object (invoke (kernel:=> (_) _))))
++        (console:log (lambda_value 1) _value)
++        (kernel:for-of _ (named_generator 2) (console:log _))
++        (kernel:for-of _ (anonymous_generator 3) (console:log _))
++        (async (kernel:function consume ()
++          (kernel:for-await-of _ (async_generator 4) (console:log _))))
++        (await (consume))
++        (console:log (callable_object:invoke 5))
++    "#;
++    let js = compile(source);
++    let output = run(&js, "globalThis._ = 99; globalThis._value = 7;", "");
++    eprintln!(
++        "RAW_CALLABLE_FAMILIES source={source:?} generated={js:?} exit={:?} stdout={:?} stderr={:?}",
++        output.status.code(),
++        String::from_utf8_lossy(&output.stdout),
++        String::from_utf8_lossy(&output.stderr)
++    );
++    assert!(
++        output.status.success(),
++        "{}",
++        String::from_utf8_lossy(&output.stderr)
++    );
++    assert_eq!(stdout(&output), "99 7\n99\n99\n99\n99\n");
++    assert!(output.stderr.is_empty());
++}
++
++#[test]
++fn kernel_lambda_remains_outside_the_admitted_escape_namespace() {
++    for (source, form) in [
++        ("(kernel:lambda (_) _)", "lambda"),
++        ("(kernel:class Example () )", "class"),
++        ("(kernel:class-expr () )", "class-expr"),
++    ] {
++        let forms = reader::read(source).expect("negative fixture reads");
++        let resolved = resolver::resolve(&forms);
++        let error = classifier::classify(&resolved).expect_err("kernel form stays unknown");
++        assert!(
++            error.iter().any(|diagnostic| diagnostic
++                .message
++                .contains(&format!("unknown kernel form '{form}'"))),
++            "{source}: {error:?}"
++        );
++    }
++}
++
++#[test]
++fn raw_codegen_lambda_keeps_supplied_underscore_literal() {
++    let source = "(const pick (lambda (_) (return _))) (console:log (pick 7))";
++    let forms = reader::read(source).expect("raw lambda fixture reads");
++    let js = codegen::emit_module_js(&forms).expect("raw lambda codegen emits");
++    assert!(js.contains("function(_)"));
++    assert!(js.contains("return _"));
++    let output = run(&js, "globalThis._ = 99;", "");
++    eprintln!(
++        "RAW_CODEGEN_LAMBDA source={source:?} generated={js:?} exit={:?} stdout={:?} stderr={:?}",
++        output.status.code(),
++        String::from_utf8_lossy(&output.stdout),
++        String::from_utf8_lossy(&output.stderr)
++    );
++    assert!(
++        output.status.success(),
++        "{}",
++        String::from_utf8_lossy(&output.stderr)
++    );
++    assert_eq!(stdout(&output), "7\n");
++    assert!(output.stderr.is_empty());
++}
++
++#[test]
++fn raw_codegen_class_setter_keeps_supplied_underscore_parameter_literal() {
++    let source =
++        "(class RawExample () (set value (_) (console:log _))) (const instance (new RawExample))";
++    let forms = reader::read(source).expect("raw class fixture reads");
++    let js = codegen::emit_module_js(&forms).expect("raw class codegen emits");
++    assert!(js.contains("set value(_)") && !js.contains("completionValue__gensym"));
++    let output = run(&js, "", "instance.value = 7;");
++    eprintln!(
++        "RAW_CODEGEN_CLASS source={source:?} generated={js:?} exit={:?} stdout={:?} stderr={:?}",
++        output.status.code(),
++        String::from_utf8_lossy(&output.stdout),
++        String::from_utf8_lossy(&output.stderr)
++    );
++    assert!(
++        output.status.success(),
++        "{}",
++        String::from_utf8_lossy(&output.stderr)
++    );
++    assert_eq!(stdout(&output), "7\n");
++    assert!(output.stderr.is_empty());
++}
++
++#[test]
++fn single_clause_simple_default_remains_supported() {
++    let source = "(func choose :args ((default :any value 7)) :body value) (console:log (choose))";
++    let js = compile(source);
++    let output = run(&js, "", "");
++    eprintln!(
++        "SINGLE_DEFAULT source={source:?} generated={js:?} exit={:?} stdout={:?} stderr={:?}",
++        output.status.code(),
++        String::from_utf8_lossy(&output.stdout),
++        String::from_utf8_lossy(&output.stderr)
++    );
++    assert!(
++        output.status.success(),
++        "{}",
++        String::from_utf8_lossy(&output.stderr)
++    );
++    assert_eq!(stdout(&output), "7\n");
++    assert!(output.stderr.is_empty());
++}
++
++#[test]
++fn raw_declarations_and_iteration_bindings_preserve_effects_and_foreign_values() {
++    let source = "(kernel:const _ (bump \"const\")) (kernel:let _ (bump \"let\")) (kernel:var _ (bump \"var\")) (kernel:for (kernel:let _ (bump \"for\")) true () (break)) (kernel:for-in _ record (console:log _)) (kernel:for-of _ values (console:log _)) (async (kernel:function consume () (kernel:for-await-of _ asyncValues (console:log _)))) (await (consume)) (console:log _ ) (console:log (events:join \",\"))";
++    let js = compile(source);
++    let output = run(
++        &js,
++        "globalThis._ = 99; globalThis.events = []; globalThis.bump = value => { events.push(value); return value; }; globalThis.record = {a: 1, b: 2}; globalThis.values = [1, 2]; globalThis.asyncValues = { [Symbol.asyncIterator]() { let index = 0; return { async next() { return index < 2 ? {value: ++index, done: false} : {done: true}; } }; } };",
++        "",
++    );
++    eprintln!(
++        "RAW_DECL_LOOP source={source:?} generated={js:?} exit={:?} stdout={:?} stderr={:?}",
++        output.status.code(),
++        String::from_utf8_lossy(&output.stdout),
++        String::from_utf8_lossy(&output.stderr)
++    );
++    assert!(
++        output.status.success(),
++        "{}",
++        String::from_utf8_lossy(&output.stderr)
++    );
++    assert_eq!(
++        stdout(&output),
++        "99\n99\n99\n99\n99\n99\n99\nconst,let,var,for\n"
++    );
++    assert!(output.stderr.is_empty());
++}
++
++#[test]
++fn raw_nested_iteration_patterns_skip_iterator_values_and_keep_iterator_close() {
++    let source = r#"
++        (kernel:for-of
++          (array _ (object (alias :value nested)))
++          rows
++          (console:log _ nested))
++        (kernel:for-of
++          (array _value (object (alias :value nested)))
++          namedRows
++          (console:log _value nested))
++        (kernel:for-of _ closable (console:log _) (break))
++        (console:log holeReads namedReads nextReads returnReads)
++    "#;
++    let js = compile(source);
++    let output = run(
++        &js,
++        "globalThis._ = 99; globalThis.holeReads = 0; globalThis.namedReads = 0; globalThis.nextReads = 0; globalThis.returnReads = 0; globalThis.makeRow = (first, nested, count) => { let step = 0; return {[Symbol.iterator]() { return {next() { if (step === 0) { step++; return {done: false, get value() { count(); return first; }}; } if (step === 1) { step++; return {value: {value: nested}, done: false}; } return {done: true}; }}; }}; }; globalThis.rows = [makeRow(8, 1, () => holeReads++), makeRow(9, 2, () => holeReads++)]; globalThis.namedRows = [makeRow(8, 1, () => namedReads++), makeRow(9, 2, () => namedReads++)]; globalThis.closable = {[Symbol.iterator]() { return {next() { nextReads++; return {value: 1, done: false}; }, return() { returnReads++; return {done: true}; }}; }};",
++        "",
++    );
++    eprintln!(
++        "RAW_NESTED_ITERATION source={source:?} generated={js:?} exit={:?} stdout={:?} stderr={:?}",
++        output.status.code(),
++        String::from_utf8_lossy(&output.stdout),
++        String::from_utf8_lossy(&output.stderr)
++    );
++    assert!(
++        output.status.success(),
++        "{}",
++        String::from_utf8_lossy(&output.stderr)
++    );
++    assert_eq!(stdout(&output), "99 1\n99 2\n8 1\n9 2\n99\n0 2 1 1\n");
++    assert!(output.stderr.is_empty());
++}
++
++#[test]
++fn class_parameter_roles_and_legacy_catch_keep_values_and_keys() {
++    let source = "(class Example () (constructor (_) (bind result _)) (read (_) (return _)) (static (read-static (_) (return _))) (async (read-async (_) (return (await (Promise:resolve _))))) (field _ 7)) (bind instance (new Example 1)) (console:log (instance:read 2)) (console:log (Example:read-static 3)) (console:log (await (instance:read-async 4))) (console:log instance:_) (try (throw 7) (catch _ (console:log _))) (try (throw (array 7 8)) (catch (array _ other) (console:log _ other))) (try (throw (object (_ 1))) (catch (object _) (console:log _)))";
++    let js = compile(source);
++    let output = run(&js, "globalThis._ = 99;", "");
++    eprintln!(
++        "CLASS_CATCH source={source:?} generated={js:?} exit={:?} stdout={:?} stderr={:?}",
++        output.status.code(),
++        String::from_utf8_lossy(&output.stdout),
++        String::from_utf8_lossy(&output.stderr)
++    );
++    assert!(
++        output.status.success(),
++        "{}",
++        String::from_utf8_lossy(&output.stderr)
++    );
++    assert_eq!(stdout(&output), "99\n99\n99\n7\n99\n99 8\n99\n");
++    assert!(output.stderr.is_empty());
++}
++
++#[test]
++fn class_get_set_and_class_expression_prepare_only_parameter_slots() {
++    let source = r#"
++        (class SurfaceExample ()
++          (get fixed () (return 7))
++          (set value (_) (console:log _)))
++        (bind surface (new SurfaceExample))
++        (class KernelExample ()
++          (constructor (_) (console:log _))
++          (set value (_) (console:log _)))
++        (bind kernel_instance (new KernelExample 1))
++        (bind ExpressionExample
++          (class-expr ()
++            (constructor (_) (console:log _))
++            (set value (_) (console:log _))))
++        (bind expression_instance (new ExpressionExample 2))
++        (console:log surface:fixed)
++    "#;
++    let js = compile(source);
++    let output = run(
++        &js,
++        "globalThis._ = 99;",
++        "surface.value = 3; kernel_instance.value = 4; expression_instance.value = 5;",
++    );
++    eprintln!(
++        "CLASS_PARAMETER_ROUTES source={source:?} generated={js:?} exit={:?} stdout={:?} stderr={:?}",
++        output.status.code(),
++        String::from_utf8_lossy(&output.stdout),
++        String::from_utf8_lossy(&output.stderr)
++    );
++    assert!(
++        output.status.success(),
++        "{}",
++        String::from_utf8_lossy(&output.stderr)
++    );
++    assert_eq!(stdout(&output), "99\n99\n7\n99\n99\n99\n");
++    assert!(output.stderr.is_empty());
++}
++
++#[test]
++fn catch_expression_patterns_preserve_pair_computed_and_direct_return_roles() {
++    let source = r#"
++        (try
++          (throw defaultInput)
++          (catch (array
++            (default (object (alias :value _)) (bumpObject))
++            (rest _))
++            (console:log _ defaultCalls getterReads)))
++        (try
++          (throw record)
++          (catch (object (default _) (entry (default _ (bump))) ((computed key) _))
++            (console:log _ reads defaultCalls)))
++        (func catch_in_function :args () :body
++          (try
++            (throw 7)
++            (catch _ (console:log "ignored"))
++            (catch _ (console:log _))
++            (finally (console:log "finally"))))
++        (catch_in_function)
++    "#;
++    let js = compile(source);
++    let output = run(
++        &js,
++        "globalThis._ = 99; globalThis.reads = 0; globalThis.defaultCalls = 0; globalThis.getterReads = 0; globalThis.bump = () => { defaultCalls++; return 8; }; globalThis.bumpObject = () => { defaultCalls++; return Object.defineProperty({}, 'value', {get() { getterReads++; return 7; }}); }; globalThis.defaultInput = [undefined, 2, 3]; globalThis.key = 'computed'; globalThis.record = {get default() { reads++; return 1; }, get entry() { reads++; return undefined; }, get computed() { reads++; return 3; }};",
++        "",
++    );
++    eprintln!(
++        "CATCH_PATTERN_ROLES source={source:?} generated={js:?} exit={:?} stdout={:?} stderr={:?}",
++        output.status.code(),
++        String::from_utf8_lossy(&output.stdout),
++        String::from_utf8_lossy(&output.stderr)
++    );
++    assert!(
++        output.status.success(),
++        "{}",
++        String::from_utf8_lossy(&output.stderr)
++    );
++    assert_eq!(stdout(&output), "99 1 1\n99 3 2\n99\nfinally\n");
++    assert!(output.stderr.is_empty());
++}
++
++#[test]
++fn raw_default_rest_spread_and_async_parameter_roles_stay_lazy_and_private() {
++    let source = "(bind defaulted (kernel:=> ((default _ (bump))) _)) (bind rested (kernel:=> ((rest _)) _)) (bind spreaded (kernel:=> ((spread _)) _)) (bind asynced (async (kernel:=> (_) (await (Promise:resolve _))))) (console:log (defaulted 7)) (console:log (defaulted)) (console:log (rested 1 2)) (console:log (spreaded 3 4)) (console:log (await (asynced 5))) (console:log defaultCalls) (console:log defaulted:length) (console:log rested:length) (console:log spreaded:length)";
++    let js = compile(source);
++    let output = run(
++        &js,
++        "globalThis._ = 99; globalThis.defaultCalls = 0; globalThis.bump = () => { defaultCalls++; return _; };",
++        "",
++    );
++    eprintln!(
++        "RAW_PARAMETER_FAMILIES source={source:?} generated={js:?} exit={:?} stdout={:?} stderr={:?}",
++        output.status.code(),
++        String::from_utf8_lossy(&output.stdout),
++        String::from_utf8_lossy(&output.stderr)
++    );
++    assert!(
++        output.status.success(),
++        "{}",
++        String::from_utf8_lossy(&output.stderr)
++    );
++    assert_eq!(stdout(&output), "99\n99\n99\n99\n99\n1\n0\n0\n0\n");
++    assert!(output.stderr.is_empty());
++}
++
++#[test]
++fn raw_spread_pattern_default_and_body_names_resolve_in_their_real_roles() {
++    let source = r#"
++        (kernel:function invoke
++          ((spread (array (default callback (fallback)))))
++          (return (callback)))
++        (kernel:function fallback () (return (kernel:=> () 7)))
++        (console:log (invoke))
++    "#;
++    let js = compile(source);
++    let output = run(&js, "", "");
++    eprintln!(
++        "RAW_SPREAD_PROJECTION source={source:?} generated={js:?} exit={:?} stdout={:?} stderr={:?}",
++        output.status.code(),
++        String::from_utf8_lossy(&output.stdout),
++        String::from_utf8_lossy(&output.stderr)
++    );
++    assert!(
++        output.status.success(),
++        "{}",
++        String::from_utf8_lossy(&output.stderr)
++    );
++    assert_eq!(stdout(&output), "7\n");
++    assert!(output.stderr.is_empty());
++}
++
++#[test]
++fn grouped_discard_patterns_are_structural_and_keep_writer_operations() {
++    let source = r#"
++        (bind
++          (array _ _) inputs
++          (object (alias :value _) (spread _)) record
++          (array (default _ (bump))) arrayDefault
++          (object (default _ (bump))) objectDefault
++          (array) emptyArray
++          (object) emptyObject)
++        (console:log _ defaultCalls)
++    "#;
++    let js = compile(source);
++    let output = run(
++        &js,
++        "globalThis._ = 99; globalThis.inputs = [1, 2]; globalThis.record = {value: 3, extra: 4}; globalThis.defaultCalls = 0; globalThis.bump = () => { defaultCalls++; return 7; }; globalThis.arrayDefault = []; globalThis.objectDefault = {}; globalThis.emptyArray = []; globalThis.emptyObject = {};",
++        "",
++    );
++    eprintln!(
++        "GROUPED_DISCARD source={source:?} generated={js:?} exit={:?} stdout={:?} stderr={:?}",
++        output.status.code(),
++        String::from_utf8_lossy(&output.stdout),
++        String::from_utf8_lossy(&output.stderr)
++    );
++    assert!(
++        output.status.success(),
++        "{}",
++        String::from_utf8_lossy(&output.stderr)
++    );
++    assert_eq!(stdout(&output), "99 2\n");
++    assert!(output.stderr.is_empty());
++
++    for source in [
++        "(bind (array (rest _) _) [] named 1)",
++        "(bind (object (spread _) (alias :value _)) {} named 1)",
++        "(bind (call) 1 named 2)",
++        "(bind (array (default _)) [] named 1)",
++        "(bind (object (alias :value _ 1 2)) {} named 1)",
++        "(bind (object (rest (array _))) {} named 1)",
++        "(bind (array (rest (default _ 1))) [] named 1)",
++        "(bind (object (default (array _) 7)) {} named 1)",
++    ] {
++        let forms = reader::read(source).expect("invalid group fixture reads");
++        let resolved = resolver::resolve(&forms);
++        let error = classifier::classify(&resolved).expect_err("malformed zero-name group rejects");
++        assert!(
++            error
++                .iter()
++                .any(|diagnostic| diagnostic.message.contains("bind group name must be")),
++            "{source}: {error:?}"
++        );
++    }
++}
++
++#[test]
++fn grouped_member_expression_alias_keys_are_rejected_before_codegen() {
++    let mut accepted = Vec::new();
++    for source in [
++        "(bind (object (alias owner:key _)) record (array _ _) sequence)",
++        "(bind (object (alias owner.key _)) record (array _ _) sequence)",
++    ] {
++        let forms = reader::read(source).expect("grouped member-key fixture reads");
++        let resolved = resolver::resolve(&forms);
++        let result = classifier::classify(&resolved);
++        if result.is_ok() {
++            accepted.push(format!("{source}: {result:?}"));
++            continue;
++        }
++        let diagnostics = result.expect_err("grouped member expression is not a static key");
++        assert!(
++            diagnostics
++                .iter()
++                .any(|diagnostic| diagnostic.message.contains("bind group name must be")),
++            "{source}: {diagnostics:?}"
++        );
++    }
++    assert!(
++        accepted.is_empty(),
++        "unexpectedly admitted member keys: {accepted:#?}"
++    );
++}
++
++#[test]
++fn grouped_discard_static_alias_keys_are_normalized_literal_data() {
++    use lykn_lang::ast::sexpr::SExpr;
++    use lykn_lang::ast::surface::SurfaceForm;
++
++    let source = r#"
++        (bind
++          (object
++            (alias | _)
++            (alias some-name _)
++            (alias :keyword-name _)
++            (alias "some-name" _)
++            (alias café-name _)
++            (alias absent-name (default _ (bump))))
++          record
++          (array _ _) sequence)
++        (console:log _ reads defaultCalls)
++    "#;
++    let parsed = reader::read(source).expect("static-key fixture reads");
++    let resolved = resolver::resolve(&parsed);
++    let original_members = resolved[0].as_list().expect("bind form is a list")[1]
++        .as_list()
++        .expect("original object pattern is a list");
++    let classified = classifier::classify(&resolved).expect("static keys classify");
++    let SurfaceForm::BindGroup { bindings, .. } = &classified[0] else {
++        panic!("expected grouped bind, got {:?}", classified[0]);
++    };
++    let normalized_members = bindings[0]
++        .name
++        .as_list()
++        .expect("classified object pattern is a list");
++    let expected = [
++        "|",
++        "someName",
++        "keywordName",
++        "some-name",
++        "caféName",
++        "absentName",
++    ];
++    for (index, expected_key) in expected.iter().enumerate() {
++        let original_alias = original_members[index + 1]
++            .as_list()
++            .expect("original alias is a list");
++        let normalized_alias = normalized_members[index + 1]
++            .as_list()
++            .expect("normalized alias is a list");
++        match &normalized_alias[1] {
++            SExpr::String { value, span } => {
++                assert_eq!(value, expected_key);
++                assert_eq!(*span, original_alias[1].span());
++            }
++            other => panic!("expected normalized String key, got {other:?}"),
++        }
++    }
++    let original_default_alias = original_members[6]
++        .as_list()
++        .expect("original default alias is a list");
++    let normalized_default_alias = normalized_members[6]
++        .as_list()
++        .expect("normalized default alias is a list");
++    assert_eq!(normalized_default_alias[2], original_default_alias[2]);
++    let default = normalized_default_alias[2]
++        .as_list()
++        .expect("default target is a list");
++    assert_eq!(default[2].as_list().unwrap()[0].as_atom(), Some("bump"));
++
++    let js = compile_through_json(source);
++    let output = run(
++        &js,
++        "globalThis._ = 99; globalThis.reads = 0; globalThis.defaultCalls = 0; globalThis.record = {get [\"|\"]() { reads++; return 1; }, get someName() { reads++; return 2; }, get keywordName() { reads++; return 3; }, get [\"some-name\"]() { reads++; return 4; }, get caféName() { reads++; return 5; }, get absentName() { reads++; return undefined; }}; globalThis.bump = () => { defaultCalls++; return 8; }; globalThis.sequence = [1, 2];",
++        "",
++    );
++    eprintln!(
++        "GROUPED_STATIC_ALIAS_JSON source={source:?} generated={js:?} exit={:?} stdout={:?} stderr={:?}",
++        output.status.code(),
++        String::from_utf8_lossy(&output.stdout),
++        String::from_utf8_lossy(&output.stderr)
++    );
++    assert!(
++        output.status.success(),
++        "{}",
++        String::from_utf8_lossy(&output.stderr)
++    );
++    assert_eq!(stdout(&output), "99 6 1\n");
++    assert!(output.stderr.is_empty());
++}
++
++#[test]
++fn named_group_alias_atom_keeps_its_original_representation() {
++    use lykn_lang::ast::sexpr::SExpr;
++    use lykn_lang::ast::surface::SurfaceForm;
++
++    let source = "(bind (object (alias some-name existing)) record (array _ _) sequence) (console:log existing _)";
++    let forms = reader::read(source).expect("named alias fixture reads");
++    let resolved = resolver::resolve(&forms);
++    let classified = classifier::classify(&resolved).expect("named alias remains admitted");
++    let SurfaceForm::BindGroup { bindings, .. } = &classified[0] else {
++        panic!("expected grouped bind, got {:?}", classified[0]);
++    };
++    let pattern = bindings[0]
++        .name
++        .as_list()
++        .expect("named object pattern is a list");
++    let alias = pattern[1].as_list().expect("named alias is a list");
++    assert!(matches!(&alias[1], SExpr::Atom(_) if alias[1].as_atom() == Some("some-name")));
++
++    let js = compile(source);
++    let output = run(
++        &js,
++        "globalThis._ = 99; globalThis.record = {someName: 7}; globalThis.sequence = [1, 2];",
++        "",
++    );
++    eprintln!(
++        "NAMED_GROUP_ALIAS source={source:?} generated={js:?} exit={:?} stdout={:?} stderr={:?}",
++        output.status.code(),
++        String::from_utf8_lossy(&output.stdout),
++        String::from_utf8_lossy(&output.stderr)
++    );
++    assert!(
++        output.status.success(),
++        "{}",
++        String::from_utf8_lossy(&output.stderr)
++    );
++    assert_eq!(stdout(&output), "7 99\n");
++    assert!(output.stderr.is_empty());
++}
++
++#[test]
++fn grouped_numeric_alias_key_emits_a_valid_javascript_property() {
++    let source = "(bind (object (alias -1 _)) record (array _ _) sequence) (console:log _ reads)";
++    let js = compile(source);
++    let output = run(
++        &js,
++        "globalThis._ = 99; globalThis.reads = 0; globalThis.record = {get [-1]() { reads++; return 7; }}; globalThis.sequence = [1, 2];",
++        "",
++    );
++    eprintln!(
++        "GROUPED_NUMERIC_ALIAS source={source:?} generated={js:?} exit={:?} stdout={:?} stderr={:?}",
++        output.status.code(),
++        String::from_utf8_lossy(&output.stdout),
++        String::from_utf8_lossy(&output.stderr)
++    );
++    assert!(
++        output.status.success(),
++        "{}",
++        String::from_utf8_lossy(&output.stderr)
++    );
++    assert_eq!(stdout(&output), "99 1\n");
++    assert!(output.stderr.is_empty());
++}
++
++#[test]
++fn whole_unit_json_round_trip_keeps_finalized_grouped_discards() {
++    let source = "(bind (object (alias -1 _) (alias :value _)) record (array _ _) sequence) (console:log _ reads)";
++    let js = compile_through_json(source);
++    let output = run(
++        &js,
++        "globalThis._ = 99; globalThis.reads = 0; globalThis.record = {get [-1]() { reads++; return 7; }, get value() { reads++; return 8; }}; globalThis.sequence = [1, 2];",
++        "",
++    );
++    eprintln!(
++        "WHOLE_JSON_GROUPED_DISCARD source={source:?} generated={js:?} exit={:?} stdout={:?} stderr={:?}",
++        output.status.code(),
++        String::from_utf8_lossy(&output.stdout),
++        String::from_utf8_lossy(&output.stderr)
++    );
++    assert!(
++        output.status.success(),
++        "{}",
++        String::from_utf8_lossy(&output.stderr)
++    );
++    assert_eq!(stdout(&output), "99 2\n");
++    assert!(output.stderr.is_empty());
++}
++
++#[test]
++fn grouped_negative_zero_alias_uses_existing_zero_property() {
++    let source = "(bind (object (alias -0 _)) record (array _ _) sequence) (console:log _ reads)";
++    let js = compile(source);
++    let output = run(
++        &js,
++        "globalThis._ = 99; globalThis.reads = 0; globalThis.record = {get 0() { reads++; return 7; }}; globalThis.sequence = [1, 2];",
++        "",
++    );
++    eprintln!(
++        "GROUPED_NEGATIVE_ZERO source={source:?} generated={js:?} exit={:?} stdout={:?} stderr={:?}",
++        output.status.code(),
++        String::from_utf8_lossy(&output.stdout),
++        String::from_utf8_lossy(&output.stderr)
++    );
++    assert!(
++        output.status.success(),
++        "{}",
++        String::from_utf8_lossy(&output.stderr)
++    );
++    assert_eq!(stdout(&output), "99 1\n");
++    assert!(output.stderr.is_empty());
++}
++
++#[test]
++fn grouped_boolean_null_and_existing_literal_alias_keys_are_valid() {
++    let source = "(bind (object (alias owner _) (alias true _) (alias false _) (alias null _) (alias 0 _) (alias :word _) (alias \"text\" _) (alias \"owner:key\" _) (alias \"owner.key\" _)) record (array _ _) sequence) (console:log _ reads)";
++    let js = compile(source);
++    let output = run(
++        &js,
++        "globalThis._ = 99; globalThis.reads = 0; globalThis.record = {get owner() { reads++; return 1; }, get true() { reads++; return 2; }, get false() { reads++; return 3; }, get null() { reads++; return 4; }, get 0() { reads++; return 5; }, get word() { reads++; return 6; }, get text() { reads++; return 7; }, get [\"owner:key\"]() { reads++; return 8; }, get [\"owner.key\"]() { reads++; return 9; }}; globalThis.sequence = [1, 2];",
++        "",
++    );
++    eprintln!(
++        "GROUPED_LITERAL_ALIAS_KEYS source={source:?} generated={js:?} exit={:?} stdout={:?} stderr={:?}",
++        output.status.code(),
++        String::from_utf8_lossy(&output.stdout),
++        String::from_utf8_lossy(&output.stderr)
++    );
++    assert!(
++        output.status.success(),
++        "{}",
++        String::from_utf8_lossy(&output.stderr)
++    );
++    assert_eq!(stdout(&output), "99 9\n");
++    assert!(output.stderr.is_empty());
++}
++
++#[test]
++fn raw_codegen_negative_numeric_alias_patterns_keep_literal_underscore() {
++    for (source, prelude) in [
++        (
++            "(const (object (alias -1 _)) record) (console:log _)",
++            "globalThis.record = {get [-1]() { return 7; }};",
++        ),
++        (
++            "(const (object (alias -0 _)) record) (console:log _)",
++            "globalThis.record = {get 0() { return 7; }};",
++        ),
++    ] {
++        let forms = reader::read(source).expect("raw codegen fixture reads");
++        let js = codegen::emit_module_js(&forms).expect("raw codegen emits");
++        assert!(js.contains("_"));
++        assert!(!js.contains("completionValue__gensym"));
++        let output = run(&js, prelude, "");
++        eprintln!(
++            "RAW_CODEGEN_NUMERIC_ALIAS source={source:?} generated={js:?} exit={:?} stdout={:?} stderr={:?}",
++            output.status.code(),
++            String::from_utf8_lossy(&output.stdout),
++            String::from_utf8_lossy(&output.stderr)
++        );
++        assert!(
++            output.status.success(),
++            "{}",
++            String::from_utf8_lossy(&output.stderr)
++        );
++        assert_eq!(stdout(&output), "7\n");
++        assert!(output.stderr.is_empty());
++    }
++}
++
++#[test]
++fn multi_clause_simple_defaults_are_diagnosed_by_classification_and_direct_emit() {
++    use lykn_lang::ast::sexpr::SExpr;
++    use lykn_lang::ast::surface::{
++        FuncClause, ParamShape, SurfaceForm, TypeAnnotation, TypedParam,
++    };
++    use lykn_lang::reader::source_loc::Span;
++
++    const MESSAGE: &str = "multi-clause func does not support top-level default or rest parameters";
++    for source in [
++        "(func f (:args ((default :any value 7)) :body 1) (:args (:string other) :body 2))",
++        "(func f (:args ((rest :any values)) :body 1) (:args ((object :any other)) :body 2))",
++    ] {
++        let forms = reader::read(source).expect("multi-clause fixture reads");
++        let resolved = resolver::resolve(&forms);
++        let errors = classifier::classify(&resolved)
++            .expect_err("check rejects unsupported simple default or rest");
++        assert!(
++            errors.iter().any(|error| error.message == MESSAGE),
++            "{errors:?}"
++        );
++    }
++
++    let span = Span::default();
++    for (default_value, is_rest) in [
++        (Some(SExpr::Number { value: 7.0, span }), false),
++        (None, true),
++    ] {
++        let parameter = ParamShape::Simple(TypedParam {
++            type_ann: TypeAnnotation {
++                name: "any".to_string(),
++                span,
++            },
++            name: "value".to_string(),
++            name_span: span,
++            default_value,
++            is_rest,
++        });
++        let clause = FuncClause {
++            args: vec![parameter],
++            returns: None,
++            pre: None,
++            post: None,
++            body: vec![SExpr::Number { value: 1.0, span }],
++            span,
++        };
++        let form = SurfaceForm::Func {
++            name: "f".to_string(),
++            name_span: span,
++            clauses: vec![clause.clone(), clause],
++            span,
++        };
++        let mut context = emitter::context::EmitterContext::new(false);
++        let registry = analysis::type_registry::TypeRegistry::default();
++        let error = emitter::forms::emit_form(&form, &mut context, &registry)
++            .expect_err("direct AST emission rejects unsupported simple default or rest");
++        let lykn_lang::error::LyknError::Codegen(diagnostic) = error else {
++            panic!("expected existing codegen diagnostic");
++        };
++        assert_eq!(diagnostic.message, MESSAGE);
++    }
++}
+diff --git a/docs/guides/00-lykn-surface-forms.md b/docs/guides/00-lykn-surface-forms.md
+index 0d4f41ee..39fbb4ac 100644
+--- a/docs/guides/00-lykn-surface-forms.md
++++ b/docs/guides/00-lykn-surface-forms.md
+@@ -122,7 +122,10 @@ compile errors. Typed pairs are supported inside the group:
+   :string role (?? record:role "user"))
+ ```
+ 
+-The binding position may still use destructuring patterns for untyped pairs.
++The binding position may still use destructuring patterns for untyped pairs,
++including patterns that bind no names, such as an empty array/object pattern
++or a pattern made only of `_` discards. These patterns still evaluate the
++initializer and perform their normal destructuring work.
+ 
+ In an eligible ordinary named function, a simple-name `bind` initializer can
+ consume a result-producing `do`, `if`, or `match` without moving source
+@@ -1312,13 +1315,31 @@ Surface forms for explicit JS interop:
+ 
+ ### Kernel form passthrough
+ 
+-Any kernel form can be used directly in surface code. Surface macros only
+-transform recognized surface form heads; everything else passes through
+-to the kernel compiler unchanged.
++Strict Source has explicit entrances for kernel forms; raw kernel IR examples
++are not automatically Source syntax. Use the admitted `kernel:` escape for
++kernel-only declarations such as `const`, `let`, `var`, `function`, and
++`function*`. Surface arrows keep their Source spelling, while admitted
++passthrough forms such as `yield`, `yield*`, and `for-await-of` use their
++ordinary spellings. `class` and `class-expr` are native Source forms; their
++`kernel:` prefixes are not admitted escapes.
+ 
+ ---
+ 
+-## Kernel Functions
++## Raw kernel IR function reference
++
++The table below describes compiler-facing raw kernel IR for the direct
++`codegen::emit_module_js` writer. Its first-column examples are not all normal
++strict Source spellings. For the declaration rows, strict Source uses
++`(kernel:const ...)`, `(kernel:let ...)`, `(kernel:var ...)`,
++`(kernel:function ...)`, and `(kernel:function* ...)`. Surface arrows and
++admitted passthrough forms keep their actual spellings, such as `(=> ...)`,
++`(yield ...)`, `(yield* ...)`, and `(for-await-of ...)`. The raw lambda row is
++only a literal IR example: normal Source uses the typed
++`(lambda (:any name) body...)` form, while `kernel:lambda` is not admitted.
++Likewise, Source `(class ...)` and `(class-expr ...)` remain available, while
++`kernel:class` and `kernel:class-expr` are not admitted. The raw codegen writer
++keeps supplied `_` parameters and references literal; it does not add Source
++escapes or perform Source discard preparation.
+ 
+ | lykn | JS | Notes |
+ |---|---|---|
+@@ -1333,7 +1354,7 @@ to the kernel compiler unchanged.
+ | `(yield* other)` | `yield* other` | Delegate to iterable |
+ | `(for-await-of item stream (process item))` | `for await (const item of stream) { process(item); }` | Async iteration |
+ | `(async (function* gen () ...))` | `async function* gen() { ... }` | Async generator |
+-| `(assign this:x value)` | `this.x = value` | Class body only (DD-27) |
++| `(= this:x value)` | `this.x = value` | Raw assignment operator; Source class bodies use `(assign this:x value)` as shown below (DD-27) |
+ 
+ **Class bodies** (DD-27): Surface forms expand inside `class`
+ method and constructor bodies. `=` is equality, `bind` produces
+@@ -1386,10 +1407,23 @@ is `const`; reach it explicitly with `(kernel:const …)` when needed).
+ (bind (array _ _ third) arr)
+ ```
+ 
++In a binding pattern, `_` discards that binding value without creating a
++source name; `_value` remains an ordinary name. Array-pattern `_` is an
++elision, while object-pattern shorthand `_` still reads the property named
++`_` and discards its value. Defaults, rest/spread operations, and nested
++patterns keep their normal evaluation behavior. This meaning applies in native
++binding roles such as raw kernel declarations, loops, callable parameters and
++class method parameters. An underscore in an initializer, default expression,
++property key/value, assignment target, function name or schema field keeps
++that role's ordinary meaning.
++
+ ---
+ 
+ ## Classes (kernel forms)
+ 
++`class` and `class-expr` are native Source forms and raw IR forms; they are not
++admitted as `kernel:class` or `kernel:class-expr` escapes.
++
+ ```lykn
+ (class Dog (Animal)
+   (field -count 0)
+diff --git a/docs/guides/06-functions-closures.md b/docs/guides/06-functions-closures.md
+index 7b47d274..8198e253 100644
+--- a/docs/guides/06-functions-closures.md
++++ b/docs/guides/06-functions-closures.md
+@@ -1062,6 +1062,13 @@ checking `arguments.length` or `typeof` inside the function body. Each
+ clause has its own type annotations and contracts. The compiler
+ generates the dispatch logic.
+ 
++Multi-clause dispatch currently requires fixed simple-parameter arity: a
++top-level simple parameter cannot have a default or rest marker in a function
++with more than one clause. Put defaults/rest inside a destructured parameter
++when that pattern fits the API, or use a single-clause function for an ordinary
++default/rest parameter. Dispatch selection does not infer omitted-argument or
++variadic behavior.
++
+ ---
+ 
+ ---

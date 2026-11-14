@@ -1,5 +1,24 @@
 # S02 CC closeout: native binding discards
 
+## Root final acceptance metadata —2026-11-14
+
+The doer attestations and correction history below remain preserved. Separate
+Sol6.1 High [verification](cdc-verification.md) accepts the complete delivery
+at9e6fb1270c3efcbaa0f6ddb9f0fbfd3b2c1c825a,
+tree6d64692fde0c367e73deeda1ec1aca19e49d6b93. R01–04 resolve; root closes all
+nine [ND rows](ledger.md), BS-02, [retrospective](cdc-retrospective.md) and parent
+routing. Source is clean/task-only; release remains0829e892 and S03 is unopened.
+
+Planning issue a2024c7b and all four refinement commits/prompts remain. The
+final CC evidence packet is0d2fd27c; the closing-packet hash is pending until
+this metadata, reviewer receipts and parent updates are committed (Git records
+it). Closing scope is S02 plan/ledger/report/reviewer/retrospective and CDC
+artifacts, Arc05 plan/ledger, original S03 routing, Arc04 prerequisite status,
+Project03 plan/ledger, Arc06 API-audit carry-forward and Project07 routing.
+No source or release content changes in this metadata close. Fresh verification
+includes all required gates; JSR network e2e remains self-skipped, no-block docs
+entries and existing download/warning limits remain explicit.
+
 ## Disposition
 
 CC proposes this slice done, pending independent Sol review and root's planning disposition. This is implementation evidence, not independent acceptance; all nine ND ledger rows remain open. The source/build handoff is ready.

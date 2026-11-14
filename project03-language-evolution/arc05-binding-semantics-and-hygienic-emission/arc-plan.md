@@ -2,7 +2,7 @@
 project: project03-language-evolution
 arc: arc05-binding-semantics-and-hygienic-emission
 status: active
-version: "0.7"
+version: "0.8"
 planned-release: unassigned
 depends-on: []
 related: [arc04-qualified-adts, arc06-adt-modules-and-library-integration]
@@ -11,6 +11,16 @@ related: [arc04-qualified-adts, arc06-adt-modules-and-library-integration]
 # Binding semantics and hygienic emission
 
 ## Authority and outcome
+
+Current delivery2026-11-14: [S02 independently closes](slice02-native-binding-discards/cdc-verification.md#final-correction04-verdict--accept--2026-11-14)
+at9e6fb1270c3efcbaa0f6ddb9f0fbfd3b2c1c825a,
+tree6d64692fde0c367e73deeda1ec1aca19e49d6b93. BS-01/02 are done; BS-03–09
+remain open. All9ND criteria, complete admitted native discard roles, grouped
+structural/static-key behavior, unsupported signature diagnostics and immediate
+guides have independent proof. Root completed retrospective and downstream
+API/research routing. Source is task-only; release0829e892 and S03 remain
+untouched. No structural roadmap change is required. Earlier dated issue/HOLD
+records below remain history, superseded only for current acceptance status.
 
 Current authority2026-11-13: the operator opens
 [S02 remaining native binding discards](slice02-native-binding-discards/slice-plan.md),
@@ -96,7 +106,7 @@ affected delivery, necessary immediate documentation and independent review.
 | Candidate | Useful delivery | Specific prerequisites |
 | --- | --- | --- |
 | [S01 public Source discard completion](slice01-public-source-discards/slice-plan.md) — closed49982409 | Restored nested catch-default validation and independently finished the existing public discard contract across canonical/browser/materialized paths | Native759, held publicdba, original21 scope and R01 witness; original failures preserved |
-| [S02 native remaining discard binding forms](slice02-native-binding-discards/slice-plan.md) — active | Complete canonical native catch/loop/raw-callable/method roles; structural grouped-discard admission and early unsupported simple-multi default/rest diagnostics | Accepted49982409; reviewed producer-local/legacy-catch/raw-IR contract before CC issue |
+| [S02 native remaining discard binding forms](slice02-native-binding-discards/slice-plan.md) — closed9e6fb127 | Completed canonical admitted native catch/loop/callable/method roles, grouped static-key admission and honest simple-multi diagnostics; actual Source/raw-IR entrances distinguished | Accepted49982409 baseline and final independent9-row/gate proof; original HOLDs/refinements retained |
 | S03 public remaining discard binding forms | Deliver corresponding public/browser behavior, preserve already-admitted non-atom discard groups, and explicitly resolve the public simple-multi default/rest boundary | S02's reviewed shared contract; public consumer census, data/schema and private finalization |
 | S04 discard-aware declarations | Keep parameters, schema fields and exported declarations consistent with actual discard behavior | S02/S03 semantics; actual TypeScript declaration consumer |
 | S05 native compiler-generated name hygiene | Protect remaining compiler temporaries from source, foreign and generated-name collisions | Native discard roles; complete producer/reservation census |
@@ -155,7 +165,7 @@ early source-owner queries from the later runtime binding/name plan.
 
 ## Verification, handoff and limits
 
-The [ledger](ledger.md) carries BS-01 done and BS-02–09 open. Independent acceptance must
+The [ledger](ledger.md) carries BS-01/02 done and BS-03–09 open. Independent acceptance must
 cover actual changed consumers, meaningful negative controls, repository checks
 and embedded parity. Preserve final-source citations, existing size policy,
 cache/network limits, original failures and exact commit scope. Test count
@@ -176,6 +186,11 @@ substitute helper-language exception. Reader RDEO/RDCL, Arc01 I4 and diagnostic
 work, whole-work audits and the separate book/human gates keep their owners.
 
 ## Version history
+
+- 2026-11-14 v0.8: S02 independently closes at9e6fb127 after full9-row proof,
+  R01–04 repair, final gates and retrospective. Record accepted checkpoint and
+  downstream static-key IR/API/guide carry-forward; no structural roadmap change
+  or S03/release advancement follows.
 
 - 2026-11-14 v0.7: S02 pre-gate2873 findings replace punctuation-only admission
   assumptions with a source-ready literal static-data representation and a final

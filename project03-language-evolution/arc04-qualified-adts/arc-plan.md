@@ -2,13 +2,20 @@
 project: project03-language-evolution
 arc: arc04-qualified-adts
 status: replanning
-version: "2.1"
+version: "2.2"
 related: [arc05-binding-semantics-and-hygienic-emission, arc06-adt-modules-and-library-integration, project07-core-library-research]
 ---
 
 # Qualified ADTs
 
 ## Current v2.0 scope and authority
+
+Current checkpoint2026-11-14: [Arc05 S02](../arc05-binding-semantics-and-hygienic-emission/slice02-native-binding-discards/cdc-verification.md#final-correction04-verdict--accept--2026-11-14)
+independently accepts remaining admitted native binding discards at9e6fb127.
+Arc05 BS-01/02 are done; public parity, declarations, naming and local qualified
+activation retain their existing owners and open gates. This is a task-branch
+prerequisite only: release remains0829e892 and Arc05 S03 is unopened. Earlier
+checkpoints below remain historical; Arc04 implementation remains paused.
 
 Current checkpoint2026-11-13: the separately authorized
 [Arc05 S01](../arc05-binding-semantics-and-hygienic-emission/slice01-public-source-discards/cdc-verification.md)
@@ -285,6 +292,9 @@ Project07's original research evidence, final synthesis and library handoffs
 survive this detour, including every YAML and human-review obligation.
 
 ## Version history
+
+- 2026-11-14 v2.2: Record independently accepted Arc05 S02 native-binding
+  prerequisite9e6fb127; no structural roadmap or qualified-feature change.
 
 - 2026-11-13 v2.1: Arc05 S01 supplies accepted public Source discards49982409;
   record the resolved R01 prerequisite without activating local qualified ADTs.

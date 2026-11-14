@@ -1,5 +1,13 @@
 # Arc03 — Findings and integration
 
+2026-11-14 later checkpoint: [Project03 Arc05 S02](../../project03-language-evolution/arc05-binding-semantics-and-hygienic-emission/slice02-native-binding-discards/cdc-verification.md#final-correction04-verdict--accept--2026-11-14)
+independently accepts remaining admitted native binding discards at9e6fb127,
+including immediate Source/raw-IR guide corrections. Public parity, reader
+RDEO/RDCL, qualified features, library/research synthesis and book/human/licence
+gates retain their existing owners and remain open. This task-branch checkpoint
+opens no research trial or release action; release stays0829e892. Earlier
+checkpoint and pause wording below remain history.
+
 2026-11-13 later checkpoint: [Project03 Arc05 S01](../../project03-language-evolution/arc05-binding-semantics-and-hygienic-emission/slice01-public-source-discards/cdc-verification.md)
 independently accepts public Source discards at49982409, including R01.
 Only that compiler prerequisite is delivered. Reader/qualified feature/library/

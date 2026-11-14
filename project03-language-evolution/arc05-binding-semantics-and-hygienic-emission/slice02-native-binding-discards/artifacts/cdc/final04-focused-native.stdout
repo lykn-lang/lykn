@@ -1,0 +1,57 @@
+
+running 23 tests
+test failed_fragment_emission_does_not_poison_reused_context ... ok
+test direct_return_member_calls_keep_order_and_discard_storage_private ... ok
+test exports_project_nested_alias_and_spread_bindings_but_not_empty_default_slots ... ok
+test named_duplicate_diagnostic_is_retained_while_repeated_discard_group_is_valid ... ok
+test catch_default_callable_lookup_keeps_legacy_expression_pattern ... ok
+test inline_discard_export_has_no_private_exports_and_runs_initializer_once ... ok
+test distinct_generated_discard_names_do_not_capture_source_lookups ... ok
+test grouped_export_exposes_only_original_names_in_pair_order ... ok
+test spread_sites_feed_reserved_duplicate_and_lexical_binding_clients ... ok
+test repeated_bind_discards_evaluate_once_and_leave_source_underscore_alone ... ok
+test assignment_spread_patterns_keep_alias_bindings ... ok
+test defaults_are_lazy_once_and_nested_array_rest_remains_valid_in_multi_clause ... ok
+test fixed_multi_clause_discards_keep_dispatch_and_checked_stripped_binding ... ok
+test rest_discard_checks_each_consumed_member_and_keeps_source_label ... ok
+test typed_generator_discard_checks_only_when_iteration_advances ... ok
+test nested_spread_patterns_use_pattern_grammar_and_old_tuple_patterns_diagnose ... ok
+test discard_exports_keep_type_checks_effects_json_and_named_bindings ... ok
+test source_underscore_in_body_and_default_is_not_private_storage ... ok
+test typed_object_field_getter_is_read_once ... ok
+test fn_lambda_genfn_and_schema_property_roles_keep_underscore_meaning ... ok
+test typed_object_discard_preserves_property_key_and_optional_default ... ok
+test typed_array_discard_reads_value_but_raw_trailing_holes_do_not ... ok
+test typed_scalar_discard_checks_the_actual_value_and_reports_source_name ... ok
+
+test result: ok. 23 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.34s
+
+
+running 24 tests
+test grouped_member_expression_alias_keys_are_rejected_before_codegen ... ok
+test multi_clause_simple_defaults_are_diagnosed_by_classification_and_direct_emit ... ok
+test kernel_lambda_remains_outside_the_admitted_escape_namespace ... ok
+test grouped_boolean_null_and_existing_literal_alias_keys_are_valid ... ok
+test grouped_discard_static_alias_keys_are_normalized_literal_data ... ok
+test named_raw_function_keeps_its_name_and_discards_each_parameter ... ok
+test class_parameter_roles_and_legacy_catch_keep_values_and_keys ... ok
+test named_group_alias_atom_keeps_its_original_representation ... ok
+test grouped_numeric_alias_key_emits_a_valid_javascript_property ... ok
+test grouped_discard_patterns_are_structural_and_keep_writer_operations ... ok
+test grouped_negative_zero_alias_uses_existing_zero_property ... ok
+test catch_expression_patterns_preserve_pair_computed_and_direct_return_roles ... ok
+test class_get_set_and_class_expression_prepare_only_parameter_slots ... ok
+test raw_default_rest_spread_and_async_parameter_roles_stay_lazy_and_private ... ok
+test raw_arrow_discards_leave_foreign_underscore_visible ... ok
+test raw_codegen_lambda_keeps_supplied_underscore_literal ... ok
+test single_clause_simple_default_remains_supported ... ok
+test raw_codegen_class_setter_keeps_supplied_underscore_parameter_literal ... ok
+test raw_declarations_and_iteration_bindings_preserve_effects_and_foreign_values ... ok
+test raw_lambda_generator_async_generator_and_callable_property_roles_work ... ok
+test raw_nested_iteration_patterns_skip_iterator_values_and_keep_iterator_close ... ok
+test raw_spread_pattern_default_and_body_names_resolve_in_their_real_roles ... ok
+test raw_codegen_negative_numeric_alias_patterns_keep_literal_underscore ... ok
+test whole_unit_json_round_trip_keeps_finalized_grouped_discards ... ok
+
+test result: ok. 24 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.08s
+
