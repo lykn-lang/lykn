@@ -2,7 +2,7 @@
 project: project03-language-evolution
 arc: arc05-binding-semantics-and-hygienic-emission
 status: active
-version: "0.3"
+version: "0.4"
 planned-release: unassigned
 depends-on: []
 related: [arc04-qualified-adts, arc06-adt-modules-and-library-integration]
@@ -11,6 +11,14 @@ related: [arc04-qualified-adts, arc06-adt-modules-and-library-integration]
 # Binding semantics and hygienic emission
 
 ## Authority and outcome
+
+Current authority2026-11-13: the operator opens
+[S02 remaining native binding discards](slice02-native-binding-discards/slice-plan.md),
+Luna6 High CC / separate Sol6.1 High CDC, Autonomous Mode, through independent
+slice close/report only. Root completed source-ready preparation from clean
+accepted49982409; separate Sol approved the corrected draft before CC issue.
+S03–08 and release/remote actions remain unopened. The S01
+completion and earlier authority below are preserved checkpoints.
 
 Current outcome2026-11-13: [S01 is independently closed](slice01-public-source-discards/cdc-verification.md)
 at4998240927909c3abc0172dfef2b56076b19f708, treeb18e75dc06888a771bd7f3aa92a3c2cb1a7e1dc8.
@@ -70,7 +78,7 @@ affected delivery, necessary immediate documentation and independent review.
 | Candidate | Useful delivery | Specific prerequisites |
 | --- | --- | --- |
 | [S01 public Source discard completion](slice01-public-source-discards/slice-plan.md) — closed49982409 | Restored nested catch-default validation and independently finished the existing public discard contract across canonical/browser/materialized paths | Native759, held publicdba, original21 scope and R01 witness; original failures preserved |
-| S02 native remaining discard binding forms | Complete native catch/loop/raw-callable/method roles; explicitly resolve grouped all-discard non-atom Bind admission and the existing simple-multi default/rest boundary | S01 stable baseline; explicit consumed-role/API contract before issue |
+| [S02 native remaining discard binding forms](slice02-native-binding-discards/slice-plan.md) — active | Complete canonical native catch/loop/raw-callable/method roles; structural grouped-discard admission and early unsupported simple-multi default/rest diagnostics | Accepted49982409; reviewed producer-local/legacy-catch/raw-IR contract before CC issue |
 | S03 public remaining discard binding forms | Deliver corresponding public/browser behavior, preserve already-admitted non-atom discard groups, and explicitly resolve the public simple-multi default/rest boundary | S02's reviewed shared contract; public consumer census, data/schema and private finalization |
 | S04 discard-aware declarations | Keep parameters, schema fields and exported declarations consistent with actual discard behavior | S02/S03 semantics; actual TypeScript declaration consumer |
 | S05 native compiler-generated name hygiene | Protect remaining compiler temporaries from source, foreign and generated-name collisions | Native discard roles; complete producer/reservation census |
@@ -90,6 +98,21 @@ declare those features implemented or select new support semantics. Before
 issue, settle the supported contract and acceptance; a justified deferral needs
 a concrete follow-up owner/re-entry condition rather than disappearing into
 retired S03 history. Public's existing non-atom discard admission is preserved.
+
+S02's explicit disposition: valid zero-name grouped patterns are admitted by
+structure, not a nonempty-name proxy. A func with >1clause rejects any top-level
+Simple default/rest parameter before native JS emission (including mixed
+signatures); single-clause and nested destructured defaults/rest stay supported.
+This does not select omitted-argument/variadic overload semantics. Root/Arc05
+owns deferred support as an unopened design candidate S09: re-entry requires
+explicit arity, precedence, binding/effect/guard and both-backend acceptance
+contracts before implementation. That future feature is outside the current
+BS-02 completion contract, whose requirement is an honest explicit disposition.
+No S09 directory, prompt or implementation is opened. S03 must preserve the
+same support boundary while delivering public parity. Direct raw codegen
+continues to write supplied IR literally; canonical native emitter prepares
+source binding discards before private finalization. Arc06 LI-04 audits these
+API/diagnostic/documentation impacts; immediate factual guides land in S02.
 
 The naming direction and unresolved author-readiness details are preserved in
 [the owner-unit preparation](../arc04-qualified-adts/slice03-local-qualified-nominal-core/artifacts/b2b-owner-unit-preparation.md)
@@ -112,13 +135,18 @@ explicit2026-11-13 resume; later slices need their own opening. Preserve prior r
 history; new filenames do not reset exhausted allowances. An iteration refines
 one delivery; a new capability receives its own slice.
 
-Source/build work is authorized only by the active S01 assignment. No separate
+Source/build work is authorized only by the source-ready S02 assignment once
+issued. No separate
 probe/experiment/merge/push/publication/licence/dependency action follows from
 this roadmap. Helpers use Lykn under repository guidance; no Python or
 substitute helper-language exception. Reader RDEO/RDCL, Arc01 I4 and diagnostic
 work, whole-work audits and the separate book/human gates keep their owners.
 
 ## Version history
+
+- 2026-11-13 v0.4: Operator opens S02. Record its actual producer-local native
+  binding scope, legacy catch/raw-IR distinction and inherited-limit dispositions;
+  deferred multi-signature support retains root/Arc05 design owner and re-entry.
 
 - 2026-11-13 v0.3: S01 closes at49982409 with full independent Source-discard
   proof; update status/checkpoint, preserve held history and later boundaries.

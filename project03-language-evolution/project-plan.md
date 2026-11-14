@@ -1,7 +1,7 @@
 ---
 project: project03-language-evolution
 status: research
-version: "1.62"
+version: "1.63"
 planned-release: "0.7.0"
 depends-on: ["project02-language-toolchain-alignment"]
 blocks: []
@@ -11,6 +11,11 @@ related: ["project04-c-lang", "project07-core-library-research"]
 # Language evolution
 
 ## Current approved structure —2026-11-13
+
+Subsequent authority: the operator opens [Arc05 S02](arc05-binding-semantics-and-hygienic-emission/slice02-native-binding-discards/slice-plan.md)
+for remaining native discard forms, Luna6 High CC / Sol6.1 High CDC, Autonomous
+Mode through independent slice close only. The source-ready assignment starts
+from accepted49982409. No S03/qualified activation/library trial/release action follows.
 
 Current delivery: [Arc05 S01 independently closes](arc05-binding-semantics-and-hygienic-emission/slice01-public-source-discards/cdc-verification.md)
 at49982409/treeb18e75dc, with all nine public discard rows accepted and R01
@@ -1044,6 +1049,10 @@ with their source and status distinctions. A future
 implementation definition of done is not established by this migration.
 
 ## Version history
+
+- 2026-11-13 v1.63: Open operator-authorized Arc05 S02 from accepted49982409;
+  record native binding scope and explicit grouped/simple-multi dispositions,
+  preserving later qualified/library/release boundaries.
 
 - 2026-11-13 v1.62: Arc05 S01 independently delivers the full public Source
   discard checkpoint49982409 and resolves R01. Reconcile BS-01/B2-DISCARD-P;
