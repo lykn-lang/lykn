@@ -2,7 +2,7 @@
 project: project03-language-evolution
 arc: arc05-binding-semantics-and-hygienic-emission
 status: active
-version: "0.4"
+version: "0.5"
 planned-release: unassigned
 depends-on: []
 related: [arc04-qualified-adts, arc06-adt-modules-and-library-integration]
@@ -122,6 +122,13 @@ all nine ND criteria and later ownership remain unchanged. Separate Sol
 approves the amendment before issue. General numeric formatting/range semantics
 are not changed; -0 keeps the existing property0 behavior.
 
+S02 refinement02 corrects a source-readiness admission mistake by root and the
+reviewer: lexical/writer support does not imply that KERNEL_FORMS admits a
+prefix. kernel:lambda/kernel:class/kernel:class-expr remain rejected; admitted
+typed Source lambda/classes and direct raw IR are verified separately. No
+namespace is extended or extra source path added. The complete nine ND rows
+remain, with this explicit disposition and immediate guide clarification.
+
 The naming direction and unresolved author-readiness details are preserved in
 [the owner-unit preparation](../arc04-qualified-adts/slice03-local-qualified-nominal-core/artifacts/b2b-owner-unit-preparation.md)
 and [runtime-name draft](../arc04-qualified-adts/slice03-local-qualified-nominal-core/artifacts/b2-native-runtime-name-plan.md).
@@ -151,6 +158,10 @@ substitute helper-language exception. Reader RDEO/RDCL, Arc01 I4 and diagnostic
 work, whole-work audits and the separate book/human gates keep their owners.
 
 ## Version history
+
+- 2026-11-13 v0.5: Record S02 refinement01 negative alias-key syntax follow-
+  through and refinement02 corrected frontend admission facts. Preserve full
+  bounded scope, all failures, actual raw/Source distinction and later owners.
 
 - 2026-11-13 v0.4: Operator opens S02. Record its actual producer-local native
   binding scope, legacy catch/raw-IR distinction and inherited-limit dispositions;

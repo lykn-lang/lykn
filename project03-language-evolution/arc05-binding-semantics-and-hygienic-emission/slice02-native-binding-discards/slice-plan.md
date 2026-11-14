@@ -3,11 +3,20 @@ project: project03-language-evolution
 arc: arc05-binding-semantics-and-hygienic-emission
 slice: slice02-native-binding-discards
 status: active
-version: "1.1"
+version: "1.2"
 depends-on: [slice01-public-source-discards]
 ---
 
 # Remaining native discard binding forms
+
+2026-11-13 issued refinement02 corrects root/reviewer admission assumptions:
+actual KERNEL_FORMS excludes lambda/class/class-expr. Those prefixed escapes
+remain rejected. Actual typed Source lambda and Source class/class-expr remain
+the admitted language consumers; raw codegen lambda/class stays a separate
+literal-IR API. [Refinement02](cc-prompt-iteration02.md) preserves full9-row/
+TEN-path scope and requires explicit positive/negative/API/guide distinctions.
+No namespace feature is introduced. Earlier unconditional kernel-lambda/class
+route wording below is superseded only by this verified frontend fact.
 
 2026-11-13 refinement01 issued: the complete initial scope remains.
 Root's subsequent source review identifies negative numeric alias keys as an
@@ -207,16 +216,23 @@ runtime discriminators; separate Sol confirmed source-ready. No source edits,
 probes or build ran during preparation. This was draft review, not an executed
 CC correction or acceptance of implementation.
 
-Current assignment is cc-prompt-iteration01.md, preserving all initial work
-and constraints with the explicit tenth-path syntax repair. No implementation
+Current assignment is cc-prompt-iteration02.md, preserving all initial work
+and constraints, the explicit tenth-path syntax repair and actual frontend
+admission distinction. Separate Sol confirmed its complete amendment against
+the actual whitelist/escape classifier before issue. No implementation
 acceptance is claimed by either readiness review.
 
 | Prompt | Date | Predecessor | Purpose | State |
 | --- | --- | --- | --- | --- |
 | cc-prompt.md | 2026-11-13 | S01 accepted49982409 | Remaining native binding discards and explicit admission/signature dispositions | Executed in progress; superseded by refinement01 with all scope retained |
-| cc-prompt-iteration01.md | 2026-11-13 | cc-prompt.md, initial work in progress | Preserve full scope; make admitted literal numeric keys valid JS and retain existing Bool/Null key roles | Issued; Luna retains exclusive source/build ownership |
+| cc-prompt-iteration01.md | 2026-11-13 | cc-prompt.md, initial work in progress | Preserve full scope; make admitted literal numeric keys valid JS and retain existing Bool/Null key roles | Executed in progress; superseded by refinement02 with full scope retained |
+| cc-prompt-iteration02.md | 2026-11-13 | cc-prompt-iteration01.md, implementation in progress | Correct frontend admission assumptions; retain actual Source/raw-IR/unsupported-prefix distinction | Issued; Luna retains exclusive source/build ownership |
 
 ## Version history
+
+- 2026-11-13 v1.2: Correct kernel-prefix admission assumptions surfaced by
+  real callable/class fixture checks. Preserve namespace rejection and require
+  distinct Source/raw API proof plus accurate immediate guide documentation.
 
 - 2026-11-13 v1.1: Prepare narrow writer-syntax follow-through from ND-05
   grouped admission; preserve original9rows/scope, add one source path and real
