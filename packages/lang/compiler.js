@@ -1965,6 +1965,15 @@ function compilePattern(node) {
             argument: compilePattern(rest[0]),
           };
 
+        case 'spread':
+          if (rest.length !== 1) {
+            throw new Error('spread requires exactly 1 argument: (spread name)');
+          }
+          return {
+            type: 'RestElement',
+            argument: compilePattern(rest[0]),
+          };
+
         case 'alias':
           throw new Error('alias can only appear inside an object pattern');
 
@@ -2006,12 +2015,12 @@ function compileObjectPattern(children) {
 
       // (rest others) → RestElement
       // A6-exempt: structural — object-pattern element grammar, not a form head.
-      if (head.type === 'atom' && head.value === 'rest') {
+      if (head.type === 'atom' && (head.value === 'rest' || head.value === 'spread')) {
         if (child.values.length !== 2) {
-          throw new Error('rest requires exactly 1 argument');
+          throw new Error(`${head.value} requires exactly 1 argument`);
         }
         if (i !== children.length - 1) {
-          throw new Error('rest must be the last element in an object pattern');
+          throw new Error(`${head.value} must be the last element in an object pattern`);
         }
         properties.push({
           type: 'RestElement',
@@ -2050,7 +2059,7 @@ function compileObjectPattern(children) {
           throw new Error('alias: (alias key local) or (alias key local default)');
         }
 
-        const key = toJsIdentifier(child.values[1].value);
+        const key = compilePatternKey(child.values[1]);
         let valueNode = compilePattern(child.values[2]);
 
         if (child.values.length === 4) {
@@ -2063,10 +2072,10 @@ function compileObjectPattern(children) {
 
         properties.push({
           type: 'Property',
-          key: { type: 'Identifier', name: key },
+          key,
           value: valueNode,
           kind: 'init',
-          computed: false,
+          computed: child.values[1]?.type === 'number',
           shorthand: false,
           method: false,
         });
@@ -2083,6 +2092,16 @@ function compileObjectPattern(children) {
   }
 
   return { type: 'ObjectPattern', properties };
+}
+
+function compilePatternKey(node) {
+  if (node?.type === 'atom') {
+    return { type: 'Identifier', name: toJsIdentifier(node.value) };
+  }
+  if (node?.type === 'string' || node?.type === 'number' || node?.type === 'keyword') {
+    return compileExpr(node, 'expression');
+  }
+  throw new Error('object pattern alias key must be an atom or literal');
 }
 
 // Compile children of (array ...) in pattern position → ArrayPattern
@@ -2108,12 +2127,12 @@ function compileArrayPattern(children) {
 
       // (rest name) → RestElement (must be last)
       // A6-exempt: structural — array-pattern element grammar, not a form head.
-      if (head.type === 'atom' && head.value === 'rest') {
+      if (head.type === 'atom' && (head.value === 'rest' || head.value === 'spread')) {
         if (child.values.length !== 2) {
-          throw new Error('rest requires exactly 1 argument');
+          throw new Error(`${head.value} requires exactly 1 argument`);
         }
         if (i !== children.length - 1) {
-          throw new Error('rest must be the last element in an array pattern');
+          throw new Error(`${head.value} must be the last element in an array pattern`);
         }
         elements.push({
           type: 'RestElement',

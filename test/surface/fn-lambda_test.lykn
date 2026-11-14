@@ -68,14 +68,15 @@
   "const f = x => x;")
 
 (test
-  "fn: _ as parameter name compiles"
+  "fn: discard parameter keeps arrow and return shape"
   (bind result (compile "(fn (:any _) 42)"))
-  (includes result "_ => 42"))
+  (includes result "=> 42"))
 
 (test
-  "fn: _ with other typed params"
+  "fn: discard with typed parameter keeps checks and body"
   (bind result (compile "(fn (:any _ :number i) (+ i 1))"))
-  (includes result "(_, i)"))
+  (includes result "typeof i !== \"number\"")
+  (includes result "return i + 1"))
 
 (test
   "fn: _ as parameter at runtime"

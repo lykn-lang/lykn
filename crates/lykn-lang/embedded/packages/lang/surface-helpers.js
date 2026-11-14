@@ -157,10 +157,14 @@ export function typeMatchesLiteral(typeName, literalType) {
  * Returns a kernel (if (check) (throw (new TypeError msg))) form, or null for :any.
  */
 export function buildTypeCheck(paramNode, typeKw, funcName, label) {
+  return buildTypeCheckFor(paramNode, typeKw, funcName, label, paramNode.value);
+}
+
+function buildTypeCheckFor(paramNode, typeKw, funcName, label, sourceName) {
   const typeName = typeKw.value;
   if (typeName === "any") return null;
 
-  const paramName = paramNode.value;
+  const paramName = sourceName;
   const hasPunct = (s) => /[^a-zA-Z0-9_-]/.test(s);
   const jsFuncName = toJsIdentifier(funcName);
   const dispFunc = jsFuncName !== funcName && hasPunct(funcName)
@@ -257,90 +261,185 @@ export function buildTypeCheck(paramNode, typeKw, funcName, label) {
 
 // --- Param shape helpers ---
 
-/** Get kernel param name nodes for a function signature. */
-export function paramNameNodes(p) {
-  if (p.destructured) {
-    if (p.kind === "object") {
-      const elems = p.fields.map((f) => {
-        if (f.nested) {
-          const innerKernel = paramNameNodes(f.pattern)[0];
-          if (f.alias) {
-            return array(sym("alias"), f.alias, innerKernel);
-          }
-          return innerKernel;
-        }
-        if (f.defaultValue) {
-          return array(sym("default"), f.name, f.defaultValue);
-        }
-        return f.name;
-      });
-      return [array(sym("object"), ...elems)];
-    }
-    if (p.kind === "array") {
-      const elems = p.fields.map((f) => {
-        if (f.skip) return sym("_");
-        if (f.nested) {
-          const innerKernel = paramNameNodes(f.pattern)[0];
-          if (f.alias) {
-            return array(sym("alias"), f.alias, innerKernel);
-          }
-          return innerKernel;
-        }
-        if (f.defaultValue) {
-          return array(sym("default"), f.name, f.defaultValue);
-        }
-        return f.name;
-      });
-      if (p.rest) {
-        elems.push(array(sym("rest"), p.rest.name));
-      }
-      return [array(sym("array"), ...elems)];
-    }
-  }
-  // Simple param — handle default and rest
-  if (p.defaultValue) {
-    return [array(sym("default"), p.name, p.defaultValue)];
-  }
-  if (p.isRest) {
-    return [array(sym("rest"), p.name)];
-  }
-  return [p.name];
+function preparedValue(name) {
+  return name.value === "_"
+    ? compilerPrivateAtom({}, "discardValue")
+    : name;
 }
 
-/** Get type check assertions for a param. */
-export function paramTypeChecks(p, funcName) {
-  if (p.destructured) {
-    const checks = [];
-    const allFields = [
-      ...p.fields.filter((f) => !f.skip),
-      ...(p.rest ? [p.rest] : []),
-    ];
-    for (const f of allFields) {
-      if (f.nested) {
-        // Recurse into nested pattern for leaf-level checks
-        checks.push(...paramTypeChecks(f.pattern, funcName));
-        // Type-check the alias binding itself if not :any
-        if (f.typeKw && f.typeKw.value !== "any") {
-          const check = buildTypeCheck(f.alias, f.typeKw, funcName, "arg");
+function prepareLeaf(name, typeKw, funcName, label = "arg") {
+  const actual = preparedValue(name);
+  const check = buildTypeCheckFor(actual, typeKw, funcName, label, name.value);
+  return { actual, pattern: actual, checks: check ? [check] : [] };
+}
+
+function prepareRestChecks(collection, typeKw, funcName, sourceName) {
+  if (typeKw.value === "any") return [];
+  const element = compilerPrivateAtom({}, "discardElement");
+  const check = buildTypeCheckFor(element, typeKw, funcName, "rest arg", sourceName);
+  return check ? [array(sym("for-of"), element, collection, check)] : [];
+}
+
+/** Prepare one parsed parameter once for its emitted pattern and guards. */
+export function prepareTypedParam(p, funcName) {
+  if (!p.destructured) {
+    const leaf = prepareLeaf(p.name, p.typeKw, funcName, p.isRest ? "rest arg" : "arg");
+    if (p.defaultValue) {
+      return { ...leaf, pattern: array(sym("default"), leaf.actual, p.defaultValue) };
+    }
+    if (p.isRest) {
+      return {
+        ...leaf,
+        pattern: array(sym("rest"), leaf.actual),
+        checks: prepareRestChecks(leaf.actual, p.typeKw, funcName, p.name.value),
+      };
+    }
+    return leaf;
+  }
+
+  const checks = [];
+  if (p.kind === "object") {
+    const fields = p.fields.map((field) => {
+      if (field.nested) {
+        const nested = prepareTypedParam(field.pattern, funcName);
+        checks.push(...nested.checks);
+        if (field.typeKw && field.typeKw.value !== "any") {
+          const check = buildTypeCheckFor(
+            field.alias,
+            field.typeKw,
+            funcName,
+            "arg",
+            field.alias.value,
+          );
           if (check) checks.push(check);
         }
-        continue;
+        return field.alias
+          ? array(sym("alias"), field.alias, nested.pattern)
+          : nested.pattern;
       }
-      const check = buildTypeCheck(f.name, f.typeKw, funcName, "arg");
-      if (check) checks.push(check);
+      if (field.skip) return field.name;
+      const leaf = prepareLeaf(field.name, field.typeKw, funcName);
+      checks.push(...leaf.checks);
+      if (field.defaultValue) {
+        return field.name.value === "_"
+          ? array(sym("alias"), field.name, array(sym("default"), leaf.actual, field.defaultValue))
+          : array(sym("default"), field.name, field.defaultValue);
+      }
+      return field.name.value === "_"
+        ? array(sym("alias"), field.name, leaf.actual)
+        : field.name;
+    });
+    return { actual: null, pattern: array(sym("object"), ...fields), checks };
+  }
+
+  const fields = p.fields.map((field) => {
+    if (field.skip) return field.name;
+    if (field.nested) {
+      const nested = prepareTypedParam(field.pattern, funcName);
+      checks.push(...nested.checks);
+      if (field.typeKw && field.typeKw.value !== "any") {
+        const check = buildTypeCheckFor(
+          field.alias,
+          field.typeKw,
+          funcName,
+          "arg",
+          field.alias.value,
+        );
+        if (check) checks.push(check);
+      }
+      return field.alias
+        ? array(sym("alias"), field.alias, nested.pattern)
+        : nested.pattern;
     }
-    return checks;
+    const leaf = prepareLeaf(field.name, field.typeKw, funcName);
+    checks.push(...leaf.checks);
+    return field.defaultValue
+      ? array(sym("default"), leaf.actual, field.defaultValue)
+      : leaf.actual;
+  });
+  if (p.rest) {
+    const rest = prepareLeaf(p.rest.name, p.rest.typeKw, funcName, "rest arg");
+    fields.push(array(sym("rest"), rest.actual));
+    checks.push(...prepareRestChecks(rest.actual, p.rest.typeKw, funcName, p.rest.name.value));
   }
-  // Rest param: per-element type check via for-of loop
-  if (p.isRest) {
-    if (p.typeKw.value === "any") return [];
-    const elVar = gensym("el");
-    const innerCheck = buildTypeCheck(elVar, p.typeKw, funcName, "rest arg");
-    if (!innerCheck) return [];
-    return [array(sym("for-of"), elVar, p.name, innerCheck)];
+  return { actual: null, pattern: array(sym("array"), ...fields), checks };
+}
+
+/** Lower a normal-source Bind pattern without changing value expressions. */
+export function lowerDiscardBindingPattern(pattern) {
+  if (pattern?.type === "atom") return preparedValue(pattern);
+  if (pattern?.type !== "list" || pattern.values.length === 0) return pattern;
+  const [head, ...parts] = pattern.values;
+  if (head?.type !== "atom") return pattern;
+  if (head.value === "array") {
+    return { ...pattern, values: [head, ...parts.map((part) =>
+      part?.type === "atom" && part.value === "_"
+        ? part
+        : lowerBindingPatternChild(part))] };
   }
-  const check = buildTypeCheck(p.name, p.typeKw, funcName, "arg");
-  return check ? [check] : [];
+  if (head.value === "object") {
+    return { ...pattern, values: [head, ...parts.map((part) => {
+      if (part?.type === "atom") {
+        return part.value === "_" ? array(sym("alias"), part, preparedValue(part)) : part;
+      }
+      if (part?.type !== "list" || part.values[0]?.type !== "atom") return part;
+      const memberHead = part.values[0].value;
+      if (memberHead === "default" && part.values.length === 3 && part.values[1]?.type === "atom" && part.values[1].value === "_") {
+        return array(sym("alias"), part.values[1], array(sym("default"), preparedValue(part.values[1]), part.values[2]), ...part.values.slice(3));
+      }
+      if (memberHead === "alias" && part.values.length >= 3) {
+        return { ...part, values: [part.values[0], part.values[1], lowerBindingPatternChild(part.values[2]), ...part.values.slice(3)] };
+      }
+      if (memberHead === "rest" || memberHead === "spread") {
+        if (part.values.length < 2) return part;
+        return { ...part, values: [part.values[0], lowerBindingPatternChild(part.values[1]), ...part.values.slice(2)] };
+      }
+      return part;
+    })] };
+  }
+  if ((head.value === "rest" || head.value === "spread") && parts.length > 0) {
+    return { ...pattern, values: [head, lowerBindingPatternChild(parts[0]), ...parts.slice(1)] };
+  }
+  if (head.value === "default" && parts.length >= 2) {
+    return { ...pattern, values: [head, lowerBindingPatternChild(parts[0]), ...parts.slice(1)] };
+  }
+  return pattern;
+}
+
+/** Prepare a normal-source Bind binder and its optional scalar annotation. */
+export function prepareTypedBind(pattern, typeKw, funcName = "bind") {
+  if (pattern?.type === "atom") {
+    const actual = preparedValue(pattern);
+    const check = typeKw
+      ? buildTypeCheckFor(actual, typeKw, funcName, "", pattern.value)
+      : null;
+    return { pattern: actual, actual, checks: check ? [check] : [] };
+  }
+  const check = buildTypeCheck(pattern, typeKw, funcName, "");
+  return {
+    pattern: lowerDiscardBindingPattern(pattern),
+    actual: pattern,
+    checks: check ? [check] : [],
+  };
+}
+
+function lowerBindingPatternChild(child) {
+  if (child?.type === "atom") return preparedValue(child);
+  if (child?.type !== "list" || child.values.length === 0) return child;
+  const head = child.values[0];
+  if ((head?.type === "atom" && (head.value === "rest" || head.value === "spread")) && child.values.length < 2) {
+    return child;
+  }
+  if (head?.type === "atom" && (head.value === "array" || head.value === "object")) {
+    return lowerDiscardBindingPattern(child);
+  }
+  if (head?.type === "atom" && (head.value === "rest" || head.value === "spread" || head.value === "default")) {
+    return lowerDiscardBindingPattern(child);
+  }
+  if (head?.type === "atom" && head.value === "alias" && child.values.length >= 3) {
+    return { ...child, values: [head, child.values[1], lowerBindingPatternChild(child.values[2]), ...child.values.slice(3)] };
+  }
+  return child;
 }
 
 /**

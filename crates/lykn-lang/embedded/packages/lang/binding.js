@@ -33,6 +33,7 @@ const SEQUENCE = { kind: "seq" };
 const PatternGrammar = Object.freeze({
   TYPED_PARAMETER: "typed-parameter",
   BINDING_PATTERN: "binding-pattern",
+  CATCH_BINDING: "catch-binding",
 });
 
 /**
@@ -184,7 +185,7 @@ function walk(form, out, inScope) {
     const sites = bindingsIntroduced(form);
     out.push(...sites);
     const args = form.values.slice(1);
-    if (args[0]) walkPatternDefaults(args[0], out, inScope, PatternGrammar.BINDING_PATTERN);
+    if (args[0]) walkPatternDefaults(args[0], out, inScope, PatternGrammar.CATCH_BINDING);
     walkSequence(args.slice(1), out, extendNames(inScope, sites.map((site) => site.name)));
     return;
   }
@@ -282,7 +283,7 @@ function walkPatternDefaults(pattern, out, inScope, grammar) {
     if (value) walk(value, out, inScope);
     return;
   }
-  if (head === "rest") {
+  if (head === "rest" || (head === "spread" && grammar === PatternGrammar.BINDING_PATTERN)) {
     const typed = grammar === PatternGrammar.TYPED_PARAMETER;
     walkPatternDefaults(pattern.values[typed ? 2 : 1], out, inScope, grammar);
     return;
@@ -295,7 +296,8 @@ function walkPatternDefaults(pattern, out, inScope, grammar) {
       const typed = grammar === PatternGrammar.TYPED_PARAMETER;
       walkPatternDefaults(member.values[typed ? 3 : 2], out, inScope, grammar);
       if (!typed && member.values[3]) walk(member.values[3], out, inScope);
-    } else if (["default", "rest", "array", "object"].includes(memberHead)) {
+    } else if (["default", "rest", "array", "object"].includes(memberHead) ||
+      (memberHead === "spread" && grammar === PatternGrammar.BINDING_PATTERN)) {
       walkPatternDefaults(member, out, inScope, grammar);
     }
   }
@@ -561,7 +563,7 @@ export function bindingsIntroduced(form) {
       return matchClauseNames(args);
     // DD-60 refinement #2 (2026-07-06): catch bindings, import locals, labels.
     case "catch":
-      return args.length > 0 ? patternNames(args[0], "catch-binding", PatternGrammar.BINDING_PATTERN) : [];
+      return args.length > 0 ? patternNames(args[0], "catch-binding", PatternGrammar.CATCH_BINDING) : [];
     case "import":
     case "kernel:import":
       return importLocalNames(args);
@@ -673,7 +675,9 @@ function kernelParamNames(list) {
   const out = [];
   for (const param of list.values) {
     if (param?.type === "atom") {
-      if (param.value !== "_") out.push({ name: param.value, kind: "param", node: param });
+      if (param.value !== "_" && !isCompilerPrivateAtom(param)) {
+        out.push({ name: param.value, kind: "param", node: param });
+      }
       continue;
     }
     if (param?.type !== "list") continue;
@@ -853,17 +857,20 @@ function patternNames(pat, kind, grammar) {
   for (const el of pat.values.slice(1)) {
     if (el.type === "keyword") continue;
     if (el.type === "atom") {
-      if (el.value !== "_") out.push({ name: el.value, kind, node: el });
+      if (el.value !== "_" && !isCompilerPrivateAtom(el)) {
+        out.push({ name: el.value, kind, node: el });
+      }
     } else if (el.type === "list") {
       const ih = el.values[0]?.type === "atom" ? el.values[0].value : "";
-      if (ih === "rest" && el.values[1]) {
+      if ((ih === "rest" || (ih === "spread" && grammar === PatternGrammar.BINDING_PATTERN)) && el.values[1]) {
         const binding = el.values[grammar === PatternGrammar.TYPED_PARAMETER ? 2 : 1];
         if (binding) out.push(...patternNames(binding, kind, grammar));
       } else if (ih === "alias") {
         const typed = grammar === PatternGrammar.TYPED_PARAMETER;
         const binding = el.values[typed ? 3 : 2];
         if (binding) out.push(...patternNames(binding, kind, grammar));
-      } else if (ih === "default") {
+      } else if (ih === "default" && el.values[1] &&
+        (grammar !== PatternGrammar.BINDING_PATTERN || el.values.length >= 3)) {
         const binding = el.values[grammar === PatternGrammar.TYPED_PARAMETER ? 2 : 1];
         if (binding) out.push(...patternNames(binding, kind, grammar));
       } else if (ih === "array" || ih === "object") {

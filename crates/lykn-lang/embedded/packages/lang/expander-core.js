@@ -1822,13 +1822,20 @@ function simpleDirectBind(args) {
   else if (args.length === 3 && args[0]?.type === 'keyword' && args[0].value === 'any') {
     [, nameNode, valueNode] = args;
   } else return null;
-  if (nameNode?.type !== 'atom' || nameNode.value === '_' || nameNode.value.includes(':')) return null;
+  if (nameNode?.type !== 'atom' || nameNode.value.includes(':')) return null;
   return { nameNode, valueNode };
 }
 
 function expandDirectBind(args, env) {
-  const { nameNode, valueNode } = simpleDirectBind(args);
-  const kernel = emitSurfaceForm({ type: 'Bind', args }, { sym, array, gensym, isKeyword, typeContext: env.typeContext });
+  const { valueNode } = simpleDirectBind(args);
+  const emitted = emitSurfaceForm(
+    { type: 'Bind', args },
+    { sym, array, gensym, isKeyword, typeContext: env.typeContext },
+  );
+  const emittedForms = Array.isArray(emitted) ? emitted : [emitted];
+  const kernel = emittedForms[0];
+  const preparedName = kernel.values[1];
+  const checks = emittedForms.slice(1);
   const identity = {};
   const use = { kind: 'Assign', identity };
   const value = expandAt(valueNode, env, use);
@@ -1836,12 +1843,14 @@ function expandDirectBind(args, env) {
     isDirectTransfer(value) || isExpandedStatement(value);
   if (!isRegion) {
     kernel.values[2] = value;
-    return markKernel(kernel);
+    const output = [markKernel(kernel), ...checks.map(markKernel)];
+    return output.length === 1 ? output[0] : output;
   }
   return [
     markKernel(array(sym('let'), completionValueAtom(identity))),
     directBlock(directResultStatements(value, use)),
-    markKernel(array(sym('const'), nameNode, completionValueAtom(identity))),
+    markKernel(array(sym('const'), preparedName, completionValueAtom(identity))),
+    ...checks.map(markKernel),
   ];
 }
 
@@ -2050,7 +2059,10 @@ function expandExprInner(form, env, use = "Legacy", computedMemberCallRequest = 
             { type: "Bind", args },
             { sym, array, gensym, isKeyword, typeContext: cur.typeContext },
           );
-          pushExpanded(out, expandAt(markKernel(kernel), cur, "Legacy"));
+          const emitted = Array.isArray(kernel) ? kernel : [kernel];
+          for (const item of emitted) {
+            pushExpanded(out, expandAt(markKernel(item), cur, "Legacy"));
+          }
           const names = bindingNamesInPattern(binding.nameNode).map((site) => site.name);
           if (names.length) cur = extendEnv(cur, names);
         }
@@ -2129,6 +2141,38 @@ function expandExprInner(form, env, use = "Legacy", computedMemberCallRequest = 
       return current.map((r) => expandAt(r, env, use));
     }
     return expandAt(current, env, use, null, directCallArgumentRequest);
+  }
+
+  // Source inline exports need declaration-aware lowering, but only after the
+  // user macro fixed point above has had first refusal on the `export` head.
+  if (formHead(head) === "export" && !isKernel(form)) {
+    const declaration = form.values[1];
+    const declarationHead = declaration?.type === "list"
+      ? formHead(declaration.values[0])
+      : null;
+    if (declarationHead === "bind" && !env.bindings.has("bind") && !isKernel(declaration)) {
+      if (form.values.length !== 2) throw new Error("export: unrecognized form");
+      const bindNode = classifySurfaceForm("bind", declaration.values.slice(1));
+      if (bindNode?.type === "Bind" || bindNode?.type === "BindGroup") {
+        const sourcePatterns = bindNode.type === "Bind"
+          ? [bindNode.args[0]?.type === "keyword" ? bindNode.args[1] : bindNode.args[0]]
+          : bindNode.bindings.map((binding) => binding.nameNode);
+        const names = sourcePatterns.flatMap((pattern) =>
+          bindingNamesInPattern(pattern).map((site) => sym(site.name))
+        );
+        const expanded = expandAt(
+          declaration,
+          env,
+          "Statement",
+          null,
+          null,
+          RESULT_SLOT.SEQUENCE,
+        );
+        const declarations = Array.isArray(expanded) ? expanded : [expanded];
+        const exportNames = markKernel(array(sym("export"), array(sym("names"), ...names)));
+        return [...declarations.filter((item) => item !== null && item !== undefined), exportNames];
+      }
+    }
   }
 
   if (directCallArgumentRequest && formHead(head) === "spread") {

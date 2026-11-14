@@ -48,8 +48,9 @@ import {
   isKeyword,
   isPascalCase,
   isStatementOnlyForm,
-  paramNameNodes,
-  paramTypeChecks,
+  prepareTypedParam,
+  prepareTypedBind,
+  lowerDiscardBindingPattern,
   parseTypedParams,
   sym,
   toJsIdentifier,
@@ -57,7 +58,7 @@ import {
   wrapReturnLast,
 } from "./surface-helpers.js";
 import { isKernel, markKernel } from "./kernel-mark.js";
-import { isMatchGuardSlot } from "./binding.js";
+import { bindingNamesInPattern, isMatchGuardSlot } from "./binding.js";
 import { FUNC_CLAUSE_KEYS, genfnBodyLayout, parseKeywordClauses } from "./function-clauses.js";
 export { FUNC_CLAUSE_KEYS, genfnBodyLayout, parseKeywordClauses } from "./function-clauses.js";
 
@@ -346,26 +347,6 @@ function isArr(x) {
   return x && x.type === "list" && Array.isArray(x.values);
 }
 
-function namesInPattern(pat) {
-  if (pat?.type === "atom") return pat.value === "_" ? [] : [pat.value];
-  if (!isArr(pat)) return [];
-  const h = pat.values[0]?.type === "atom" ? pat.values[0].value : "";
-  if (h !== "array" && h !== "object") return [];
-  const out = [];
-  for (const el of pat.values.slice(1)) {
-    if (el.type === "keyword") continue;
-    if (el.type === "atom") {
-      if (el.value !== "_") out.push(el.value);
-    } else if (isArr(el)) {
-      const ih = el.values[0]?.type === "atom" ? el.values[0].value : "";
-      if (ih === "rest" && el.values[1]) out.push(...namesInPattern(el.values[1]));
-      else if (ih === "default" && el.values[2]) out.push(...namesInPattern(el.values[2]));
-      else if (ih === "array" || ih === "object") out.push(...namesInPattern(el));
-    }
-  }
-  return out;
-}
-
 function parseBindGroup(args) {
   const bindings = [];
   const seen = new Set();
@@ -395,7 +376,7 @@ function parseBindGroup(args) {
       valueNode = args[i + 1];
       i += 2;
     }
-    for (const name of namesInPattern(nameNode)) {
+    for (const { name } of bindingNamesInPattern(nameNode)) {
       if (seen.has(name)) {
         throw new Error(`bind group declares '${name}' more than once`);
       }
@@ -462,24 +443,28 @@ function emitBindKernelArgs(a, h) {
       throw new Error("bind with type annotation requires 3 arguments");
     }
     const typeKw = a[0], nameNode = a[1], valueNode = a[2];
-    const constDecl = array(sym("const"), nameNode, valueNode);
-    if (typeKw.value === "any") return constDecl;
     const literalType = getLiteralType(valueNode);
+    if (typeKw.value === "any") {
+      return array(sym("const"), lowerDiscardBindingPattern(nameNode), valueNode);
+    }
     if (literalType !== null) {
       if (!typeMatchesLiteral(typeKw.value, literalType)) {
         throw new Error(
           `bind '${nameNode.value}': type annotation is :${typeKw.value} but initializer is a ${literalType} literal.`,
         );
       }
-      return constDecl;
+      return array(sym("const"), lowerDiscardBindingPattern(nameNode), valueNode);
     }
-    const check = buildTypeCheck(nameNode, typeKw, "bind", "");
-    return check === null ? constDecl : array(sym("block"), constDecl, check);
+    const prepared = prepareTypedBind(nameNode, typeKw, "bind");
+    const constDecl = array(sym("const"), prepared.pattern, valueNode);
+    return prepared.checks.length === 0
+      ? constDecl
+      : [constDecl, ...prepared.checks];
   }
   if (a.length !== 2) {
     throw new Error("bind requires exactly name/value or :type name/value arguments");
   }
-  return array(sym("const"), a[0], a[1]);
+  return array(sym("const"), lowerDiscardBindingPattern(a[0]), a[1]);
 }
 
 function emitCondChain(clauses, h) {
@@ -679,11 +664,9 @@ export function emitSurfaceForm(node, h) {
     }
     case "Fn": {
       const params = parseTypedParams(node.paramList);
-      const pNames = params.flatMap((p) => paramNameNodes(p));
-      const typeChecks = [];
-      for (const p of params) {
-        typeChecks.push(...paramTypeChecks(p, "anonymous"));
-      }
+      const prepared = params.map((p) => prepareTypedParam(p, "anonymous"));
+      const pNames = prepared.map((p) => p.pattern);
+      const typeChecks = prepared.flatMap((p) => p.checks);
       if (typeChecks.length > 0 || node.bodyForms.length > 1) {
         return array(
           sym("=>"),
@@ -729,11 +712,12 @@ export function emitSurfaceForm(node, h) {
       return emitBindKernelArgs(node.args, h);
     }
     case "BindGroup":
-      return node.bindings.map((binding) => {
+      return node.bindings.flatMap((binding) => {
         const args = binding.typeKw
           ? [binding.typeKw, binding.nameNode, binding.valueNode]
           : [binding.nameNode, binding.valueNode];
-        return emitBindKernelArgs(args, h);
+        const emitted = emitBindKernelArgs(args, h);
+        return Array.isArray(emitted) ? emitted : [emitted];
       });
     case "Exports":
       return array(sym("export"), array(sym("names"), ...node.names));
@@ -789,11 +773,9 @@ export function emitSurfaceForm(node, h) {
         : a[layout.yieldsPayloadIndex];
       const bodyForms = a.slice(layout.bodyStart);
       const params = parseTypedParams(node.paramList);
-      const pNames = params.flatMap((p) => paramNameNodes(p));
-      const typeChecks = [];
-      for (const p of params) {
-        typeChecks.push(...paramTypeChecks(p, "anonymous"));
-      }
+      const prepared = params.map((p) => prepareTypedParam(p, "anonymous"));
+      const pNames = prepared.map((p) => p.pattern);
+      const typeChecks = prepared.flatMap((p) => p.checks);
       let instrumentedBody = bodyForms;
       if (
         yieldsType && yieldsType.type === "keyword" &&
@@ -855,15 +837,14 @@ export function buildSingleClauseFunc(funcName, funcNameNode, clauseArgs) {
   if (argsClause && argsClause.length === 1 && isArray(argsClause[0])) {
     params = parseTypedParams(argsClause[0]);
   }
-  const pNames = params.flatMap((p) => paramNameNodes(p));
+  const prepared = params.map((p) => prepareTypedParam(p, funcName));
+  const pNames = prepared.map((p) => p.pattern);
 
   // Build function body statements
   const bodyStmts = [];
 
   // Type checks for params
-  for (const p of params) {
-    bodyStmts.push(...paramTypeChecks(p, funcName));
-  }
+  bodyStmts.push(...prepared.flatMap((p) => p.checks));
 
   // Pre-condition
   if (preClause && preClause.length > 0) {
@@ -1025,6 +1006,7 @@ export function buildMultiClauseFunc(funcName, funcNameNode, clauseLists) {
 
   for (const clause of parsed) {
     const { clauses, params } = clause;
+    const prepared = params.map((p) => prepareTypedParam(p, funcName));
     const preClause = clauses.get("pre");
     const postClause = clauses.get("post");
     const bodyClause = clauses.get("body");
@@ -1118,19 +1100,17 @@ export function buildMultiClauseFunc(funcName, funcNameNode, clauseLists) {
       if (p.destructured) {
         // const (object name1 name2) = get(args, i)
         clauseBody.push(
-          array(sym("const"), paramNameNodes(p)[0], argAccess),
+          array(sym("const"), prepared[i].pattern, argAccess),
         );
       } else {
         clauseBody.push(
-          array(sym("const"), p.name, argAccess),
+          array(sym("const"), prepared[i].actual ?? prepared[i].pattern, argAccess),
         );
       }
     }
 
     // Full type checks (with NaN exclusion etc.)
-    for (const p of params) {
-      clauseBody.push(...paramTypeChecks(p, funcName));
-    }
+    clauseBody.push(...prepared.flatMap((p) => p.checks));
 
     // Pre-condition
     if (preClause && preClause.length > 0) {
@@ -1250,15 +1230,14 @@ export function emitGenfuncMacro(args) {
   if (argsClause && argsClause.length === 1 && isArray(argsClause[0])) {
     params = parseTypedParams(argsClause[0]);
   }
-  const pNames = params.flatMap((p) => paramNameNodes(p));
+  const prepared = params.map((p) => prepareTypedParam(p, funcName));
+  const pNames = prepared.map((p) => p.pattern);
 
   // Build generator body
   const bodyStmts = [];
 
   // Type checks for params
-  for (const p of params) {
-    bodyStmts.push(...paramTypeChecks(p, funcName));
-  }
+  bodyStmts.push(...prepared.flatMap((p) => p.checks));
 
   // Pre-condition
   if (preClause && preClause.length > 0) {
