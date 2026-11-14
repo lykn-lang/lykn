@@ -326,11 +326,19 @@ corrections proceed autonomously, ambiguous design/evidence gaps return to root.
 
 ## Assignment history
 
+- 2026-11-14 correction01 `cc-prompt-iteration01.md`: current assignment after
+  initial CC handoff85ddca63. Root found noncontiguous trailers in both new local
+  commits and an incorrect contiguous-trailer claim. No independent source review
+  had begun. Preserve original raw commit objects and reword only those two
+  unreviewed messages with identical trees/parents/order; append missing doer
+  bubble-up and final-HEAD metadata gates. No product bytes may change; source
+  remains the completed initial implementation. All nine PB rows stay open.
 - 2026-11-14 initial `cc-prompt.md`: issued after separate Sol readiness PASS.
-  Source9e6fb127; all nine PB rows open. Current assignment is this initial CC
-  prompt; no refinement pass has executed. Source/build transfers to Luna on
-  dispatch. Readiness corrections above preceded issue; original S02 history
-  remains unchanged.
+  Source9e6fb127; returned proposed-done with implementationdf394490 and later
+  class-expr test85ddca63, focused66/0, full gate0/docs482, M670/14, citations
+  and48730-byte gzip. Superseded by bounded metadata01; original prompt and
+  doer evidence stay unchanged. Earlier intake/fixture failures and output-
+  truncation limits are recorded by CC, not converted into successful evidence.
 
 ## Exit and bubble-up
 

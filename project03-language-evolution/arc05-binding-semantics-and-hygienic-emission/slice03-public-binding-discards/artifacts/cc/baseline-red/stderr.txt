@@ -1,0 +1,2 @@
+Check test/forms/remaining-discard-bindings.test.js
+error: Test failed

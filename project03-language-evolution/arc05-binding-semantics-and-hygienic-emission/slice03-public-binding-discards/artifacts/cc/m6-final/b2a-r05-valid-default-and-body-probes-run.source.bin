@@ -1,0 +1,1 @@
+(macro default-probe () `40) (macro body-probe () `1) (func valid :args ((default :number value (default-probe))) :body (+ value (body-probe))) (console:log (valid))

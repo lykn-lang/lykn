@@ -1,0 +1,29 @@
+running 1 test from ./test/forms/remaining-discard-bindings.test.js
+S03 raw compiler IR stays literal while source expansion prepares discards ... FAILED (40ms)
+
+ ERRORS 
+
+S03 raw compiler IR stays literal while source expansion prepares discards => ./test/forms/remaining-discard-bindings.test.js:84:6
+error: AssertionError: Values are not equal.
+
+
+    [Diff] Actual / Expected
+
+
+-   7\n
++   99\n
+    
+
+
+  throw new AssertionError(message);
+        ^
+    at assertEquals (https://jsr.io/@std/assert/1.0.19/equals.ts:67:9)
+    at executeModule (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/remaining-discard-bindings.test.js:24:5)
+    at async file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/remaining-discard-bindings.test.js:89:3
+
+ FAILURES 
+
+S03 raw compiler IR stays literal while source expansion prepares discards => ./test/forms/remaining-discard-bindings.test.js:84:6
+
+FAILED | 0 passed | 1 failed | 7 filtered out (42ms)
+
