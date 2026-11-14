@@ -9,13 +9,39 @@ related: ["project04-c-lang", "project07-core-library-research"]
 
 # Language evolution
 
-2026-11-13 current authority: the operator pauses further Arc04 implementation
-to reconcile accepted work, failures and remaining scope, then discuss sensible
-slices. [S03](arc04-qualified-adts/slice03-local-qualified-nominal-core/slice-plan.md)
-records the pause before iteration22 source edits. Task source is clean at
-dba24d40; last independently accepted checkpoint is759567f9, and release/0.6.x
-remains0829e892. Existing acceptance and public R01 HOLD remain; no new slice,
-source dispatch, integration or scope transfer is authorized by this discussion.
+## Current approved structure —2026-11-13
+
+The operator approves three distinct planning homes after S03 reconciliation.
+This creates/updates arc roadmaps and ledgers only. Implementation stays paused:
+no new slice, CC prompt, source/build/probe/experiment or release action is
+opened. Task source is clean at dba24d40; latest accepted checkpoint759567f9,
+release/0.6.x0829e892. Public discard R01 remains held,22 remains unexecuted.
+
+| Arc | Coherent outcome | Current planning state |
+| --- | --- | --- |
+| [Arc05 binding semantics and hygienic emission](arc05-binding-semantics-and-hygienic-emission/arc-plan.md) | Complete discard semantics/declarations and preserve source/compiler binding identities through emitted JS | Eight candidate slices, all new rows open; first future slice finishes held public discard work |
+| [Arc04 qualified ADTs](arc04-qualified-adts/arc-plan.md) | Closed owner/case semantics, coherent local qualified values/matching/guards, declarations and trusted initialization | Existing identity retained; S01/S02 and bounded prerequisites accepted; remaining local candidates S08–S13 are roadmap only |
+| [Arc06 ADT modules and library integration](arc06-adt-modules-and-library-integration/arc-plan.md) | Imported ABI, selective emission, actual build/JSON composition and API/docs/book/human handoff | Planning stub receives former Arc04 S04–S07 responsibilities, preserving the existing experiment checkpoint |
+
+Numbers identify records, not execution order. Arc04 metadata work can consume
+already accepted lexical/unit inputs; nominal activation and Arc06 consumers
+require their specific binding/runtime/ABI checkpoints, not arbitrary whole-
+arc barriers. Detail source-ready slices when near, with context/correction
+headroom and immediate delivery proof. No new language contract is selected.
+
+Separate Sol6.1 High read-only planning review checked the four new arc
+documents and changed sections of eight existing records. Its one material
+ownership gap was corrected: native grouped all-discard admission and both
+simple-multi default/rest dispositions now explicitly belong to Arc05 BS-02/03.
+Final disposition is planning-ready, not source-readiness or software acceptance.
+
+[S03](arc04-qualified-adts/slice03-local-qualified-nominal-core/slice-plan.md)
+is retired only as an execution container. Its original statuses/paths and
+issued prompts remain, with every unfinished row mapped to a concrete owner.
+There is no retrospective slice invention, acceptance by pointer or correction-
+budget reset. General reader/I4/warning/tooling and Project07 research/library/
+licence obligations retain their owners. Earlier dated notes/tables below are
+historical; the current structure above supersedes the former combined roadmap.
 
 2026-11-11 current work: [Arc04 S03](arc04-qualified-adts/slice03-local-qualified-nominal-core/slice-plan.md)
 is open from [independently validated local release 0829e892](arc04-qualified-adts/slice02-existing-adt-correctness/artifacts/release-integration-0829e892.md).
@@ -1006,6 +1032,10 @@ with their source and status distinctions. A future
 implementation definition of done is not established by this migration.
 
 ## Version history
+
+- 2026-11-13 v1.61: Record operator-approved three-arc planning structure:
+  new binding Arc05, retained/re-scoped ADT Arc04 and downstream Arc06 stub.
+  Preserve S03 acceptances/history/carry-forward rows and implementation pause.
 
 - 2026-11-09 v1.60: Closed Arc03 at its exact independently reviewed
   task source. P-HI is delivered and the approved fallback, S04 consumer

@@ -2,12 +2,65 @@
 project: project03-language-evolution
 arc: arc04-qualified-adts
 slice: slice03-local-qualified-nominal-core
-status: paused
-version: "1.42"
+status: re-scoped
+version: "2.0"
 depends-on: [slice01-contract-and-emission-design, slice02-existing-adt-correctness]
 ---
 
 # Local qualified nominal core
+
+## Current role: historical execution record and carry-forward map
+
+2026-11-13 v2.0: the operator approves a dedicated binding arc, a recorded
+remaining ADT feature roadmap and a downstream integration arc. S03 is retired
+as an execution container. It is NOT complete, and no acceptance row changes
+status through this restructuring. All original prompt/evidence paths and
+accepted/failed candidates remain here. Implementation remains paused at clean
+dba24d40; the issued22 assignment has not changed source and is not resumed.
+
+Current planning authority is
+[Arc05 bindings](../../arc05-binding-semantics-and-hygienic-emission/arc-plan.md),
+[Arc04 local ADTs](../arc-plan.md) and
+[Arc06 modules/library integration](../../arc06-adt-modules-and-library-integration/arc-plan.md).
+These are arc roadmaps; no new slice or CC assignment is opened now. The first
+future binding slice consumes the complete public21 contract and R01/paused22,
+not merely the correction line. Preserve actual refinement history and limits;
+new slices do not retroactively reset an exhausted correction allowance.
+
+| Original unfinished criterion | Recorded destination | Preserved acceptance |
+| --- | --- | --- |
+| LC-02 local typed owner/case identity | Arc04 S08/S09/S11; Arc05 BS-07/08 supply emission prerequisites | Actual occurrence/alias/shadow/forward queries and fresh unit identity; B1 alone remains partial |
+| LC-03 nominal values and namespace | Arc04 S11 | Exact runtime descriptors, generativity, zero/fielded cases, mutability and safe keys |
+| LC-04 qualified patterns/guards/effects | Arc04 S10/S11 | Owner/case universe, arity, TDZ/qualifier-before-arguments, nested reads and foreign errors |
+| LC-05 coherent APIs/declarations | Arc04 S08/S09/S12 plus Arc06 LI-01/04 | Native check/compile/DTS unit pairing and actual supported public/CLI/browser/module consumers |
+| LC-06 trusted initialization purity | Arc04 S13 | Private producer/AST/serialization/writer proof including feature-local support; no forged purity |
+| LC-07 migration and final production proof | Each delivery slice, Arc04 local close and Arc06 LI-03 | Necessary migrations and final-source full/citation/size/declaration/package proof; originals retained |
+| LC-08 independent handoff/retrospective | Arc04 local close, Arc05 BS-09 and Arc06 LI-06/05; root retains this S03 retirement retrospective | All original rows/limits, actual composition, independent verdicts, book/human and downstream handoff |
+| B2-DISCARD-P held public checkpoint | Arc05 BS-01 | Full original public21 scope plus R01; independent full/M6/citation/size still required |
+
+Additional staged obligations also retain concrete owners: remaining native/
+public catch/loop/raw-callable/method discards, native grouped all-discard
+non-atom Bind admission, preservation of public's existing admission and the
+top-level SIMPLE multi-clause default/rest dispositions go to Arc05 BS-02/03;
+discard DTS goes to BS-04;
+remaining generated/source naming and host/JSON boundary hygiene go to
+BS-05–08. Static type-declaration data grammar, native macro case/field roles,
+builtin guard gaps and nested annotation projections belong to Arc04 S08–S11.
+Existing simple-multi default/rest limitations require BS-02/03 disposition,
+not inferred support. Public stripping absence, fragment/kernel boundaries and
+browser compile versus run/load/CSP impacts remain Arc04 S12 and Arc06 LI-04.
+Reader RDEO/RDCL, I4 checked exits, warnings, tooling, warm-cache distinctions
+and Project07 library/source/licence obligations keep their earlier owners.
+
+The [original ledger](ledger.md) remains authoritative for historical
+acceptances and unfinished promises. A destination pointer alone never closes
+one. Future contributors load a compact new slice contract and relevant
+original witnesses, not every historical S03 prompt as current instructions.
+
+## Preserved pre-restructure plan and assignment history
+
+The v1 notes below are historical. The v2 destinations above govern current
+planning; their old automatic-advance/ownership language does not resume work.
 
 2026-11-13 v1.42 OPERATOR PAUSE: after questioning iteration22, the operator
 requests reconciliation and discussion of sensible remaining slices before
@@ -347,7 +400,7 @@ depth, supported native quotation paths, kernel-only D1 scope corrections and
 validation-only class-member queries. Existing source Func/class aggregate
 scope issues are explicit B2 inputs, not new IC-01 expansion claims.
 
-**Current assignment:** [iteration22](cc-prompt-iteration22.md), issued2026-11-13
+**Last issued assignment (historical, paused):** [iteration22](cc-prompt-iteration22.md), issued2026-11-13
 for public R01 against clean dba24d40/tree0ad99ea5, now OPERATOR-PAUSED before
 source edits. Root and separate Sol had confirmed source-ready before dispatch;
 root now owns source/build and planning during the operator pause. Any resumed

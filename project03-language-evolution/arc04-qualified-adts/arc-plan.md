@@ -1,12 +1,103 @@
 ---
 project: project03-language-evolution
 arc: arc04-qualified-adts
-status: active
-version: "1.27"
-related: [project07-core-library-research]
+status: replanning
+version: "2.0"
+related: [arc05-binding-semantics-and-hygienic-emission, arc06-adt-modules-and-library-integration, project07-core-library-research]
 ---
 
 # Qualified ADTs
+
+## Current v2.0 scope and authority
+
+2026-11-13: the operator approves three distinct planning homes. Arc04 retains
+its existing ADT identity, accepted design and S02 repairs, and records the
+remaining local ADT feature roadmap below. General bindings move to
+[Arc05](../arc05-binding-semantics-and-hygienic-emission/arc-plan.md); imported
+modules, selective emission and library/API/docs handoff move to
+[Arc06](../arc06-adt-modules-and-library-integration/arc-plan.md).
+
+This is planning/restructuring authority, with implementation still paused.
+No slice is opened,22 is not resumed, and no source/build/probe/experiment or
+release action follows. Task source remains clean at dba24d40 with public
+discard R01 held; native759 is the latest accepted checkpoint and release is
+0829e892. Prospective contributor settings remain Luna6 High CC / separate
+Sol6.1 High CDC. Root owns design/planning Git/index and the paused source home.
+
+Deliver local qualified construction, nominal values, matching and guards under
+the [accepted S01 contract](slice01-contract-and-emission-design/artifacts/qualified-adt-contract.md).
+Type/case spelling is not owner identity. Preserve source qualifier reads/TDZ,
+fresh per-unit metadata, token generativity, namespace/descriptor/mutability
+contracts, exact arity, safe property keys and the no-mandatory-runtime policy.
+No new language semantics, sidecar identity or optimizer winner is selected.
+
+## Accepted inputs and remaining candidate slices
+
+S01 design and S02 correctness remain accepted. S03 is retired as an execution
+container, not declared complete: its original paths, seven completed ledger
+rows, partial B1 acceptance, all failed/accepted candidates and22 remain intact.
+The [S03 carry-forward map](slice03-local-qualified-nominal-core/slice-plan.md)
+assigns every unfinished criterion. Its accepted prerequisites are reusable
+inputs, not newly fabricated historical slices.
+
+To avoid reusing identities, S04–S07 keep their old downstream meanings and
+transfer as shown below. New local-core candidates start at S08. These are
+roadmap entries only; no corresponding directories, executable prompts or
+implementation-readiness claims exist yet. Size/design each against actual
+source before opening it, splitting further if needed.
+
+| Candidate | Useful result | Principal original obligations / dependencies |
+| --- | --- | --- |
+| S08 native resolved owner/case unit | Typed owner/case/query facts and scoped native consumers, including semantic check/compile/DTS pairing and nested reconstruction boundaries | LC-02/05; accepted B2-LX/B2-UNIT and settled identity contracts |
+| S09 public resolved owner/case unit | Per-occurrence private requests and closed per-call owner/case facts through actual expansion and fragment/finalizer boundaries | LC-02/05; accepted B1/B2-LX, no macro replay or global active unit |
+| S10 typed-boundary prerequisites | Proper builtin-guard parity and nested annotation value/projection/effect handling required by the nominal feature | LC-04/05; known symbol/bigint/promise and nested-selector gaps require explicit dispositions; no new simple-multi default/rest support inferred |
+| S11 coherent local nominal activation | Qualified construction, nominal namespace/values, recursive qualified matching and required ADT guards agree across both compilers; necessary corpus migration lands with it | LC-02/03/04; S08/S09 facts, S10 prerequisites and relevant Arc05 native/public hygiene |
+| S12 declarations and local public consumers | Exact JS/TS type/value ABI, CLI/browser-compile/embedded/JSON behavior and real declaration consumers describe the same local feature | LC-05/07; S11 and actual supported consumer policies |
+| S13 trusted initialization purity | Private typed provenance through owned initialization/serialization/codegen, including necessary feature-local support; application effects remain visible | LC-06/07; reviewed producer/writer contract and S11/S12 consumers |
+
+Private semantic infrastructure may land before activation, without claiming
+qualified runtime delivery. Activation must co-deliver a coherent minimum of
+construction/matching/guards; static ownership cannot advertise qualified
+semantics while emitting unrelated flat constructors. Feature migrations and
+necessary immediate docs belong to their delivery slice, not deferred audits.
+
+S08/S09 can be designed from accepted lexical/unit inputs without waiting for
+every Arc05 row. S11 needs the specific accepted naming/discard semantics it
+uses; numeric arc order is not dependency order. Full local-core composition,
+independent review and retrospective remain arc-closing obligations.
+
+## Preserved downstream identities and transfer
+
+| Former roadmap slot | New concrete planning owner | Unchanged responsibility |
+| --- | --- | --- |
+| S04 imported interfaces and selective emission | Arc06 LI-01/S01 and LI-02/S02 | Actual module identity/ABI plus existing two-strategy experiment and frozen operator checkpoint |
+| S05 build and research composition | Arc06 LI-03/S03 | Production selective/escaping outputs and repinned original JSON decoder |
+| S06 API/documentation audit | Arc06 LI-04/S04 | Full affected-range/surface audit, coordinated with Arc01 whole-work audit |
+| S07 conditional documentation implementation | Arc06 LI-05/S05 | Findings-driven guides/book edits or justified no-op, actual human acceptance |
+
+Arc04 QA-04–06 remain open at their original paths and are fulfilled only by
+their complete verifiers under these destinations. S03 LC-07/08 span actual
+slice and arc composition; pointer changes do not close them. The
+[Arc04 ledger](ledger.md) retains every original row/status.
+
+## Limits and other owners
+
+Reader RDEO/RDCL remain Project07 Arc03 A3-04. Existing I4/checked exits,
+diagnostic warnings, tooling and same-version warm-cache limits keep their
+owners. Public compile-to-ESM is distinct from existing browser run/load/eval;
+the public API has no assertion-stripping option. S12 must specify actual
+supported consumers and Arc06 LI-04 must account for policy impacts rather
+than inventing successful routes. Original Project07 research, YAML/document,
+library-source/licence and human-review obligations survive this compiler work.
+The0.7.x AOT roadmap remains separate. No publication or release integration is
+authorized by this restructure.
+
+## Preserved v1 combined plan and status history
+
+The following v1 text is retained as historical context, including its former
+combined roadmap and dated ownership statements. Current execution authority,
+scope and destinations are the v2.0 sections above; accepted S01 contracts and
+original verification records remain normative. Issued prompts are unchanged.
 
 2026-11-13 v1.27 current authority: implementation is OPERATOR-PAUSED for
 accepted/failed/remaining reconciliation and discussion of a proper slice
@@ -184,6 +275,11 @@ Project07's original research evidence, final synthesis and library handoffs
 survive this detour, including every YAML and human-review obligation.
 
 ## Version history
+
+- 2026-11-13 v2.0: Operator-approved three-arc decomposition. Retain Arc04 for
+  local ADT feature candidates S08–S13; record general binding owner Arc05 and
+  downstream S04–S07 transfer to Arc06. Retire S03 only as an execution
+  container; preserve every criterion, verdict, path and implementation pause.
 
 - 2026-11-13 v1.27: Record operator implementation pause before22 source edits;
   reconcile live Git/acceptance and discuss new boundaries before replanning.

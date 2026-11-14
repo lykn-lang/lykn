@@ -1,5 +1,16 @@
 # Arc03 — Findings and integration
 
+2026-11-13 planning routing: the operator approves the compiler work split into
+[Project03 Arc05 binding semantics](../../project03-language-evolution/arc05-binding-semantics-and-hygienic-emission/arc-plan.md),
+the existing [Arc04 local qualified ADTs](../../project03-language-evolution/arc04-qualified-adts/arc-plan.md)
+and [Arc06 modules/library integration](../../project03-language-evolution/arc06-adt-modules-and-library-integration/arc-plan.md).
+Only roadmaps/ledgers are recorded; source implementation remains paused.
+NPAT/ZVAR acceptance stays unchanged. RDEO/RDCL stay with this arc's reader
+correction; RTCK and existing guide/book owners survive. Arc06 consumes and
+re-pins the JSON specimen, audits compiler changes and coordinates human/book
+handoff; Project07 retains original research synthesis, AE-05 human acceptance,
+YAML/document proof and individual library/source/licence decisions.
+
 2026-11-13 `D-2611-RDCL` joins the existing A3-04 reader correction beside
 RDEO. During Project03 Arc04/S03 discard testing, an unmatched-close fixture
 stalled a public invocation. Root source review at759567f9 identifies
@@ -222,6 +233,9 @@ Full gates required an isolated cache for an existing package test under the
 CDC sandbox; this is not authority to add npm research dependencies.
 
 ## Version History
+
+- 2026-11-13 v1.20: Record Project03's three-arc planning destinations while
+  preserving reader/guide/research/library and actual human acceptance owners.
 
 - 2026-11-13 v1.19: Route source-identified unmatched-close nonprogress
   D-2611-RDCL to the existing A3-04 reader owner beside RDEO; preserve the

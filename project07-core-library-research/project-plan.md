@@ -9,6 +9,16 @@ related: ["project02-language-toolchain-alignment", "project03-language-evolutio
 
 # Core library research
 
+2026-11-13 compiler planning handoff: remaining binding work has its own
+[Project03 Arc05](../project03-language-evolution/arc05-binding-semantics-and-hygienic-emission/arc-plan.md),
+local qualified ADTs retain [Arc04](../project03-language-evolution/arc04-qualified-adts/arc-plan.md),
+and downstream modules/selective builds/JSON re-pin/API/docs handoff have
+[Arc06](../project03-language-evolution/arc06-adt-modules-and-library-integration/arc-plan.md).
+These are planning homes; source work remains paused. Original research final
+synthesis, decoder/human review, reader/guide corrections, YAML/document proof
+and this project's library-opening responsibilities remain open with their
+existing owners. Compiler plan restructuring does not deliver a library.
+
 2026-11-11 current handoff. [Project03 Arc04 S01](../project03-language-evolution/arc04-qualified-adts/slice01-contract-and-emission-design/cdc-verification.md#iteration04-final-design-acceptance--2026-11-11)
 settles the qualified ADT contract and proposed emission protocol at independent
 design-review strength. Its source is still 685bbe1d; original ADT repairs,

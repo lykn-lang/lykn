@@ -1,5 +1,12 @@
 # S03 local qualified nominal core ledger
 
+2026-11-13 v2.0: S03 is re-scoped as historical execution record, not closed.
+The [carry-forward map](slice-plan.md) assigns all eight unfinished criteria
+and additional staged obligations to Arc05, remaining Arc04 and Arc06. All
+original statuses/evidence below are retained. No new delivery is accepted by
+transfer, and paused22 does not resume. Retired-container retrospective remains
+a root responsibility; new arc close evidence must satisfy the original rows.
+
 2026-11-13: operator pauses implementation before22 source edits for status
 reconciliation and discussion of new slice boundaries. No row changes status:
 native759 remains accepted; public R01 remains held. Issued22 is preserved but
