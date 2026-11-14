@@ -1,0 +1,50 @@
+diff --git a/crates/lykn-lang/embedded/packages/lang/binding.js b/crates/lykn-lang/embedded/packages/lang/binding.js
+index c1f8abc3..195f7eda 100644
+--- a/crates/lykn-lang/embedded/packages/lang/binding.js
++++ b/crates/lykn-lang/embedded/packages/lang/binding.js
+@@ -278,7 +278,7 @@ function walkPatternDefaults(pattern, out, inScope, grammar) {
+   const head = pattern.values[0]?.type === "atom" ? pattern.values[0].value : "";
+   if (head === "default") {
+     const typed = grammar === PatternGrammar.TYPED_PARAMETER;
+-    if (grammar === PatternGrammar.BINDING_PATTERN) walkPatternDefaults(pattern.values[1], out, inScope, grammar);
++    if (!typed) walkPatternDefaults(pattern.values[1], out, inScope, grammar);
+     const value = pattern.values[typed ? 3 : 2];
+     if (value) walk(value, out, inScope);
+     return;
+diff --git a/packages/lang/binding.js b/packages/lang/binding.js
+index c1f8abc3..195f7eda 100644
+--- a/packages/lang/binding.js
++++ b/packages/lang/binding.js
+@@ -278,7 +278,7 @@ function walkPatternDefaults(pattern, out, inScope, grammar) {
+   const head = pattern.values[0]?.type === "atom" ? pattern.values[0].value : "";
+   if (head === "default") {
+     const typed = grammar === PatternGrammar.TYPED_PARAMETER;
+-    if (grammar === PatternGrammar.BINDING_PATTERN) walkPatternDefaults(pattern.values[1], out, inScope, grammar);
++    if (!typed) walkPatternDefaults(pattern.values[1], out, inScope, grammar);
+     const value = pattern.values[typed ? 3 : 2];
+     if (value) walk(value, out, inScope);
+     return;
+diff --git a/test/forms/discard-bindings.test.js b/test/forms/discard-bindings.test.js
+index ac369447..7795a1c8 100644
+--- a/test/forms/discard-bindings.test.js
++++ b/test/forms/discard-bindings.test.js
+@@ -419,6 +419,19 @@ Deno.test("public binding patterns preserve spread, keys, assignment, and legacy
+     }`,
+     "8\n",
+   );
++  const catchDefault = `(try (throw (array (array)))
++    (catch (array (default (array (default value (=> (input) 1))) (array)))
++      (console:log (value 7))))`;
++  for (const compileFacade of [lykn, browserCompileLykn]) {
++    await executeModule(compileFacade(catchDefault), "1\n");
++    for (const reserved of ["eval", "arguments"]) {
++      assertThrows(
++        () => compileFacade(catchDefault.replace("input", reserved)),
++        Error,
++        `'${reserved}' is forbidden as a strict-mode binding identifier`,
++      );
++    }
++  }
+   assertThrows(
+     () =>
+       lykn(

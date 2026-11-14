@@ -2,13 +2,20 @@
 project: project03-language-evolution
 arc: arc04-qualified-adts
 status: replanning
-version: "2.0"
+version: "2.1"
 related: [arc05-binding-semantics-and-hygienic-emission, arc06-adt-modules-and-library-integration, project07-core-library-research]
 ---
 
 # Qualified ADTs
 
 ## Current v2.0 scope and authority
+
+Current checkpoint2026-11-13: the separately authorized
+[Arc05 S01](../arc05-binding-semantics-and-hygienic-emission/slice01-public-source-discards/cdc-verification.md)
+is independently accepted at49982409, closing public Source discards and R01.
+Arc04 local ADT work stays paused; release remains0829e892. This changes only
+the accepted prerequisite/status, not the roadmap or qualified-feature gates.
+Earlier restructuring source pins and pause wording below are historical.
 
 2026-11-13: the operator approves three distinct planning homes. Arc04 retains
 its existing ADT identity, accepted design and S02 repairs, and records the
@@ -278,6 +285,9 @@ Project07's original research evidence, final synthesis and library handoffs
 survive this detour, including every YAML and human-review obligation.
 
 ## Version history
+
+- 2026-11-13 v2.1: Arc05 S01 supplies accepted public Source discards49982409;
+  record the resolved R01 prerequisite without activating local qualified ADTs.
 
 - 2026-11-13 v2.0: Operator-approved three-arc decomposition. Retain Arc04 for
   local ADT feature candidates S08–S13; record general binding owner Arc05 and

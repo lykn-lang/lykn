@@ -1,0 +1,4 @@
+cad3be2ebe003fd315c0b577d34a2dfdbb8491d57cb2e3ae82587e992a5d6d2e  packages/lang/binding.js
+cad3be2ebe003fd315c0b577d34a2dfdbb8491d57cb2e3ae82587e992a5d6d2e  crates/lykn-lang/embedded/packages/lang/binding.js
+cad3be2ebe003fd315c0b577d34a2dfdbb8491d57cb2e3ae82587e992a5d6d2e  target/lykn/build/lang/binding.js
+dcd62dd69e400d52877e80f62d61e31f5ee3ea21d0b3a2592ac9c4abe0c33529  test/forms/discard-bindings.test.js

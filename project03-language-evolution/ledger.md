@@ -1,5 +1,11 @@
 # project03-language-evolution ledger
 
+2026-11-13: [Arc05 S01](arc05-binding-semantics-and-hygienic-emission/slice01-public-source-discards/cdc-verification.md)
+independently closes the full public Source discard checkpoint at49982409,
+including R01 and final delivery gates. BS-01 and original B2-DISCARD-P are done;
+P-BIND/P-QADT/composition and all other unfinished rows remain open. Source is
+task-only; release remains0829e892 and no later slice is opened.
+
 [Arc02 S04 and S05](arc02-ad-hoc-maintenance/slice05-browser-estree-bridge-split/cdc-verification.md)
 are independently accepted at task `685bbe1d`. AM-06 and AM-07
 are done. AM-05 also closes with [independent local release verification](arc02-ad-hoc-maintenance/artifacts/release-integration-685bbe1d.md)

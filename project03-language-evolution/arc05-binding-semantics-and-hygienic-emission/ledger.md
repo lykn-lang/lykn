@@ -1,15 +1,15 @@
 # Binding semantics and hygienic emission ledger
 
-2026-11-13: [S01](slice01-public-source-discards/slice-plan.md) is active under
-operator-selected Luna6 High CC / Sol6.1 High CDC, Autonomous Mode. BS-01 remains
-open pending full independent acceptance; this does not open S02 or later work.
+2026-11-13: [S01](slice01-public-source-discards/slice-plan.md) is independently
+closed at49982409 under operator-selected Luna6 High CC / Sol6.1 High CDC,
+Autonomous Mode. BS-01 closes; this does not open S02 or later work.
 
-All rows remain open at S01 issue; historical S03 acceptances are inputs,
+All rows were open at S01 issue; historical S03 acceptances are inputs,
 not retrospective completion of these new deliveries.
 
 | ID | Criterion | Verify | Significance | Origin | Status | Evidence |
 | --- | --- | --- | --- | --- | --- | --- |
-| BS-01 | Public Source discards satisfy the original complete contract with R01 repaired | Original21/22 discriminators, strict-name catch negatives before codegen, real canonical/browser/materialized behavior and independent final-source gates | correctness-grade | S03 B2-DISCARD-P and R01 | open | [Active S01](slice01-public-source-discards/slice-plan.md); [historical HOLD](../arc04-qualified-adts/slice03-local-qualified-nominal-core/artifacts/increment-b2b3/public/cdc/README.md) retained |
+| BS-01 | Public Source discards satisfy the original complete contract with R01 repaired | Original21/22 discriminators, strict-name catch negatives before codegen, real canonical/browser/materialized behavior and independent final-source gates | correctness-grade | S03 B2-DISCARD-P and R01 | done | [Independent S01 acceptance](slice01-public-source-discards/cdc-verification.md) at49982409: complete9-row contract, fresh203/56/full1201/1570/482/M662/14/cites64/601/gzip47747 and explicitly applicable retained supplements; [historical HOLD](../arc04-qualified-adts/slice03-local-qualified-nominal-core/artifacts/increment-b2b3/public/cdc/README.md) preserved |
 | BS-02 | Remaining native binding forms implement the settled discard policy and explicitly disposition inherited admission/signature limits | Catch/loop/raw-callable/method coverage, grouped all-discard non-atom Bind admission, top-level SIMPLE multi default/rest disposition, effects/checks/schema roles and checked/stripped consumers | correctness-grade | S03 staged discard/grouped/signature follow-through | open | [Policy and staged limits](../arc04-qualified-adts/slice03-local-qualified-nominal-core/artifacts/b2-native-runtime-name-plan.md); no new support semantics inferred |
 | BS-03 | Remaining public binding forms implement the same policy with explicit backend boundary dispositions | Public/browser/fragment/materialized behavior, already-admitted non-atom discard groups, top-level SIMPLE multi default/rest disposition and preserved data/private/grammar roles | correctness-grade | S03 staged discard/grouped/signature follow-through | open | Source-ready contract still required; no native rejection imported or new feature acceptance inferred |
 | BS-04 | Discard declarations describe real parameters and exports | Actual generated DTS/TypeScript consumers, repeated discard parameters, empty/mixed exports and unchanged schema/property names | correctness-grade | S03 native discard DTS carryover | open | Native/public Source acceptance does not establish declaration parity |

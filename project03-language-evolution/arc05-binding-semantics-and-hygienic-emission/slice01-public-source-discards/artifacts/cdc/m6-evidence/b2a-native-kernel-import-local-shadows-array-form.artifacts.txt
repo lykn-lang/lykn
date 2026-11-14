@@ -1,0 +1,4 @@
+js_path="/private/tmp/lykn-arc05-s01-cdc/tmp/.tmp5h6BV5/import-scope.mjs"
+js_exists=true
+dts_path="/private/tmp/lykn-arc05-s01-cdc/tmp/.tmp5h6BV5/import-scope.d.ts"
+dts_exists=false

@@ -1,0 +1,4 @@
+js_path="/private/tmp/lykn-arc05-s01-cdc/tmp/.tmp0duRGj/genfn-body.mjs"
+js_exists=false
+dts_path="/private/tmp/lykn-arc05-s01-cdc/tmp/.tmp0duRGj/genfn-body.d.ts"
+dts_exists=false

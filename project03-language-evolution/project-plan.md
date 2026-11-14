@@ -1,6 +1,7 @@
 ---
 project: project03-language-evolution
 status: research
+version: "1.62"
 planned-release: "0.7.0"
 depends-on: ["project02-language-toolchain-alignment"]
 blocks: []
@@ -10,6 +11,13 @@ related: ["project04-c-lang", "project07-core-library-research"]
 # Language evolution
 
 ## Current approved structure —2026-11-13
+
+Current delivery: [Arc05 S01 independently closes](arc05-binding-semantics-and-hygienic-emission/slice01-public-source-discards/cdc-verification.md)
+at49982409/treeb18e75dc, with all nine public discard rows accepted and R01
+resolved. BS-01 and original B2-DISCARD-P are done; P-BIND/P-QADT and all other
+unfinished rows remain open. Source is clean on the task branch; release stays
+0829e892. No S02 or later implementation is opened. The original opening pins
+and held candidate below record the earlier checkpoint.
 
 The operator approves three distinct planning homes after S03 reconciliation.
 The subsequent operator instruction opens
@@ -23,7 +31,7 @@ historical S03 assignment22 remains unexecuted.
 
 | Arc | Coherent outcome | Current planning state |
 | --- | --- | --- |
-| [Arc05 binding semantics and hygienic emission](arc05-binding-semantics-and-hygienic-emission/arc-plan.md) | Complete discard semantics/declarations and preserve source/compiler binding identities through emitted JS | S01 active for held public discard completion; all rows open, seven later candidates remain roadmap only |
+| [Arc05 binding semantics and hygienic emission](arc05-binding-semantics-and-hygienic-emission/arc-plan.md) | Complete discard semantics/declarations and preserve source/compiler binding identities through emitted JS | S01 independently closed49982409; BS-01 done, BS-02–09 open; seven later candidates remain roadmap only |
 | [Arc04 qualified ADTs](arc04-qualified-adts/arc-plan.md) | Closed owner/case semantics, coherent local qualified values/matching/guards, declarations and trusted initialization | Existing identity retained; S01/S02 and bounded prerequisites accepted; remaining local candidates S08–S13 are roadmap only |
 | [Arc06 ADT modules and library integration](arc06-adt-modules-and-library-integration/arc-plan.md) | Imported ABI, selective emission, actual build/JSON composition and API/docs/book/human handoff | Planning stub receives former Arc04 S04–S07 responsibilities, preserving the existing experiment checkpoint |
 
@@ -1036,6 +1044,10 @@ with their source and status distinctions. A future
 implementation definition of done is not established by this migration.
 
 ## Version history
+
+- 2026-11-13 v1.62: Arc05 S01 independently delivers the full public Source
+  discard checkpoint49982409 and resolves R01. Reconcile BS-01/B2-DISCARD-P;
+  retain qualified feature, remaining binding, research and release gates.
 
 - 2026-11-13 v1.61: Record operator-approved three-arc planning structure:
   new binding Arc05, retained/re-scoped ADT Arc04 and downstream Arc06 stub.

@@ -59,3 +59,20 @@ All supporting records are in [artifacts/cc/](artifacts/cc/):
 **New finding:** none beyond the already documented R01 cause and narrow correction. Regression-first red and corrected green now accompany that source finding. No other acceptance obligation was dropped or weakened.
 
 **Scope diff:** exactly the two mirrored walker guard edits and one existing test-group addition authorized by the active prompt. No source-fn expansion, catch grammar, reader, annotation, raw-discard, naming/owner, DTS, API, book, human or release work was added. Those future items and prior external limits retain their recorded owners/statuses. Root and the assigned CDC retain planning Git/index, ledger closure and any arc-level reconciliation. This handoff does not advance S02 or imply project/release acceptance.
+
+## Root closing metadata —2026-11-13
+
+The CC attestation above is preserved. Separate Sol6.1 High
+[verification](cdc-verification.md) accepts49982409 and resolves R01. Root has
+completed the [retrospective](cdc-retrospective.md), closed all nine
+[PD rows](ledger.md), BS-01 and the original B2-DISCARD-P row, preserving every
+other unfinished owner. No structural roadmap change is needed; S02 is not opened.
+
+Planning issue was585f9c50 with parent-status alignment27c41a59; the immutable
+CC handoff packet isdcecccb4. The final closing-packet hash is pending until
+this report, reviewer receipts and exact named metadata paths are committed;
+Git identifies that commit. Source commit scope remains the three files listed
+above. Planning close scope is reviewer artifacts/cdc, this report,
+cdc-verification.md, cdc-retrospective.md, S01 plan/ledger, Arc05 plan/ledger,
+the original S03 plan/ledger, Arc04 plan, Project03 plan/ledger, and Project07
+plan/Arc03 routing. Source and release content are unchanged by this close.

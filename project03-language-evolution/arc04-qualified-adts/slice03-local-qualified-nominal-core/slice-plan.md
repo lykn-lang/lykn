@@ -3,13 +3,27 @@ project: project03-language-evolution
 arc: arc04-qualified-adts
 slice: slice03-local-qualified-nominal-core
 status: re-scoped
-version: "2.0"
+version: "2.1"
 depends-on: [slice01-contract-and-emission-design, slice02-existing-adt-correctness]
 ---
 
 # Local qualified nominal core
 
+## Transfer-maintenance version history
+
+- 2026-11-13 v2.1: Arc05 S01 independently delivers the complete inherited
+  public discard checkpoint49982409; reconcile B2-DISCARD-P and retain this
+  container's retired status, original failures and remaining LC owners.
+- 2026-11-13 v2.0: Retire the combined execution container and record the
+  operator-approved three-arc carry-forward map. Prior history remains below.
+
 ## Current role: historical execution record and carry-forward map
+
+Current outcome2026-11-13: [Arc05 S01 independently closes](../../arc05-binding-semantics-and-hygienic-emission/slice01-public-source-discards/cdc-verification.md)
+the full public Source discard checkpoint at49982409, resolving R01 and closing
+the original B2-DISCARD-P row. S03 stays retired/re-scoped, with LC-02–08 open;
+no later slice or release action follows. The following opening/pause text is
+preserved as history, not current public-discard status.
 
 2026-11-13 subsequent authority: the operator opens
 [Arc05 S01](../../arc05-binding-semantics-and-hygienic-emission/slice01-public-source-discards/slice-plan.md)
@@ -43,7 +57,7 @@ new slices do not retroactively reset an exhausted correction allowance.
 | LC-06 trusted initialization purity | Arc04 S13 | Private producer/AST/serialization/writer proof including feature-local support; no forged purity |
 | LC-07 migration and final production proof | Each delivery slice, Arc04 local close and Arc06 LI-03 | Necessary migrations and final-source full/citation/size/declaration/package proof; originals retained |
 | LC-08 independent handoff/retrospective | Arc04 local close, Arc05 BS-09 and Arc06 LI-06/05; root retains this S03 retirement retrospective | All original rows/limits, actual composition, independent verdicts, book/human and downstream handoff |
-| B2-DISCARD-P held public checkpoint | Arc05 BS-01 | Full original public21 scope plus R01; independent full/M6/citation/size still required |
+| B2-DISCARD-P public checkpoint, now accepted49982409 | Arc05 BS-01, closed through S01 | Full original public21 scope plus R01; independent full/M6/citation/size and retained supplements verified in S01 |
 
 Additional staged obligations also retain concrete owners: remaining native/
 public catch/loop/raw-callable/method discards, native grouped all-discard

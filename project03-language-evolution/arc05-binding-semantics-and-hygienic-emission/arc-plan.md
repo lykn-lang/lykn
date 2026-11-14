@@ -2,7 +2,7 @@
 project: project03-language-evolution
 arc: arc05-binding-semantics-and-hygienic-emission
 status: active
-version: "0.2"
+version: "0.3"
 planned-release: unassigned
 depends-on: []
 related: [arc04-qualified-adts, arc06-adt-modules-and-library-integration]
@@ -11,6 +11,14 @@ related: [arc04-qualified-adts, arc06-adt-modules-and-library-integration]
 # Binding semantics and hygienic emission
 
 ## Authority and outcome
+
+Current outcome2026-11-13: [S01 is independently closed](slice01-public-source-discards/cdc-verification.md)
+at4998240927909c3abc0172dfef2b56076b19f708, treeb18e75dc06888a771bd7f3aa92a3c2cb1a7e1dc8.
+BS-01 is done, including the complete inherited public contract and R01 repair;
+BS-02–09 remain open. Root completed retrospective and old B2-DISCARD-P
+reconciliation. This is task-branch delivery; release remains0829e892.
+No structural roadmap change was needed. S02–08 are not opened.
+The following opening authority is preserved as history.
 
 2026-11-13: the operator approves this separate binding arc after the Arc04
 S03 reconciliation. The subsequent operator instruction opens
@@ -32,7 +40,7 @@ arguments, defaults, destructuring operations and applicable type checks.
 Schema fields, property keys, labels and foreign/public names have distinct
 roles; no global string replacement or source-name prefix grants authority.
 
-## Accepted inputs and current held work
+## Accepted inputs and inherited held-work history
 
 Consume the bounded acceptances in the
 [historical S03 ledger](../arc04-qualified-adts/slice03-local-qualified-nominal-core/ledger.md):
@@ -41,10 +49,11 @@ regions, owned native analysis units, both ICU name allocators and native
 Source discards. Their original evidence and limits remain authoritative.
 
 Source home is the existing `.worktrees/contract-predicate-lowering`, branch
-`codex/qualified-adt-core`, currently clean at
+`codex/qualified-adt-core`, clean at S01 issue at
 `dba24d4063f34551c30590c884a495c8ca57298f`. The last independently accepted
 checkpoint is native discard `759567f9`; release/0.6.x remains `0829e892`.
-The public candidate has [R01 HOLD](../arc04-qualified-adts/slice03-local-qualified-nominal-core/artifacts/increment-b2b3/public/cdc/README.md).
+The issue-time public candidate had [R01 HOLD](../arc04-qualified-adts/slice03-local-qualified-nominal-core/artifacts/increment-b2b3/public/cdc/README.md),
+subsequently resolved by S01 as recorded above.
 The preserved [iteration22](../arc04-qualified-adts/slice03-local-qualified-nominal-core/cc-prompt-iteration22.md)
 was paused before source edits. It is input to BS-01, not an automatically
 resumed assignment. The full public21 contract and original failed attempts
@@ -52,15 +61,15 @@ remain part of BS-01's acceptance scope; fixing R01 alone is not acceptance.
 
 ## Candidate slice roadmap
 
-These are capability boundaries, not implementation-ready assignments or
-existing slice directories. Before opening one, inspect current source, finish
+S01 is now delivered; the later entries are capability boundaries, not
+implementation-ready assignments or existing slice directories. Before opening one, inspect current source, finish
 its design and size its reading/code/proof packet with correction headroom.
 Split further before issue if it cannot fit. Each slice includes implementation,
 affected delivery, necessary immediate documentation and independent review.
 
 | Candidate | Useful delivery | Specific prerequisites |
 | --- | --- | --- |
-| [S01 public Source discard completion](slice01-public-source-discards/slice-plan.md) — active | Restore nested catch-default validation and independently finish the existing public discard contract across canonical/browser/materialized paths | Native759, held publicdba, original21 scope and R01 witness |
+| [S01 public Source discard completion](slice01-public-source-discards/slice-plan.md) — closed49982409 | Restored nested catch-default validation and independently finished the existing public discard contract across canonical/browser/materialized paths | Native759, held publicdba, original21 scope and R01 witness; original failures preserved |
 | S02 native remaining discard binding forms | Complete native catch/loop/raw-callable/method roles; explicitly resolve grouped all-discard non-atom Bind admission and the existing simple-multi default/rest boundary | S01 stable baseline; explicit consumed-role/API contract before issue |
 | S03 public remaining discard binding forms | Deliver corresponding public/browser behavior, preserve already-admitted non-atom discard groups, and explicitly resolve the public simple-multi default/rest boundary | S02's reviewed shared contract; public consumer census, data/schema and private finalization |
 | S04 discard-aware declarations | Keep parameters, schema fields and exported declarations consistent with actual discard behavior | S02/S03 semantics; actual TypeScript declaration consumer |
@@ -90,7 +99,7 @@ early source-owner queries from the later runtime binding/name plan.
 
 ## Verification, handoff and limits
 
-The [ledger](ledger.md) carries BS-01–09, all open. Independent acceptance must
+The [ledger](ledger.md) carries BS-01 done and BS-02–09 open. Independent acceptance must
 cover actual changed consumers, meaningful negative controls, repository checks
 and embedded parity. Preserve final-source citations, existing size policy,
 cache/network limits, original failures and exact commit scope. Test count
@@ -110,6 +119,10 @@ substitute helper-language exception. Reader RDEO/RDCL, Arc01 I4 and diagnostic
 work, whole-work audits and the separate book/human gates keep their owners.
 
 ## Version history
+
+- 2026-11-13 v0.3: S01 closes at49982409 with full independent Source-discard
+  proof; update status/checkpoint, preserve held history and later boundaries.
+  S01 revealed no structural roadmap amendment.
 
 - 2026-11-13 v0.2: Open S01 under explicit operator implementation authority;
   preserve later candidates and historical acceptance boundaries.

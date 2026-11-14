@@ -1,5 +1,11 @@
 # Arc03 — Findings and integration
 
+2026-11-13 later checkpoint: [Project03 Arc05 S01](../../project03-language-evolution/arc05-binding-semantics-and-hygienic-emission/slice01-public-source-discards/cdc-verification.md)
+independently accepts public Source discards at49982409, including R01.
+Only that compiler prerequisite is delivered. Reader/qualified feature/library/
+synthesis/book/human and all other unfinished gates retain their owners; no
+subsequent implementation or release action is opened. Earlier pause is history.
+
 2026-11-13 planning routing: the operator approves the compiler work split into
 [Project03 Arc05 binding semantics](../../project03-language-evolution/arc05-binding-semantics-and-hygienic-emission/arc-plan.md),
 the existing [Arc04 local qualified ADTs](../../project03-language-evolution/arc04-qualified-adts/arc-plan.md)

@@ -2,12 +2,25 @@
 project: project03-language-evolution
 arc: arc05-binding-semantics-and-hygienic-emission
 slice: slice01-public-source-discards
-status: active
-version: "1.0"
+status: closed
+version: "1.1"
 depends-on: [accepted-native-discards-759567f9, held-public-candidate-dba24d40]
 ---
 
 # Public Source discard completion
+
+## Accepted delivery —2026-11-13
+
+S01 closes at4998240927909c3abc0172dfef2b56076b19f708,
+treeb18e75dc06888a771bd7f3aa92a3c2cb1a7e1dc8, task branch only. Separate
+Sol6.1 High [verification](cdc-verification.md) accepts the complete inherited
+contract and R01 repair. All nine PD rows are done; root has completed the
+[retrospective](cdc-retrospective.md) and BS-01/B2-DISCARD-P reconciliation.
+The [CC closing report](closing-report.md) remains its original proposed-done
+attestation, superseded for acceptance by the independent record and ledger.
+Source/build ownership returned clean with no owned jobs. Release0829e892 and
+all other arc/project rows remain unchanged. S02 is not opened.
+The authority and source pins below describe the original issue checkpoint.
 
 ## Authority, source and endpoint
 
@@ -111,9 +124,12 @@ no Python or substitute research-helper language exception.
 
 | Prompt | Date | Predecessor | Purpose | State |
 | --- | --- | --- | --- | --- |
-| cc-prompt.md | 2026-11-13 | Historical S03 held21 / paused22 | First public correction and full independent Source discard completion | Issued; source/build transfers to Luna on dispatch |
+| cc-prompt.md | 2026-11-13 | Historical S03 held21 / paused22 | First public correction and full independent Source discard completion | Completed at49982409; independently accepted, clean source/build returned |
 
 ## Version history
+
+- 2026-11-13 v1.1: Independently close all nine rows at49982409; record root
+  retrospective and parent reconciliation without advancing later work.
 
 - 2026-11-13 v1.0: Open operator-authorized S01 with complete inherited scope,
   narrow R01 repair, fresh selected contributors and slice-only endpoint.

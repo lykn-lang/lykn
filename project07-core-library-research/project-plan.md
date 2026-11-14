@@ -9,12 +9,18 @@ related: ["project02-language-toolchain-alignment", "project03-language-evolutio
 
 # Core library research
 
+2026-11-13 compiler prerequisite update: [Project03 Arc05 S01](../project03-language-evolution/arc05-binding-semantics-and-hygienic-emission/slice01-public-source-discards/cdc-verification.md)
+independently accepts public Source discards at49982409 and resolves R01.
+Qualified ADTs, library/decoder composition, research synthesis and human/book
+acceptance remain open. This task-branch checkpoint does not resume a library
+trial or change release0829e892; the earlier global pause below is historical.
+
 2026-11-13 compiler planning handoff: remaining binding work has its own
 [Project03 Arc05](../project03-language-evolution/arc05-binding-semantics-and-hygienic-emission/arc-plan.md),
 local qualified ADTs retain [Arc04](../project03-language-evolution/arc04-qualified-adts/arc-plan.md),
 and downstream modules/selective builds/JSON re-pin/API/docs handoff have
 [Arc06](../project03-language-evolution/arc06-adt-modules-and-library-integration/arc-plan.md).
-These are planning homes; source work remains paused. Original research final
+These remain the planning homes; later compiler work remains paused. Original research final
 synthesis, decoder/human review, reader/guide corrections, YAML/document proof
 and this project's library-opening responsibilities remain open with their
 existing owners. Compiler plan restructuring does not deliver a library.
