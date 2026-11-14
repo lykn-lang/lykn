@@ -10,8 +10,8 @@ related: ["project02-language-toolchain-alignment", "project03-language-evolutio
 # Core library research
 
 2026-11-14 compiler prerequisite update: Project03 Arc05 S05 native generated-
-name source/delivery is independently validated at82f1b65b; root closing
-metadata remains pending. Actual canonical/fragment/CLI/kernel-JSON/package
+name source/delivery is independently validated at82f1b65b; final closing-
+metadata PASS completes all8NH/BS-05. Actual canonical/fragment/CLI/kernel-JSON/package
 checks support this bounded native prerequisite. Public/exact naming and
 qualified ADT/compiler composition remain open; no JSON/YAML trial resumes.
 The selected lang/lib/ and opt-in @lykn/* JSR direction remains selected;
@@ -480,7 +480,7 @@ authoring evaluation remains Arc02.
 ## Version History
 
 - 2026-11-14 v1.33: Carry independently validated S05 native generated-name
-  source/delivery at82, pending root closing metadata, as a compiler prerequisite.
+  source/delivery at82, including root closing-metadata PASS, as a compiler prerequisite.
   Retain selected optional lib/JSR direction and every research/library/reader/
   guide/book/human/licence/bootstrap/home-proof obligation. No trial resumes.
 

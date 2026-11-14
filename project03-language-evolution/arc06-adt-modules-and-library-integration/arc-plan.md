@@ -13,8 +13,8 @@ related: [arc04-qualified-adts, arc05-binding-semantics-and-hygienic-emission, p
 ## Authority and useful result
 
 2026-11-14 carry-forward: Arc05 S05 source/delivery is independently validated
-at82f1b65b92529979afd6c624183912ca31453927/tree4bb6bfc9; root closing metadata
-remains pending. LI-04 receives the exact c0ed4546→82f1b65b ten-path range:
+at82f1b65b92529979afd6c624183912ca31453927/tree4bb6bfc9; separate metadata
+PASS completes all8NH/BS-05. LI-04 receives the exact c0ed4546→82f1b65b ten-path range:
 complete borrowed source census and whole-unit/one-form entrances; generated
 counter/preferred/reset/failure occupancy behavior; actual-writer physical atom
 collection, static Unicode decoding and candidate keys; early result/yield/
@@ -148,7 +148,7 @@ human/book gates require actual dispositions.
 
 Use existing planning and assigned task homes; refresh pins before authoring.
 Current independently validated task source is clean82f1b65b, with S05 root
-closing metadata pending; release is independently acceptedc60dea62. Earlier
+closing-metadata PASS; release is independently acceptedc60dea62. Earlier
 c0ed/S04 and dba24d40/public-discard-held/release0829 are historical checkpoints.
 S04 root closing metadata is independently verified in its owning slice.
 Prospective source work uses the established Luna6 High implementer and separate
@@ -161,7 +161,7 @@ Repository Lykn-only helper rules apply; no Python exception.
 
 - 2026-11-14 v0.5: Carry S05's exact c0ed→82 native census/generator/physical-
   key/late-composition/API-output/guide input to LI-04, keeping all six rows and
-  S06/S07/AWEX/qualified/library/book/human gates open. Root metadata is pending;
+  S06/S07/AWEX/qualified/library/book/human gates open. Root metadata PASS completes S05;
   no new implementation or experiment is authorized.
 
 - 2026-11-14 v0.4: Carry Arc05 S04's exact c60→c0ed generated-declaration/

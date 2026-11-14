@@ -15,8 +15,8 @@ related: ["project04-c-lang", "project07-core-library-research"]
 Current2026-11-14: [Arc05 S05](arc05-binding-semantics-and-hygienic-emission/slice05-native-generated-name-hygiene/cdc-verification.md)
 source/delivery is independently validated at82f1b65b/tree4bb6bfc9. Native
 generated storage now has complete source/physical-name reservation and actual
-early/late/file/JSON/package proof. Root retrospective/parent routing and final
-NH-08 metadata are being completed; BS-05 remains open until that gate.
+early/late/file/JSON/package proof. Root retrospective/parent routing and separate
+NH-08 metadata PASS are complete; all8NH/BS-05 close.
 P-BIND/P-QADT and S06 public parity/S07 exact source names, qualified/module/
 composition/library/book/human gates remain open. Arc06 LI-04 receives the exact
 c0ed→82 source/API/output/guide inputs; AWEX/MPVR/NUMI remain unopened Arc02
@@ -1114,8 +1114,8 @@ implementation definition of done is not established by this migration.
 
 - 2026-11-14 v1.70: Carry independently validated Arc05 S05 native hygiene
   source/delivery at82 into Arc06 exact-range API audit and qualified/research
-  prerequisite maps; root closing metadata remains pending. No parent row,
-  later slice, research/library trial or release action is closed by that input.
+  prerequisite maps; separate NH-08 metadata PASS closes all8NH/BS-05. P-BIND/
+  P-QADT and later slice/research/library/release gates remain open.
 
 - 2026-11-14 v1.69: Operator opens Arc05 S05 native generated-name hygiene
   from acceptedc0ed, with seven-path/eight-row bounded source-ready recipe and

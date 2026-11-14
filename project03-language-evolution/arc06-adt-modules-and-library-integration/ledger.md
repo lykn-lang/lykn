@@ -3,7 +3,7 @@
 2026-11-14: independently validated Arc05 S05 source/delivery at82f1b65b
 adds LI-04's exact c0ed→82 ten-path native census/generator/physical-key/late-
 composition/generated-output/guide/API-behavior audit input, detailed in the
-arc plan. Root closing metadata is pending. S06 public parity and S07 escaped
+arc plan. Separate root closing-metadata PASS completes S05. S06 public parity and S07 escaped
 SOURCE/protected-root identity remain open; AWEX/MPVR/NUMI stay Arc02. All six
 LI rows remain open, without experiment, book or human acceptance.
 

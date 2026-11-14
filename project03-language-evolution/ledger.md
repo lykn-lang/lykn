@@ -2,7 +2,7 @@
 
 Current2026-11-14: Arc05 S05 source/delivery is independently validated at82f1b65b.
 Native hygiene has actual canonical/fragment/CLI/JSON/package and final-gate
-proof. Root closing metadata/NH-08 and BS-05 remain pending; P-BIND/P-QADT and
+proof. Separate NH-08 metadata PASS closes all8NH/BS-05; P-BIND/P-QADT and
 all later naming/qualified/module/library/book/human criteria remain open.
 Arc06 LI-04 receives exact c0ed→82 audit inputs; AWEX/MPVR/NUMI retain Arc02.
 Release staysc60; no S06 or integration action follows.

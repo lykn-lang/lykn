@@ -1,8 +1,8 @@
 # Project07 ledger
 
 2026-11-14: Arc05 S05 source/delivery at82f1b65b is independently validated
-as a bounded native generated-name prerequisite; root closing metadata is
-pending. All Project07 rows remain open, including final research synthesis,
+as a bounded native generated-name prerequisite; final metadata PASS closes
+S05/BS-05. All Project07 rows remain open, including final research synthesis,
 original JSON re-pin/composition, guides/book/human, YAML/document/reader and
 licence/bootstrap/home evidence. The approved optional lib/JSR model stays
 selected. No library trial or release action follows; release staysc60.

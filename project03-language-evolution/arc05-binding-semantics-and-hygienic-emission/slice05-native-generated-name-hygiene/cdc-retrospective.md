@@ -1,7 +1,7 @@
 # S05 retrospective — native generated-name hygiene
 
 2026-11-14, root CDC/coordinator. Analysis through source/delivery validation
-at82f1b65b; final NH-08 closing-metadata acceptance is pending. Earlier attempt
+at82f1b65b, including separate NH-08 closing-metadata PASS. Earlier attempt
 observations below retain their original cutoffs and are not fresh-run claims.
 Luna6 High implements; separate Sol6.1 High reviews. This record examines the
 work, including my preparation, and does not independently accept code or
@@ -202,8 +202,9 @@ for every query. S06 inherits physical names/candidate keys but needs its own
 public lifecycle/caller design. These are scoped preparation lessons, not a
 new framework change, additional research trial or proven universal cure.
 
-Root completed substantive parent/API/research routing; NH-08 and BS-05 await
-the separate closing-metadata check. P-BIND/P-QADT, S06–09, Arc04 qualified work,
+Root completed parent/API/research routing. Separate NH-08 metadata PASS at
+planning8d1676b8 accepts those duties; all8NH/BS-05 close. P-BIND/P-QADT,
+S06–09, Arc04 qualified work,
 Arc06 six LI rows and Project07 research/library/reader/book/human/licence gates
 stay open. AWEX is separately preserved in Arc02 maintenance, alongside MPVR/
 NUMI. Release staysc60; no S06, integration, push/publication, source renaming,

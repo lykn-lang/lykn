@@ -2,16 +2,16 @@
 project: project03-language-evolution
 arc: arc05-binding-semantics-and-hygienic-emission
 slice: slice05-native-generated-name-hygiene
-status: active
-version: "1.2"
+status: closed
+version: "1.3"
 depends-on: [slice02-native-binding-discards, slice04-discard-aware-declarations]
 ---
 
 # Native compiler-generated name hygiene
 
-Current closing checkpoint2026-11-14: separate final-source validation ACCEPTS
-NH-01–07 at82f1b65b/tree4bb6bfc9. Root retrospective and substantive later-owner
-reconciliation are complete; NH-08/BS-05 await bounded closing-metadata review.
+Final close2026-11-14: separate source/gates and closing-metadata PASS ACCEPT
+all8NH at82f1b65b/tree4bb6bfc9. Root retrospective and later-owner reconciliation
+are complete; S05/BS-05 close. Earlier pending checkpoints below remain history.
 All eight original criteria/ten-path delivery and preserved history remain.
 The task is clean and root owns source/build, with no running jobs. Releasec60
 is unchanged; S06 and all later feature/integration/library gates stay unopened.
@@ -458,6 +458,10 @@ human/licence/composition criteria remain open. MPVR stays Arc02; alias
 bound_names remains only its existing watch. No source renaming or ADT activation.
 
 ## Assignment and version history
+
+- 2026-11-14 v1.3: Close all8NH/BS-05 after independent final-source gates and
+  separate NH-08 metadata PASS on planning8d1676b8. Root retrospective/routing
+  complete; same ten paths/two refinements/history. No S06 or release advance.
 
 - 2026-11-14 v1.2/correction02 issue: preserve32749d97 and separate source
   HOLD for missing promised discriminating tests. Only existing native test may

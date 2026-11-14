@@ -11,7 +11,7 @@ related: [arc05-binding-semantics-and-hygienic-emission, arc06-adt-modules-and-l
 ## Current v2.0 scope and authority
 
 Current2026-11-14: Arc05 S05 native generated-name source/delivery is
-independently validated at82f1b65b; final root closing metadata remains pending.
+independently validated at82f1b65b; all8NH/BS-05 close with metadata PASS.
 This supplies a native prerequisite only. Public/exact naming, qualified owner/
 case/ABI and composition remain open; Arc04 implementation stays paused.
 Retired S03 retains all15 dispositions/native759/public499 limits. Arc06 LI-04
@@ -326,8 +326,8 @@ survive this detour, including every YAML and human-review obligation.
 ## Version history
 
 - 2026-11-14 v2.6: Carry Arc05 S05's independently validated native generated-
-  name source/delivery at82 into the paused prerequisite map, pending root
-  closing metadata. No original row/759/499 bound or qualified activation changes.
+  name source/delivery at82 into the paused prerequisite map, with final root
+  metadata PASS. No original row/759/499 bound or qualified activation changes.
 
 - 2026-11-14 v2.5: Carry independently accepted Arc05 S04 declaration source/
   delivery atc0ed into the existing prerequisite map, preserving retired rows,

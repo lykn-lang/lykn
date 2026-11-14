@@ -2,9 +2,9 @@
 
 2026-11-14 opening atc0ed4546. All eight criteria open; doer green is proposed-done.
 
-Current2026-11-14: separate final-source review independently ACCEPTS NH-01–07
-at82f1b65b/tree4bb6bfc9. Root retrospective and substantive parent routing are
-complete; NH-08/BS-05 await the separate closing-metadata check. Earlier open/
+Final2026-11-14: separate source/gates and NH-08 metadata PASS ACCEPT all8NH
+at82f1b65b/tree4bb6bfc9. Root retrospective and parent routing are complete;
+S05/BS-05 close. Earlier open/
 HOLD checkpoints below remain history. Release staysc60; no S06 or integration.
 
 Current source-first review2026-11-14: candidate32749d97 is held for missing
@@ -28,4 +28,4 @@ to the same Luna CC;1/5 refinements spent. No implementation acceptance yet.
 | NH-05 | Existing late allocators and private host/completion protocols compose | Real canonical ICU/host/invocation/completion consumers, actual late reservation source census, no private metadata forging or public parity overclaim | correctness-grade | Accepted bounded ICU/host inputs | done | Reproduced actual completion/ICU/host/invocation92/41; marker/anchor and separate key-domain source review; [independent verdict](cdc-verification.md). |
 | NH-06 | Actual CLI, JSON and package delivery uses the protected native producers | .lykn/.lyk check+compile checked/strip, real kernel JSON compiler consumer, build package public namespace/declarations and executed overloaded calls | correctness-grade | BS-05 usable task-branch delivery | done | Reproduced actual files/JSON/package/strict DTS and materialized consumers; [fresh receipts](artifacts/cdc/final02/README.md). |
 | NH-07 | Final source and mandatory delivery gates pass | Focused native/CLI, fresh artifacts/full make check/docs once, actual unchanged M670/all14, exact amended ten paths/adjacent trailers/final citations/fresh81920 size | correctness-grade | Repository acceptance bar | done | Reproduced at clean82f1b65b: fullRust1798/Lykn1578+67steps/docs482/M670/all14/cites64/601/gzip48689; exact ten paths/trailers. [Independent gates/limits](artifacts/cdc/final02/README.md). |
-| NH-08 | Independent close preserves history, scope and later owners | Separate Sol eight-row verdict; CC close/inventory; root retrospective/BS-05/API/research routing; all issued prompts/failures retained; task-only source/no S06 or integration | serious | Autonomous Mode/operator S05 authority | open | Root [retrospective](cdc-retrospective.md)/close/parent routing prepared; independent closing-metadata check pending. |
+| NH-08 | Independent close preserves history, scope and later owners | Separate Sol eight-row verdict; CC close/inventory; root retrospective/BS-05/API/research routing; all issued prompts/failures retained; task-only source/no S06 or integration | serious | Autonomous Mode/operator S05 authority | done | Independently reconciled: [NH-08 metadata PASS](cdc-verification.md) at planning8d1676b8 verifies root retrospective/close/inventory/parents/history; root applies final status only. |

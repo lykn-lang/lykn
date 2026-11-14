@@ -13,7 +13,7 @@ depends-on: [slice01-contract-and-emission-design, slice02-existing-adt-correctn
 
 - 2026-11-14 v2.5: Carry Arc05 S05's independently validated native generated-
   name source/delivery at82f1b65b into the existing prerequisite map; final root
-  closing metadata is pending. Preserve all15 original dispositions, native759/
+  closing-metadata PASS completes S05. Preserve all15 original dispositions, native759/
   public499 bounds, retired status and paused qualified implementation.
 
 - 2026-11-14 v2.4: Carry independently accepted Arc05 S04 discard-declaration
@@ -37,7 +37,7 @@ depends-on: [slice01-contract-and-emission-design, slice02-existing-adt-correctn
 ## Current role: historical execution record and carry-forward map
 
 Current2026-11-14: Arc05 S05 native hygiene source/delivery is independently
-validated at82f1b65b, pending root closing metadata. This adds a bounded native
+validated at82f1b65b, with final closing-metadata PASS. This adds a bounded native
 prerequisite without closing another original LC row or broadening759/499.
 S06 public naming, S07 exact source binding, qualified owner and final
 composition remain open; this container stays retired and22 unexecuted.

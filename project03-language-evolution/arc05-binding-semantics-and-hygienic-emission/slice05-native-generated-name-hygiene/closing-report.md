@@ -383,7 +383,7 @@ query returned no make/Cargo/Lykn/Deno jobs, the source worktree is clean at
 `82f1b65b92529979afd6c624183912ca31453927`, and source/build ownership returns
 to root.
 
-## Root close reconciliation — NH-08 metadata pending
+## Root close reconciliation — NH-08 metadata accepted
 
 Root read the separate final-source verdict and independent receipt index:
 NH-01–07 are reproduced/accepted at82f1b65b/tree4bb6bfc9. The exact ten-path
@@ -409,6 +409,6 @@ seven→ten-path physical-name amendment and test-only proof completion. Arc05's
 slice structure stays the same; S06/S07 now explicitly inherit their actual
 public/escaped-source boundaries. No original qualified/module/composition,
 Project07 or higher-scale parent criterion closes from this child alone.
-NH-08 and BS-05 remain open until separate closing-metadata verification; root
-will apply its final disposition. Task source remains clean82f1b65b and release
+Separate Sol NH-08 metadata PASS at planning8d1676b8 accepts the root duties;
+all8NH and BS-05 now close. Task source remains clean82f1b65b and release
 remains cleanc60; no S06, merge/push/publication or library trial is opened.

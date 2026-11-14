@@ -695,3 +695,68 @@ sandbox-denied and the authorized read-only retry returned no matching build/
 test processes (exit1 for empty rg match). Only this review record and its
 artifacts/cdc/final02 evidence were written. Exclusive source/build ownership
 returns to root; no further source or gate work is pending in this context.
+
+## Closing metadata — ACCEPT NH-08 — 2026-11-14
+
+Separate Sol6.1 High reviewer assessed the actual committed planning delta
+81dd4f3f→8d1676b8a44844e75003b0cda5e1ce71d4eb66e7. Planning was clean at
+that pin before this append. This is the requested bounded closing-metadata
+review, not another implementation review or runtime gate. The preceding
+independent NH-01–07 source/delivery acceptance and final02 receipts remain
+applicable: live read-only checks confirm unchanged clean task source
+82f1b65b92529979afd6c624183912ca31453927/tree
+4bb6bfc9e171bc6424548b0f740dd32f0cf98c75 and clean release
+c60dea62d126bb07557a7f4f7183662dec3f6a58/tree
+9c247edcf632ef2e038078a2833e727db949730d.
+
+Reading covered the complete changed passages in all14 non-artifact root
+metadata files: root retrospective (all210 lines); closing-report reconciliation
+(386–414) with retained attempt/row/inventory sections; slice ledger (all31)
+and active plan checkpoint; Arc05 roadmap/ledger; Project03 plan/ledger;
+Arc04 paused plan/retired S03 map; Arc06 plan/ledger; Project07 plan/ledger.
+The final02 artifact README was read as the receipt index; unchanged raw logs
+and M6 bytes were not reread or rerun. Existing implementation/readiness/HOLD
+records retain their earlier inspected extents. Initially clipped inventories
+were replaced by explicit metadata-only diffs and bounded reads. An inferred
+Arc02 path was absent; file lookup recovered the actual
+arc02-ad-hoc-maintenance/arc-plan.md, whose intake was read alongside the
+D-2611-AWEX backlog disposition. No missing link or pin was found in these
+reviewed routing/receipt references.
+
+The current ledger has exactly the original eight NH criteria: seven done
+with independent evidence, NH-08 intentionally open pending this verdict.
+All three issued prompts remain unchanged at their slice-root paths. Initial
+fa and held327, the two formal refinements, failed/blocked/unknown attempts,
+original dotted-name design/readiness miss and correction02 proof HOLD are
+preserved. The root retrospective owns its own normalization, pure-colon,
+checked-fragment and proof-oracle mistakes, distinguishes source failures from
+fixture errors, and makes no model/method effectiveness claim. Live source
+ranges still contain exactly ten c0ed→82 paths and the one native-test-file
+327→82 correction (57 additions/seven removals). The inventory separates
+first-class records from root/CC/independent supporting artifacts.
+
+The useful delivery remains bounded native generated storage through real
+canonical/fragment/file/JSON/package consumers. No criterion was silently
+dropped, softened, deferred or converted to no-op. Arc05 structure is explicitly
+unchanged. BS-01–04 remain done; BS-05 correctly awaits this close; BS-06–09,
+P-BIND/P-QADT, all six LI rows and all eight Project07 rows remain open.
+The retired S03's15 original dispositions and native759/public499 limits are
+unchanged. S06 inherits physical-name/candidate-key work; S07 retains escaped
+SOURCE/protected-root identity; LI-04 receives the exact c0ed→82 API/output/
+guide audit range. AWEX retains its independent structural source comparison
+without a new baseline runtime/version matrix or repair; Arc02 remains its
+unopened owner alongside MPVR/NUMI. Project07 retains the selected lang/lib/
+opt-in selective JSR direction and separate licence/bootstrap/actual-home,
+original JSON re-pin/composition, synthesis, YAML/document, reader RDEO/RDCL,
+guide/book/representative-source and explicit human acceptance obligations.
+
+**NH-08 ACCEPT. All eight NH rows now have independent acceptance.** Root is
+authorized to mark NH-08 and BS-05 done and mechanically replace the current
+pending/status headers with completed closing dispositions, preserving dated
+history. This verdict plus that final root reconciliation closes S05; no new
+source gate is required absent a material change or finding. No S06, release
+integration, merge/push/publication, book/library implementation or trial is
+authorized. No source/build command or job was launched in this pass; prior
+owned sessions remain drained. Root retains source/build and planning Git/
+index/status ownership. Only this review record was changed; its final commit
+and mechanical metadata reconciliation remain root-owned.
