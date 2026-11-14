@@ -1,0 +1,24 @@
+running 7 tests from ./test/forms/discard-bindings.test.js
+public callable and Bind discards keep private identity ... ok (46ms)
+public discard guards, defaults, rests, and schema fields ... ok (121ms)
+public typed Bind checks stay visible and preserve effects ... ok (50ms)
+public source inline exports expose only source bindings ... ok (70ms)
+public binding patterns preserve spread, keys, assignment, and legacy catch ... FAILED (67ms)
+public finalized JSON and fragments retain independent private state ... ok (30ms)
+public browser delivery executes discard and nested rest behavior ... ok (28ms)
+
+ ERRORS 
+
+public binding patterns preserve spread, keys, assignment, and legacy catch => ./test/forms/discard-bindings.test.js:381:6
+error: AssertionError: Expected function to throw.
+    throw new AssertionError(msg);
+          ^
+    at assertThrows (https://jsr.io/@std/assert/1.0.19/throws.ts:108:11)
+    at file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/discard-bindings.test.js:428:7
+
+ FAILURES 
+
+public binding patterns preserve spread, keys, assignment, and legacy catch => ./test/forms/discard-bindings.test.js:381:6
+
+FAILED | 6 passed | 1 failed (417ms)
+
