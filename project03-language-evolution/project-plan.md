@@ -9,6 +9,14 @@ related: ["project04-c-lang", "project07-core-library-research"]
 
 # Language evolution
 
+2026-11-13 current authority: the operator pauses further Arc04 implementation
+to reconcile accepted work, failures and remaining scope, then discuss sensible
+slices. [S03](arc04-qualified-adts/slice03-local-qualified-nominal-core/slice-plan.md)
+records the pause before iteration22 source edits. Task source is clean at
+dba24d40; last independently accepted checkpoint is759567f9, and release/0.6.x
+remains0829e892. Existing acceptance and public R01 HOLD remain; no new slice,
+source dispatch, integration or scope transfer is authorized by this discussion.
+
 2026-11-11 current work: [Arc04 S03](arc04-qualified-adts/slice03-local-qualified-nominal-core/slice-plan.md)
 is open from [independently validated local release 0829e892](arc04-qualified-adts/slice02-existing-adt-correctness/artifacts/release-integration-0829e892.md).
 The finite host/reference prerequisite is independently accepted at 5caf3d87,

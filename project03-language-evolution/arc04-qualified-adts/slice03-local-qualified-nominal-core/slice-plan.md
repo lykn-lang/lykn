@@ -2,12 +2,24 @@
 project: project03-language-evolution
 arc: arc04-qualified-adts
 slice: slice03-local-qualified-nominal-core
-status: active
-version: "1.41"
+status: paused
+version: "1.42"
 depends-on: [slice01-contract-and-emission-design, slice02-existing-adt-correctness]
 ---
 
 # Local qualified nominal core
+
+2026-11-13 v1.42 OPERATOR PAUSE: after questioning iteration22, the operator
+requests reconciliation and discussion of sensible remaining slices before
+any more implementation. Luna's22 assignment was interrupted before source
+changes. Live task checkout is clean at dba24d40/tree0ad99ea5; last independently
+accepted checkpoint is native discard759567f9. Release/0.6.x remains0829e892.
+Public R01 HOLD and all existing acceptance boundaries remain unchanged.
+No implementation contributor is running. Root owns planning/reconciliation;
+no automatic22 resume, new implementation dispatch or source/build/test run
+follows this planning discussion. Preserve every issued prompt and original
+acceptance/failure record. The forthcoming split is a proposal until agreed;
+no new slice, obligation transfer or completed-S03 claim is made here.
 
 2026-11-13 v1.41: independent Sol HOLDS public21 on R01 at unchanged clean
 dba24d40/tree0ad99ea5. New CatchBinding mode accidentally skips the old default-
@@ -336,10 +348,11 @@ validation-only class-member queries. Existing source Func/class aggregate
 scope issues are explicit B2 inputs, not new IC-01 expansion claims.
 
 **Current assignment:** [iteration22](cc-prompt-iteration22.md), issued2026-11-13
-for public R01 against clean dba24d40/tree0ad99ea5. Root and separate Sol confirm
-source-ready; exclusive source/build transfers to Luna on actual dispatch.
-Root retains design/planning/Git/ledger; separate Sol reviews the corrected
-committed candidate. Predecessor21 remains held on R01; native759 is accepted.
+for public R01 against clean dba24d40/tree0ad99ea5, now OPERATOR-PAUSED before
+source edits. Root and separate Sol had confirmed source-ready before dispatch;
+root now owns source/build and planning during the operator pause. Any resumed
+implementation and corrected-candidate review await the agreed restructuring.
+Predecessor21 remains held on R01; native759 is accepted.
 The accepted20 predecessor was issued
 2026-11-13 against accepted57c76c99cbed07ff992e78aac8afefa4bdf0b2ad/
 treef044d795e88c3dac8e84a73a557cf071edd5327c plus Luna's retained authorized18
@@ -390,7 +403,7 @@ gates survive. No release edits/integration, remote CI, push or publication.
 | cc-prompt-iteration19.md | 2026-11-13 | iteration18 | Source-only export names and canonical spread-pattern/projector parity, preserving catch extent | Retained23-test checkpoint; refined by20 after full01/02 oracle migrations, not accepted |
 | cc-prompt-iteration20.md | 2026-11-13 | iteration19 | Explicit native export JSON and actual public/native ESM parity oracle | Independently accepted759567f9/tree52dd6558 for B2-DISCARD-N only; exact8paths, parent scope remains open |
 | cc-prompt-iteration21.md | 2026-11-13 | iteration20 | Public prepared discard values/guards/scope/export/pattern delivery | Independent R01 HOLD atdba24d40/tree0ad99ea5; focused187/supplements retained, full gates unrun |
-| cc-prompt-iteration22.md | 2026-11-13 | iteration21 | Restore preexisting nested catch default-left validation while preserving grammar isolation | Issued after separate source-readiness; exact3paths, Luna then separate Sol |
+| cc-prompt-iteration22.md | 2026-11-13 | iteration21 | Restore preexisting nested catch default-left validation while preserving grammar isolation | Operator-paused before source edits for reconciliation/re-slicing discussion; original assignment retained |
 
 The A correction loop used three refinement passes; B1 required no software
 correction. IC-01 is a distinct authorized usable prerequisite, not a retry

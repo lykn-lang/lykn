@@ -1,5 +1,10 @@
 # S03 local qualified nominal core ledger
 
+2026-11-13: operator pauses implementation before22 source edits for status
+reconciliation and discussion of new slice boundaries. No row changes status:
+native759 remains accepted; public R01 remains held. Issued22 is preserved but
+paused. No scope transfer, acceptance or fresh correction budget is inferred.
+
 | ID | Criterion | Verify | Significance | Origin | Status | Evidence |
 | --- | --- | --- | --- | --- | --- | --- |
 | LC-01 | The reviewed finite host contract and owned intrinsic references support nominal/guard lowering hygienically | Exact protected slots and lexical/unknown controls; native/public whole-unit/kernel/codegen/JSON routes; user-shadowing/inline fallback, no-request and existing Reflect composition tests; actual embedded delivery | correctness-grade | S01 host prerequisite | done | [Independent correction03 acceptance](cdc-verification.md#correction03-candidate-5caf3d87--2026-11-11) at 5caf3d87, tree 115ce5ec; 27 runtime and 3 fragment controls for all nine references, four native dispatch conditions, five materialized runtimes/seven byte comparisons, cold CLI/JSON/runtime and full/citation/size gates. Earlier HOLDs remain historical. |

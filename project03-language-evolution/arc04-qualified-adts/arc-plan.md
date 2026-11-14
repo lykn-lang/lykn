@@ -2,11 +2,19 @@
 project: project03-language-evolution
 arc: arc04-qualified-adts
 status: active
-version: "1.26"
+version: "1.27"
 related: [project07-core-library-research]
 ---
 
 # Qualified ADTs
+
+2026-11-13 v1.27 current authority: implementation is OPERATOR-PAUSED for
+accepted/failed/remaining reconciliation and discussion of a proper slice
+split. Iteration22 was interrupted before source edits; task is clean at
+dba24d40, release remains0829e892. Native759 acceptance and public R01 HOLD
+are unchanged. No new source execution, slice or obligation transfer follows
+this planning discussion until the revised approach is agreed. Original
+records stay in place; S03 is not closed or retrospectively relabelled.
 
 2026-11-13 v1.26 current review: independent Sol HOLDS public21 atdba24d40 on
 R01, a lost preexisting nested catch-default validation walk. Actual valid raw
@@ -176,6 +184,9 @@ Project07's original research evidence, final synthesis and library handoffs
 survive this detour, including every YAML and human-review obligation.
 
 ## Version history
+
+- 2026-11-13 v1.27: Record operator implementation pause before22 source edits;
+  reconcile live Git/acceptance and discuss new boundaries before replanning.
 
 - 2026-11-13 v1.26: Record independent R01 HOLD on catch-default traversal and
   source-ready issued22 correction, preserving all original evidence/parent gates.
