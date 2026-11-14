@@ -99,6 +99,10 @@ Deno.test("S03 public callable and class parameter slots preserve arity and lazi
     (bind arrow (kernel:=> (_ _value) _value))
     (class C () (method (_ _value) (return _value)) (constructor (_) (return)))
     (bind c (new C 1))
+    (bind ExpressionClass (class-expr ()
+      (constructor (_) (assign this:value _))
+      (method (_) (return _))))
+    (bind expression-instance (new ExpressionClass 7))
     (bind typed-lambda (lambda (:any _) _))
     (bind async-arrow (async (kernel:=> (_ _value) _)))
     (bind async-function (async (kernel:function async-func (_ value) (return value))) )
@@ -132,10 +136,11 @@ Deno.test("S03 public callable and class parameter slots preserve arity and lazi
       (callable-object:run 1 7))
     (console:log (await (slots:async-value 1 7)))
     (console:log (await (async-function 1 7)))
+    (console:log (expression-instance:method 1) expression-instance:value)
     (bind lazy-default (kernel:function with-default ((default x (set-symbol! globalThis "defaultCalls" (+ (?? (get globalThis "defaultCalls") 0) 1)))) (return x)))
     (console:log (lazy-default 5) (?? (get globalThis "defaultCalls") 0))
     (console:log (lazy-default undefined) (get globalThis "defaultCalls"))
-  `), "7 7 7 2 2 2 0\n99 99 1 99\n1 0\n99 1 1\n99 99 7 7\n99\n7\n5 0\n1 1\n");
+  `), "7 7 7 2 2 2 0\n99 99 1 99\n1 0\n99 1 1\n99 99 7 7\n99\n7\n99 99\n5 0\n1 1\n");
   await executeFailure(lykn(`
     (kernel:function throw-default ((default x (throw (new Error "default boom")))) (return x))
     (throw-default)
