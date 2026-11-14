@@ -3,11 +3,23 @@ project: project03-language-evolution
 arc: arc05-binding-semantics-and-hygienic-emission
 slice: slice02-native-binding-discards
 status: active
-version: "1.0"
+version: "1.1"
 depends-on: [slice01-public-source-discards]
 ---
 
 # Remaining native discard binding forms
+
+2026-11-13 refinement01 issued: the complete initial scope remains.
+Root's subsequent source review identifies negative numeric alias keys as an
+invalid-JS edge in the existing writer, exposed by grouped zero-name admission.
+[Refinement01](cc-prompt-iteration01.md) adds only codegen/emit.rs to the original
+nine source paths, syntax-correct negative numeric key spelling and existing
+Bool/Null static alias keys. Current implementation remains initial assignment
+is superseded by refinement01 after separate Sol source-readiness approval.
+Original prompt is preserved. Sol confirms sign-negative numeric brackets,
+existing -0→0 formatting, Bool/Null literal keys and the full9-row scope.
+The final witness must use a genuinely grouped Bind plus getter count; a
+single-Bind numeric red only establishes the writer defect, not group admission.
 
 ## Authority and useful delivery
 
@@ -110,7 +122,8 @@ discard-only patterns with an actual structural predicate. For newly admitted
 zero-name shapes, validate exact writer-supported forms: root array/object,
 array `_` holes/nested patterns/default(target,value)/last rest or spread,
 object `_` shorthand/default(_,value)/alias(key,target[,default])/last rest or spread.
-Alias keys retain atom/string/numeric/keyword behavior. Object rest/spread binds an identifier;
+Alias keys retain atom/string/numeric/keyword/boolean/null behavior; negative
+numeric keys use syntax-correct computed brackets, including -0. Object rest/spread binds an identifier;
 array rest may bind an admitted pattern. Validate arities and positions; no
 arbitrary calls, literals, alias-as-array-element or missing default RHS.
 Do not revalidate unrelated already-admitted named grammar through a new rule.
@@ -126,11 +139,14 @@ do not clone for borrow-checker convenience or allocate source-spelling caches.
 
 ## Exact source scope and immediate docs
 
+Original nine paths, plus codegen/emit.rs authorized by refinement01 (TEN total).
+
 - crates/lykn-lang/src/emitter/forms.rs
 - crates/lykn-lang/src/classifier/forms.rs
 - crates/lykn-lang/src/binding.rs
 - crates/lykn-lang/src/lexical_regions.rs
 - crates/lykn-lang/src/codegen/mod.rs — raw API documentation/boundary test
+- crates/lykn-lang/src/codegen/emit.rs — negative numeric alias key syntax only
 - crates/lykn-lang/tests/remaining_discard_bindings.rs — new native product tests
 - crates/lykn-cli/tests/remaining_discard_bindings.rs — new actual CLI tests
 - docs/guides/00-lykn-surface-forms.md — precise native discard roles/limits
@@ -179,7 +195,7 @@ cdc-retrospective.md and bubble-up. No row closes by doer attestation.
 
 ## Assignment history and readiness
 
-Current initial assignment cc-prompt.md is issued after source-readiness
+Initial assignment cc-prompt.md was issued after source-readiness
 review and root issue commit. Root inspected the cited source and tests;
 separate Sol read-only consumed-role census confirms the producer boundaries.
 All binding choices above are root decisions within the authorized S02 scope;
@@ -191,11 +207,20 @@ runtime discriminators; separate Sol confirmed source-ready. No source edits,
 probes or build ran during preparation. This was draft review, not an executed
 CC correction or acceptance of implementation.
 
+Current assignment is cc-prompt-iteration01.md, preserving all initial work
+and constraints with the explicit tenth-path syntax repair. No implementation
+acceptance is claimed by either readiness review.
+
 | Prompt | Date | Predecessor | Purpose | State |
 | --- | --- | --- | --- | --- |
-| cc-prompt.md | 2026-11-13 | S01 accepted49982409 | Remaining native binding discards and explicit admission/signature dispositions | Issued; source/build transfers to Luna on actual dispatch |
+| cc-prompt.md | 2026-11-13 | S01 accepted49982409 | Remaining native binding discards and explicit admission/signature dispositions | Executed in progress; superseded by refinement01 with all scope retained |
+| cc-prompt-iteration01.md | 2026-11-13 | cc-prompt.md, initial work in progress | Preserve full scope; make admitted literal numeric keys valid JS and retain existing Bool/Null key roles | Issued; Luna retains exclusive source/build ownership |
 
 ## Version history
+
+- 2026-11-13 v1.1: Prepare narrow writer-syntax follow-through from ND-05
+  grouped admission; preserve original9rows/scope, add one source path and real
+  numeric/boolean/null key controls rather than accepting malformed output.
 
 - 2026-11-13 v1.0: Prepare operator-authorized S02 from accepted49982409;
   preserve grammar/API roles and explicitly disposition both inherited limits.

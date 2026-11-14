@@ -114,6 +114,14 @@ continues to write supplied IR literally; canonical native emitter prepares
 source binding discards before private finalization. Arc06 LI-04 audits these
 API/diagnostic/documentation impacts; immediate factual guides land in S02.
 
+During S02 implementation, root's writer review and a clean CC regression
+identify invalid bare negative numeric alias keys in the existing native
+writer. S02 refinement01 adds only that syntax repair (computed brackets),
+existing Bool/Null literal-key admission and real grouped getter controls;
+all nine ND criteria and later ownership remain unchanged. Separate Sol
+approves the amendment before issue. General numeric formatting/range semantics
+are not changed; -0 keeps the existing property0 behavior.
+
 The naming direction and unresolved author-readiness details are preserved in
 [the owner-unit preparation](../arc04-qualified-adts/slice03-local-qualified-nominal-core/artifacts/b2b-owner-unit-preparation.md)
 and [runtime-name draft](../arc04-qualified-adts/slice03-local-qualified-nominal-core/artifacts/b2-native-runtime-name-plan.md).
