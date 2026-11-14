@@ -180,6 +180,12 @@ fn declaration_source() -> &'static str {
   :args ((object :number _ (default :string label "fallback")))
   :returns :void
   :body (console:log label))
+(func nested-input
+  :args ((object (alias :array items
+    (array (object (default :number _ 7) :string label)
+      (default :boolean _ true) :number total (rest :string tail)))))
+  :returns :array
+  :body #a(_ label total tail))
 (func anonymous-slot
   :args ((object :number field) (default :string arg0 "fallback") (default :number arg0_1 1))
   :returns :void
@@ -203,7 +209,7 @@ fn declaration_source() -> &'static str {
 (func choose
   (:args (:number _ :string arg0) :returns :number :body arg0:length)
   (:args (:string _ :number arg0) :returns :number :body 2))
-(exports slots foreign-discard before-required trailing-default rest-default tuple-before-required tuple-trailing object-default anonymous-slot named-before-slot discard-rest tuple-skip tuple-optional-skip choose)
+(exports slots foreign-discard before-required trailing-default rest-default tuple-before-required tuple-trailing object-default nested-input anonymous-slot named-before-slot discard-rest tuple-skip tuple-optional-skip choose)
 "#
 }
 
@@ -258,6 +264,10 @@ fn generated_declarations_typecheck_real_discard_default_rest_and_pattern_inputs
     assert!(
         generated.contains("objectDefault(arg0: { _: number; label?: string | undefined }): void;"),
         "object discard key/default are not represented: {generated}"
+    );
+    assert!(
+        generated.contains("nestedInput(arg0: { items: [{ _?: number | undefined; label: string }, boolean | undefined, number, ...string[]] }): unknown[];"),
+        "recursive object/array/object input shape is not represented: {generated}"
     );
     assert!(
         generated.contains(
@@ -325,6 +335,16 @@ callTupleOptionalSkip([1, undefined]);
 type ObjectDefault = typeof declarations.objectDefault;
 declare const callObjectDefault: ObjectDefault;
 callObjectDefault({ _: 1, label: undefined });
+type NestedInput = typeof declarations.nestedInput;
+declare const callNestedInput: NestedInput;
+callNestedInput({ items: [{ label: "ok", _: undefined }, undefined, 5, "kept"] });
+callNestedInput({ items: [{ label: "second", _: 3 }, false, 6] });
+// @ts-expect-error nested defaulted discard property is numeric
+callNestedInput({ items: [{ label: "bad", _: "wrong" }, undefined, 5] });
+// @ts-expect-error nested required label remains required
+callNestedInput({ items: [{ _: 1 }, undefined, 5] });
+// @ts-expect-error typed rest elements remain strings
+callNestedInput({ items: [{ label: "bad" }, undefined, 5, 6] });
 type AnonymousSlot = typeof declarations.anonymousSlot;
 declare const callAnonymousSlot: AnonymousSlot;
 callAnonymousSlot({ field: 1 });
@@ -379,7 +399,7 @@ callChoose(true, 1);
     let runtime_source = write_source(
         temp.path(),
         "runtime.js",
-        "import { slots, foreignDiscard } from \"./module.js\";\nglobalThis._ = 99;\nconsole.log(JSON.stringify(slots(99, \"discarded\", false, 7, 11, \"last\", true)));\nconsole.log(JSON.stringify(foreignDiscard(7)));\n",
+        "import { slots, foreignDiscard, nestedInput } from \"./module.js\";\nglobalThis._ = 99;\nconsole.log(JSON.stringify(slots(99, \"discarded\", false, 7, 11, \"last\", true)));\nconsole.log(JSON.stringify(foreignDiscard(7)));\nconst first = { items: [{ label: \"ok\" }, undefined, 5, \"kept\"] };\nconst firstLength = first.items.length;\nconsole.log(JSON.stringify(nestedInput(first)));\nconsole.log(JSON.stringify([firstLength, first.items.length]));\nconst second = { items: [{ label: \"second\", _: 3 }, false, 6] };\nconst secondLength = second.items.length;\nconsole.log(JSON.stringify(nestedInput(second)));\nconsole.log(JSON.stringify([secondLength, second.items.length]));\n",
     );
     let mut runtime_command = Command::new(deno());
     runtime_command
@@ -402,13 +422,16 @@ callChoose(true, 1);
         "generated JS failed: {}",
         String::from_utf8_lossy(&runtime.stderr)
     );
-    assert_eq!(runtime.stdout, b"[7,11,\"last\",true]\n99\n");
+    assert_eq!(
+        runtime.stdout,
+        b"[7,11,\"last\",true]\n99\n[99,\"ok\",5,[\"kept\"]]\n[4,4]\n[99,\"second\",6,[]]\n[3,3]\n"
+    );
     assert!(runtime.stderr.is_empty());
 
     let stripped_runtime_source = write_source(
         temp.path(),
         "runtime-stripped.js",
-        "import { slots, foreignDiscard } from \"./module-stripped.js\";\nglobalThis._ = 99;\nconsole.log(JSON.stringify(slots(99, \"discarded\", false, 7, 11, \"last\", true)));\nconsole.log(JSON.stringify(foreignDiscard(7)));\n",
+        "import { slots, foreignDiscard, nestedInput } from \"./module-stripped.js\";\nglobalThis._ = 99;\nconsole.log(JSON.stringify(slots(99, \"discarded\", false, 7, 11, \"last\", true)));\nconsole.log(JSON.stringify(foreignDiscard(7)));\nconst first = { items: [{ label: \"ok\" }, undefined, 5, \"kept\"] };\nconst firstLength = first.items.length;\nconsole.log(JSON.stringify(nestedInput(first)));\nconsole.log(JSON.stringify([firstLength, first.items.length]));\nconst second = { items: [{ label: \"second\", _: 3 }, false, 6] };\nconst secondLength = second.items.length;\nconsole.log(JSON.stringify(nestedInput(second)));\nconsole.log(JSON.stringify([secondLength, second.items.length]));\n",
     );
     let mut stripped_runtime_command = Command::new(deno());
     stripped_runtime_command
@@ -433,7 +456,10 @@ callChoose(true, 1);
         "stripped generated JS failed: {}",
         String::from_utf8_lossy(&stripped_runtime.stderr)
     );
-    assert_eq!(stripped_runtime.stdout, b"[7,11,\"last\",true]\n99\n");
+    assert_eq!(
+        stripped_runtime.stdout,
+        b"[7,11,\"last\",true]\n99\n[99,\"ok\",5,[\"kept\"]]\n[4,4]\n[99,\"second\",6,[]]\n[3,3]\n"
+    );
     assert!(stripped_runtime.stderr.is_empty());
 }
 
@@ -444,6 +470,12 @@ fn inline_and_named_binding_exports_match_runtime_and_empty_module_rules() {
 (export (bind :number typed 5))
 (export (bind literal "visible"))
 (export (bind (object (alias _ count) _ (spread rest)) (obj :_ 99 :extra "schema")))
+(export (bind _ 7 :number grouped-number 11 grouped-text "group"
+  (object (alias "leaf" grouped-leaf)) (obj :leaf 17)))
+(bind :number grouped-kept 13 :string grouped-hidden "hidden"
+  (object (alias "leaf" grouped-selected)
+    (alias "hidden" grouped-nested-hidden)) (obj :leaf 19 :hidden "hidden") _ 9)
+(exports grouped-kept grouped-selected)
 (bind (object (alias "public" visible) (alias "private" hidden)) (obj :public 7 :private 8))
 (exports visible)
 "#;
@@ -478,8 +510,20 @@ fn inline_and_named_binding_exports_match_runtime_and_empty_module_rules() {
         dts.contains("export const visible: unknown;"),
         "named destructured export missing: {dts}"
     );
+    for declaration in [
+        "export const groupedNumber: number;",
+        "export const groupedText: string;",
+        "export const groupedLeaf: unknown;",
+        "export const groupedKept: number;",
+        "export const groupedSelected: unknown;",
+    ] {
+        assert!(dts.contains(declaration), "missing `{declaration}`: {dts}");
+    }
     assert!(
-        !dts.contains("hidden") && !dts.contains("_value"),
+        !dts.contains("hidden")
+            && !dts.contains("groupedHidden")
+            && !dts.contains("groupedNestedHidden")
+            && !dts.contains("_value"),
         "private bindings leaked: {dts}"
     );
     assert!(
@@ -490,7 +534,7 @@ fn inline_and_named_binding_exports_match_runtime_and_empty_module_rules() {
     let namespace_consumer = write_source(
         temp.path(),
         "exports-consumer.ts",
-        "import type * as api from \"./exports.d.ts\";\ntype Equal<Left, Right> = (<Value>() => Value extends Left ? 1 : 2) extends (<Value>() => Value extends Right ? 1 : 2) ? true : false;\ntype Assert<Value extends true> = Value;\ntype Expected = \"typed\" | \"literal\" | \"count\" | \"rest\" | \"visible\";\ntype ExactNames = Assert<Equal<keyof typeof api, Expected>>;\ndeclare const values: typeof api;\nconst typed: number = values.typed;\nconst count: unknown = values.count;\nconst visible: unknown = values.visible;\n// @ts-expect-error discard is not a module binding\nvalues._;\n// @ts-expect-error unselected source binding is not a module export\nvalues.hidden;\nvoid typed;\nvoid count;\nvoid visible;\n",
+        "import type * as api from \"./exports.d.ts\";\ntype Equal<Left, Right> = (<Value>() => Value extends Left ? 1 : 2) extends (<Value>() => Value extends Right ? 1 : 2) ? true : false;\ntype Assert<Value extends true> = Value;\ntype Expected = \"typed\" | \"literal\" | \"count\" | \"rest\" | \"groupedNumber\" | \"groupedText\" | \"groupedLeaf\" | \"groupedKept\" | \"groupedSelected\" | \"visible\";\ntype ExactNames = Assert<Equal<keyof typeof api, Expected>>;\ndeclare const values: typeof api;\nconst typed: number = values.typed;\nconst count: unknown = values.count;\nconst visible: unknown = values.visible;\nconst groupedNumber: number = values.groupedNumber;\nconst groupedText: string = values.groupedText;\nconst groupedLeaf: unknown = values.groupedLeaf;\nconst groupedKept: number = values.groupedKept;\nconst groupedSelected: unknown = values.groupedSelected;\n// @ts-expect-error discard is not a module binding\nvalues._;\n// @ts-expect-error unselected source binding is not a module export\nvalues.hidden;\n// @ts-expect-error unselected grouped binding is not a module export\nvalues.groupedHidden;\n// @ts-expect-error unselected nested binding is not a module export\nvalues.groupedNestedHidden;\nvoid typed;\nvoid count;\nvoid visible;\nvoid groupedNumber;\nvoid groupedText;\nvoid groupedLeaf;\nvoid groupedKept;\nvoid groupedSelected;\n",
     );
     let config = write_deno_config(temp.path());
     let namespace_check = deno_check(temp.path(), &config, &namespace_consumer);
@@ -503,7 +547,7 @@ fn inline_and_named_binding_exports_match_runtime_and_empty_module_rules() {
     let runtime_source = write_source(
         temp.path(),
         "exports-runtime.js",
-        "import * as values from \"./exports.js\";\nconsole.log(JSON.stringify(Object.keys(values).sort()));\nconsole.log(JSON.stringify([values.typed, values.literal, values.count, values.visible, values.rest]));\n",
+        "import * as values from \"./exports.js\";\nconsole.log(JSON.stringify(Object.keys(values).sort()));\nconsole.log(JSON.stringify([values.typed, values.literal, values.count, values.visible, values.rest, values.groupedNumber, values.groupedText, values.groupedLeaf, values.groupedKept, values.groupedSelected]));\n",
     );
     let mut runtime_command = Command::new(deno());
     runtime_command
@@ -528,7 +572,7 @@ fn inline_and_named_binding_exports_match_runtime_and_empty_module_rules() {
     );
     assert_eq!(
         runtime.stdout,
-        b"[\"count\",\"literal\",\"rest\",\"typed\",\"visible\"]\n[5,\"visible\",99,7,{\"extra\":\"schema\"}]\n"
+        b"[\"count\",\"groupedKept\",\"groupedLeaf\",\"groupedNumber\",\"groupedSelected\",\"groupedText\",\"literal\",\"rest\",\"typed\",\"visible\"]\n[5,\"visible\",99,7,{\"extra\":\"schema\"},11,\"group\",17,13,19]\n"
     );
 
     let discard_only = write_source(
@@ -699,7 +743,7 @@ fn lykn_build_package_emits_the_same_discard_declarations() {
     let consumer = write_source(
         temp.path(),
         "package-consumer.ts",
-        "import type * as declarations from \"./target/lykn/build/discarded/mod.d.ts\";\ntype Slots = typeof declarations.slots;\ndeclare const callSlots: Slots;\ncallSlots(1, \"discarded\", false, 7, 11, \"last\", true);\ntype ForeignDiscard = typeof declarations.foreignDiscard;\ndeclare const callForeignDiscard: ForeignDiscard;\ncallForeignDiscard(7);\ntype ObjectDefault = typeof declarations.objectDefault;\ndeclare const callObjectDefault: ObjectDefault;\ncallObjectDefault({ _: 1, label: undefined });\n",
+        "import type * as declarations from \"./target/lykn/build/discarded/mod.d.ts\";\ntype Slots = typeof declarations.slots;\ndeclare const callSlots: Slots;\ncallSlots(1, \"discarded\", false, 7, 11, \"last\", true);\ntype ForeignDiscard = typeof declarations.foreignDiscard;\ndeclare const callForeignDiscard: ForeignDiscard;\ncallForeignDiscard(7);\ntype ObjectDefault = typeof declarations.objectDefault;\ndeclare const callObjectDefault: ObjectDefault;\ncallObjectDefault({ _: 1, label: undefined });\ntype NestedInput = typeof declarations.nestedInput;\ndeclare const callNestedInput: NestedInput;\ncallNestedInput({ items: [{ label: \"ok\", _: undefined }, undefined, 5, \"kept\"] });\n",
     );
     let config = write_deno_config(temp.path());
     let checked = deno_check(temp.path(), &config, &consumer);
