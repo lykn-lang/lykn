@@ -278,7 +278,7 @@ function walkPatternDefaults(pattern, out, inScope, grammar) {
   const head = pattern.values[0]?.type === "atom" ? pattern.values[0].value : "";
   if (head === "default") {
     const typed = grammar === PatternGrammar.TYPED_PARAMETER;
-    if (grammar === PatternGrammar.BINDING_PATTERN) walkPatternDefaults(pattern.values[1], out, inScope, grammar);
+    if (!typed) walkPatternDefaults(pattern.values[1], out, inScope, grammar);
     const value = pattern.values[typed ? 3 : 2];
     if (value) walk(value, out, inScope);
     return;

@@ -419,6 +419,19 @@ Deno.test("public binding patterns preserve spread, keys, assignment, and legacy
     }`,
     "8\n",
   );
+  const catchDefault = `(try (throw (array (array)))
+    (catch (array (default (array (default value (=> (input) 1))) (array)))
+      (console:log (value 7))))`;
+  for (const compileFacade of [lykn, browserCompileLykn]) {
+    await executeModule(compileFacade(catchDefault), "1\n");
+    for (const reserved of ["eval", "arguments"]) {
+      assertThrows(
+        () => compileFacade(catchDefault.replace("input", reserved)),
+        Error,
+        `'${reserved}' is forbidden as a strict-mode binding identifier`,
+      );
+    }
+  }
   assertThrows(
     () =>
       lykn(
