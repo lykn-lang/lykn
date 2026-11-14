@@ -55,6 +55,22 @@ guards keep their existing source behavior. `_value` remains an ordinary name.
 
 **See also**: `01-core-idioms.md` ID-09
 
+### Compiler-generated helper names
+
+The native compiler may add private locals while lowering functions, contracts,
+matches, generators, and threading forms. It reserves names across the complete
+analyzed unit before choosing those locals, including typed and destructured
+parameter names. Generated locals therefore stay out of source bindings and
+public parameter labels.
+
+The Rust `emitter::emit` API owns a complete analyzed unit and protects names
+from every form in it. `emitter::forms::emit_form` protects the one supplied
+form; it cannot account for later sibling forms. Callers lowering related
+forms should use unit emission. The lower-level raw kernel code generator writes
+the supplied kernel names literally and does not provide source-level name
+hygiene. This boundary does not rewrite user bindings or promise general macro
+hygiene.
+
 ---
 
 ## ID-02: `fn` for Callbacks and Inline Functions

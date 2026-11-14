@@ -10,6 +10,7 @@ pub mod dts;
 pub mod forms;
 pub mod gensym;
 pub mod json;
+mod source_names;
 pub mod type_checks;
 
 use crate::analysis::AnalyzedUnit;
@@ -21,8 +22,13 @@ use json::emit_module_json;
 
 /// Emit a successfully analyzed unit to kernel `SExpr` nodes.
 ///
-/// Each surface form may produce one or more kernel forms. The results are
-/// collected in order. When `strip_assertions` is `true`, type-check
+/// Each surface form may produce one or more kernel forms. `emit` preserves
+/// their order after one borrowed reservation pass over every source
+/// form in this owned unit, so generated names are protected from typed and
+/// reconstructed names in later siblings as well as names in the current form.
+/// The helper namespace belongs to this invocation and is not shared globally.
+///
+/// When `strip_assertions` is `true`, type-check
 /// assertions and contract checks are omitted from the output.
 ///
 /// # Errors
@@ -36,6 +42,9 @@ pub fn emit(
     let forms = unit.forms();
     let registry = unit.type_registry();
     let mut ctx = EmitterContext::new(strip_assertions);
+    for form in forms {
+        source_names::reserve_form_names(form, &mut ctx.gensym);
+    }
     let mut result = Vec::new();
     for form in forms {
         result.extend(emit_form_raw_checked(form, &mut ctx, registry)?);

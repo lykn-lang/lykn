@@ -275,6 +275,10 @@ fn wrap_iife_async(arrow_body: Vec<SExpr>) -> SExpr {
 
 /// Emit one `SurfaceForm` to one or more kernel `SExpr` nodes.
 ///
+/// This fragment API reserves the complete supplied form before lowering it.
+/// It cannot reserve names from future sibling forms; use [`crate::emitter::emit`]
+/// when the caller owns a complete analyzed unit.
+///
 /// # Errors
 /// Returns a structured code-generation diagnostic when emission needs
 /// whole-module context, including for unfinished compiler-owned host
@@ -284,6 +288,7 @@ pub fn emit_form(
     ctx: &mut EmitterContext,
     registry: &TypeRegistry,
 ) -> Result<Vec<SExpr>, LyknError> {
+    super::source_names::reserve_form_names(form, &mut ctx.gensym);
     let mut result = emit_form_raw_checked(form, ctx, registry)?;
     finalize_completion_value_markers(&mut result, ctx);
     if let Some(span) = result.iter().find_map(host_invocation_marker_span) {
@@ -3761,15 +3766,16 @@ fn prepare_typed_param(
     let mut checks = Vec::new();
     if tp.type_ann.name != "any" && !ctx.strip_assertions {
         if tp.is_rest {
-            let element_name = format!("_el__{}", tp.name);
+            let element_stem = format!("_el__{}", tp.name);
             let element = if is_discard {
                 SExpr::completion_value_atom(ctx.next_completion_value_id(), tp.name_span)
             } else {
+                let element_name = ctx.gensym.preferred(&element_stem);
                 SExpr::atom(&element_name, tp.name_span)
             };
             if let Some(check) = emit_type_check_value(
                 &element,
-                if is_discard { &tp.name } else { &element_name },
+                if is_discard { &tp.name } else { &element_stem },
                 &tp.type_ann.name,
                 func_name,
                 "rest arg",
@@ -4227,10 +4233,11 @@ fn emit_func_multi(
         typed_b.cmp(&typed_a)
     });
 
+    let args_name = ctx.gensym.preferred("args");
     let mut items = vec![
         atom("function"),
         atom(name),
-        list(vec![list(vec![atom("rest"), atom("args")])]),
+        list(vec![list(vec![atom("rest"), atom(&args_name)])]),
     ];
 
     for &idx in &sorted_indices {
@@ -4245,7 +4252,7 @@ fn emit_func_multi(
         // Build dispatch condition: (=== args:length N) && type dispatch checks
         let mut conditions = vec![list(vec![
             atom("==="),
-            atom("args:length"),
+            atom(&format!("{}:length", args_name)),
             num(arity as f64),
         ])];
 
@@ -4253,7 +4260,7 @@ fn emit_func_multi(
         for (i, param) in clause.args.iter().enumerate() {
             let dtype = param.dispatch_type();
             if dtype != "any" {
-                let arg_access = list(vec![atom("get"), atom("args"), num(i as f64)]);
+                let arg_access = list(vec![atom("get"), atom(&args_name), num(i as f64)]);
                 let dispatch_check = build_dispatch_check(dtype, &arg_access, param.span());
                 if let Some(check) = dispatch_check {
                     conditions.push(check);
@@ -4274,7 +4281,7 @@ fn emit_func_multi(
 
         // Bind parameters from args array
         for (i, _param) in clause.args.iter().enumerate() {
-            let arg_access = list(vec![atom("get"), atom("args"), num(i as f64)]);
+            let arg_access = list(vec![atom("get"), atom(&args_name), num(i as f64)]);
             let binding = &prepared[i].pattern;
             if binding.len() == 1 {
                 block_items.push(list(vec![atom("const"), binding[0].clone(), arg_access]));
