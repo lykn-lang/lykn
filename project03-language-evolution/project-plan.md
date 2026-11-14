@@ -1,7 +1,7 @@
 ---
 project: project03-language-evolution
 status: research
-version: "1.68"
+version: "1.69"
 planned-release: "0.7.0"
 depends-on: ["project02-language-toolchain-alignment"]
 blocks: []
@@ -11,6 +11,13 @@ related: ["project04-c-lang", "project07-core-library-research"]
 # Language evolution
 
 ## Current approved structure —2026-11-13
+
+Current authority2026-11-14: [Arc05 S05](arc05-binding-semantics-and-hygienic-emission/slice05-native-generated-name-hygiene/slice-plan.md)
+opens native compiler-generated name hygiene at acceptedc0ed4546, with complete
+producer/caller preparation before implementation, same Luna6 High/Sol6.1 High
+and Autonomous Mode through this slice's independent close. All8NH/BS-05,
+P-BIND/P-QADT and later naming/qualified/module/library/book/human composition
+remain open. Release staysc60; no S06/further integration or remote action.
 
 Current2026-11-14: [Arc05 S04](arc05-binding-semantics-and-hygienic-emission/slice04-discard-aware-declarations/cdc-verification.md)
 independently closes all8DT/BS-04 atc0ed4546/tree7d8b3359. Discard-specific
@@ -1094,6 +1101,10 @@ with their source and status distinctions. A future
 implementation definition of done is not established by this migration.
 
 ## Version history
+
+- 2026-11-14 v1.69: Operator opens Arc05 S05 native generated-name hygiene
+  from acceptedc0ed, with seven-path/eight-row bounded source-ready recipe and
+  actual baseline failures; later owners and releasec60 remain unchanged.
 
 - 2026-11-14 v1.68: Arc05 S04 source/delivery independently accepted atc0ed;
   carry declaration/output/guide impacts into Arc06 LI-04, preserve MPVR/Arc02,

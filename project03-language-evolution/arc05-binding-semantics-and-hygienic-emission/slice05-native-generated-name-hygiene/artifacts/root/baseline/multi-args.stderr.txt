@@ -1,0 +1,5 @@
+error: Uncaught (in promise) ReferenceError: Cannot access 'args' before initialization
+    const args = args[0];
+                 ^
+    at pick (file:///private/tmp/lykn-arc05-s05-root/baseline/multi-args.mjs:5:18)
+    at file:///private/tmp/lykn-arc05-s05-root/baseline/multi-args.mjs:20:13

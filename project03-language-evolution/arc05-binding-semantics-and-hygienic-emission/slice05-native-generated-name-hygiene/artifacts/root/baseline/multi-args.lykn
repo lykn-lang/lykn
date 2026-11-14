@@ -1,0 +1,4 @@
+(func pick
+  (:args (:number args) :returns :number :body args)
+  (:args (:string args) :returns :string :body args))
+(console:log (pick 7))

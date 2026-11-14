@@ -1,5 +1,10 @@
 # Binding semantics and hygienic emission ledger
 
+Current authority2026-11-14: [S05](slice05-native-generated-name-hygiene/slice-plan.md)
+opens native generated-name hygiene fromc0ed under the established models/
+Autonomous setup. All8NH/BS-05 remain open until independent acceptance;
+BS-01–04 stay done. No S06/further release integration or qualified activation.
+
 Final2026-11-14: all8S04DT independently accepted atc0ed/tree7d8b,
 including separate closing-metadata PASS/root retrospective/parent routing.
 BS-01–04 are done and BS-05–09 stay open. Release remainsc60; no S05 opening.

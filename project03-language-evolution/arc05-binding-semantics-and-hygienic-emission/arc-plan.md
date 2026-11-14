@@ -2,7 +2,7 @@
 project: project03-language-evolution
 arc: arc05-binding-semantics-and-hygienic-emission
 status: active
-version: "0.13"
+version: "0.14"
 planned-release: unassigned
 depends-on: []
 related: [arc04-qualified-adts, arc06-adt-modules-and-library-integration]
@@ -11,6 +11,16 @@ related: [arc04-qualified-adts, arc06-adt-modules-and-library-integration]
 # Binding semantics and hygienic emission
 
 ## Authority and outcome
+
+Current authority2026-11-14: operator opens [S05 native generated-name hygiene](slice05-native-generated-name-hygiene/slice-plan.md)
+from acceptedc0ed4546, same Luna6 High CC / separate Sol6.1 High CDC,
+Autonomous Mode through S05 independent close/retrospective/routing. Root's
+source-grounded recipe reserves complete owned source inputs before emitter
+allocation and replaces fixed multi-clause args/rest-guard storage; existing
+late allocators retain their own scopes. Initial three actual old failures are
+retained under S05. All8NH/BS-05 open; source-ready review precedes dispatch.
+BS-01–04 remain done. S06/general source renaming/qualified work and further
+integration/remote actions are unopened; release remainsc60.
 
 Current2026-11-14: [S04 source/delivery is independently accepted](slice04-discard-aware-declarations/cdc-verification.md)
 atc0ed454610f3a384196e4fa003335373819fb2fd/tree7d8b3359. All8DT/BS-04 are
@@ -170,7 +180,7 @@ affected delivery, necessary immediate documentation and independent review.
 | [S02 native remaining discard binding forms](slice02-native-binding-discards/slice-plan.md) — closed9e6fb127 | Completed canonical admitted native catch/loop/callable/method roles, grouped static-key admission and honest simple-multi diagnostics; actual Source/raw-IR entrances distinguished | Accepted49982409 baseline and final independent9-row/gate proof; original HOLDs/refinements retained |
 | [S03 public remaining discard binding forms](slice03-public-binding-discards/slice-plan.md) — closedc60dea62 | Delivered corresponding public/browser behavior, preserved already-admitted non-atom/empty-list discard groups and raw/schema roles, and enforced the honest simple-multi boundary | Independent final9-row proof, focused66/full1578/docs482/M670/14/cites/size; original HOLDs and three refinements retained |
 | [S04 discard-aware declarations](slice04-discard-aware-declarations/slice-plan.md) — closedc0ed | Existing native Func/Bind/BindGroup/Type declarations now describe discard slots/defaults/rest, recursive data inputs and scalar/group/pattern exports; actual TS/CLI/package consumers | Independent all8DT source/gate/closing-metadata proof, root retrospective and later-owner routing |
-| S05 native compiler-generated name hygiene | Protect remaining compiler temporaries from source, foreign and generated-name collisions | Native discard roles; complete producer/reservation census |
+| [S05 native compiler-generated name hygiene](slice05-native-generated-name-hygiene/slice-plan.md) — active | Protect remaining compiler temporaries from source, foreign and generated-name collisions | Acceptedc0ed/S04; complete source/early/late producer census and separate readiness before dispatch |
 | S06 public compiler-generated name hygiene | Protect corresponding public producers while preserving private object identities and macro transport limits | Public discard roles; complete producer/finalizer census |
 | S07 native exact source-binding emission | Resolve binding occurrences and allocate safe JS names while retaining hoisting, TDZ, data/API names, foreign targets and JSON behavior | S05; settled source-name policy; actual native writer scopes |
 | S08 public exact source-binding emission | Deliver equivalent behavior through normal/fragment/browser/materialized entrances | S06; same language contract; public lifecycle/consumer census |
@@ -226,7 +236,8 @@ early source-owner queries from the later runtime binding/name plan.
 
 ## Verification, handoff and limits
 
-The [ledger](ledger.md) carries BS-01–04 done and BS-05–09 open. Independent acceptance must
+The [ledger](ledger.md) carries BS-01–04 done, active S05/BS-05 open and
+BS-06–09 open. Independent acceptance must
 cover actual changed consumers, meaningful negative controls, repository checks
 and embedded parity. Preserve final-source citations, existing size policy,
 cache/network limits, original failures and exact commit scope. Test count
@@ -249,6 +260,11 @@ substitute helper-language exception. Reader RDEO/RDCL, Arc01 I4 and diagnostic
 work, whole-work audits and the separate book/human gates keep their owners.
 
 ## Version history
+
+- 2026-11-14 v0.14: Open operator-authorized S05 atc0ed with complete borrowed
+  source reservation/early producer recipe, explicit late/raw boundaries and
+  actual three-failure author baseline. Eight NH rows/seven paths remain open
+  for readiness/implementation/review; no S06 or release advancement.
 
 - 2026-11-14 v0.13: S04 independently delivers discard-specific declarations
   atc0ed with actual recursive/group consumers and final gates. Root close/

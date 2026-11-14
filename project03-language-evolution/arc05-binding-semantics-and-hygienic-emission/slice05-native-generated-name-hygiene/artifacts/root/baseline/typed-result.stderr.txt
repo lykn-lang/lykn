@@ -1,0 +1,4 @@
+error: Uncaught (in promise) SyntaxError: Identifier 'result__gensym0' has already been declared at file:///private/tmp/lykn-arc05-s05-root/baseline/typed-result.mjs:7:9
+await import('file:///private/tmp/lykn-arc05-s05-root/baseline/typed-result.mjs')
+^
+    at async file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/$deno$eval.js:1:1

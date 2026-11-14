@@ -1,5 +1,9 @@
 # project03-language-evolution ledger
 
+Current authority2026-11-14: operator opens Arc05 S05 native generated-name
+hygiene fromc0ed, same models/Autonomous setup. All8NH/BS-05 and P-BIND/
+P-QADT remain open. BS-01–04 acceptance is unchanged; no S06/release action.
+
 Final2026-11-14: Arc05 S04 all8DT/BS-04 independently close
 atc0ed/tree7d8b, including root retrospective/parent routing and separate
 closing-metadata PASS. BS-01–04 are done; BS-05–09 remain open.
