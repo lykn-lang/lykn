@@ -468,7 +468,8 @@ export function bindingScopePlan(form, headName) {
     return layout ? { kind: "class", layout } : SEQUENCE;
   }
   if (headName === "do" || headName === "block" || headName === "seq") return SEQUENCE;
-  if (["function", "function*", "=>", "lambda"].includes(headName) && isKernel(form)) {
+  if (["function", "function*", "=>"].includes(headName) ||
+      (headName === "lambda" && isKernel(form))) {
     const layout = functionRegionLayout(form);
     return layout ? { kind: "function", layout } : SEQUENCE;
   }

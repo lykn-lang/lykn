@@ -509,6 +509,114 @@ Deno.test("S03 browser compilation and staged source facade share public behavio
   await executeModule(lykn(source), publicOutput);
   await executeModule(browserCompileLykn(source), publicOutput);
 
+  for (const compileSource of [lykn, browserCompileLykn]) {
+    resetMacros();
+    let parameterMacroCalls = 0;
+    macroEnv.set("discardValue__private", () => {
+      parameterMacroCalls++;
+      return read("(captured-one captured-two)")[0];
+    });
+    try {
+      const compiled = compileSource(`
+        (set-symbol! globalThis "_" 99)
+        (bind arrow (=> (_) _))
+        (console:log arrow:length (arrow 7))
+      `);
+      await executeModule(compiled, "1 99\n");
+      assertEquals(parameterMacroCalls, 0);
+    } finally {
+      resetMacros();
+    }
+  }
+
+  resetMacros();
+  let rawCallableMacroCalls = 0;
+  macroEnv.set("discardValue__private", () => {
+    rawCallableMacroCalls++;
+    return read("(captured-one captured-two)")[0];
+  });
+  try {
+    const rawCallableSource = lykn(`
+      (set-symbol! globalThis "_" 99)
+      (function raw-function (_) (return _))
+      (bind sentinel (function* "" (_) (yield _)))
+      (bind iterator (sentinel 7))
+      (console:log raw-function:length (raw-function 7) sentinel:length
+        (get (iterator:next) "value"))
+    `, { strict: false });
+    assertEquals(rawCallableMacroCalls, 0);
+    await executeModule(rawCallableSource, "1 99 1 99\n");
+  } finally {
+    resetMacros();
+  }
+
+  resetMacros();
+  let fragmentMacroCalls = 0;
+  macroEnv.set("discardValue__private", () => {
+    fragmentMacroCalls++;
+    return read("(captured-one captured-two)")[0];
+  });
+  try {
+    const expandedArrow = expandExpr(read(`
+      (do
+        (const arrow (=> (_) _))
+        (console:log arrow:length (arrow 7)))
+    `)[0]);
+    assertEquals(fragmentMacroCalls, 0);
+    const code = compile([expandedArrow]);
+    assertEquals(code.includes("capturedOne"), false);
+    await executeModule(`globalThis._ = 99;\n${code}`, "1 99\n");
+  } finally {
+    resetMacros();
+  }
+
+  resetMacros();
+  let rawDefaultMacroCalls = 0;
+  macroEnv.set("raw-generator-default", () => {
+    rawDefaultMacroCalls++;
+    return read("(raw-generator-fallback)")[0];
+  });
+  try {
+    const rawGeneratorSource = lykn(`
+      (set-symbol! globalThis "phase" 1)
+      (set-symbol! globalThis "fallbackCalls" 0)
+      (set-symbol! globalThis "bodyCalls" 0)
+      (set-symbol! globalThis "rawGeneratorFallback"
+        (kernel:=> ()
+          (do
+            (set-symbol! globalThis "fallbackCalls" (+ fallbackCalls 1))
+            (bind offset phase)
+            (kernel:=> (value) (+ value offset)))))
+      (bind sentinel
+        (function* "" ((default array (raw-generator-default)))
+          (do
+            (set-symbol! globalThis "bodyCalls" (+ bodyCalls 1))
+            (yield (array 7)))))
+      (bind supplied (sentinel (kernel:=> (value) (+ value 5))))
+      (bind missing (sentinel))
+      (console:log fallbackCalls bodyCalls)
+      (set-symbol! globalThis "phase" 10)
+      (console:log (get (supplied:next) "value") (get (missing:next) "value")
+        bodyCalls fallbackCalls)
+    `, { strict: false });
+    assertEquals(rawDefaultMacroCalls, 1);
+    await executeModule(rawGeneratorSource, "1 0\n12 8 2 1\n");
+  } finally {
+    resetMacros();
+  }
+
+  resetMacros();
+  macroEnv.set("function", () => read("(+ 2 3)")[0]);
+  try {
+    await executeModule(lykn("(console:log (function))"), "5\n");
+  } finally {
+    resetMacros();
+  }
+  await executeModule(lykn(`
+    (bind lambda (fn (:number value) (+ value 3)))
+    (console:log (lambda 7))
+  `), "10\n");
+
   const exportSource = `
     (set-symbol! globalThis "_" 99)
     (export (bind _ 7 visible (kernel:=> (_value _) (array _value _))))
