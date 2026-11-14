@@ -3,11 +3,19 @@ project: project03-language-evolution
 arc: arc05-binding-semantics-and-hygienic-emission
 slice: slice05-native-generated-name-hygiene
 status: active
-version: "1.1"
+version: "1.2"
 depends-on: [slice02-native-binding-discards, slice04-discard-aware-declarations]
 ---
 
 # Native compiler-generated name hygiene
+
+Current correction02 issue2026-11-14: separate source-first review of
+32749d97 holds missing NH-01/02/04 producer proofs, not a demonstrated production
+defect. Complete recursive typed leaves, first-function later-sibling skip,
+body-absent public fragment parameter and actual async carrier in ONE existing
+native test file; preserve all eight criteria/ten-path delivery. All final gates
+and independent proof remain mandatory. Separate actual-text readiness PASS
+precedes committed issue;2/5 spent on explicit dispatch to the same Luna CC.
 
 Current handoff2026-11-14: correction01 is CC proposed-done at
 32749d97216cba269fb5e4a4d454e26ece6c11dc/treef4a955ab. The task is clean,
@@ -279,6 +287,21 @@ or helper disappears on strip must be described accurately. Full final gates
 remain mandatory on the corrected source; earlier focused successes are not
 acceptance of the newly exposed path.
 
+## E. Correction02 proof completion
+
+The bounded test-only recipe is in cc-prompt-iteration02.md, after consolidated
+Sol review and separate actual-text readiness. Isolate the FIRST generated
+function for the sibling assertion; whole-module name presence is insufficient.
+Use real object→array→object default leaves absent from body; actual public
+fragment :any parameter t0 absentbody with some-thread helper1/runtime8; actual
+Bind-RHS async do carrier with source value_box0=99, result7 and one trace effect.
+Root's initially considered checked :number/:returns fragment is rejected by
+the existing unfinished-host-reference boundary and is explicitly withdrawn
+before issue. Do not alter that supported API boundary or production code.
+The carrier's getter encloses no foreign source read: prove real presence,
+distinct storage and runtime, not an invented capture. Keep four native/two CLI
+groups, all earlier controls, exact source/attempt history and full gate bar.
+
 ## Exact source scope and proof
 
 Initial seven product paths are retained:
@@ -422,6 +445,11 @@ human/licence/composition criteria remain open. MPVR stays Arc02; alias
 bound_names remains only its existing watch. No source renaming or ADT activation.
 
 ## Assignment and version history
+
+- 2026-11-14 v1.2/correction02 issue: preserve32749d97 and separate source
+  HOLD for missing promised discriminating tests. Only existing native test may
+  change; same8NH/ten-path full delivery/gates. Final readiness PASS precedes
+  committed issue and explicit dispatch; all8NH remain open.
 
 - 2026-11-14 v1.1/correction01: preserve initialfa6562a candidate and actual
   dotted-root TDZ; replace whole/colon-only assumptions with D's shared physical

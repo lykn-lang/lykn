@@ -122,6 +122,11 @@ Root authorized one corrected `make check` retry with the existing dependency
 network escalation and a separate M6 evidence directory. The full tool/session
 handles2693/68688 were retained and ownership remained serial, unlike the
 earlier lost-session invocation. Final retry results are still pending here.
+Subsequent cutoff: CC retry14 passed at32749d97; root read the actual1578+
+67-step suite and482-doc summaries plus final cited-path/size receipts and
+checked the exact clean ten-path range/trailers. Those are doer receipts and
+root reconciliation, not independent implementation verification. The proposed
+handoff is preserved in planningd5e30f98 and separate Sol now owns source/build.
 
 A root guide-diff command ran in planning and compared against imported source
 history, producing an inapplicable deletion listing. It was rerun in the named
@@ -153,6 +158,21 @@ No effectiveness claim follows from an eventual smaller refinement count;
 preparation/review effort and task exposure differ and were not measured.
 
 ## Final outcome
+
+Independent source review of32749d97 held two proof findings before expensive
+fresh gates: recursive parameter traversal/first-function later-sibling and
+body-absent one-form controls were missing, and the claimed canonical carrier
+family had no actual consumer. Root's pre-full source/oracle check missed these
+despite the prior role-to-oracle lesson. A later reconstructed name appeared in
+the fixture but only runtime7/7 was checked; that cannot discriminate per-form
+seeding. The public fragment read its parameter in the body and could pass a
+body-only scan. Naming a producer family in the report did not establish it.
+Correction02 changes one existing native test file, retaining the unchanged
+production candidate and all prior failures. Separate readiness also caught
+root's proposed checked-number fragment before issue: unfinished protected host
+references correctly require whole-unit emission. The supported any-parameter
+specimen retains that boundary. Source-grounded closed-carrier reasoning avoids
+inventing a capture inside its fixed getter. Final proof/acceptance remain due.
 
 Pending implementation handoff, independent source/gates, complete eight-row
 disposition, root retrospective completion and BS-05/API/research routing.

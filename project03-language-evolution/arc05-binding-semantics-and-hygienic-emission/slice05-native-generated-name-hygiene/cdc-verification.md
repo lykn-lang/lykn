@@ -341,3 +341,228 @@ only on dispatch. This final assessment is source-only: no tests, build, runtime
 Git/index/ledger action or product edit occurred. This reviewer record is the
 only write; no owned jobs remain and root retains source/build ownership until
 its explicit committed handoff.
+
+## Correction01 implementation source-first verdict — HOLD — 2026-11-14
+
+Separate Sol reviewer inspected the actual complete ten-path delivery at clean
+`32749d97216cba269fb5e4a4d454e26ece6c11dc`, tree
+`f4a955ab32c9bcbadf9ac47eb06ec9e79e2b971c`, parent
+`fa6562a13ffc1069c06bb98d81cc4561fee68e12`, against accepted c0ed. Read-only
+Git was explicitly authorized after root clarified that its no-Git instruction
+prohibited mutations. HEAD/tree/status, complete changed-path lists, ancestry,
+diffs and raw commit messages were inspected. The task is clean; both initial
+and correction commits preserve adjacent Codex/Billo AI trailers. The full
+delivery is exactly ten named paths; correction01 changes seven of them.
+Release is independently read as clean
+`c60dea62d126bb07557a7f4f7183662dec3f6a58` and was not changed.
+
+**HOLD for two consolidated proof gaps below.** No production-code defect was
+established in the inspected repair. The existing four native/two CLI groups
+and doer green gates do not supply the missing promised inputs. No expensive
+independent gate or runtime command was run on this held candidate; all eight
+NH rows remain open. Preserve32749d97 and its doer receipts, then use a numbered
+bounded correction rather than rewriting the issued prompts or prior records.
+
+### R01 — Structured fields, first allocation and fragment-only fields unproved
+
+Affected: NH-01 and the one-form portion of NH-04. The plan expressly requires
+nested object/array leaves, defaults, later callable siblings and complete
+one-form typed fields, with opposing inputs rather than a body-only census.
+
+Current native generated_name_hygiene.rs:42–69 covers scalar parameters and a
+one-level object default; it has no recursive object→array leaf input. Removing
+source_names.rs's recursive array branch could therefore leave these tests
+green. Existing S04 declaration tests exercise a different projection and do
+not establish the new source-name visitor's collision behavior.
+
+The two-function fixture contains a later reconstructed result1 name but does
+not inspect the first function's allocation. A per-form-only seed could allocate
+result1 in the first function and result2 in the second; runtime7/7 still passes.
+A broad whole-module result2 search would also pass that wrong implementation.
+The first function's actual generated binding must be distinguished from the
+later sibling's binding while retaining the real runtime observation.
+
+The public emit_form test at235–249 repeats its typed result0 parameter in its
+body. A body-only reservation implementation would still reserve that spelling.
+Its later executed fragment tests cover raw expressions, not a reconstructed
+typed field absent from the body. Add a discriminating supported one-form input
+and actual consumer/storage observation rather than solely naming the group or
+querying the generator.
+
+Root's first proposed checked-number fragment recipe was caught before issue:
+public emit_form deliberately rejects unfinished host references produced by
+number parameter/return checks (forms.rs:295–304; emission_results.rs:246–278).
+It cannot return that checked function for execution. Root withdrew it and
+retained the existing boundary. The source-grounded supported alternative uses
+an absent-body `:any t__gensym0` parameter and a some-thread body, actual inner
+t1 storage plus function result8 and supplementary counter state; the canonical
+typed-return path supplies the duplicate-declaration discriminator. This is
+pre-issue oracle correction, not a request to change production fragment policy.
+
+### R02 — Claimed canonical carrier family has no actual consumer
+
+Affected: NH-02, with its preservation claim in NH-03. The current417-line
+native suite exercises some-thread/await/dissoc/yield/result/match/rest and late
+families, but contains no async value-carrier input. The closing report's
+claim that actual carriers were exercised is not supported by those inputs.
+The inherited forms.rs:7295–7326 test builds raw nodes and checks boxing shape;
+it is useful inherited proof, not the promised canonical source consumer.
+
+The actual producer is unbox_awaited_value at forms.rs:226–233, allocating
+value_box storage. Its callers are async conditional-IIFE emission at5620–5682
+(unbox5679) and value-context emit_do at5685–5758 (unbox5754). A Bind RHS with
+`(do (await (Promise:resolve 7)))` follows the latter source path; the existing
+async-expression-values/E2 fixture also uses a do/await expression. An opposing
+source value_box0, real carrier presence/distinct storage, successful7/99 and
+an exactly-once source effect provide the requested integration proof.
+
+The carrier's generated parameter encloses only its fixed getter. Do not invent
+a foreign source read captured inside that enclosure: the storage-disjointness
+assertion and real value/effect consumer establish the actual contract. Root
+retains the final fixture/oracle design; this review supplied the concrete
+producer/caller and source viability without running a new experiment.
+
+### Confirmed source observations and AWEX disposition
+
+The production implementation fits the reviewed amendment: exhaustive borrowed
+SurfaceForm/ParamShape/Pattern/member traversal, canonical preallocation over
+all forms and one-form seeding; one preferred args name at every storage/read/
+length site; named-rest storage with the original display stem; fresh/reset
+occupancy and consumed failure counters. No AST rebuild, resolver/public-policy
+change, shared global state or dependency was added.
+
+All five collectors use the actual-writer census and candidates use the agreed
+physical keys. The decoder handles fixed-u4 pairs/braced scalars with checked
+arithmetic and UTF-8-safe progress; malformed input remains text. Braced scans
+stop incrementally and failed long digit runs receive only bounded revisiting,
+without suffix-wide repeated searches. New run scanning is linear in its text;
+the disclosed old normalizer cost remains separate. Completion's leading
+marker case and descendant bool survive, as do host addresses/anchors/strategy.
+The corrected canonical completion/ICU/intrinsic/invocation fixtures contain
+the intended producer and opposing foreign root; invocation now requires its
+actual helper and observes92/41. Raw, escaped-source/protected-root, dynamic-eval,
+unordered-ICU and S06 public boundaries remain explicit. These source findings
+are not fresh runtime acceptance.
+
+AWEX was independently source-assessed from the complete retained correction01
+attempt08 CLI log, the committed backlog D-2611-AWEX entry and current/baseline
+source delta. The observed check0/compile0 followed by malformed nested call
+argument output is retained as doer runtime evidence. Some-thread's awaited
+initial still returns a statement block from unchanged forms.rs:3579–3647;
+the S05 delta changes selected names, not that block/argument construction or
+codegen's block lowering. Thus the inspected change does not introduce that
+structural path. This is source comparison, not a fresh baseline runtime or
+version matrix. Arc02's unopened maintenance owner is appropriate; top-level
+passing consumers neither repair AWEX nor prove its nested source invalid.
+No AWEX repair or broader parity claim is part of this HOLD.
+
+### Eight-row disposition and validation allocation
+
+| Row | Independent status at held32749d97 |
+| --- | --- |
+| NH-01 | HOLD: production census inspected; R01 lacks promised recursive/later-sibling discriminators. |
+| NH-02 | HOLD: shared early/key/fixed-role implementation inspected; R02 lacks actual carrier consumer. |
+| NH-03 | PENDING: useful value/effect/error/iterator/data/API controls inspected; complete family proof and fresh execution remain due. |
+| NH-04 | HOLD/PENDING: lifecycle/reset/fatal/counter and raw boundaries inspected; R01 one-form typed-field discriminator and fresh execution remain due. |
+| NH-05 | SOURCE REVIEW READY, execution pending: corrected actual late consumers/metadata protocols inspected; no independent green claim. |
+| NH-06 | SOURCE REVIEW READY, execution pending: real CLI/JSON/package clients and exact package namespace/labels inspected. |
+| NH-07 | PENDING: clean exact10-path/7-path/ancestry/trailers verified; independent focused/full/M6/citations/fresh-size gates deliberately unrun on held source. |
+| NH-08 | PENDING: issued history/failures/partial close and AWEX routing inspected; corrected proof, independent delivery, root retrospective/parent close and final metadata remain due. |
+
+A test-only numbered correction can assign CC focused runtime plus format/Clippy,
+commit and final citations, with fresh independent final-source full/M6/artifact/
+size gates still mandatory. The row criterion is final-source evidence, not two
+duplicated full executions by different actors after a test-only change. The
+new prompt must state that allocation explicitly; doer32749d97 full receipts
+remain historical and cannot prove new tests. No criterion or independent
+verification requirement is waived by retaining unaffected production review.
+
+### Inspection extents and ownership return
+
+Read the actual ten-path diff, complete source_names344, gensym141, native test417,
+CLI test197, new names decoder/census/key production and added tests; relevant
+unchanged normalizer/writer/host/ICU/AST dependencies remain as directly loaded
+in readiness and were checked against the narrow delta. Read current plan444
+including the amended D/contract and current handoff text, eight-row ledger21,
+both preserved issued prompts (no diff from issued84779add), full closing252
+and intake123, complete initial attempt11 and correction01 attempt08, and the
+meaningful failure distinctions in the close. Focused/current test source was
+inspected directly rather than accepting group summaries. Read actual carrier
+callers5580–5784 and inherited carrier tests7265–7355; scoped searches covered
+all gensym/fixed/collector entrances and current native test families.
+
+The original root-derived fail/green observations retain their actor/profile/
+cache/skip/warning/unknown-session limits. No claim is made here to have replayed
+or exhaustively read every CC aggregate log. Two bounded combined reads clipped;
+the required close/diff/source bodies were recovered separately. No product,
+index/commit/branch/ledger action or runtime/build/probe/helper/Python action
+occurred; this reviewer record is the only write. Final read-only task status
+is clean, HEAD/tree remain32749d97/f4a955ab, and no owned jobs exist. Exclusive
+source/build ownership returns to root for correction02 preparation.
+
+Root subsequently withdrew the tentative reduced doer-gate allocation discussed
+above. Correction02 will retain the originally recorded CC focused/preflight,
+fresh-artifacts/full make check with fresh M6, citations and size, followed by
+separate independent final-source gates. No validation contract is changed;
+the paragraph above records an unissued allocation discussion, not a waiver.
+
+## Correction02 actual-text source-readiness — PASS — 2026-11-14
+
+The same separate Sol reviewer read the complete actual72-line
+cc-prompt-iteration02.md, plan v1.2's current preparation/section E/history,
+and complete26-line/eight-row ledger. Previously loaded A–D and issued
+contracts remain applicable to unchanged32749d97 production. Root retains
+source/build and planning/index/status. This is bounded readiness for the four
+test amendments, not implementation acceptance or a gate run.
+
+**PASS for committed correction02 issuance in the one existing native test
+file.** The full delivery remains ten paths and all eight NH criteria are
+unchanged/open. The correction01 implementation HOLD above remains in force
+until the new tests, final source and mandatory gates are independently
+reviewed; correction02 spends2/5 only on dispatch.
+
+All four concrete controls address the identified wrong implementations:
+
+- The sibling control isolates the first collide function before function
+  nested and checks its actual result2 storage, retaining runtime7/7. It cannot
+  be satisfied by a second function that receives result2 under per-form-only
+  seeding. No broad whole-module name-presence substitute is authorized.
+- The reconstructed default leaf is reached through an object alias to an
+  array containing an object. Its syntax matches the actual existing
+  discard_declarations.rs:183–188 nested-input pattern and its sole structured
+  parameter avoids the separately held MPVR arrangement. result0! is absent
+  from the body and normalizes to result0; checked helper1 plus actual7 rejects
+  an omitted recursive visitor branch. Strip runtime remains required without
+  pretending the stripped path must generate the checked helper.
+- Public emit_form uses the supported :any t0 parameter absent from the body
+  and a some-thread expression, requiring real inner t1 storage, execution8
+  from argument99, and supplementary counter state. It therefore distinguishes
+  complete typed-field seeding from a body-only scan without manufacturing a
+  checked fragment that cannot be returned. The existing private-host-reference
+  diagnostic remains binding; the rejected checked-number recipe stays withdrawn.
+- The canonical carrier fixture gives a Bind RHS value context to do, whose
+  emitted await activates forms.rs:5710–5754 and unbox_awaited_value226–233.
+  Source value_box0=99 reserves the preferred candidate; actual distinct unbox
+  storage/async boxing plus runtime7/99/one `before` trace effect establish the
+  promised producer route and preservation. The getter encloses only its fixed
+  operand access, so the prompt correctly forbids a fabricated foreign-read
+  capture argument. Both strip modes remain required.
+
+The exact underlying bodies and dependencies were inspected: supported public
+entry/rejection288–307, carrier226–233 and emit_do5685–5758, existing nested
+source160–194, and the earlier complete current417-line native suite and source
+visitor. No new API, wrapper, runtime fixture framework, AST change or product
+repair is required by these tests. Source-derived grammar/oracle conclusions
+above are not claims that these new fixture strings have already been run.
+
+The prompt retains the original four native/two CLI groups and all prior
+controls. It explicitly preserves source/attempt history, actual logs and both
+CC and independent final gate bars: preflight/focused, fresh-artifacts/full
+make check with docs once and fresh absolute M6 capture, actual7/70/all14,
+exact message-file commit, final-HEAD citations and fresh81920 size. The earlier
+tentative reduced doer allocation is not adopted. AWEX and S06/S07/LI-04 remain
+separate owners; no acceptance or scope inference follows from this readiness.
+
+Only this review record was appended. No source/build/Git mutation, runtime,
+test, probe, helper or ledger change occurred and no owned jobs exist. Root
+retains ownership until explicit committed correction02 dispatch.

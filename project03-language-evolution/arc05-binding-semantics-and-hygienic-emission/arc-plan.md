@@ -12,6 +12,13 @@ related: [arc04-qualified-adts, arc06-adt-modules-and-library-integration]
 
 ## Authority and outcome
 
+Current S05 review2026-11-14: separate source-first review holds32749d97 for
+two consolidated missing-proof findings, not an established production defect.
+Correction02 drafts one native-test-file change for recursive/sibling/fragment/
+carrier controls; all8NH/BS-05 and all final independent gates remain open.
+Earlier fa/physical-key correction history is preserved below. Root owns source/
+build during readiness;2/5 only on committed dispatch. Release remainsc60.
+
 Current S05 correction2026-11-14: initialfa6562a is preserved clean and NOT
 accepted. Actual dotted-root TDZ exposed an original design/readiness omission.
 S05 v1.1 specifies one shared actual-emitted identifier occupancy helper across

@@ -2,6 +2,11 @@
 
 2026-11-14 opening atc0ed4546. All eight criteria open; doer green is proposed-done.
 
+Current source-first review2026-11-14: candidate32749d97 is held for missing
+promised recursive/sibling/fragment/carrier proofs. Correction02 prepares one
+native-test-only increment; no production defect established and no independent
+aggregate gate run yet. All8NH/BS-05 stay open;2/5 only on dispatch.
+
 Current2026-11-14: initialfa6562a is preserved NOT accepted after actual
 attempt11 dotted-root TDZ. Plan v1.1/correction01 issues shared physical
 identifier occupancy at early/completion/ICU/host consumers, expanding7→10

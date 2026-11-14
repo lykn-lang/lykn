@@ -1563,6 +1563,12 @@ All source corrections remain open.
   [attempt08](../project03-language-evolution/arc05-binding-semantics-and-hygienic-emission/slice05-native-generated-name-hygiene/artifacts/cc/correction01/attempt08-focused-cli.log).
   Root inspected that actual receipt. This is CC runtime evidence, not fresh
   independent reproduction or an established baseline/version comparison.
+- **Independent source disposition:** separate Sol compared the retained log
+  and current/baseline delta. Some-thread's awaited initial returns its statement
+  block through unchanged forms.rs3579–3647; S05 changes names, not that block/
+  call-argument construction or codegen block lowering. The inspected S05 change
+  does not introduce that structural path. This remains a source comparison,
+  not fresh baseline runtime reproduction or a public/compiler version matrix.
 - **S05 boundary:** no nested-await lowering repair. Existing top-level
   `(some-> (await ...) (+ 1) (console:log))` fixtures exercise the same name
   reservation producer and pass actual CLI/native/kernel-JSON consumers.
