@@ -12,6 +12,15 @@ related: [arc04-qualified-adts, arc06-adt-modules-and-library-integration]
 
 ## Authority and outcome
 
+Subsequent authority2026-11-14: operator authorizes exact local release FF to
+82f1b65b, fresh validation/independent review, then S06 if green, same Luna6 High
+CC/Sol6.1 High CDC in Autonomous Mode. Root executed the authorized FF fromc60;
+release/task are clean equal82/tree4bb6bfc9. [Release RI-01–03](slice05-native-generated-name-hygiene/artifacts/release-integration-82f1b65b.md)
+remain open pending fresh release-worktree checks. S06 implementation is
+conditional; root may inspect immutable task source for its source-ready plan.
+No S07/other slice, push, hosted CI, tagging/publication or0.7/0.8 propagation.
+Earlier releasec60 and S06-unopened statements below are historical checkpoints.
+
 Current S05 closing checkpoint2026-11-14: native generated-name source/delivery
 is independently accepted at82f1b65b/tree4bb6bfc9, all8NH/BS-05 done after
 separate closing-metadata PASS. Root retrospective/parent routing is complete.

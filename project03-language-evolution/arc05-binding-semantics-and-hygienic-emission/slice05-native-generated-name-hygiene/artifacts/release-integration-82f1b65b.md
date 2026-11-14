@@ -1,6 +1,6 @@
 # S04/S05 local release integration — 2026-11-14
 
-Current status: authorized, RI-01–03 open. Operator explicitly requests local
+Current status: authorized FF complete, validation pending, RI-01–03 open. Operator explicitly requests local
 release/0.6.x fast-forward to82f1b65b, fresh validation and independent review,
 then S06 if green. Same OpenAI gpt-6-luna/high CC and separate
 gpt-6.1-sol/high CDC, Autonomous Mode. Reuse arc05_s05_cc/cdc for this bounded
@@ -21,6 +21,13 @@ five S04/S05 commits. core.hooksPath is unset; default hooks contain only sample
 files, with no active post-merge hook. Local FF has no hosted-CI effect.
 Root will execute ONLY `git merge --ff-only 82f1b65b92529979afd6c624183912ca31453927`
 in the existing clean release worktree and record its actual outcome below.
+
+Actual root FF: the exact command above returned0, `Updating c60dea62..82f1b65b`
+and `Fast-forward`. Release HEAD/tree now equal82f1b65b/4bb6bfc9 and task,
+both clean, with0/0 divergence. Release reflog records that exact FF. The
+c60→82 range comprises13 paths across the five already accepted S04/S05
+commits (not just S05's ten-path c0ed range). No new commit/product edit or
+remote/hosted-CI action occurred. Root retains release ownership until dispatch.
 
 | Gate | Status | Required evidence |
 | --- | --- | --- |
