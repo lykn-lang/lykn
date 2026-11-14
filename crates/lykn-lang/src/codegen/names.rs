@@ -9,6 +9,7 @@
 
 use super::format::JsWriter;
 use crate::ast::sexpr::SExpr;
+use std::borrow::Cow;
 use std::collections::HashSet;
 
 /// Fresh local names for one generated expression, reserved against source
@@ -27,14 +28,14 @@ impl GeneratedNameAllocator {
         Self::default()
     }
 
-    /// Reserve the emitted lexical root of every atom in a borrowed source
-    /// expression. Literal data nodes do not introduce JS variable reads.
+    /// Reserve conservative physical identifiers from atoms in a borrowed
+    /// source expression, including computed-key reads. Literal data nodes do
+    /// not introduce JS variable reads.
     pub(crate) fn reserve_expr(&mut self, expr: &SExpr) {
         match expr {
             SExpr::Atom(_) => {
                 if let Some(name) = expr.as_atom() {
-                    let root = name.split(':').next().unwrap_or(name);
-                    self.occupied.insert(to_js_identifier(root));
+                    reserve_emitted_atom_names(name, &mut self.occupied);
                 }
             }
             SExpr::List { values, .. } => {
@@ -57,7 +58,7 @@ impl GeneratedNameAllocator {
     /// Allocate the preferred emitted name when available, otherwise use a
     /// deterministic suffix. Every returned identifier is reserved at once.
     pub(crate) fn allocate(&mut self, preferred: &str) -> Result<String, GeneratedNameExhausted> {
-        if self.occupied.insert(preferred.to_owned()) {
+        if self.occupied.insert(emitted_text_identifier_key(preferred)) {
             return Ok(preferred.to_owned());
         }
 
@@ -65,11 +66,160 @@ impl GeneratedNameAllocator {
             let suffix = self.next_suffix;
             self.next_suffix = suffix.checked_add(1).ok_or(GeneratedNameExhausted)?;
             let candidate = format!("{preferred}__lyknGenerated{suffix}");
-            if self.occupied.insert(candidate.clone()) {
+            if self
+                .occupied
+                .insert(emitted_text_identifier_key(&candidate))
+            {
                 return Ok(candidate);
             }
         }
     }
+}
+
+/// Reserve the physical identifier spellings emitted for one source atom.
+/// This is conservative occupancy only; it does not assign binding roles.
+pub(crate) fn reserve_emitted_atom_names(raw: &str, occupied: &mut HashSet<String>) {
+    let mut writer = JsWriter::new();
+    emit_atom(&mut writer, raw);
+    let emitted = writer.finish();
+
+    // Preserve the previous full-spelling/colon-segment keys. For a normal
+    // atom, the emitted form is already exactly `to_js_identifier(raw)`.
+    if raw.contains(':') {
+        occupied.insert(to_js_identifier(raw));
+        for segment in raw.split(':') {
+            if !segment.is_empty() {
+                occupied.insert(to_js_identifier(segment));
+            }
+        }
+    } else {
+        occupied.insert(emitted.clone());
+    }
+
+    let decoded = decode_static_unicode_escapes(&emitted);
+    let physical = decoded.as_ref();
+    let mut run_start = None;
+    for (index, ch) in physical.char_indices() {
+        if identifier_run_char(ch) {
+            run_start.get_or_insert(index);
+        } else if let Some(start) = run_start.take() {
+            occupied.insert(physical[start..index].to_string());
+        }
+    }
+    if let Some(start) = run_start {
+        occupied.insert(physical[start..].to_string());
+    }
+}
+
+/// Return a generated binding's physical JavaScript identifier key.
+pub(crate) fn emitted_identifier_key(raw: &str) -> String {
+    let mut writer = JsWriter::new();
+    emit_atom(&mut writer, raw);
+    emitted_text_identifier_key(&writer.finish())
+}
+
+/// Decode a candidate that the caller already holds in emitted JavaScript
+/// spelling. In particular, ICU candidates must not be normalized twice.
+pub(crate) fn emitted_text_identifier_key(emitted: &str) -> String {
+    decode_static_unicode_escapes(emitted).into_owned()
+}
+
+fn identifier_run_char(ch: char) -> bool {
+    ch.is_ascii_alphanumeric()
+        || ch == '_'
+        || ch == '$'
+        || (!ch.is_ascii() && !ch.is_whitespace() && ch != '\u{feff}')
+}
+
+/// Decode static JavaScript Unicode escapes without validating surrounding JS.
+/// Ordinary atoms borrow their input; only text containing `\\u` is copied.
+fn decode_static_unicode_escapes(text: &str) -> Cow<'_, str> {
+    let Some(first_escape) = text.find("\\u") else {
+        return Cow::Borrowed(text);
+    };
+
+    let bytes = text.as_bytes();
+    let mut decoded = String::with_capacity(text.len());
+    decoded.push_str(&text[..first_escape]);
+    let mut index = first_escape;
+    while index < bytes.len() {
+        if bytes[index] == b'\\'
+            && bytes.get(index + 1) == Some(&b'u')
+            && let Some((ch, end)) = parse_unicode_escape(text, index)
+        {
+            decoded.push(ch);
+            index = end;
+            continue;
+        }
+        let ch = text[index..]
+            .chars()
+            .next()
+            .expect("index remains on a UTF-8 character boundary");
+        decoded.push(ch);
+        index += ch.len_utf8();
+    }
+    Cow::Owned(decoded)
+}
+
+fn parse_unicode_escape(text: &str, start: usize) -> Option<(char, usize)> {
+    let bytes = text.as_bytes();
+    let after_prefix = start.checked_add(2)?;
+    if bytes.get(after_prefix) == Some(&b'{') {
+        let mut index = after_prefix.checked_add(1)?;
+        let mut digits = 0_u32;
+        let mut count = 0_usize;
+        loop {
+            match bytes.get(index).copied()? {
+                b'}' if count > 0 => {
+                    let ch = char::from_u32(digits)?;
+                    return Some((ch, index.checked_add(1)?));
+                }
+                byte if byte.is_ascii_hexdigit() => {
+                    let digit = (byte as char).to_digit(16)?;
+                    digits = digits.checked_mul(16)?.checked_add(digit)?;
+                    count = count.checked_add(1)?;
+                    index = index.checked_add(1)?;
+                }
+                _ => return None,
+            }
+        }
+    }
+
+    let first = parse_u4(bytes, after_prefix)?;
+    let after_first = after_prefix.checked_add(4)?;
+    if (0xD800..=0xDBFF).contains(&first) {
+        let next_prefix_end = after_first.checked_add(2)?;
+        if bytes.get(after_first..next_prefix_end) == Some(b"\\u") {
+            let second_start = after_first.checked_add(2)?;
+            if let Some(second) = parse_u4(bytes, second_start)
+                && (0xDC00..=0xDFFF).contains(&second)
+            {
+                let scalar =
+                    0x10000 + ((u32::from(first) - 0xD800) << 10) + (u32::from(second) - 0xDC00);
+                return Some((char::from_u32(scalar)?, second_start.checked_add(4)?));
+            }
+        }
+        return None;
+    }
+    if (0xDC00..=0xDFFF).contains(&first) {
+        return None;
+    }
+    Some((char::from_u32(u32::from(first))?, after_first))
+}
+
+fn parse_u4(bytes: &[u8], start: usize) -> Option<u16> {
+    let digits = bytes.get(start..start.checked_add(4)?)?;
+    let mut value = 0_u16;
+    for byte in digits {
+        let digit = match byte {
+            b'0'..=b'9' => byte - b'0',
+            b'a'..=b'f' => byte - b'a' + 10,
+            b'A'..=b'F' => byte - b'A' + 10,
+            _ => return None,
+        };
+        value = value.checked_mul(16)?.checked_add(u16::from(digit))?;
+    }
+    Some(value)
 }
 
 // ── DD-49 data tables ──────────────────────────────────────────────────
@@ -593,5 +743,80 @@ mod tests {
     #[test]
     fn test_colon_with_camel_case_segments() {
         assert_eq!(atom_output("my-obj:get-name"), "myObj.getName");
+    }
+
+    #[test]
+    fn physical_atom_census_keeps_normalized_runs_and_computed_reads() {
+        let mut occupied = HashSet::new();
+        reserve_emitted_atom_names("foo?bar", &mut occupied);
+        reserve_emitted_atom_names("this:-private-name", &mut occupied);
+        reserve_emitted_atom_names("box[t__gensym0]", &mut occupied);
+
+        assert!(occupied.contains("fooQMARKBar"));
+        assert!(occupied.contains("this"));
+        assert!(occupied.contains("_privateName"));
+        assert!(occupied.contains("box"));
+        assert!(occupied.contains("t__gensym0"));
+        assert!(occupied.contains("box[t__gensym0]"));
+    }
+
+    #[test]
+    fn physical_atom_census_decodes_static_unicode_escapes_before_scanning() {
+        let mut occupied = HashSet::new();
+        reserve_emitted_atom_names(r"await\u005f\u005fgensym0.child", &mut occupied);
+        reserve_emitted_atom_names(r"await\u{5f}\u{5f}gensym1.child", &mut occupied);
+        reserve_emitted_atom_names(r"math\uD835\uDC9C.child", &mut occupied);
+        reserve_emitted_atom_names(r"pair\uD835\uDC9C", &mut occupied);
+
+        assert!(occupied.contains("await__gensym0"));
+        assert!(occupied.contains("await__gensym1"));
+        assert!(occupied.contains("math𝒜"));
+        assert!(occupied.contains("pair𝒜"));
+        assert_eq!(
+            emitted_identifier_key(r"await\u005f\u005fgensym0"),
+            "await__gensym0"
+        );
+        assert_eq!(emitted_text_identifier_key(r"foo\u002dbar"), "foo-bar");
+    }
+
+    #[test]
+    fn malformed_unicode_escapes_remain_safe_and_non_ascii_runs_are_conservative() {
+        let mut occupied = HashSet::new();
+        reserve_emitted_atom_names("left\u{feff}界right", &mut occupied);
+        reserve_emitted_atom_names("before\u{2003}after", &mut occupied);
+        reserve_emitted_atom_names(r"prefix\u{12xz", &mut occupied);
+        reserve_emitted_atom_names(r"incomplete\u12", &mut occupied);
+        reserve_emitted_atom_names(r"lone\uD835X", &mut occupied);
+        reserve_emitted_atom_names(r"limit\u{110000}end", &mut occupied);
+
+        assert!(occupied.contains("left"));
+        assert!(occupied.contains("界right"));
+        assert!(occupied.contains("before"));
+        assert!(occupied.contains("after"));
+        assert!(occupied.contains("prefix"));
+        assert!(occupied.contains("12xz"));
+        assert!(occupied.contains("incomplete"));
+        assert!(occupied.contains("u12"));
+        assert!(occupied.contains("lone"));
+        assert!(occupied.contains("uD835X"));
+        assert_eq!(emitted_text_identifier_key(r"\u{110000}"), r"\u{110000}");
+    }
+
+    #[test]
+    fn generated_name_allocator_uses_decoded_physical_candidate_keys() {
+        let mut first = GeneratedNameAllocator::new();
+        first.reserve_expr(&SExpr::atom("await__gensym0", Default::default()));
+        assert_eq!(
+            first.allocate(r"await\u005f_gensym0").unwrap(),
+            r"await\u005f_gensym0__lyknGenerated0"
+        );
+
+        let mut second = GeneratedNameAllocator::new();
+        let escaped = r"await\u005f_gensym0";
+        assert_eq!(second.allocate(escaped).unwrap(), escaped);
+        assert_eq!(
+            second.allocate("await__gensym0").unwrap(),
+            "await__gensym0__lyknGenerated0"
+        );
     }
 }

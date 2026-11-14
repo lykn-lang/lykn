@@ -1,3 +1,4 @@
+use std::path::PathBuf;
 use std::process::Command;
 
 use lykn_lang::{analysis, classifier, codegen, emitter, reader, resolver};
@@ -131,12 +132,42 @@ fn shared_early_producers_preserve_opposing_source_values_and_effects() {
         );
     }
     let dotted_root = "(some-> (await (Promise:resolve await__gensym0.child)) (+ 1) (console:log))";
-    let (_, dotted_js) = compile(dotted_root);
-    eprintln!("NATIVE_DOTTED_ROOT_SOURCE={dotted_root:?}\nNATIVE_DOTTED_ROOT_JS={dotted_js:?}");
-    assert_eq!(
-        run(&dotted_js, "globalThis.await__gensym0 = {child: 7};"),
-        "8\n"
-    );
+    for strip in [false, true] {
+        let (_, dotted_js) = compile_strip(dotted_root, strip);
+        eprintln!(
+            "NATIVE_DOTTED_ROOT_SOURCE={dotted_root:?} strip={strip}\nNATIVE_DOTTED_ROOT_JS={dotted_js:?}"
+        );
+        assert_eq!(
+            run(&dotted_js, "globalThis.await__gensym0 = {child: 7};"),
+            "8\n"
+        );
+    }
+    let computed_key = "(console:log (some-> 7 (+ box[t__gensym0])))";
+    for strip in [false, true] {
+        let (_, computed_js) = compile_strip(computed_key, strip);
+        eprintln!(
+            "NATIVE_COMPUTED_KEY_SOURCE={computed_key:?} strip={strip}\nNATIVE_COMPUTED_KEY_JS={computed_js:?}"
+        );
+        assert_eq!(
+            run(
+                &computed_js,
+                "globalThis.t__gensym0 = 99; globalThis.box = {99: 5, 7: 100};"
+            ),
+            "12\n"
+        );
+    }
+    let escaped_root =
+        r"(some-> (await (Promise:resolve await\u005f\u005fgensym0.child)) (+ 1) (console:log))";
+    for strip in [false, true] {
+        let (_, escaped_js) = compile_strip(escaped_root, strip);
+        eprintln!(
+            "NATIVE_ESCAPED_ROOT_SOURCE={escaped_root:?} strip={strip}\nNATIVE_ESCAPED_ROOT_JS={escaped_js:?}"
+        );
+        assert_eq!(
+            run(&escaped_js, "globalThis.await__gensym0 = {child: 7};"),
+            "8\n"
+        );
+    }
     let (_, effect_js) = compile(
         "(bind calls (cell 0)) (bind value (some-> 7 (+ (do (swap! calls (fn (:number n) (+ n 1))) 3)))) (console:log value (express calls))",
     );
@@ -274,6 +305,101 @@ fn standalone_form_reserves_its_typed_names_and_raw_codegen_remains_literal() {
         "host root binding uses inline support: {late_js}"
     );
     assert_eq!(run(&late_js, ""), "7 99 5 items\n");
+
+    let completion_source = "(func read :args (:number _) :returns :number :body completionValue__gensym0.child) (console:log (read 7))";
+    let (_, completion_js) = compile(completion_source);
+    eprintln!(
+        "NATIVE_COMPLETION_SOURCE={completion_source:?}\nNATIVE_COMPLETION_JS={completion_js:?}"
+    );
+    assert!(
+        completion_js.contains("completionValue__gensym1"),
+        "discard completion local avoids foreign dotted root: {completion_js}"
+    );
+    assert_eq!(
+        run(
+            &completion_js,
+            "globalThis.completionValue__gensym0 = {child: 41};"
+        ),
+        "41\n"
+    );
+
+    let icu_dotted =
+        "(console:log (template \"{n, plural, one {one} other {# items}}\" :n _v0.child))";
+    let (_, icu_dotted_js) = compile(icu_dotted);
+    eprintln!("NATIVE_ICU_DOTTED_SOURCE={icu_dotted:?}\nNATIVE_ICU_DOTTED_JS={icu_dotted_js:?}");
+    assert!(
+        icu_dotted_js.contains("_v0__lyknGenerated"),
+        "ICU selector uses a distinct generated local: {icu_dotted_js}"
+    );
+    assert_eq!(
+        run(&icu_dotted_js, "globalThis._v0 = {child: 5};"),
+        "5 items\n"
+    );
+
+    let icu_computed =
+        "(console:log (template \"{n, plural, one {one} other {# items}}\" :n box[_v0]))";
+    let (_, icu_computed_js) = compile(icu_computed);
+    eprintln!(
+        "NATIVE_ICU_COMPUTED_SOURCE={icu_computed:?}\nNATIVE_ICU_COMPUTED_JS={icu_computed_js:?}"
+    );
+    assert_eq!(
+        run(
+            &icu_computed_js,
+            "globalThis._v0 = 99; globalThis.box = {99: 5, 5: 100};"
+        ),
+        "5 items\n"
+    );
+
+    let reference_source = "(func read :args (:number value) :returns :number :body lyknIntrinsicNumberIsNaN0.child) (console:log (read 7))";
+    let (_, reference_js) = compile(reference_source);
+    eprintln!(
+        "NATIVE_HOST_REFERENCE_SOURCE={reference_source:?}\nNATIVE_HOST_REFERENCE_JS={reference_js:?}"
+    );
+    assert!(
+        reference_js.contains("lyknIntrinsicNumberIsNaN1"),
+        "host alias avoids foreign dotted root: {reference_js}"
+    );
+    assert_eq!(
+        run(
+            &reference_js,
+            "globalThis.lyknIntrinsicNumberIsNaN0 = {child: 41};"
+        ),
+        "41\n"
+    );
+
+    let fixture_path = PathBuf::from(env!("CARGO_MANIFEST_DIR"))
+        .join("../../test/fixtures/ordered-member-calls/pure-colon-call.lykn");
+    let fixture =
+        std::fs::read_to_string(fixture_path).expect("read actual pure-colon-call fixture");
+    let invocation_source = fixture
+        .replace(
+            ":args (:any receiver) :returns :any :body\n  (receiver:read-entry 3)",
+            ":args (:any receiver :any stop) :returns :any :body\n  (receiver:read-entry (do (if stop (return 92)) 3))",
+        )
+        .replace("(+ value 1)", "lyknHostReflectApply0.child")
+        .replace(
+            "(console:log (probe receiver))",
+            "(console:log (probe receiver true) (probe receiver false))",
+        );
+    assert_ne!(
+        invocation_source, fixture,
+        "fixture body replacement must be observed"
+    );
+    let (_, invocation_js) = compile(&invocation_source);
+    eprintln!(
+        "NATIVE_INVOCATION_SOURCE={invocation_source:?}\nNATIVE_INVOCATION_JS={invocation_js:?}"
+    );
+    assert!(
+        invocation_js.contains("function lyknHostReflectApply1("),
+        "actual invocation support avoids foreign dotted helper root: {invocation_js}"
+    );
+    assert_eq!(
+        run(
+            &invocation_js,
+            "globalThis.lyknHostReflectApply0 = {child: 41};"
+        ),
+        "92 41\n"
+    );
 
     use lykn_lang::ast::sexpr::SExpr;
     let raw = vec![SExpr::List {

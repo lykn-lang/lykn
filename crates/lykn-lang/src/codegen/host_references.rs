@@ -3,7 +3,7 @@
 use std::collections::{HashMap, HashSet};
 
 use crate::ast::sexpr::{HostReference, SExpr};
-use crate::codegen::names::to_js_identifier;
+use crate::codegen::names::reserve_emitted_atom_names;
 use crate::error::LyknError;
 
 fn all_references() -> [HostReference; 9] {
@@ -44,9 +44,7 @@ pub(crate) fn prepare(forms: &[SExpr]) -> Result<ReferenceSupport, LyknError> {
             used.insert(reference);
         }
         if let Some(name) = node.as_atom() {
-            for segment in name.split(':') {
-                reserved.insert(to_js_identifier(segment));
-            }
+            reserve_emitted_atom_names(name, reserved);
         }
         match node {
             SExpr::List { values, .. } => values

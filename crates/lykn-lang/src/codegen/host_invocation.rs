@@ -4,7 +4,7 @@
 use std::collections::{HashMap, HashSet};
 
 use crate::ast::sexpr::SExpr;
-use crate::codegen::names::to_js_identifier;
+use crate::codegen::names::reserve_emitted_atom_names;
 use crate::diagnostics::{Diagnostic, Severity};
 use crate::error::LyknError;
 use crate::protected_host::IntrinsicId;
@@ -141,9 +141,7 @@ fn normalized_payload_names(forms: &[SExpr]) -> HashSet<String> {
         match node {
             SExpr::Atom(_) => {
                 if let Some(value) = node.as_atom() {
-                    for segment in value.split(':') {
-                        names.insert(to_js_identifier(segment));
-                    }
+                    reserve_emitted_atom_names(value, names);
                 }
             }
             SExpr::List { values, .. } => values.iter().for_each(|child| visit(child, names)),

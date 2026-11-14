@@ -6,7 +6,7 @@ use crate::ast::surface::{
     TypeAnnotation,
 };
 use crate::binding::{BindingKind, binding_names_in_pattern};
-use crate::codegen::names::to_js_identifier;
+use crate::codegen::names::{emitted_identifier_key, reserve_emitted_atom_names, to_js_identifier};
 use crate::diagnostics::{Diagnostic, Severity};
 use crate::error::LyknError;
 use crate::reader::source_loc::Span;
@@ -353,8 +353,8 @@ pub(crate) fn emit_form_raw_checked(
     }
 }
 
-/// Finalize private result destinations after reserving the normalized names
-/// and colon roots that occur throughout the complete emitted unit.
+/// Finalize private result destinations after reserving physical identifiers
+/// from atoms throughout the complete emitted unit.
 pub(crate) fn finalize_completion_value_markers(forms: &mut [SExpr], ctx: &mut EmitterContext) {
     let mut reserved = HashSet::new();
     let mut has_markers = false;
@@ -386,7 +386,7 @@ fn finalize_completion_value_markers_in(
                 *next = (*next)
                     .checked_add(1)
                     .expect("completion value name space exhausted");
-                if !reserved.contains(&to_js_identifier(&candidate)) {
+                if !reserved.contains(&emitted_identifier_key(&candidate)) {
                     return candidate;
                 }
             }
@@ -4814,7 +4814,7 @@ fn next_unreserved_gensym(
 ) -> String {
     loop {
         let candidate = ctx.gensym.next(prefix);
-        let emitted = to_js_identifier(&candidate);
+        let emitted = emitted_identifier_key(&candidate);
         if reserved.insert(emitted) {
             return candidate;
         }
@@ -4826,17 +4826,7 @@ fn reserve_emitted_names(expr: &SExpr, reserved: &mut HashSet<String>) -> bool {
         SExpr::Atom(_) if expr.completion_value_id().is_some() => true,
         SExpr::Atom(_) => {
             let name = expr.as_atom().unwrap_or_default();
-            reserved.insert(to_js_identifier(name));
-            if let Some((root, members)) = name.split_once(':') {
-                if !root.is_empty() {
-                    reserved.insert(to_js_identifier(root));
-                }
-                for member in members.split(':') {
-                    if !member.is_empty() {
-                        reserved.insert(to_js_identifier(member));
-                    }
-                }
-            }
+            reserve_emitted_atom_names(name, reserved);
             false
         }
         SExpr::List { values, .. } => {
@@ -4866,17 +4856,17 @@ fn reserve_pattern_names(pattern: &Pattern, reserved: &mut HashSet<String>) {
             reserve_emitted_names(expr, reserved);
         }
         Pattern::Binding { name, .. } => {
-            reserved.insert(to_js_identifier(name));
+            reserved.insert(emitted_identifier_key(name));
         }
         Pattern::Constructor { name, bindings, .. } => {
-            reserved.insert(to_js_identifier(name));
+            reserved.insert(emitted_identifier_key(name));
             for binding in bindings {
                 reserve_pattern_names(binding, reserved);
             }
         }
         Pattern::Obj { pairs, .. } => {
             for (key, value) in pairs {
-                reserved.insert(to_js_identifier(key));
+                reserved.insert(emitted_identifier_key(key));
                 reserve_pattern_names(value, reserved);
             }
         }

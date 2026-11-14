@@ -18,7 +18,7 @@ fn output(command: &mut Command) -> Output {
 fn actual_lykn_lyk_check_compile_strip_and_kernel_json_compiler_consumer() {
     let temp = TempDir::new().expect("temporary source project");
     for ext in ["lykn", "lyk"] {
-        let source = "(func collide :args (:number result__gensym0) :returns :number :body 7)\n(func pick\n (:args (:number args) :returns :number :body args)\n (:args (:string args) :returns :string :body args))\n(console:log (collide 99) (pick 7) (pick \"ok\"))";
+        let source = "(func collide :args (:number result__gensym0) :returns :number :body 7)\n(func pick\n (:args (:number args) :returns :number :body args)\n (:args (:string args) :returns :string :body args))\n(console:log (collide 99) (pick 7) (pick \"ok\"))\n(some-> (await (Promise:resolve await__gensym0.child)) (+ 1) (console:log))\n(some-> 7 (+ box[t__gensym0]) (console:log))\n(some-> (await (Promise:resolve await\\u005f\\u005fgensym0.child)) (+ 1) (console:log))";
         let file = temp.path().join(format!("main.{ext}"));
         fs::write(&file, source).unwrap();
         let checked = output(cli().current_dir(temp.path()).arg("check").arg(&file));
@@ -55,7 +55,10 @@ fn actual_lykn_lyk_check_compile_strip_and_kernel_json_compiler_consumer() {
             // The baseline fixture can legitimately produce an unused typed
             // parameter warning; it is neither a runtime failure nor a
             // reason to weaken the value oracle.
-            let module = format!("await import('file://{}')", js_path.display());
+            let module = format!(
+                "globalThis.await__gensym0 = {{child: 7}}; globalThis.t__gensym0 = 99; globalThis.box = {{99: 5, 7: 100}}; await import('file://{}')",
+                js_path.display()
+            );
             let runtime = output(Command::new("deno").current_dir(root()).args([
                 "eval",
                 "--config",
@@ -74,7 +77,7 @@ fn actual_lykn_lyk_check_compile_strip_and_kernel_json_compiler_consumer() {
                 "runtime: {}\n{js}",
                 String::from_utf8_lossy(&runtime.stderr)
             );
-            assert_eq!(runtime.stdout, b"7 7 ok\n");
+            assert_eq!(runtime.stdout, b"7 7 ok\n8\n12\n8\n");
             let mut json_command = cli();
             json_command
                 .current_dir(temp.path())
@@ -92,7 +95,7 @@ fn actual_lykn_lyk_check_compile_strip_and_kernel_json_compiler_consumer() {
             let kernel_json = String::from_utf8(json.stdout).expect("CLI JSON is UTF-8");
             let encoded = serde_json::to_string(&kernel_json).unwrap();
             let script = format!(
-                "import {{ compile }} from \"./packages/lang/compiler.js\";\nconst ast = JSON.parse({encoded});\nconst js = compile(ast);\nawait import(`data:text/javascript;base64,${{btoa(js)}}`);"
+                "import {{ compile }} from \"./packages/lang/compiler.js\";\nconst ast = JSON.parse({encoded});\nconst js = compile(ast);\nglobalThis.await__gensym0 = {{child: 7}}; globalThis.t__gensym0 = 99; globalThis.box = {{99: 5, 7: 100}};\nawait import(`data:text/javascript;base64,${{btoa(js)}}`);"
             );
             let consumed = output(Command::new("deno").current_dir(root()).args([
                 "eval",
@@ -112,7 +115,7 @@ fn actual_lykn_lyk_check_compile_strip_and_kernel_json_compiler_consumer() {
                 "actual JS compiler JSON consumer: {}",
                 String::from_utf8_lossy(&consumed.stderr)
             );
-            assert_eq!(consumed.stdout, b"7 7 ok\n");
+            assert_eq!(consumed.stdout, b"7 7 ok\n8\n12\n8\n");
         }
     }
 }

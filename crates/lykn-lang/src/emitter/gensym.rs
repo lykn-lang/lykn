@@ -1,6 +1,6 @@
 use std::collections::HashSet;
 
-use crate::codegen::names::to_js_identifier;
+use crate::codegen::names::{emitted_identifier_key, reserve_emitted_atom_names};
 
 /// Deterministic gensym counter for the emitter.
 ///
@@ -36,23 +36,18 @@ impl EmitterGensym {
                 .checked_add(1)
                 .expect("emitter gensym namespace exhausted");
             let name = format!("{prefix}__gensym{suffix}");
-            if self.occupied.insert(to_js_identifier(&name)) {
+            if self.occupied.insert(emitted_identifier_key(&name)) {
                 return name;
             }
         }
     }
 
     pub(super) fn reserve(&mut self, name: &str) {
-        self.occupied.insert(to_js_identifier(name));
-        for segment in name.split(':') {
-            if !segment.is_empty() {
-                self.occupied.insert(to_js_identifier(segment));
-            }
-        }
+        reserve_emitted_atom_names(name, &mut self.occupied);
     }
 
     pub(super) fn preferred(&mut self, name: &str) -> String {
-        if self.occupied.insert(to_js_identifier(name)) {
+        if self.occupied.insert(emitted_identifier_key(name)) {
             name.to_string()
         } else {
             self.next(name)
@@ -109,5 +104,38 @@ mod tests {
         assert_eq!(g.preferred("args"), "args__gensym2");
         g.reset();
         assert_eq!(g.next("result"), "result__gensym0");
+    }
+
+    #[test]
+    fn generated_candidates_compare_decoded_emitted_keys_in_both_directions() {
+        let mut literal_first = EmitterGensym::new();
+        literal_first.reserve("helper___gensym0");
+        assert_eq!(
+            literal_first.next(r"helper\u005f"),
+            r"helper\u005f__gensym1"
+        );
+
+        let mut escaped_first = EmitterGensym::new();
+        let escaped = escaped_first.next(r"helper\u005f");
+        assert_eq!(escaped, r"helper\u005f__gensym0");
+        assert_eq!(
+            escaped_first.preferred("helper___gensym0"),
+            "helper___gensym0__gensym1"
+        );
+
+        let mut preferred_literal_first = EmitterGensym::new();
+        preferred_literal_first.reserve("await__gensym0");
+        assert_eq!(
+            preferred_literal_first.preferred(r"await\u005f_gensym0"),
+            r"await\u005f_gensym0__gensym0"
+        );
+
+        let mut preferred_escape_first = EmitterGensym::new();
+        let escaped = r"await\u005f_gensym0";
+        assert_eq!(preferred_escape_first.preferred(escaped), escaped);
+        assert_eq!(
+            preferred_escape_first.preferred("await__gensym0"),
+            "await__gensym0__gensym0"
+        );
     }
 }
