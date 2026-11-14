@@ -36,11 +36,16 @@ export function functionRegionLayout(form) {
   const args = form.values.slice(1);
   const kernelHead = head.startsWith("kernel:") ? head.slice("kernel:".length) : head;
   const namedFunction = ["function", "function*"].includes(kernelHead);
-  const paramsIndex = namedFunction && args[0]?.type === "atom" ? 1 : 0;
+  const generatorHasName = kernelHead === "function*" && args[0]?.type === "atom" && args[0].value !== "";
+  const paramsIndex = kernelHead === "function"
+    ? 1
+    : kernelHead === "function*"
+    ? args[0]?.type === "list" ? 0 : 1
+    : 0;
   const kernel = isKernel(form) || head.startsWith("kernel:") || ["function", "function*", "=>"].includes(head);
   const paramsPath = args[paramsIndex]?.type === "list" ? [1 + paramsIndex] : null;
   const defaultPaths = paramsPath ? parameterDefaultPaths(atOccurrencePath(form, paramsPath), paramsPath, kernel ? "BindingPattern" : "TypedParameter") : [];
-  const namePath = namedFunction && args[0]?.type === "atom" ? [1] : null;
+  const namePath = kernelHead === "function" && args[0]?.type === "atom" || generatorHasName ? [1] : null;
   const bodyArgs = head === "genfn" ? genfnBodyLayout(args) : null;
   if (head === "genfn" && !bodyArgs) return null;
   const bodyStart = head === "genfn" ? bodyArgs.bodyStart : paramsIndex + 1;

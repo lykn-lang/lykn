@@ -1407,15 +1407,20 @@ is `const`; reach it explicitly with `(kernel:const …)` when needed).
 (bind (array _ _ third) arr)
 ```
 
-In a binding pattern, `_` discards that binding value without creating a
-source name; `_value` remains an ordinary name. Array-pattern `_` is an
-elision, while object-pattern shorthand `_` still reads the property named
-`_` and discards its value. Defaults, rest/spread operations, and nested
-patterns keep their normal evaluation behavior. This meaning applies in public
-source binding roles, including `bind`, explicit `kernel:` declarations and
-loops, callable parameters, class method parameters, and the legacy catch
-parameter slot. The public source expander prepares these positions while
-preserving their evaluation behavior. Raw compiler entry points such as
+In an ordinary binding pattern, `_` discards that binding value without
+creating a source name; `_value` remains an ordinary name. Array-pattern `_`
+is an elision, while object-pattern shorthand `_` still reads the property
+named `_` and discards its value. Defaults, rest/spread operations, and nested
+patterns keep their normal evaluation behavior. These binding-pattern rules
+apply in public source roles including `bind`, explicit `kernel:` declarations
+and loops, callable parameters, and class method parameters. The legacy
+`catch` parameter uses the writer's expression grammar: in
+`(catch (array _) ...)`, `_` reads the thrown array item but creates no source
+binding, so `_` in the body still resolves an enclosing or global value. This
+distinction describes the bare catch array slot; nested catch expressions
+continue to follow their individual writer forms. The public source expander
+prepares these positions while preserving their evaluation behavior. Raw
+compiler entry points such as
 `compile(read(...))` keep `_` literal; use a public source form for source
 discard semantics. Generated ADT schema fields also keep `_` as a real field
 name. An underscore in an initializer, default expression, property key/value,

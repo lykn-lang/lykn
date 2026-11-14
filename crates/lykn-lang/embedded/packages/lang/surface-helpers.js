@@ -14,7 +14,7 @@ import {
 import { toJsIdentifier } from "./compiler.js";
 import { markKernel } from "./kernel-mark.js";
 import { markHostReference } from "./compiler-private-atoms.js";
-import { classRegionLayout } from "./lexical-regions.js";
+import { classRegionLayout, functionRegionLayout } from "./lexical-regions.js";
 // Param-shape sub-parsers (still in surface.js, not in this extraction set);
 // parseTypedParams delegates to them, so import them to satisfy the move.
 import {
@@ -416,17 +416,10 @@ export function prepareSourceDiscardBindings(form) {
     ? { ...list, values: list.values.map(lowerDiscardBindingPattern) }
     : list;
   const prepareFunction = (node) => {
-    if (node?.type !== "list" || node.values.length === 0) return node;
-    const childHead = node.values[0]?.type === "atom" ? node.values[0].value : "";
-    if (childHead === "async") {
-      const wrapped = node.values[1];
-      if (!wrapped) return node;
-      return { ...node, values: [node.values[0], prepareFunction(wrapped), ...node.values.slice(2)] };
-    }
-    if (!["function", "function*", "=>", "lambda"].includes(childHead)) return node;
-    const args = node.values.slice(1);
-    const named = ["function", "function*"].includes(childHead) && args[0]?.type === "atom";
-    const paramsIndex = 1 + (named ? 1 : 0);
+    const layout = functionRegionLayout(node);
+    const paramsPath = layout?.clauses?.[0]?.paramsPath;
+    if (!paramsPath || paramsPath.length !== 1) return node;
+    const paramsIndex = paramsPath[0];
     if (node.values[paramsIndex]?.type !== "list") return node;
     const next = node.values.slice();
     next[paramsIndex] = prepareParams(next[paramsIndex]);
@@ -437,9 +430,7 @@ export function prepareSourceDiscardBindings(form) {
     values[1] = lowerDiscardBindingPattern(values[1]);
   } else if (["for-of", "for-in", "for-await-of"].includes(head) && values[1]) {
     values[1] = lowerDiscardBindingPattern(values[1]);
-  } else if (head === "for" && values[1]?.type === "list") {
-    values[1] = prepareSourceDiscardBindings(values[1]);
-  } else if (["function", "function*", "=>", "lambda", "async"].includes(head)) {
+  } else if (["function", "function*", "=>"].includes(head)) {
     return prepareFunction(form);
   } else if (head === "class" || head === "class-expr") {
     const layout = classRegionLayout(form);

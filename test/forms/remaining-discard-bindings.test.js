@@ -28,7 +28,7 @@ async function executeModule(source, expected) {
   }
 }
 
-async function executeFailure(source, expectedMessage) {
+async function executeFailure(source, expectedMessage, expectedClass = "Error") {
   const directory = await Deno.makeTempDir({ prefix: "lykn-s03-failure-" });
   try {
     await Deno.writeTextFile(`${directory}/out.mjs`, `${source}\n`);
@@ -39,7 +39,11 @@ async function executeFailure(source, expectedMessage) {
       stderr: "piped",
     }).output();
     assertEquals(result.code !== 0, true);
-    assertStringIncludes(new TextDecoder().decode(result.stderr), expectedMessage);
+    const stderr = new TextDecoder().decode(result.stderr);
+    assertStringIncludes(stderr, `${expectedClass}:`);
+    assertStringIncludes(stderr, expectedMessage);
+    assertEquals(stderr.includes("SyntaxError"), false, stderr);
+    assertEquals(stderr.includes("arg 'discardValue__"), false, stderr);
   } finally {
     await Deno.remove(directory, { recursive: true });
   }
@@ -55,8 +59,18 @@ Deno.test("S03 public declarations and loop binders discard without losing effec
     (console:log (get globalThis "_") _value (get globalThis "calls"))
     (kernel:for-of (array _) #a(#a(7)) (console:log 1))
     (kernel:for-in _ (obj :a 1) (console:log 2))
-    (kernel:for (kernel:let (array _ i) #a(0 0)) (< i 1) (kernel:++ i) (break))
-  `), "99 7 1\n1\n2\n");
+    (kernel:for
+      (kernel:let (array _ i)
+        (do (set-symbol! globalThis "numericInitCalls" (+ (?? (get globalThis "numericInitCalls") 0) 1)) #a(7 0)))
+      (< i 1) (kernel:++ i) (break))
+    (console:log (get globalThis "numericInitCalls"))
+  `), "99 7 1\n1\n2\n1\n");
+
+  await executeFailure(lykn(`
+    (set-symbol! globalThis "_" 99)
+    (bind async (fn (:any callback) (callback "bad")))
+    (for (async (lambda (:number _) _)) false () (break))
+  `), "arg '_' expected number, got string", "TypeError");
 
   await executeModule(`
     globalThis.resultValueReads = 0;
@@ -110,6 +124,8 @@ Deno.test("S03 public callable and class parameter slots preserve arity and lazi
     (bind iterator (gen 1 7))
     (bind anonymous-gen (kernel:function* (x _) (yield _)))
     (bind anonymous-iterator (anonymous-gen 1 7))
+    (bind sentinel-gen (kernel:function* "" (_) (yield _)))
+    (bind sentinel-iterator (sentinel-gen 7))
     (kernel:function* lazy-gen ((default _ (set-symbol! globalThis "genDefaultCalls" (+ (?? (get globalThis "genDefaultCalls") 0) 1))))
       (do
         (set-symbol! globalThis "genBodyCalls" (+ (?? (get globalThis "genBodyCalls") 0) 1))
@@ -131,20 +147,68 @@ Deno.test("S03 public callable and class parameter slots preserve arity and lazi
       (get (anonymous-iterator:next) "value"))
     (console:log (get globalThis "genDefaultCalls") (?? (get globalThis "genBodyCalls") 0))
     (console:log (get (lazy-iterator:next) "value") (get globalThis "genDefaultCalls") (get globalThis "genBodyCalls"))
+    (console:log (get (sentinel-iterator:next) "value") sentinel-gen:length)
     (set! slots:value 7)
     (console:log slots:stored (Slots:static-value 1) (slots:method 1 7)
       (callable-object:run 1 7))
     (console:log (await (slots:async-value 1 7)))
-    (console:log (await (async-function 1 7)))
+    (console:log (await (async-function 1 7)) (await (async-arrow 1 7)))
     (console:log (expression-instance:method 1) expression-instance:value)
     (bind lazy-default (kernel:function with-default ((default x (set-symbol! globalThis "defaultCalls" (+ (?? (get globalThis "defaultCalls") 0) 1)))) (return x)))
     (console:log (lazy-default 5) (?? (get globalThis "defaultCalls") 0))
     (console:log (lazy-default undefined) (get globalThis "defaultCalls"))
-  `), "7 7 7 2 2 2 0\n99 99 1 99\n1 0\n99 1 1\n99 99 7 7\n99\n7\n99 99\n5 0\n1 1\n");
+  `), "7 7 7 2 2 2 0\n99 99 1 99\n1 0\n99 1 1\n99 1\n99 99 7 7\n99\n7 99\n99 99\n5 0\n1 1\n");
   await executeFailure(lykn(`
-    (kernel:function throw-default ((default x (throw (new Error "default boom")))) (return x))
+    (kernel:function throw-default-error () (throw (new Error "default boom")))
+    (kernel:function throw-default ((default x (throw-default-error))) (return x))
     (throw-default)
-  `), "default boom");
+  `), "default boom", "Error");
+
+  const asyncTyped = `
+    (set-symbol! globalThis "_" 99)
+    (bind callback (async (lambda ((object :number _)) _)))
+    (console:log (await (callback (kernel:object ("_" 7)))))
+  `;
+  await executeModule(lykn(asyncTyped), "99\n");
+  await executeModule(browserCompileLykn(asyncTyped), "99\n");
+  for (const compileSource of [lykn, browserCompileLykn]) {
+    await executeFailure(compileSource(`
+      (bind callback (async (lambda ((object :number _)) _)))
+      (await (callback (kernel:object ("_" "bad"))))
+    `), "arg '_' expected number, got string", "TypeError");
+    await executeFailure(compileSource(`
+      (bind callback (async (lambda (:number _) _)))
+      (await (callback "bad"))
+    `), "arg '_' expected number, got string", "TypeError");
+  }
+
+  resetMacros();
+  let defaultExpansions = 0;
+  macroEnv.set("generator-fallback", () => {
+    defaultExpansions++;
+    return read("(generatorFallback)")[0];
+  });
+  try {
+    const sentinelHead = lykn(`
+      (set-symbol! globalThis "generatorFallbackCalls" 0)
+      (set-symbol! globalThis "generatorFallback"
+        (kernel:=> ()
+          (do (set-symbol! globalThis "generatorFallbackCalls"
+                (+ (get globalThis "generatorFallbackCalls") 1))
+              (kernel:=> (x) (+ x 2)))))
+      (bind sentinel-head
+        (kernel:function* "" ((default array (generator-fallback)))
+          (yield (array 7))))
+      (bind supplied (sentinel-head (kernel:=> (x) (+ x 1))))
+      (bind fallback (sentinel-head))
+      (console:log (get (supplied:next) "value") (get (fallback:next) "value")
+        (get globalThis "generatorFallbackCalls"))
+    `);
+    assertEquals(defaultExpansions, 1);
+    await executeModule(sentinelHead, "8 9 1\n");
+  } finally {
+    resetMacros();
+  }
 });
 
 Deno.test("S03 public catch keeps the writer's expression-binding grammar", async () => {
@@ -200,13 +264,40 @@ Deno.test("S03 spread parameters project source names and preserve fallback look
     (set-symbol! globalThis "_" 99)
     (kernel:function spreader ((spread args)) (return args:length))
     (kernel:function form-shadow ((spread bind)) (return ((get bind 0) 1)))
-    (console:log _ (spreader 1 2) (form-shadow (kernel:=> (x) (+ x 1))))
-  `), "99 2 2\n");
+    (kernel:function spread-callable ((spread (object (alias "0" array)))) (return (array 7)))
+    (console:log _ (spreader 1 2) (form-shadow (kernel:=> (x) (+ x 1)))
+      (spread-callable (kernel:=> (x) (+ x 1))))
+  `), "99 2 2 8\n");
   assertThrows(
     () => lykn(`(kernel:function reserved-spread ((spread eval)) (return eval))`),
     Error,
     "forbidden as a strict-mode binding identifier",
   );
+
+  resetMacros();
+  let fallbackExpansions = 0;
+  macroEnv.set("fallback-macro", () => {
+    fallbackExpansions++;
+    return read("(spreadFallback)")[0];
+  });
+  try {
+    const source = lykn(`
+      (set-symbol! globalThis "spreadFallbackCalls" 0)
+      (set-symbol! globalThis "spreadFallback"
+        (kernel:=> ()
+          (do (set-symbol! globalThis "spreadFallbackCalls"
+                (+ (get globalThis "spreadFallbackCalls") 1))
+              (kernel:=> (x) (+ x 2)))))
+      (kernel:function nested-spread ((spread (array (default array (fallback-macro)))))
+        (return (array 7)))
+      (console:log (nested-spread (kernel:=> (x) (+ x 1)))
+        (nested-spread) (get globalThis "spreadFallbackCalls"))
+    `);
+    assertEquals(fallbackExpansions, 1);
+    await executeModule(source, "8 9 1\n");
+  } finally {
+    resetMacros();
+  }
 });
 
 Deno.test("S03 public zero-name grouped patterns keep static alias keys", async () => {
@@ -229,6 +320,53 @@ Deno.test("S03 public zero-name grouped patterns keep static alias keys", async 
       (console:log _ aliasReads defaults)
     `)}
   `, "99 6 1\n");
+
+  await executeModule(`
+    globalThis._ = 99;
+    globalThis.groupReads = 0;
+    globalThis.groupFallbacks = 0;
+    globalThis.groupInitializers = 0;
+    globalThis.groupSource = {};
+    Object.defineProperty(groupSource, "entry", {
+      get() { groupReads++; return [undefined, 2, 3]; },
+    });
+    globalThis.groupFallback = () => { groupFallbacks++; return 7; };
+    ${lykn(`
+      (bind (object (alias "entry" (array (default _ (groupFallback)) (rest _)))) groupSource
+            (array _) (do (set-symbol! globalThis "groupInitializers"
+              (+ groupInitializers 1)) #a(4)))
+      (console:log _ groupReads groupFallbacks groupInitializers)
+    `)}
+  `, "99 1 1 1\n");
+
+  const grouped = read(`(bind
+    (object (alias pipe|key _) (alias :keyword|key _) (alias "string-key" _)
+            (alias -1 _) (alias default-key (default _ (rhs)))) source
+    (array _) #a(7))`)[0];
+  const atomKey = grouped.values[1].values[1].values[1];
+  const metadata = { origin: "classification witness" };
+  atomKey.span = { start: 4, end: 12 };
+  atomKey.metadata = metadata;
+  const classified = classifySurfaceForm("bind", grouped.values.slice(1));
+  assertEquals(classified.type, "BindGroup");
+  const classifiedPattern = classified.bindings[0].nameNode;
+  const normalizedAtom = classifiedPattern.values[1].values[1];
+  const normalizedKeyword = classifiedPattern.values[2].values[1];
+  assertEquals(normalizedAtom.type, "string");
+  assertEquals(normalizedAtom.value, "pipe|key");
+  assertEquals(normalizedAtom.span, { start: 4, end: 12 });
+  assertEquals(normalizedAtom.metadata, metadata);
+  assertEquals(normalizedKeyword.type, "string");
+  assertEquals(normalizedKeyword.value, "keyword|key");
+  assertEquals(classifiedPattern.values[3].values[1].type, "string");
+  assertEquals(classifiedPattern.values[3].values[1].value, "string-key");
+  assertEquals(classifiedPattern.values[4].values[1].type, "number");
+  const rhs = grouped.values[1].values[5].values[2].values[2];
+  assertEquals(classifiedPattern.values[5].values[2].values[2], rhs);
+  const namedGroup = classifySurfaceForm("bind", read("(bind visible 1 other 2)")[0].values.slice(1));
+  assertEquals(namedGroup.bindings[0].nameNode.value, "visible");
+  assertEquals(classifySurfaceForm("bind", read("(bind (object (alias café _)) source)")[0].values.slice(1)).type, "Bind");
+  assertEquals(compile([read("(function raw (x _) (return _))")[0]]).includes("function raw"), true);
   for (const member of ["object:property", "object.property"]) {
     assertThrows(
       () => lykn(`(bind (object (alias ${member} _)) source (object) other)`),
@@ -330,7 +468,26 @@ Deno.test("S03 raw compiler IR stays literal while source expansion prepares dis
   await executeFailure(
     lykn(`(type Sample (Sample :number _)) (Sample "bad")`),
     "field '_' expected number, got string",
+    "TypeError",
   );
+
+  const rawFragment = read(`(kernel:function fragment-value (x _) (return _))`)[0];
+  const preparedFragment = expandExpr(rawFragment);
+  const compiledFragment = compile([preparedFragment]);
+  assertEquals(compiledFragment.includes("discardValue__private"), false);
+  await executeModule(`globalThis._ = 99;\n${compiledFragment}\nconsole.log(fragmentValue(1, 7));`, "99\n");
+  assertThrows(
+    () => expandExpr(read(`(kernel:=> (x _) (kernel:unsupported 1))`)[0]),
+    Error,
+    "unknown kernel form",
+  );
+  const recoveredWhole = lykn(`(kernel:function recovered-whole (x _) (return _))`);
+  assertEquals(recoveredWhole.includes("discardValue__private"), false);
+  await executeModule(`globalThis._ = 99;\n${recoveredWhole}\nconsole.log(recoveredWhole(1, 7));`, "99\n");
+  const recoveredFragment = expandExpr(read(`(kernel:function recovered-fragment (x _) (return _))`)[0]);
+  const recoveredCode = compile([recoveredFragment]);
+  assertEquals(recoveredCode.includes("discardValue__private"), false);
+  await executeModule(`globalThis._ = 99;\n${recoveredCode}\nconsole.log(recoveredFragment(1, 7));`, "99\n");
 
   await executeModule(`globalThis._ = 99;\n${lykn(`(const _ 7) (console:log _)`, { strict: false })}`, "99\n");
   assertThrows(() => lykn(`(const _ 7)`), Error, "kernel-only form");
@@ -352,27 +509,32 @@ Deno.test("S03 browser compilation and staged source facade share public behavio
   await executeModule(lykn(source), publicOutput);
   await executeModule(browserCompileLykn(source), publicOutput);
 
-  const exportSource = `(export (bind visible (kernel:=> (_ value) value)))`;
-  const compiled = lykn(exportSource);
-  assertStringIncludes(compiled, "export");
-  assertEquals(compiled.includes("discardValue__private"), false);
-  const directory = await Deno.makeTempDir({ prefix: "lykn-s03-export-" });
-  try {
-    await Deno.writeTextFile(`${directory}/module.mjs`, compiled);
-    await Deno.writeTextFile(
-      `${directory}/runner.mjs`,
-      `import { visible } from "./module.mjs"; console.log(visible(1, 12));\n`,
-    );
-    const result = await new Deno.Command(Deno.execPath(), {
-      args: ["run", "--no-config", "--no-prompt", "--no-npm", "--cached-only", `${directory}/runner.mjs`],
-      cwd: directory,
-      stdout: "piped",
-      stderr: "piped",
-    }).output();
-    assertEquals(result.code, 0, new TextDecoder().decode(result.stderr));
-    assertEquals(new TextDecoder().decode(result.stderr), "");
-    assertEquals(new TextDecoder().decode(result.stdout), "12\n");
-  } finally {
-    await Deno.remove(directory, { recursive: true });
+  const exportSource = `
+    (set-symbol! globalThis "_" 99)
+    (export (bind _ 7 visible (kernel:=> (_value _) (array _value _))))
+  `;
+  for (const compileSource of [lykn, browserCompileLykn]) {
+    const compiled = compileSource(exportSource);
+    assertStringIncludes(compiled, "export");
+    assertEquals(compiled.includes("discardValue__private"), false);
+    const directory = await Deno.makeTempDir({ prefix: "lykn-s03-export-" });
+    try {
+      await Deno.writeTextFile(`${directory}/module.mjs`, compiled);
+      await Deno.writeTextFile(
+        `${directory}/runner.mjs`,
+        `import * as values from "./module.mjs"; console.log(JSON.stringify(Object.keys(values))); console.log(JSON.stringify(values.visible(12, 7)));\n`,
+      );
+      const result = await new Deno.Command(Deno.execPath(), {
+        args: ["run", "--no-config", "--no-prompt", "--no-npm", "--cached-only", `${directory}/runner.mjs`],
+        cwd: directory,
+        stdout: "piped",
+        stderr: "piped",
+      }).output();
+      assertEquals(result.code, 0, new TextDecoder().decode(result.stderr));
+      assertEquals(new TextDecoder().decode(result.stderr), "");
+      assertEquals(new TextDecoder().decode(result.stdout), '["visible"]\n[12,99]\n');
+    } finally {
+      await Deno.remove(directory, { recursive: true });
+    }
   }
 });
