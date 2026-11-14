@@ -2,7 +2,7 @@
 project: project03-language-evolution
 arc: arc05-binding-semantics-and-hygienic-emission
 status: active
-version: "0.14"
+version: "0.15"
 planned-release: unassigned
 depends-on: []
 related: [arc04-qualified-adts, arc06-adt-modules-and-library-integration]
@@ -11,6 +11,14 @@ related: [arc04-qualified-adts, arc06-adt-modules-and-library-integration]
 # Binding semantics and hygienic emission
 
 ## Authority and outcome
+
+Current S05 correction2026-11-14: initialfa6562a is preserved clean and NOT
+accepted. Actual dotted-root TDZ exposed an original design/readiness omission.
+S05 v1.1 prepares one shared actual-emitted identifier occupancy helper across
+early/completion/ICU/host consumers; add only names/host_references/host_invocation
+codegen paths, seven→ten total, same8NH/BS-05 all open. This is correction01,
+1/5 on dispatch, not new source-binding/grammar/protected-root policy work.
+Root owns source/build during readiness; releasec60 and later owners unchanged.
 
 Current authority2026-11-14: operator opens [S05 native generated-name hygiene](slice05-native-generated-name-hygiene/slice-plan.md)
 from acceptedc0ed4546, same Luna6 High CC / separate Sol6.1 High CDC,
@@ -260,6 +268,11 @@ substitute helper-language exception. Reader RDEO/RDCL, Arc01 I4 and diagnostic
 work, whole-work audits and the separate book/human gates keep their owners.
 
 ## Version history
+
+- 2026-11-14 v0.15: S05 actual attempt11 reveals whole/colon-only census gap;
+  preserve initialfa source/failures and prepare explicit ten-path shared
+  physical-name correction01. Same BS-05/eight criteria, no source grammar or
+  protected-root selection change; later source/public/API owners remain open.
 
 - 2026-11-14 v0.14: Open operator-authorized S05 atc0ed with complete borrowed
   source reservation/early producer recipe, explicit late/raw boundaries and

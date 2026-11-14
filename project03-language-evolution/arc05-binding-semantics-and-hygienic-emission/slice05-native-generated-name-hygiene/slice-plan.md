@@ -3,11 +3,20 @@ project: project03-language-evolution
 arc: arc05-binding-semantics-and-hygienic-emission
 slice: slice05-native-generated-name-hygiene
 status: active
-version: "1.0"
+version: "1.1"
 depends-on: [slice02-native-binding-discards, slice04-discard-aware-declarations]
 ---
 
 # Native compiler-generated name hygiene
+
+Current2026-11-14: initial candidatefa6562a13ffc1069c06bb98d81cc4561fee68e12,
+tree71c65689be1c8e3dbc2638aa5a7d60cee89944a0, is preserved clean and
+explicitly NOT accepted. Actual attempt11 exposes a design gap shared by root
+and original readiness: dotted emitted atom await__gensym0.child hides a JS
+lexical root from the whole/colon census and produces a TDZ. Correction01 is
+being prepared,1/5 on dispatch, all8NH/BS-05 open. Root owns source/build again.
+Section D supersedes the original occupancy-extraction assumption and expands
+the initial seven paths to ten, preserving the same capability/eight criteria.
 
 2026-11-14: operator opens S05 after independently accepted S04. Continue the
 established OpenAI gpt-6-luna/high CC and separate gpt-6.1-sol/high CDC,
@@ -76,7 +85,9 @@ Match every actual SurfaceForm variant without a catch-all. Traverse:
 For SExpr, recursively inspect Atom/List/Cons; ignore literal String/Keyword/
 Number/Bool/Null values. Reserve normalized complete atom spelling and its
 colon-separated segments conservatively, matching current emitted-name census
-conventions. Preserve all tags/spans/metadata by borrowing; never rebuild nodes.
+conventions. **This v1.0 whole/colon-only extraction is superseded by D**;
+the borrowed structural visitor and literal-data distinction remain binding.
+Preserve all tags/spans/metadata by borrowing; never rebuild nodes.
 This is a conservative occupancy set, NOT a binder/use resolver: reserving a
 property key or alias does not declare it local. Do not use typed_params() or
 bound_names() as a supposedly complete traversal; they omit required operands.
@@ -130,6 +141,8 @@ No generated names enter DTS or public export/property/schema names.
 ### C. Late producer composition and explicit limits
 
 Keep existing completion finalizer, host-reference/invocation and ICU allocators.
+Their allocation algorithms, lifetimes and private protocols remain; D replaces
+their incomplete occupancy extraction, superseding v1.0's no-change assumption.
 They reserve their own actual completed inputs and share no mutable global state.
 Host helper parameters fn/receiver/argv enclose only fixed helper code; inline
 support exports live in separate data-URL modules. ICU reserves kwarg expressions
@@ -144,9 +157,124 @@ that inspection limit for later ownership, not a new experiment or hidden waiver
 Determinism here is fresh emitter allocation for the same owned unit; do not
 promise whole-compiler byte determinism for unordered ICU hoist populations.
 
+### D. Correction01 — shared physical identifier occupancy
+
+Binding amendment within operator-authorized S05: honor the actual existing
+atom writer, including static dotted/computed member spellings. This is a
+conservative occupancy set, not source-binding resolution, JavaScript syntax
+validation, new grammar or a protected-host policy change. The initial real
+attempt11 failure is retained; additional late-family cases below are proposed
+controls until actually executed, not retrospective runtime findings.
+
+Add crate-private
+`codegen::names::reserve_emitted_atom_names(raw: &str, occupied: &mut HashSet<String>)`.
+Recommended concrete implementation:
+
+1. Use EXISTING `JsWriter::new`, `emit_atom(&mut writer, raw)` and `finish()`
+   to obtain the actual emitted atom text. Reusing the writer handles the exact
+   normalization, colon segmentation and private-member prefix; do not mirror
+   those rules or split raw dots before normalization. Retain legacy complete
+   normalized and normalized-colon-segment reservations in addition to the
+   physical identifier runs. For ordinary no-colon atoms physical text already
+   equals that normalized value; avoid gratuitous normalization duplication.
+2. Conservatively reserve every identifier-shaped run in that emitted text:
+   ASCII letters/digits/underscore/dollar and non-ASCII non-whitespace characters.
+   Treat char.is_whitespace() and U+FEFF as separators. This is intentionally
+   broader than JavaScript identifier grammar: property/quoted/numeric extras
+   may occupy a name without acquiring binding authority. Computed-key reads
+   inside a legacy atom, such as box[t__gensym0], must be included, not only
+   the root before its first dot/bracket. Literal SExpr strings remain ignored.
+3. Before extracting runs, decode STATIC JavaScript Unicode escapes in the
+   emitted atom text: fixed four-hex `backslash-u` and braced scalar escapes.
+   Do not normalize the decoded runs again. Only allocate an auxiliary decoded
+   representation when an escape is present. A checked UTF-16 buffer can retain
+   fixed-u4 code units and combine adjacent surrogate units through the standard
+   decoder; a valid braced scalar encodes its units. Invalid/incomplete/overflow/
+   out-of-range escape input stays ordinary text and never panics. Validate byte
+   ranges/UTF-8 boundaries before slicing; use checked numeric conversion.
+   This does not validate an otherwise malformed JavaScript atom or promise
+   successful execution for it. No regex/parser dependency or AST clone.
+4. Scan/decoding traversals must be bounded by text length, with no repeated
+   suffix materialization. Existing to_js_identifier already rebuilds suffixes;
+   its inherited cost is NOT repaired or claimed linear here. The borrowed
+   source traversal still avoids repeated subtree scans.
+   Parse braced escapes incrementally and stop at the first invalid nonhex
+   character; do not repeatedly search the entire suffix for a closing brace
+   before validation. Invalid nested prefixes must not introduce a quadratic
+   scan. Fixed-u4 lookahead is bounded; preserve invalid text without a panic.
+
+Generated candidates must compare/store keys in the SAME physical identifier
+domain. Add crate-private `emitted_identifier_key(raw_generated_name: &str) -> String`
+using actual emit_atom and the shared static-escape decoder; generated names
+are single binding identifiers, so this is a key rather than an expression
+token set. EmitterGensym next/preferred compare and insert that key while
+returning the existing RAW candidate spelling. For ICU's GeneratedNameAllocator,
+preferred/suffix names are ALREADY emitted text written directly: use the same
+decoder for their key WITHOUT normalizing again. Keep suffix order, checked
+failure behavior and returned raw text. ASCII completion/host candidates already
+use physical keys and need no new allocation scheme. This aligns our private
+storage keys; it does not resolve escaped SOURCE binder/protected-root identity.
+
+Route ordinary atoms/names at ALL five reservation consumers through this one
+helper, preserving their existing traversal/ownership and allocator schemes:
+
+- emitter/gensym.rs reserve — source/reconstructed fields before early allocation;
+- forms.rs reserve_emitted_names — completion finalization AND local match sets;
+  preserve its leading CompletionValueId branch and descendant-marker bool;
+- codegen/names.rs GeneratedNameAllocator::reserve_expr — ICU input occupancy;
+- codegen/host_references.rs prepare visitor — private metadata/address census
+  and ordered finite alias allocation remain unchanged;
+- codegen/host_invocation.rs normalized_payload_names — anchors, support choice,
+  helper construction and checked allocation remain unchanged.
+
+Early occupancy alone cannot repair the separate late sets. Do not change
+protected_host's binder/root selection, source logical identities, AST tags,
+symbolic private requests or public/browser compiler behavior. In particular,
+this correction does not resolve escaped source binding identity or escaped
+protected-root classification; S07/LI-04 retain that separate boundary.
+
+Extend the existing four native/two CLI groups, retaining all prior controls:
+
+- Actual attempt11 dotted foreign await root must run8 in both modes. A
+  computed-key early specimen `some-> 7 (+ box[t__gensym0])`, with foreign
+  t0=99/box99=5/box7=100, must run12 rather than107. A static escaped physical
+  root equivalent to await__gensym0 must run8; use Rust raw fixture strings so
+  the escape reaches the actual compiler rather than being decoded by the test.
+- Include actual post-normalization extraction, private-member text and Unicode
+  code-unit/scalar cases in focused helper tests, plus malformed/incomplete
+  escapes that cannot panic. These test the new extractor's actual contract;
+  do not substitute them for real generated runtime consumers.
+  Candidate-key controls must work in both directions: reserve a literal name
+  then allocate its escaped gensym/preferred alias; allocate one escaped spelling
+  then an equivalent spelling. ICU's already-emitted preferred text must use
+  decoded keys without a second normalization. These distinguish consistent
+  candidate insertion from a collector-only fix; no source binder is renamed.
+- Completion: typed discarded parameter and body reading foreign
+  completionValue__gensym0.child must retain foreign41. Require actual private
+  completion storage distinct from that root. Its input is source `_`, not an
+  invented ordinary binding named completionValue.
+- ICU: actual canonical template plural selector with kwarg `_v0.child` (foreign
+  object count5), and a computed-key kwarg reading `_v0`, must preserve the
+  supplied counts rather than a generated selector's TDZ. Raw native ICU entry
+  uses the same helper and retains literal/API boundaries.
+- Host references: typed number check plus foreign dotted
+  lyknIntrinsicNumberIsNaN0.child must retain41 while a real intrinsic alias is
+  generated separately. Invocation: reuse the actual pure-colon-call shape in
+  test/fixtures/ordered-member-calls/pure-colon-call.lykn and let the called
+  method read foreign lyknHostReflectApply0.child41. Verify actual invocation
+  support exists as well as runtime41, so a no-request fixture cannot pass.
+- Run representative early dotted/computed/escaped native JSON outputs through
+  the existing real kernel compiler client. Public ICU/name producers remain
+  S06: do not claim their raw static-atom reservation was fixed by Rust changes.
+
+Observe valid actual errors and guard/strip differences; a family whose guard
+or helper disappears on strip must be described accurately. Full final gates
+remain mandatory on the corrected source; earlier focused successes are not
+acceptance of the newly exposed path.
+
 ## Exact source scope and proof
 
-Seven product paths only:
+Initial seven product paths are retained:
 
 1. crates/lykn-lang/src/emitter/gensym.rs
 2. crates/lykn-lang/src/emitter/source_names.rs (new)
@@ -156,8 +284,15 @@ Seven product paths only:
 6. crates/lykn-cli/tests/generated_name_hygiene.rs (new)
 7. docs/guides/06-functions-closures.md (bounded native helper/API boundary teaching)
 
+Correction01 adds ONLY these three paths, for ten total:
+
+8. crates/lykn-lang/src/codegen/names.rs
+9. crates/lykn-lang/src/codegen/host_references.rs
+10. crates/lykn-lang/src/codegen/host_invocation.rs
+
 No dependencies/locks, JS compiler, resolver/AST, protected policy, DTS emitter,
-late codegen allocator or M6 population edits. Existing forms/gensym inline tests
+or M6 population edits. The v1.0 late-codegen no-edit restriction is superseded
+ONLY for D's shared occupancy helper and its named callers. Existing forms/gensym inline tests
 may change only when asserting intentionally replaced helper spellings; retain
 their useful behavioral assertions. Baseline compiled fixtures/evidence and
 failed attempts belong in this slice's artifacts/, not source artifacts/.
@@ -244,7 +379,7 @@ producer before claiming coverage; do not change the language to fit a sketch.
 Gates: fresh staged artifacts before dependent consumers; focused new native
 and CLI targets; one final make check/docs once with existing M6 evidence env
 set BEFORE execution. Inspect actual unchanged7-path M670/all14 comparisons,
-not outer Cargo alone. Commit exact seven paths with adjacent coauthors, then
+not outer Cargo alone. Commit the exact current ten paths with adjacent coauthors, then
 final-HEAD citations and fresh81920 size. Independent Sol source-first review
 precedes fresh independent gates; every NH row stays open until its verifier.
 
@@ -280,6 +415,15 @@ human/licence/composition criteria remain open. MPVR stays Arc02; alias
 bound_names remains only its existing watch. No source renaming or ADT activation.
 
 ## Assignment and version history
+
+- 2026-11-14 v1.1/correction01: preserve initialfa6562a candidate and actual
+  dotted-root TDZ; replace whole/colon-only assumptions with D's shared physical
+  identifier census across early/completion/host/ICU consumers. Add three exact
+  codegen paths, same8NH/four-native/two-CLI groups,1/5 on dispatch. No public
+  binder/protected-root policy or source grammar change. Final separate Sol
+  source-readiness PASS covers all five collectors and physical candidate keys;
+  correction01 issued with committed metadata,1/5 on dispatch. Source/build
+  transfers to the existing Luna CC only on explicit dispatch; all8NH stay open.
 
 - 2026-11-14 initial cc-prompt.md: separate Sol source-readiness PASS confirms
   the complete census/producer/consumer recipe, explicit failed-context retention,

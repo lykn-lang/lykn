@@ -1,5 +1,9 @@
 # Binding semantics and hygienic emission ledger
 
+Current2026-11-14: S05 initialfa6562a remains unaccepted after actual dotted
+foreign-root capture; v1.1/correction01 prepares shared occupancy extraction
+with ten explicit paths/same8NH. All8NH/BS-05 stay open; releasec60 unchanged.
+
 Current authority2026-11-14: [S05](slice05-native-generated-name-hygiene/slice-plan.md)
 opens native generated-name hygiene fromc0ed under the established models/
 Autonomous setup. All8NH/BS-05 remain open until independent acceptance;
