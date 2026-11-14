@@ -1418,6 +1418,20 @@ fn is_discard_binding_element(pattern: &SExpr) -> bool {
         && is_discard_binding_target(&values[1])
 }
 
+fn is_static_discard_alias_key(key: &SExpr) -> bool {
+    match key {
+        SExpr::Atom(_) => key
+            .as_atom()
+            .is_some_and(|value| !value.contains(':') && !value.contains('.')),
+        SExpr::Keyword { .. }
+        | SExpr::String { .. }
+        | SExpr::Number { .. }
+        | SExpr::Bool { .. }
+        | SExpr::Null { .. } => true,
+        _ => false,
+    }
+}
+
 fn valid_discard_array_members(members: &[SExpr]) -> bool {
     for (index, member) in members.iter().enumerate() {
         if member.as_atom() == Some("_") {
@@ -1451,15 +1465,7 @@ fn valid_discard_object_members(members: &[SExpr]) -> bool {
             Some("default") if parts.len() == 3 && parts[1].as_atom() == Some("_") => {}
             Some("alias")
                 if (parts.len() == 3 || parts.len() == 4)
-                    && matches!(
-                        parts[1],
-                        SExpr::Atom(_)
-                            | SExpr::Keyword { .. }
-                            | SExpr::String { .. }
-                            | SExpr::Number { .. }
-                            | SExpr::Bool { .. }
-                            | SExpr::Null { .. }
-                    )
+                    && is_static_discard_alias_key(&parts[1])
                     && if parts.len() == 3 {
                         is_discard_binding_element(&parts[2])
                     } else {

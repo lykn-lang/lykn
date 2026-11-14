@@ -144,7 +144,9 @@ fn raw_codegen_lambda_keeps_supplied_underscore_literal() {
     let source = "(const pick (lambda (_) (return _))) (console:log (pick 7))";
     let forms = reader::read(source).expect("raw lambda fixture reads");
     let js = codegen::emit_module_js(&forms).expect("raw lambda codegen emits");
-    let output = run(&js, "globalThis._ = 7;", "");
+    assert!(js.contains("function(_)"));
+    assert!(js.contains("return _"));
+    let output = run(&js, "globalThis._ = 99;", "");
     eprintln!(
         "RAW_CODEGEN_LAMBDA source={source:?} generated={js:?} exit={:?} stdout={:?} stderr={:?}",
         output.status.code(),
@@ -231,19 +233,23 @@ fn raw_declarations_and_iteration_bindings_preserve_effects_and_foreign_values()
 }
 
 #[test]
-fn raw_nested_iteration_patterns_keep_array_holes_and_iterator_close() {
+fn raw_nested_iteration_patterns_skip_iterator_values_and_keep_iterator_close() {
     let source = r#"
         (kernel:for-of
           (array _ (object (alias :value nested)))
           rows
           (console:log _ nested))
+        (kernel:for-of
+          (array _value (object (alias :value nested)))
+          namedRows
+          (console:log _value nested))
         (kernel:for-of _ closable (console:log _) (break))
-        (console:log holeReads nextReads returnReads)
+        (console:log holeReads namedReads nextReads returnReads)
     "#;
     let js = compile(source);
     let output = run(
         &js,
-        "globalThis._ = 99; globalThis.holeReads = 0; globalThis.nextReads = 0; globalThis.returnReads = 0; globalThis.rows = [[Object.defineProperty([], 0, {get() { holeReads++; return 8; }}), {value: 1}], [Object.defineProperty([], 0, {get() { holeReads++; return 9; }}), {value: 2}]]; globalThis.closable = {[Symbol.iterator]() { return {next() { nextReads++; return {value: 1, done: false}; }, return() { returnReads++; return {done: true}; }}; }};",
+        "globalThis._ = 99; globalThis.holeReads = 0; globalThis.namedReads = 0; globalThis.nextReads = 0; globalThis.returnReads = 0; globalThis.makeRow = (first, nested, count) => { let step = 0; return {[Symbol.iterator]() { return {next() { if (step === 0) { step++; return {done: false, get value() { count(); return first; }}; } if (step === 1) { step++; return {value: {value: nested}, done: false}; } return {done: true}; }}; }}; }; globalThis.rows = [makeRow(8, 1, () => holeReads++), makeRow(9, 2, () => holeReads++)]; globalThis.namedRows = [makeRow(8, 1, () => namedReads++), makeRow(9, 2, () => namedReads++)]; globalThis.closable = {[Symbol.iterator]() { return {next() { nextReads++; return {value: 1, done: false}; }, return() { returnReads++; return {done: true}; }}; }};",
         "",
     );
     eprintln!(
@@ -257,7 +263,7 @@ fn raw_nested_iteration_patterns_keep_array_holes_and_iterator_close() {
         "{}",
         String::from_utf8_lossy(&output.stderr)
     );
-    assert_eq!(stdout(&output), "99 1\n99 2\n99\n0 1 1\n");
+    assert_eq!(stdout(&output), "99 1\n99 2\n8 1\n9 2\n99\n0 2 1 1\n");
     assert!(output.stderr.is_empty());
 }
 
@@ -467,6 +473,34 @@ fn grouped_discard_patterns_are_structural_and_keep_writer_operations() {
 }
 
 #[test]
+fn grouped_member_expression_alias_keys_are_rejected_before_codegen() {
+    let mut accepted = Vec::new();
+    for source in [
+        "(bind (object (alias owner:key _)) record (array _ _) sequence)",
+        "(bind (object (alias owner.key _)) record (array _ _) sequence)",
+    ] {
+        let forms = reader::read(source).expect("grouped member-key fixture reads");
+        let resolved = resolver::resolve(&forms);
+        let result = classifier::classify(&resolved);
+        if result.is_ok() {
+            accepted.push(format!("{source}: {result:?}"));
+            continue;
+        }
+        let diagnostics = result.expect_err("grouped member expression is not a static key");
+        assert!(
+            diagnostics
+                .iter()
+                .any(|diagnostic| diagnostic.message.contains("bind group name must be")),
+            "{source}: {diagnostics:?}"
+        );
+    }
+    assert!(
+        accepted.is_empty(),
+        "unexpectedly admitted member keys: {accepted:#?}"
+    );
+}
+
+#[test]
 fn grouped_numeric_alias_key_emits_a_valid_javascript_property() {
     let source = "(bind (object (alias -1 _)) record (array _ _) sequence) (console:log _ reads)";
     let js = compile(source);
@@ -540,11 +574,11 @@ fn grouped_negative_zero_alias_uses_existing_zero_property() {
 
 #[test]
 fn grouped_boolean_null_and_existing_literal_alias_keys_are_valid() {
-    let source = "(bind (object (alias true _) (alias false _) (alias null _) (alias 0 _) (alias :word _) (alias \"text\" _)) record (array _ _) sequence) (console:log _ reads)";
+    let source = "(bind (object (alias owner _) (alias true _) (alias false _) (alias null _) (alias 0 _) (alias :word _) (alias \"text\" _) (alias \"owner:key\" _) (alias \"owner.key\" _)) record (array _ _) sequence) (console:log _ reads)";
     let js = compile(source);
     let output = run(
         &js,
-        "globalThis._ = 99; globalThis.reads = 0; globalThis.record = {get true() { reads++; return 1; }, get false() { reads++; return 2; }, get null() { reads++; return 3; }, get 0() { reads++; return 4; }, get word() { reads++; return 5; }, get text() { reads++; return 6; }}; globalThis.sequence = [1, 2];",
+        "globalThis._ = 99; globalThis.reads = 0; globalThis.record = {get owner() { reads++; return 1; }, get true() { reads++; return 2; }, get false() { reads++; return 3; }, get null() { reads++; return 4; }, get 0() { reads++; return 5; }, get word() { reads++; return 6; }, get text() { reads++; return 7; }, get [\"owner:key\"]() { reads++; return 8; }, get [\"owner.key\"]() { reads++; return 9; }}; globalThis.sequence = [1, 2];",
         "",
     );
     eprintln!(
@@ -558,7 +592,7 @@ fn grouped_boolean_null_and_existing_literal_alias_keys_are_valid() {
         "{}",
         String::from_utf8_lossy(&output.stderr)
     );
-    assert_eq!(stdout(&output), "99 6\n");
+    assert_eq!(stdout(&output), "99 9\n");
     assert!(output.stderr.is_empty());
 }
 

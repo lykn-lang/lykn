@@ -1315,18 +1315,31 @@ Surface forms for explicit JS interop:
 
 ### Kernel form passthrough
 
-Any kernel form can be used directly in surface code. Surface macros only
-transform recognized surface form heads; everything else passes through
-to the kernel compiler unchanged.
+Strict Source has explicit entrances for kernel forms; raw kernel IR examples
+are not automatically Source syntax. Use the admitted `kernel:` escape for
+kernel-only declarations such as `const`, `let`, `var`, `function`, and
+`function*`. Surface arrows keep their Source spelling, while admitted
+passthrough forms such as `yield`, `yield*`, and `for-await-of` use their
+ordinary spellings. `class` and `class-expr` are native Source forms; their
+`kernel:` prefixes are not admitted escapes.
 
 ---
 
-## Kernel Functions
+## Raw kernel IR function reference
 
-The `lambda` row below documents both the native Source form and the literal
-raw IR writer form. `kernel:lambda` is not an admitted escape. Native Source
-uses the typed `(lambda (:any name) body...)` form; direct raw code generation
-keeps supplied `_` parameters and references literal.
+The table below describes compiler-facing raw kernel IR for the direct
+`codegen::emit_module_js` writer. Its first-column examples are not all normal
+strict Source spellings. For the declaration rows, strict Source uses
+`(kernel:const ...)`, `(kernel:let ...)`, `(kernel:var ...)`,
+`(kernel:function ...)`, and `(kernel:function* ...)`. Surface arrows and
+admitted passthrough forms keep their actual spellings, such as `(=> ...)`,
+`(yield ...)`, `(yield* ...)`, and `(for-await-of ...)`. The raw lambda row is
+only a literal IR example: normal Source uses the typed
+`(lambda (:any name) body...)` form, while `kernel:lambda` is not admitted.
+Likewise, Source `(class ...)` and `(class-expr ...)` remain available, while
+`kernel:class` and `kernel:class-expr` are not admitted. The raw codegen writer
+keeps supplied `_` parameters and references literal; it does not add Source
+escapes or perform Source discard preparation.
 
 | lykn | JS | Notes |
 |---|---|---|
