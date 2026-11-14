@@ -3,13 +3,18 @@ project: project03-language-evolution
 arc: arc04-qualified-adts
 slice: slice03-local-qualified-nominal-core
 status: re-scoped
-version: "2.3"
+version: "2.4"
 depends-on: [slice01-contract-and-emission-design, slice02-existing-adt-correctness]
 ---
 
 # Local qualified nominal core
 
 ## Transfer-maintenance version history
+
+- 2026-11-14 v2.4: Carry independently accepted Arc05 S04 discard-declaration
+  source/delivery atc0ed, including final closing-metadata PASS, into the existing
+  prerequisite map. All15 original dispositions and native759/public499 bounds
+  remain unchanged; no qualified activation or source execution here.
 
 - 2026-11-14 v2.3: Record independently accepted Arc05 S03 public/browser
   checkpointc60dea62. All15 original dispositions, retired status, bounded
@@ -25,6 +30,13 @@ depends-on: [slice01-contract-and-emission-design, slice02-existing-adt-correctn
   operator-approved three-arc carry-forward map. Prior history remains below.
 
 ## Current role: historical execution record and carry-forward map
+
+Current2026-11-14: [Arc05 S04](../../arc05-binding-semantics-and-hygienic-emission/slice04-discard-aware-declarations/cdc-verification.md)
+independently closes all8DT/BS-04 native discard-specific declarations
+atc0ed4546 after root closing-metadata PASS. This completes a separate staged
+declaration prerequisite without broadening any original LC row or native759/
+public499 acceptance. Naming/qualified-owner/composition remain open, this
+container stays retired and22 unexecuted. Release is separately acceptedc60.
 
 Current outcome2026-11-14: [Arc05 S03](../../arc05-binding-semantics-and-hygienic-emission/slice03-public-binding-discards/cdc-verification.md#final-correction03-verdict--accept--2026-11-14)
 closes BS-03 atc60dea62 for remaining public/browser discard forms, grouped-key

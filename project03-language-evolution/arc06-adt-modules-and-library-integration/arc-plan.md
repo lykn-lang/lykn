@@ -2,7 +2,7 @@
 project: project03-language-evolution
 arc: arc06-adt-modules-and-library-integration
 status: planned
-version: "0.3"
+version: "0.4"
 planned-release: unassigned
 depends-on: []
 related: [arc04-qualified-adts, arc05-binding-semantics-and-hygienic-emission, project07-core-library-research]
@@ -11,6 +11,27 @@ related: [arc04-qualified-adts, arc05-binding-semantics-and-hygienic-emission, p
 # ADT modules and library integration
 
 ## Authority and useful result
+
+2026-11-14 carry-forward: [Arc05 S04 source/delivery](../arc05-binding-semantics-and-hygienic-emission/slice04-discard-aware-declarations/cdc-verification.md)
+is independently accepted atc0ed454610f3a384196e4fa003335373819fb2fd,
+tree7d8b3359; all8DT/BS-04 close with separate closing-metadata PASS. LI-04 must audit
+the exact c60dea62→c0ed4546 four-path range: declaration-local anonymous/discard
+parameter labels and collisions; default/rest/tuple/object caller input types,
+optional fields and explicit undefined; inline/named Bind/BindGroup projection,
+scalar literal inference versus unknown destructured leaves; conservative empty
+module markers and stale-sidecar replacement; guides00/06 and actual native
+AnalyzedUnit/file/package-generated outputs. No Rust public signature, runtime
+emission, classified-IR representation or CLI production API changed in S04.
+
+This is the supported native Func/Bind/BindGroup/Type declaration increment,
+not complete generator/class/default/re-export/imported/browser declaration
+support. Preserve those pre-existing omissions and their actual consumer/API/
+guide/book implications rather than infer completion. D-2611-MPVR is a separate
+source-admission finding queued under Arc02; rejected required-after-destructure
+spelling must not be described as emitted. Nested alias bound_names is only a
+later census WATCH, without a demonstrated behavioral defect. All six LI rows
+and actual qualified/module/library/book/human gates remain open; no experiment
+or new source work is opened by carrying these inputs.
 
 2026-11-14 carry-forward: [Arc05 S03](../arc05-binding-semantics-and-hygienic-emission/slice03-public-binding-discards/cdc-verification.md#final-correction03-verdict--accept--2026-11-14)
 is independently accepted atc60dea62. LI-04 must include exact source range
@@ -106,7 +127,9 @@ requires actual consumers and independent review, with a closing retrospective;
 human/book gates require actual dispositions.
 
 Use existing planning and assigned task homes; refresh pins before authoring.
-Current task is clean at dba24d40 with public discard held; release is0829e892.
+Current accepted task source is cleanc0ed4546; release is independently accepted
+c60dea62. The earlier dba24d40/public-discard-held and release0829 checkpoint
+is historical. S04 root closing metadata is independently verified in its owning slice.
 Prospective source work uses the established Luna6 High implementer and separate
 Sol6.1 High reviewer after explicit implementation resume. Root owns plans and
 planning Git/index. No new worktree, CC prompt, source/build/probe/experiment,
@@ -114,6 +137,11 @@ merge/push/release, dependency adoption or licence choice is authorized now.
 Repository Lykn-only helper rules apply; no Python exception.
 
 ## Version history
+
+- 2026-11-14 v0.4: Carry Arc05 S04's exact c60→c0ed generated-declaration/
+  optional-input/export/guide impact and explicit unsupported routes into LI-04;
+  refresh task/release pins, retain MPVR/Arc02 and alias WATCH boundaries.
+  All six rows remain open; no implementation/experiment authority is added.
 
 - 2026-11-14 v0.3: Carry accepted S03 API/helper/layout/classified-IR/signature/
   guide inputs into the existing LI-04 audit; all six criteria stay open.

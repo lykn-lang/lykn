@@ -1,0 +1,5 @@
+program="/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/debug/lykn"
+args=["compile", "/private/tmp/lykn-arc05-s04-cdc/correction01/tmp/.tmpQsVpBk/bad-exports-wildcard.lykn", "-o", "/private/tmp/lykn-arc05-s04-cdc/correction01/tmp/.tmpQsVpBk/bad-exports-wildcard.js"]
+cwd=Some("/private/tmp/lykn-arc05-s04-cdc/correction01/tmp/.tmpQsVpBk")
+env_overrides=
+

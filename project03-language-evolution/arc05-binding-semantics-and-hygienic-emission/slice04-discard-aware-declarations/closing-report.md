@@ -2,6 +2,12 @@
 
 Date: 2026-11-14
 
+Final root status2026-11-14: S04 independently closes all8DT/BS-04 at
+c0ed454610f3a384196e4fa003335373819fb2fd/tree7d8b3359, including separate
+closing-metadata PASS for retrospective/parent routing. Release staysc60;
+S05 remains unopened. Original CC proposals, HOLD and pending notes below
+retain their historical cutoffs; the final reconciliation records the outcome.
+
 Root location correction2026-11-14: after CC's clean/no-jobs handoff, root
 moved this complete doer report byte-preservingly from artifacts/cc/closing.md
 to the canonical slice-root closing-report.md, then appended this notice. No
@@ -279,3 +285,80 @@ skipLibCheck:false local DTS-consumer config. Actual profiles and warning/cache
 limits remain binding. No additional runtime run is required for this wording
 clarification. All eight DT rows stay open pending independent source/gate
 review and root final retrospective/bubble-up reconciliation.
+
+## Root final-source reconciliation — 2026-11-14
+
+Separate Sol's [correction01 implementation/delivery ACCEPT](cdc-verification.md#correction01-implementationdelivery-verdict--accept--2026-11-14)
+accepts DT-01–07 on actual cleanfinalc0ed4546/tree7d8b3359. Fresh independent
+CLI4/0 and fullRust1786/native1211 includingDTS32/product1578 across67steps/
+docs482 passed; same-invocation actualM670/7paths/all14 comparisons, finalHEAD
+64/601 citations and fresh48689/81920 gzip all passed. Correct documentation
+categories, JSR reachability self-skip, profile/cache/download/warning and
+untraced macro-child argv limits remain as recorded by Sol; no gate is omitted.
+
+Explicit execution-attribution correction to the doer appendix above: its
+focused/full/M6 runs occurred on dirty918 plus the correction01 test delta,
+before8ed was created. Those bytes subsequently became tree7d8b/8ed and
+identical-treec0ed. They are applicable historical evidence by content identity,
+not proof that8ed was already checked out. Sol's final independent commands
+ran on actual cleanfinalc0ed. Earlier failed source/gate conditions and raw
+metadata objects remain preserved; neither the message replacement nor this
+wording clarification creates a new runtime observation.
+
+Eight opening criteria remain eight: DT-01–07 are independently done with the
+per-row mapping in ledger.md and Sol's complete eight-row walk. DT-08 is the
+sole pending status until compact closing-metadata review confirms the root
+retrospective and parent routing below. Root completed the first-class
+[retrospective](cdc-retrospective.md), including planning/readiness mistakes,
+proof gaps, location/TypeScript/metadata/capture failures and prior S03
+recommendation follow-through. One review refinement was spent; prior local
+attempts and immutable initial/correction prompts remain visible.
+
+### Final artifact inventory
+
+Existing artifacts/cc retains initial intake, actual semantic red/invalid-client
+attempt, classifier-boundary release witness, failed/successful focused and
+gate conditions, M6 delivery evidence and correction01 receipts. New
+artifacts/root-metadata01 retains both raw commit objects, exact message and
+repair rationale. Independent artifacts/cdc/correction01 contains commands/
+source-profile/hash record; fresh/focused/full/cited/size stdout/stderr/status;
+actual full/cli generated-DTS/TS/runtime/package receipts and full/m6 actual
+command/config/status/streams/all14 comparisons. No optional archive/replay
+framework was created. Issued prompts, plans, ledger, close, verification and
+retrospective are first-class slice records, excluded from supporting artifacts.
+Missing interim test snapshots and the correction01 formatter failure's
+transcript-only capture stay explicit; no reconstruction is claimed.
+
+### Final bubble-up and endpoint
+
+This increment supplies BS-04's discard-specific native declaration capability,
+with honest pre-existing broader declaration omissions. Once DT-08 metadata
+review passes, BS-04 closes alongside BS-01–03; BS-05–09 stay open. No structural
+arc-roadmap amendment is needed. S05 native compiler-generated name hygiene
+is the next candidate, unopened; general exact-name lowering and S09 signature
+design retain separate source-ready planning and review.
+
+Arc06 LI-04 now owns exactc60→c0ed declaration labels/default/rest/tuple/object/
+export/empty-module/guide impacts and unimplemented generator/class/default/
+re-export/imported/browser routes. No public Rust signature or runtime/IR/CLI
+production change is inferred. All six LI rows stay open. D-2611-MPVR stays
+under Arc02's unopened maintenance candidate; nested-alias bound_names remains
+only a watch for future census. Arc04/retired S03 preserve paused qualified
+activation, all15 original dispositions and native759/public499 boundaries.
+Project03 P-BIND/P-QADT and original QA/LC composition remain open. Project07
+JSON/YAML/document/final synthesis/reader/book/human/source-home/licence
+obligations remain open; no library trial resumes. Root updated those owning
+plans/ledgers without changing the original criteria or acceptance boundaries.
+
+Task source remains cleanc0ed with exactly the same four product paths; release
+remains independently acceptedc60. No S05, additional merge, push, hosted CI,
+publication or dependency/licence choice is opened. Planning commit for this
+close set is pending until committed; root will report its actual hash.
+
+Final closing-metadata PASS2026-11-14: the same separate Sol reviewed the
+completed retrospective, eight-row ledger and all parent diffs, accepted DT-08
+and authorized final S04/BS-04 status flips. Root applied only those reviewed
+closing transitions. All eight DT criteria and BS-01–04 are done; BS-05–09,
+P-BIND/P-QADT, original QA/LC and six LI composition/later criteria remain open.
+No runtime gates were repeated for metadata. Source remains cleanc0ed and
+releasec60, with no jobs or next-slice/remote action.

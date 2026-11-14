@@ -1,8 +1,10 @@
 # S04 retrospective — discard-aware declarations
 
-2026-11-14, root CDC/coordinator. Analysis in progress through the preserved
-initial918 source-first HOLD and issued correction01; implementation acceptance
-and final closing reconciliation remain pending. Luna6 High implements;
+2026-11-14, root CDC/coordinator. Analysis through the preserved initial918
+source-first HOLD, correction01 and independently accepted final source/delivery
+atc0ed4546/tree7d8b3359. Separate final closing-metadata PASS confirms the
+root retrospective/parent reconciliation and all8DT/BS-04 close.
+Luna6 High implements;
 separate Sol6.1 High owns [independent verification](cdc-verification.md).
 This is analysis of the work, including my own preparation, not independent
 evidence that our process is effective.
@@ -19,7 +21,11 @@ I inspected the source pins/deltas and producer/consumer sections used in the
 plan, issued prompts, doer intake/close, retained semantic red and selected
 failed/final receipts, independent HOLD and correction01 readiness. The
 reviewer read the complete new CLI suite and emitter delta. Doer aggregate
-green results at918 are attested, not independently reproduced at this cutoff.
+green results at918 remain attested at that original cutoff. Sol subsequently
+reproduced all mandatory gates on actual cleanfinalc0ed: focused4, native1211
+includingDTS32/fullRust1786, product1578/67/docs482, actualM670/7paths/all14,
+cites64/601 and fresh48689/81920 gzip. Final-source independent evidence does
+not retroactively relabel earlier held runs.
 Some interim test-source versions were not snapshotted; retained terminal
 streams do not reconstruct those bytes. No controlled model/process comparison
 or elapsed-effort measurement was undertaken.
@@ -79,8 +85,9 @@ or elapsed-effort measurement was undertaken.
   and location notices distinguish provenance from current authority.
 - Clippy redundant-guard and formatting failures remained distinct from semantic
   failures and the successful final gate. Actual M6 configuration is not the
-  strict local TypeScript consumer configuration. The optimized release witness
-  and default/debug task compiler are likewise distinct. Root corrected an
+  strict local TypeScript consumer configuration. Optimized release-integration
+  tests and the default/debug classifier-boundary reproduction are likewise
+  distinct. Root corrected an
   initial release-profile attribution without an unnecessary replay solely for
   wording. Keep denominator, skip, cache, warning and profile claims precise.
 - Correction01 again separated required coauthors into paragraphs, repeating a
@@ -101,7 +108,15 @@ or elapsed-effort measurement was undertaken.
   product failure; it is avoidable validation setup work. Set all required
   capture variables before the full gate rather than manufacture proof from
   the outer Cargo result. A reported41 harness rows was corrected to the actual
- 40; this did not change the1786 passing-test total or require another run.
+  40; this did not change the1786 passing-test total or require another run.
+
+Correction01's doer focused/full/M6 gates actually ran with dirty918 plus the
+test delta before8ed was created. That content was later committed as tree7d8b
+and recreated as identical-treec0ed. The doer phrase "executed against8ed" must
+be read with this explicit correction; the runtime evidence is applicable by
+byte identity, not proof of a clean8ed checkout at execution time. Sol's fresh
+gates ran on actual cleanfinalc0ed. Root and reviewer reconciled this nuance;
+message-only changes need no extra runtime repetition.
 
 ## Follow-through and recommendations
 
@@ -130,7 +145,20 @@ same implementer/reviewer contexts continue within the user-selected models.
 
 ## Final outcome and reconciliation
 
-Pending correction01 implementation, independent final-source validation and
-root row/bubble-up reconciliation. All eight DT rows and BS-04 remain open at
-this analysis cutoff. No S05, further merge, push, publication, qualified/library
-trial, book/human acceptance or licence decision is authorized by this record.
+The accepted four-path increment delivers the original discard-specific native
+declaration contract with actual TypeScript/file/package/runtime proof. No
+emitter change was needed for correction01. The original eight criteria remain;
+DT-01–07 have independent final-source acceptance and the separate compact
+closing-metadata PASS confirms this retrospective/parent routing for DT-08.
+All8DT/BS-04 are closed; no parent composition criterion closes by inference.
+
+No structural arc change is needed: S05/S06 generated-name hygiene, S07/S08
+exact source bindings, S09 signature design and BS-09 composition retain their
+owners. Arc06 LI-04 receives c60→c0ed output/default/export/guide impacts and
+the explicitly unimplemented broader declaration routes, with all six LI rows
+open. D-2611-MPVR stays queued under Arc02; alias bound_names remains a watch,
+not a diagnosed defect. Retired Arc04 S03 keeps all15 row dispositions and
+native759/public499 limits; qualified activation stays paused. Project07 final
+synthesis/JSON/YAML/document/reader/book/human/licence gates remain open.
+Release remainsc60. No S05, further merge, push, publication or library trial
+is opened. Parent composition is not inferred from this child acceptance.

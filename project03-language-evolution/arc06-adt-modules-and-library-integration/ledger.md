@@ -1,5 +1,12 @@
 # ADT modules and library integration ledger
 
+2026-11-14: independently accepted Arc05 S04 source/delivery atc0ed supplies
+LI-04's exact c60→c0ed native declaration/default/rest/recursive input/export/
+empty-module/guide audit inputs. Separate DT-08 closing-metadata PASS confirms
+root duties and all8DT/BS-04 close.
+No public Rust signature/runtime/IR change is claimed; broader declaration
+omissions and MPVR/Arc02 stay explicit in arc-plan.md. All six LI rows stay open.
+
 2026-11-14: accepted Arc05 S03 atc60dea62 supplies additional LI-04 audit
 inputs over9e→c60: helper export, actual callable layout/region behavior,
 classified static-key representation/metadata, direct single-clause and early

@@ -1,0 +1,4 @@
+61:29: warning: unused binding 'arg0'
+  suggestion: prefix with underscore: _arg0
+62:29: warning: unused binding 'arg0'
+  suggestion: prefix with underscore: _arg0

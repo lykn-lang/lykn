@@ -2,7 +2,7 @@
 project: project03-language-evolution
 arc: arc05-binding-semantics-and-hygienic-emission
 status: active
-version: "0.12"
+version: "0.13"
 planned-release: unassigned
 depends-on: []
 related: [arc04-qualified-adts, arc06-adt-modules-and-library-integration]
@@ -11,6 +11,15 @@ related: [arc04-qualified-adts, arc06-adt-modules-and-library-integration]
 # Binding semantics and hygienic emission
 
 ## Authority and outcome
+
+Current2026-11-14: [S04 source/delivery is independently accepted](slice04-discard-aware-declarations/cdc-verification.md)
+atc0ed454610f3a384196e4fa003335373819fb2fd/tree7d8b3359. All8DT/BS-04 are
+done; root retrospective/parent reconciliation and separate closing-metadata
+PASS complete S04. BS-01–04 are done, BS-05–09 remain open. The native contract has real
+TS/file/package/grouped/recursive proof, with no correction01 emitter changes.
+Release remainsc60; S05 is the next candidate, unopened. Earlier active/HOLD
+notes below are history. The roadmap needs no structural amendment; MPVR is
+separately queued under Arc02 and broader API/docs surfaces remain Arc06 LI-04.
 
 Current S04 review2026-11-14: candidate918f2e9 is independently held for
 missing positive grouped-export and recursive-parameter consumers, not a
@@ -160,7 +169,7 @@ affected delivery, necessary immediate documentation and independent review.
 | [S01 public Source discard completion](slice01-public-source-discards/slice-plan.md) — closed49982409 | Restored nested catch-default validation and independently finished the existing public discard contract across canonical/browser/materialized paths | Native759, held publicdba, original21 scope and R01 witness; original failures preserved |
 | [S02 native remaining discard binding forms](slice02-native-binding-discards/slice-plan.md) — closed9e6fb127 | Completed canonical admitted native catch/loop/callable/method roles, grouped static-key admission and honest simple-multi diagnostics; actual Source/raw-IR entrances distinguished | Accepted49982409 baseline and final independent9-row/gate proof; original HOLDs/refinements retained |
 | [S03 public remaining discard binding forms](slice03-public-binding-discards/slice-plan.md) — closedc60dea62 | Delivered corresponding public/browser behavior, preserved already-admitted non-atom/empty-list discard groups and raw/schema roles, and enforced the honest simple-multi boundary | Independent final9-row proof, focused66/full1578/docs482/M670/14/cites/size; original HOLDs and three refinements retained |
-| [S04 discard-aware declarations](slice04-discard-aware-declarations/slice-plan.md) — active | Keep existing native Func/Bind/BindGroup/Type declarations consistent with actual discard slots/defaults/rest, data fields and source exports; actual TS/CLI/package consumers | Independently integratedc60 S02/S03 semantics; separate source-readiness review before CC dispatch |
+| [S04 discard-aware declarations](slice04-discard-aware-declarations/slice-plan.md) — closedc0ed | Existing native Func/Bind/BindGroup/Type declarations now describe discard slots/defaults/rest, recursive data inputs and scalar/group/pattern exports; actual TS/CLI/package consumers | Independent all8DT source/gate/closing-metadata proof, root retrospective and later-owner routing |
 | S05 native compiler-generated name hygiene | Protect remaining compiler temporaries from source, foreign and generated-name collisions | Native discard roles; complete producer/reservation census |
 | S06 public compiler-generated name hygiene | Protect corresponding public producers while preserving private object identities and macro transport limits | Public discard roles; complete producer/finalizer census |
 | S07 native exact source-binding emission | Resolve binding occurrences and allocate safe JS names while retaining hoisting, TDZ, data/API names, foreign targets and JSON behavior | S05; settled source-name policy; actual native writer scopes |
@@ -217,7 +226,7 @@ early source-owner queries from the later runtime binding/name plan.
 
 ## Verification, handoff and limits
 
-The [ledger](ledger.md) carries BS-01–03 done and BS-04–09 open. Independent acceptance must
+The [ledger](ledger.md) carries BS-01–04 done and BS-05–09 open. Independent acceptance must
 cover actual changed consumers, meaningful negative controls, repository checks
 and embedded parity. Preserve final-source citations, existing size policy,
 cache/network limits, original failures and exact commit scope. Test count
@@ -230,7 +239,9 @@ their explicit operator openings; later slices need their own opening. Preserve 
 history; new filenames do not reset exhausted allowances. An iteration refines
 one delivery; a new capability receives its own slice.
 
-S03 source/build returned clean after independent acceptance. Subsequent source
+S04 source/build returned clean after independent source/delivery acceptance.
+Its final close includes the root duties and compact metadata PASS above.
+Subsequent source
 work needs its own authorized source-ready assignment. No separate
 probe/experiment/merge/push/publication/licence/dependency action follows from
 this roadmap. Helpers use Lykn under repository guidance; no Python or
@@ -238,6 +249,11 @@ substitute helper-language exception. Reader RDEO/RDCL, Arc01 I4 and diagnostic
 work, whole-work audits and the separate book/human gates keep their owners.
 
 ## Version history
+
+- 2026-11-14 v0.13: S04 independently delivers discard-specific declarations
+  atc0ed with actual recursive/group consumers and final gates. Root close/
+  separate DT-08 metadata PASS closes BS-04; preserve MPVR/Arc02 and later owners,
+  no structural roadmap change or S05/further integration authority.
 
 - 2026-11-14 v0.12: Record independently accepted c60 local release integration
   and operator-opened S04 declaration work with same models/Autonomous Mode.

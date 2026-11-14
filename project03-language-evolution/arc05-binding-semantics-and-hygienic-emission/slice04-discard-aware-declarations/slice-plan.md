@@ -2,12 +2,21 @@
 project: project03-language-evolution
 arc: arc05-binding-semantics-and-hygienic-emission
 slice: slice04-discard-aware-declarations
-status: active
-version: "1.1"
+status: closed
+version: "1.2"
 depends-on: [slice02-native-binding-discards, slice03-public-binding-discards]
 ---
 
 # Discard-aware TypeScript declarations
+
+Current2026-11-14: separate Sol independently accepts implementation/delivery
+DT-01–08 atc0ed454610f3a384196e4fa003335373819fb2fd,
+tree7d8b3359fa570b2e8322996dbe8b648f02af58da. Root completed the
+retrospective and parent reconciliation; separate closing-metadata PASS
+confirms DT-08/BS-04. S04 is closed. Release stays independently acceptedc60;
+S05 remains unopened.
+The earlier assignments/HOLD below are preserved history. One review refinement
+was used, not a reset of the earlier local authoring conditions.
 
 Current assignment2026-11-14: correction01 `cc-prompt-iteration01.md` addresses
 the independent918 source-first HOLD: missing positive inline/named BindGroup
@@ -299,6 +308,11 @@ issued. Each refinement uses a new cc-prompt-iterationNN.md and retained finding
   initial assignment superseded by correction01, with all original records intact.
 
 ## Version history
+
+- 2026-11-14 v1.2: Record independently accepted correction01 source/delivery,
+  preserve original8ed metadata condition/root identical-tree recreation and
+  actual dirty918+testdelta gate attribution. Root close duties and separate
+  DT-08 metadata PASS close all8DT/BS-04; no next slice or release integration.
 
 - 2026-11-14 v1.1: Preserve independent918 HOLD and prepare consolidated
   test-only correction01 for the original grouped-export/recursive-input proof

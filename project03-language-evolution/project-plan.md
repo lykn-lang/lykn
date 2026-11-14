@@ -1,7 +1,7 @@
 ---
 project: project03-language-evolution
 status: research
-version: "1.67"
+version: "1.68"
 planned-release: "0.7.0"
 depends-on: ["project02-language-toolchain-alignment"]
 blocks: []
@@ -11,6 +11,15 @@ related: ["project04-c-lang", "project07-core-library-research"]
 # Language evolution
 
 ## Current approved structure —2026-11-13
+
+Current2026-11-14: [Arc05 S04](arc05-binding-semantics-and-hygienic-emission/slice04-discard-aware-declarations/cdc-verification.md)
+independently closes all8DT/BS-04 atc0ed4546/tree7d8b3359. Discard-specific
+native declarations now compose with actual strict TS/file/package consumers,
+including positive grouped exports and recursive data/default/rest inputs.
+Root retrospective/parent reconciliation and separate closing-metadata PASS
+are complete; P-BIND/P-QADT and all later naming/qualified/composition/library/book/
+human gates stay open. Release staysc60 and S05 remains unopened. Earlier
+preparation/HOLD/source pins below are preserved history.
 
 Subsequent authority2026-11-14: release/0.6.x was locally fast-forwarded to
 c60dea62 and [independently accepted](arc05-binding-semantics-and-hygienic-emission/slice03-public-binding-discards/artifacts/release-integration-c60dea62.md#independent-release-verdict--accept--2026-11-14)
@@ -1085,6 +1094,11 @@ with their source and status distinctions. A future
 implementation definition of done is not established by this migration.
 
 ## Version history
+
+- 2026-11-14 v1.68: Arc05 S04 source/delivery independently accepted atc0ed;
+  carry declaration/output/guide impacts into Arc06 LI-04, preserve MPVR/Arc02,
+  retrospective/history and separate DT-08 metadata PASS. No roadmap expansion
+  or later slice/release action.
 
 - 2026-11-14 v1.67: Independently validate authorized releasec60 integration,
   then open conditional Arc05 S04 for bounded discard-aware declarations and

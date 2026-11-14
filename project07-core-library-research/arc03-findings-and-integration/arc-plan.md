@@ -1,5 +1,12 @@
 # Arc03 — Findings and integration
 
+2026-11-14 compiler prerequisite update: [Project03 Arc05 S04](../../project03-language-evolution/arc05-binding-semantics-and-hygienic-emission/slice04-discard-aware-declarations/cdc-verification.md)
+independently closes all8DT/BS-04 native discard-specific declarations atc0ed4546,
+including final closing-metadata PASS. Existing TS/file/package proof is an
+input to later qualified/library composition, not completed libraries. Release
+staysc60; naming/qualified, RDEO/RDCL, final research synthesis, JSON/YAML/
+document, source-home/licence and book/human gates remain open. No trial resumes.
+
 2026-11-14 integration checkpoint: [release/0.6.x c60](../../project03-language-evolution/arc05-binding-semantics-and-hygienic-emission/slice03-public-binding-discards/artifacts/release-integration-c60dea62.md#independent-release-verdict--accept--2026-11-14)
 is independently accepted; Project03 Arc05 S04 declarations opens conditionally
 on that green baseline. This does not activate library/research trials or alter

@@ -337,3 +337,225 @@ No remaining substantive readiness gap. Root may commit and issue the corrected
 draft under existing authority. The initial918 implementation HOLD stays in
 force until a new immutable candidate and its complete evidence are reviewed;
 DT-01–08 and BS-04 remain open, with no S05 or release/remote advancement.
+
+## Correction01 implementation/delivery verdict — ACCEPT — 2026-11-14
+
+Separate selected Sol6.1 High context `/root/arc05_s04_cdc` independently
+accepts the S04 implementation and delivery criteria DT-01–07 at
+`c0ed454610f3a384196e4fa003335373819fb2fd`, tree
+`7d8b3359fa570b2e8322996dbe8b648f02af58da`, parent
+`918f2e9c4237770fc7b2e0e950d726e735e95198`. **DT-08 remains pending root's
+retrospective/parent reconciliation and a compact closing-metadata check.**
+This is not yet a full slice/BS-04 close or later-feature/release acceptance.
+
+Initial918 HOLD R01/R02 and all pre-issue/correction history above remain
+unchanged. Correction01 spends1/5. Read-only source checks establish a clean
+task branch before and after all execution, exact four-path c60-to-final
+delivery, test-only correction over918 and unchanged release c60. No product,
+Git/index or ledger edits were made by this reviewer. Source/build ownership
+returns to root with no owned jobs.
+
+### Source inspection and applicability
+
+Read complete issued correction01 (144 lines), current plan (308), eight-row
+ledger, complete final CLI test (861), its complete64-line delta, correction01
+intake/closing appendices and root attribution/metadata records. Earlier
+complete initial intake/closing and source review remain applicable to their
+unchanged text. The production DTS emitter and both guides are byte-identical
+to reviewed918 (`git diff --exit-code` over those three paths returned0);
+their earlier source review is retained as inspection, never as execution.
+Existing parser, actual caller and guideline analysis above remains applicable.
+
+R01 is resolved by actual positive inline and named groups: scalar typed and
+literal names, unknown destructured leaves, original hyphenated-name selection,
+exact10-name TypeScript/runtime namespaces and hidden/discard exclusions.
+R02 is resolved by the actual Object→Array→Object parameter. Its explicit
+undefined/default/rest contract is checked recursively against generated DTS,
+with three credible nested negatives and successful checked/stripped runtime
+calls. The alias property key is not read as a local. Caller array lengths
+remain4/4 and3/3; original schema/property `_` and foreign binding `_` retain
+their distinct roles. The new tests would fail the omitted-group and erased-
+nested-shape alternatives identified in the original HOLD.
+
+### Metadata identity and accurate execution attribution
+
+Independently hashed both retained raw commit objects with native
+`git hash-object -t commit`: original8ed and replacementc0ed reproduce their
+full recorded IDs. Each saved object equals `git cat-file commit` byte-for-byte
+(cmp exits0). The only raw-object diff removes the blank line between trailers;
+tree, parent, author/committer identities and both timestamp/timezone fields
+match. `git diff --exit-code 8ed c0ed` returned0. Required trailers are adjacent
+in the final object; reviewed918 was not rewritten.
+
+CC's focused/full/M6 execution occurred on918 plus its uncommitted correction
+test delta, subsequently committed as tree7d8b/original8ed. Those observations
+are applicable to those identical bytes; wording that they ran with8ed already
+checked out overstates the observed execution pin. The original report remains
+provenance, with root owning its explicit attribution clarification. The
+message-only replacement creates no new execution. All independent commands
+below ran at the actual clean finalc0ed, so acceptance does not depend on
+promoting CC's historical attribution to a fresh result.
+
+### Fresh independent execution
+
+Evidence home: `artifacts/cdc/correction01/`. Each of `fresh`, `focused`,
+`full`, `cited`, `size` contains separate complete stdout/stderr and numeric
+status files. `commands.md` records actual commands, explicit environment,
+source/metadata observations and final binary hashes. These are ordinary
+receipts, not a new validator or replay framework.
+
+Owned fresh XDG/TMP/npm cache roots are under
+`/private/tmp/lykn-arc05-s04-cdc/correction01/`; shared warm DENO_DIR is
+`/Users/oubiwann/Library/Caches/deno`. Installed Deno reports2.9.6,
+TypeScript6.0.3. No Python, helper JS/Node, alternate scripting helper,
+new dependency or external publication action was authored or used.
+
+| Receipt | Actual check | Independent result |
+| --- | --- | --- |
+| fresh | `make fresh-artifacts` |0; optimized binary installed and packages staged before dependent consumers |
+| focused | `cargo test -p lykn-cli --test discard_declarations -- --nocapture` |0; all4 groups passed with actual generated-DTS/TS/runtime/package controls |
+| full | `make check` |0;40 Rust harness-result rows sum to1786 passed,0 failed/ignored; native1211 includes all32 DTS tests;99 corpus inputs compiled; product1578 passed/67 steps/0 failed; docs482 passed/0 failed |
+| cited | `make check-cited-paths` |0 at finalHEAD;64 documents and601 accepted historical citations |
+| size | `make bundle-size-check` |0 fresh at finalHEAD; raw379173/minified181014/gzip48689 bytes, below81920; baseline27630/delta21059 |
+
+There was one independent full check and docs ran once within it. Native32
+was observed in the full library test population, not redundantly rerun as a
+separate focused command. Actual denominator inspection read every Rust
+harness-result row and the complete178-line full stderr, plus full-source
+log queries and summary/context ranges; this is not a claim to have read every
+individual line of the5794-line full stdout. All raw lines are retained.
+
+Both optional evidence variables were set during that same full invocation:
+`LYKN_DISCARD_DECLARATIONS_EVIDENCE_DIR=.../full/cli` and
+`LYKN_MACRO_DEPENDENCIES_EVIDENCE_DIR=.../full/m6`. Thus final M6 receipts were
+captured directly in the mandatory full check; no separate M6 replay occurred.
+
+### Actual consumers, M6 and limits
+
+Read actual generated declaration files and TS command/status/error receipts.
+The local type-only consumers check generated files with strict,
+exactOptionalPropertyTypes and skipLibCheck:false, using
+`check --no-remote --no-npm --cached-only --no-lock --config ...`.
+Positive/expect-error clients pass; the unguarded bad slot reports actual
+TS2345 with exit1. Checked/stripped DTS bytes agree; executed outputs include
+`[7,11,"last",true]`, foreign99, recursive
+`[99,"ok",5,["kept"]]`/`[99,"second",6,[]]` and4/4,3/3 caller lengths.
+Grouped output has exactly the ten selected runtime/TS names and the expected
+11/"group"/17/13/19 values. Package DTS equals CLI DTS byte-for-byte for the
+same source. Constructor output is `{"tag":"Sample","_":7}` and the negative
+is exactly `TypeError:Sample: field '_' expected number, got string`.
+Stale-sidecar receipts change oldName:number to `export {};`.
+
+Read M6's actual standalone compile command/status/streams, strict-child
+command/config/status/full streams and all14 comparison files. Standalone
+materialization exits0, then seven explicit paths execute21+5+6+17+6+7+8=70
+tests with0 failures. Each comparison records both canonical=embedded and
+canonical=materialized true (28 true flags). The existing test source at
+`macro_dependencies.rs:1000–1165` confirms cold-owned-XDG/no-canonical-fallback
+checks, real byte comparisons and actual standalone/debug CLI copying.
+
+M6's config is an import map mapping lang to this newly materialized compiler
+and browser to staged output; it is **not** the local DTS strict/exact checker
+configuration. Its actual child argv is
+`deno test -A --cached-only --no-prompt --config ... <seven paths>`.
+Standalone macro-child argv remains explicitly untraced. Shared warm Deno
+cache, cold owned XDG materialization and cached-only child are separate facts;
+no blanket no-npm, uncached registry-success or browser load/CSP claim follows.
+
+Actual profiles remain distinct: Rust integration tests use debug/test
+CARGO_BIN_EXE_lykn; M6 copies that built CLI. Product/docs Make wrappers use
+installed bin/lykn, whose bytes equal optimized target/release/lykn. Recorded
+hashes distinguish them; no optimized semantic-suite claim is manufactured.
+
+Preserved warning/skip limits: the overload fixture produces two arg0 unused-
+binding warnings, and new groups produce two unselected-binding warnings of
+the existing diagnostic kind. These are fixture observations, not an asserted
+repository warning baseline. M6 standalone compile reports five warnings
+(unreachable clause and four unused bindings). Documentation has15 skipped
+annotation/fragment blocks and nine no-block input files, separately from482
+executed blocks across22 generated files. The JSR end-to-end fixture self-skips
+because jsr.io is unreachable, despite its outer product test reporting ok.
+Fresh size stderr reports two esbuild registry download notices and four
+astring condition-order warning occurrences. No project lock/dependency file
+changed. Earlier failures, missing interim snapshots, initial uncaptured M6
+attempt and both location/metadata incidents remain preserved under their
+original evidence and limits.
+
+### Independent eight-row disposition and bubble-up
+
+| Row | Independent disposition at c0ed |
+| --- | --- |
+| DT-01 | ACCEPT: inspected declaration-local allocation, DTS32 in full and fresh CLI4 proof preserve slots0/1/2, meaningful arg0/arg2/suffix reservations, `_value`, anonymous shapes and clause/unit locality. The separately held source-prevalidation spelling is not claimed emitted. |
+| DT-02 | ACCEPT: actual generated strict/exact TS inputs establish one-level and recursive defaults, required/pre-required/trailing positions, rests, typed tuple discards and bare skips, explicit undefined and fixed overload preservation. |
+| DT-03 | ACCEPT: R01 resolved; actual inline/named scalar/group/pattern projections, normalized original-name selection, exact public names, unknown leaves, empty handled groups, stale-sidecar and raw/default/re-export exclusions pass. |
+| DT-04 | ACCEPT: source inspection plus fresh native/TS/runtime proof preserve low-level helper roles, returns/contracts/warnings, `_value`, foreign `_`, object/schema/constructor data and ordinary non-module behavior. |
+| DT-05 | ACCEPT: successful AnalyzedUnit tests pass within native32; actual file normal/strip and package build output, bytes and runtime consumers independently pass. |
+| DT-06 | ACCEPT: baseline valid TS2300 red remains inspected historical proof; current generated-DTS positives/expect-error cases and real TS2345 negative, recursive/group/runtime/schema oracles were freshly reproduced. |
+| DT-07 | ACCEPT: exact source/metadata and fresh focused/full/M670/all14/finalHEAD citations/size gates pass with the actual counts and disclosed limits above. |
+| DT-08 | PENDING ROOT CLOSE: independent source/delivery review and artifact inventory are complete; root retrospective, BS-04/parent owner reconciliation and compact closing-metadata verification remain. No ledger status is changed by this record. |
+
+R01/R02 are resolved without production changes in correction01. Keep
+D-2611-MPVR/Arc02 maintenance separate from DTS, and retain broader unsupported
+generator/class/default/re-export/imported/browser declaration/API accounting
+at Arc06 LI-04. The nested alias/bound-name census remains a WATCH requiring
+its own actual evidence, not a newly diagnosed product defect here. All later
+source-name/S09/qualified/module/library/research/reader/book/human/licence and
+release gates retain their owners. Root completes the retrospective and parent
+records, then requests the bounded metadata check for DT-08; no implementation
+or aggregate rerun is warranted solely for those closing records.
+
+## Final closing-metadata verdict — PASS / DT-08 ACCEPT — 2026-11-14
+
+Separate Sol reviewer completed the bounded metadata-only check requested by
+root. **DT-08 is independently satisfied; all eight original DT criteria are
+now accepted. Root may close S04 and BS-04 and commit the reconciled close set.**
+The earlier initial918 HOLD and final implementation/gate evidence remain
+unchanged. This pass authorizes status reconciliation within the existing S04
+endpoint; it grants no S05, release integration, merge/push/publication or
+qualified/library/research acceptance.
+
+Read complete current S04 plan v1.2 (321 lines), eight-row ledger and completed
+root retrospective (162); read the full new root final-source reconciliation,
+artifact inventory, execution-attribution correction and bubble-up in
+closing-report.md:282–350. Inspected complete current parent diffs for Arc05
+plan v0.13/ledger, Project03 plan v1.68/ledger, Arc04 plan v2.5 and retired S03
+plan v2.4/ledger, Arc06 plan v0.4/ledger and both Project07 compiler-prerequisite
+updates. Applied the slice-close/row-closure and methodology-stewardship
+guidance; this is a closing-duty review, not a repeated implementation audit.
+
+The eight-row count remains8, with unchanged criteria/origins and independently
+supported DT-01–07 evidence. Complete delivery remains the exact four product
+paths and test-only correction01 already verified at cleanfinalc0ed/tree7d8b.
+Initial and correction01 issued prompts remain preserved with no current diff.
+Supporting artifacts and first-class records are correctly distinguished;
+actual semantic red, invalid TS1361 client, initial918 HOLD, retries/failed
+gates, original8ed/replacement raw objects and precise missing-snapshot/
+transcript-only limits remain visible. The close explicitly corrects dirty918
+plus test-delta execution attribution, rather than inventing a clean8ed run.
+Independent actual cleanfinalc0ed gates remain the acceptance evidence.
+
+The root retrospective owns authoring/readiness/example/location/metadata/
+capture mistakes, examines the real R01/R02 proof gaps and their repair, and
+follows through the S03 recommendations. It names inspection/measurement limits,
+concrete subsequent checks and owners without claiming measured process/model
+effectiveness. Alias bound_names remains a WATCH, not a newly diagnosed defect.
+
+Parent routing is complete and appropriately bounded. Arc05 records no
+structural roadmap change and keeps S05–09 and BS-09 composition open.
+Project03 P-BIND/P-QADT stay open. All15 retired Arc04 S03 table rows are
+unchanged (the ledger diff adds only a dated preamble), including native759/
+public499 bounds and paused/unexecuted qualified work. All six Arc06 LI rows
+remain open; LI-04 receives the exactc60→c0ed labels/default/rest/recursive/
+export/empty-module/guide/native-file-package output impacts and broader
+unimplemented declaration surfaces. D-2611-MPVR retains Arc02 maintenance.
+Project07 synthesis/JSON/YAML/document/reader/source-home/licence/book/human
+gates remain open and no trial or library implementation resumes.
+
+Root's pending DT-08/BS-04/status language at this inspection cutoff correctly
+avoids premature closure; it may now be changed to the final accepted/closed
+state using this verdict. Planning commit identity is explicitly pending until
+root commits and reports the actual hash. No source/build/runtime action,
+Git/index or ledger mutation occurred in this pass; only this record's new
+verdict and the small DTS32-in-full/fresh-CLI4 wording clarification were
+written. No jobs remain. Source/build ownership stays with root and release
+remains the separately acceptedc60.

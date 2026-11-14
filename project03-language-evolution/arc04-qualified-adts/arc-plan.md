@@ -2,13 +2,22 @@
 project: project03-language-evolution
 arc: arc04-qualified-adts
 status: replanning
-version: "2.4"
+version: "2.5"
 related: [arc05-binding-semantics-and-hygienic-emission, arc06-adt-modules-and-library-integration, project07-core-library-research]
 ---
 
 # Qualified ADTs
 
 ## Current v2.0 scope and authority
+
+Current2026-11-14: [Arc05 S04](../arc05-binding-semantics-and-hygienic-emission/slice04-discard-aware-declarations/cdc-verification.md)
+independently accepts discard-specific native declaration source/delivery
+atc0ed4546, with all8DT/BS-04 closed after separate root closing-metadata PASS.
+General naming, qualified
+owner/case/ABI and composition remain open; Arc04 implementation stays paused.
+Retired S03 keeps all15 original dispositions and native759/public499 limits.
+Arc06 LI-04 owns broader API/declaration/guide/book accounting. Release staysc60;
+this prerequisite does not activate qualified ADTs or open S05.
 
 Current checkpoint2026-11-14: [release/0.6.x atc60](../arc05-binding-semantics-and-hygienic-emission/slice03-public-binding-discards/artifacts/release-integration-c60dea62.md#independent-release-verdict--accept--2026-11-14)
 is independently integrated/validated. Operator-authorized Arc05 S04 opens
@@ -307,6 +316,11 @@ Project07's original research evidence, final synthesis and library handoffs
 survive this detour, including every YAML and human-review obligation.
 
 ## Version history
+
+- 2026-11-14 v2.5: Carry independently accepted Arc05 S04 declaration source/
+  delivery atc0ed into the existing prerequisite map, preserving retired rows,
+  paused qualified activation and later API/composition owners; separate
+  DT-08 closing-metadata PASS confirms full BS-04 close.
 
 - 2026-11-14 v2.4: Record independently integratedc60 and Arc05 S04 opening;
   no qualified-feature activation or retired-row status change.

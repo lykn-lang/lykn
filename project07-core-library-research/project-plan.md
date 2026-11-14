@@ -9,6 +9,16 @@ related: ["project02-language-toolchain-alignment", "project03-language-evolutio
 
 # Core library research
 
+2026-11-14 compiler prerequisite update: [Project03 Arc05 S04](../project03-language-evolution/arc05-binding-semantics-and-hygienic-emission/slice04-discard-aware-declarations/cdc-verification.md)
+independently accepts discard-specific native declarations atc0ed4546, with
+actual strict TypeScript/file/package/grouped/recursive consumers. All8DT/BS-04
+close with separate closing-metadata PASS. Release stays acceptedc60; no research
+trial or library implementation resumes. General naming, qualified ADTs,
+original JSON re-pin/composition, reader RDEO/RDCL, final synthesis, YAML/
+document route, book/human and licence obligations retain their existing owners.
+This compiler prerequisite does not deliver JSON/YAML libraries or resolve
+the optional lib/JSR source-home/licence choices.
+
 2026-11-14 integration checkpoint: release/0.6.x now equals independently
 accepted [c60 local integration](../project03-language-evolution/arc05-binding-semantics-and-hygienic-emission/slice03-public-binding-discards/artifacts/release-integration-c60dea62.md#independent-release-verdict--accept--2026-11-14).
 The conditional next step is active Project03 Arc05 S04 discard-aware native

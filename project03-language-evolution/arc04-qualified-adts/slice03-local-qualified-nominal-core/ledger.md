@@ -1,5 +1,11 @@
 # S03 local qualified nominal core ledger
 
+Current2026-11-14: [Arc05 S04](../../arc05-binding-semantics-and-hygienic-emission/slice04-discard-aware-declarations/cdc-verification.md)
+independently closes all8DT/BS-04 discard-specific declarations atc0ed;
+separate closing-metadata PASS confirms root duties. All15 original rows below are
+unchanged; no native759/public499 broadening or qualified-feature acceptance.
+S03 stays retired,22 unexecuted, release separately acceptedc60.
+
 2026-11-14 subsequent checkpoint: [Arc05 S03](../../arc05-binding-semantics-and-hygienic-emission/slice03-public-binding-discards/cdc-verification.md#final-correction03-verdict--accept--2026-11-14)
 independently closes BS-03 atc60dea62. All15 original statuses/evidence below
 remain unchanged; native759/public499 are not retroactively broadened. DTS,
