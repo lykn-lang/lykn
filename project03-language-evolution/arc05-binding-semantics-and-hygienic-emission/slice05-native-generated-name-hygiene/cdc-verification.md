@@ -566,3 +566,132 @@ separate owners; no acceptance or scope inference follows from this readiness.
 Only this review record was appended. No source/build/Git mutation, runtime,
 test, probe, helper or ledger change occurred and no owned jobs exist. Root
 retains ownership until explicit committed correction02 dispatch.
+
+## Final implementation and delivery — ACCEPT NH-01–07 — 2026-11-14
+
+Separate selected Sol6.1 High reviewer independently accepts NH-01–07 at actual
+clean `82f1b65b92529979afd6c624183912ca31453927`, tree
+`4bb6bfc9e171bc6424548b0f740dd32f0cf98c75`, parent32749d97.
+**NH-08 remains pending root retrospective/parent reconciliation and a bounded
+closing-metadata check.** S05/BS-05 is not fully closed by this record, and no
+S06, release integration, merge/push/publication or later-owner acceptance is
+authorized. Initial fa, held32749d97 and their unfavorable evidence remain intact.
+
+### Source review and R01/R02 resolution
+
+Read the complete current native test467 lines, its full57-add/7-remove delta,
+issued correction02 prompt72, plan E/current handoff sections, correction02 close
+and intake additions through384/205, and all eight criteria. Read-only Git
+confirms the exact one-file correction and ten-path c0ed→final delivery, correct
+parent/adjacent coauthors and clean task before and after execution. A direct
+diff over all production sources, unchanged CLI test and guide against32749d97
+returned0. Their earlier complete source review remains applicable by unchanged
+content, not by assuming doer green; final gates below were freshly executed.
+
+R01 is resolved: the first collide function itself has result2 before the
+later nested declaration; the real recursive object/alias/array/object leaf
+result0! is absent from its body, normalizes to result0 and forces checked
+result1; checked/stripped runtime returns7. Public emit_form now has its :any t0
+only in reconstructed fields, allocates actual t1, executes8 from argument99,
+and retains next t2. The forbidden checked-number fragment recipe is absent,
+and existing whole-module reference diagnostics still pass in the full suite.
+
+R02 is resolved by actual canonical Bind-RHS do/await carrier output: source
+value_box0=99, distinct value_box1 getter, async-IIFE array boxing, and exactly
+`7 99 before` in both modes. It observes one effect and the real producer rather
+than pretending the closed getter captures a foreign source read. These four
+inputs reject the specific omitted-field/per-form-only/missing-carrier proofs
+identified in the HOLD; the earlier test groups and assertions remain present.
+
+### Fresh independent gates and evidence
+
+The complete independently generated logs and inner receipts are grouped in
+[artifacts/cdc/final02/README.md](artifacts/cdc/final02/README.md). That record
+lists actual commands, exits, profiles, cache/environment, terminal sessions,
+binary hashes, warning/skip limits and supporting inventory; it is not a new
+verifier framework. All commands executed at the actual clean final pin above.
+
+| Independent command | Result |
+| --- | --- |
+| Focused native generated_name_hygiene with --nocapture |0;4 passed |
+| Focused CLI generated_name_hygiene with --nocapture |0;2 passed |
+| Native names/Unicode helper tests |0;59 passed,1158 deliberately filtered |
+| Native gensym helper tests |0;5 passed,1212 deliberately filtered |
+| make fresh-artifacts |0; optimized binary and lang/browser/testing outputs refreshed |
+| One make check with precreated absolute independent M6 evidence env |0;1798 Rust tests/42 harness results, including1217 native library;1578 Lykn tests/67 steps;482 docs |
+| Final-HEAD make check-cited-paths |0;64 documents/601 historical citations accepted |
+| Fresh final-HEAD make bundle-size-check |0; raw379173/minified181014/gzip48689, below81920 |
+
+The full gate includes warnings-denied Clippy, format, source syntax/lint,
+fresh optimized artifacts and all workspace Rust, product and docs phases.
+Documentation ran once;22 files/482 blocks were generated with15 existing
+harness skips, then482 tests passed. All42 Rust results report0 failed/ignored/
+filtered; zero-test umbrella/doc harnesses remain visible. No independent gate
+failed and no gate retry or overlapping job was launched. The full run used
+authorized network escalation for existing pinned dependencies; size logs retain
+their esbuild registry metadata downloads and existing package-condition warnings.
+No dependency was added. Reachability/presence self-skip branches remain in
+JSR/mycelium tests; no such skip message was observed in this full log. These
+checks do not prove registry publication or blanket offline/no-npm operation.
+
+Focused native receipts independently reproduce typed/suffix/recursive/sibling,
+dotted/computed/escaped, args/rest, null/throw/effect/iterator, fragment/reuse/unit,
+late completion/host/ICU and actual invocation92/41 consumers. CLI actual .lykn/
+.lyk checked/stripped check/compile/file and real JSON-kernel clients print
+`7 7 ok`,8,12,8; package keys are exactly pick and calls print7/ok. The expected
+unused result0 warning is preserved. Existing S04 strict declaration, namespace,
+schema and package clients also pass in the complete workspace run.
+
+### Actual M6, profiles and remaining boundaries
+
+The independent M6 command/config/status/stdout/stderr were read directly,
+including the standalone source/generated module and all14 named per-file
+comparisons. Its copied Cargo test-profile CLI compile exits0 from a standalone
+home with initially cold per-test XDG and the explicit shared warm DENO_DIR.
+The materialized lang/ and fresh browser/ paths are present in the actual
+configuration. The exact public command is Deno test `-A --cached-only
+--no-prompt --config ...` over the seven unchanged paths: embedded-adt-pattern,
+surface-type-context, reserved-binding-output, icu-generated-names,
+lexical-regions, discard-bindings and remaining-discard-bindings. Actual public
+status is0/70 passed/0 failed with no skips; each of14 receipts has both
+canonical=embedded and canonical=materialized true. Inner compile stderr retains
+four unused-binding warnings and one unreachable-match warning; public stderr
+is empty. This is inner proof, not an inference from outer Cargo success.
+
+Fresh optimized bin/lykn and target/release/lykn share SHA256
+65706edd021f5955c82249aa6eb1bae36a3eb3eb6a07d4fa19721224a45e1a8a;
+the test-profile CLI hash is separately retained. Debug integration/M6 and
+optimized staged corpus/docs remain distinct profiles of the same source.
+The resolved macro Deno is2.9.6 and its nested argv is explicitly untraced.
+Focused invocation templates/setups remain in committed product tests; their
+status/streams are not a claim that every child argv was separately recorded.
+
+AWEX retains the prior independent source comparison: the nested awaited
+statement-block expression path is structurally unchanged by S05. Its doer
+check0/compile0/runtime syntax failure and backlog/Arc02 owner remain preserved;
+these passing top-level consumers do not repair it or prove the nested source
+invalid. S06 public physical keys, S07 escaped SOURCE/protected-root identity,
+Arc06 LI-04 API/docs, MPVR/Arc02, unordered ICU/dynamic-eval/raw metadata limits,
+and qualified/library/research/reader/book/human/licence gates retain their owners.
+
+### Independent eight-row disposition
+
+| Row | Final-source disposition |
+| --- | --- |
+| NH-01 | ACCEPT: exhaustive borrowed current AST census, all-unit first allocation and typed/normalized/recursive/sibling consumers independently pass. |
+| NH-02 | ACCEPT: all early generator families, fixed args/rest roles, candidate-key comparisons and actual canonical carrier proof independently pass. |
+| NH-03 | ACCEPT: checked/strip values, effects, null/throw/iterator timing, real errors/labels and inherited data/API/DTS/schema clients pass. |
+| NH-04 | ACCEPT: supported one-form fields, consumed failure namespace/modes, fresh/repeated/interleaved units/JSON and literal raw boundaries pass. |
+| NH-05 | ACCEPT: actual canonical completion/host/invocation/ICU consumers, marker preservation and separate late occupancy/key protocols pass within their explicit limits. |
+| NH-06 | ACCEPT: real .lykn/.lyk, checked/strip, actual JSON compiler, package public namespace/declarations/runtime and materialized delivery pass. |
+| NH-07 | ACCEPT: exact source/metadata and all fresh required focused/full/M6/final-HEAD citation/size gates pass with the actual counts and limits above. |
+| NH-08 | PENDING ROOT CLOSE: independent implementation/delivery and preserved history are verified; root retrospective, BS-05/parent/later-owner reconciliation and final metadata check remain due. |
+
+No ledger row was edited. Root may reconcile NH-01–07 using this evidence and
+complete its closing records before requesting the bounded NH-08 metadata pass.
+Final read-only status remains clean82f1b65b/tree4bb6bfc9; release is independently
+read as cleanc60dea62. All owned sessions drained. The default process query was
+sandbox-denied and the authorized read-only retry returned no matching build/
+test processes (exit1 for empty rg match). Only this review record and its
+artifacts/cdc/final02 evidence were written. Exclusive source/build ownership
+returns to root; no further source or gate work is pending in this context.

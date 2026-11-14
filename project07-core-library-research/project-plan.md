@@ -9,6 +9,18 @@ related: ["project02-language-toolchain-alignment", "project03-language-evolutio
 
 # Core library research
 
+2026-11-14 compiler prerequisite update: Project03 Arc05 S05 native generated-
+name source/delivery is independently validated at82f1b65b; root closing
+metadata remains pending. Actual canonical/fragment/CLI/kernel-JSON/package
+checks support this bounded native prerequisite. Public/exact naming and
+qualified ADT/compiler composition remain open; no JSON/YAML trial resumes.
+The selected lang/lib/ and opt-in @lykn/* JSR direction remains selected;
+actual bootstrap/home proof and new-code licensing remain separately gated.
+Original JSON re-pin, final research report, YAML/document, reader RDEO/RDCL,
+book/guide and explicit human acceptance obligations retain their owners.
+AWEX stays a separate unopened Project03 Arc02 maintenance finding; this
+compiler work neither repairs it nor changes any Project07 row. Release staysc60.
+
 2026-11-14 compiler prerequisite update: [Project03 Arc05 S04](../project03-language-evolution/arc05-binding-semantics-and-hygienic-emission/slice04-discard-aware-declarations/cdc-verification.md)
 independently accepts discard-specific native declarations atc0ed4546, with
 actual strict TypeScript/file/package/grouped/recursive consumers. All8DT/BS-04
@@ -466,6 +478,11 @@ CDC records CC's Python aggregation deviation and supplies an independent Lykn a
 authoring evaluation remains Arc02.
 
 ## Version History
+
+- 2026-11-14 v1.33: Carry independently validated S05 native generated-name
+  source/delivery at82, pending root closing metadata, as a compiler prerequisite.
+  Retain selected optional lib/JSR direction and every research/library/reader/
+  guide/book/human/licence/bootstrap/home-proof obligation. No trial resumes.
 
 - 2026-11-05 v1.32: Recorded operator-approved `lang/lib/`/opt-in JSR approach
   superseding future Patch home, plus Project03 baseline/audit prerequisite.

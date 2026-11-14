@@ -1,7 +1,7 @@
 ---
 project: project03-language-evolution
 status: research
-version: "1.69"
+version: "1.70"
 planned-release: "0.7.0"
 depends-on: ["project02-language-toolchain-alignment"]
 blocks: []
@@ -11,6 +11,16 @@ related: ["project04-c-lang", "project07-core-library-research"]
 # Language evolution
 
 ## Current approved structure —2026-11-13
+
+Current2026-11-14: [Arc05 S05](arc05-binding-semantics-and-hygienic-emission/slice05-native-generated-name-hygiene/cdc-verification.md)
+source/delivery is independently validated at82f1b65b/tree4bb6bfc9. Native
+generated storage now has complete source/physical-name reservation and actual
+early/late/file/JSON/package proof. Root retrospective/parent routing and final
+NH-08 metadata are being completed; BS-05 remains open until that gate.
+P-BIND/P-QADT and S06 public parity/S07 exact source names, qualified/module/
+composition/library/book/human gates remain open. Arc06 LI-04 receives the exact
+c0ed→82 source/API/output/guide inputs; AWEX/MPVR/NUMI remain unopened Arc02
+maintenance candidates. Release staysc60; no next slice or integration opens.
 
 Current authority2026-11-14: [Arc05 S05](arc05-binding-semantics-and-hygienic-emission/slice05-native-generated-name-hygiene/slice-plan.md)
 opens native compiler-generated name hygiene at acceptedc0ed4546, with complete
@@ -1101,6 +1111,11 @@ with their source and status distinctions. A future
 implementation definition of done is not established by this migration.
 
 ## Version history
+
+- 2026-11-14 v1.70: Carry independently validated Arc05 S05 native hygiene
+  source/delivery at82 into Arc06 exact-range API audit and qualified/research
+  prerequisite maps; root closing metadata remains pending. No parent row,
+  later slice, research/library trial or release action is closed by that input.
 
 - 2026-11-14 v1.69: Operator opens Arc05 S05 native generated-name hygiene
   from acceptedc0ed, with seven-path/eight-row bounded source-ready recipe and

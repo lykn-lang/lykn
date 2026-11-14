@@ -3,13 +3,18 @@ project: project03-language-evolution
 arc: arc04-qualified-adts
 slice: slice03-local-qualified-nominal-core
 status: re-scoped
-version: "2.4"
+version: "2.5"
 depends-on: [slice01-contract-and-emission-design, slice02-existing-adt-correctness]
 ---
 
 # Local qualified nominal core
 
 ## Transfer-maintenance version history
+
+- 2026-11-14 v2.5: Carry Arc05 S05's independently validated native generated-
+  name source/delivery at82f1b65b into the existing prerequisite map; final root
+  closing metadata is pending. Preserve all15 original dispositions, native759/
+  public499 bounds, retired status and paused qualified implementation.
 
 - 2026-11-14 v2.4: Carry independently accepted Arc05 S04 discard-declaration
   source/delivery atc0ed, including final closing-metadata PASS, into the existing
@@ -30,6 +35,12 @@ depends-on: [slice01-contract-and-emission-design, slice02-existing-adt-correctn
   operator-approved three-arc carry-forward map. Prior history remains below.
 
 ## Current role: historical execution record and carry-forward map
+
+Current2026-11-14: Arc05 S05 native hygiene source/delivery is independently
+validated at82f1b65b, pending root closing metadata. This adds a bounded native
+prerequisite without closing another original LC row or broadening759/499.
+S06 public naming, S07 exact source binding, qualified owner and final
+composition remain open; this container stays retired and22 unexecuted.
 
 Current2026-11-14: [Arc05 S04](../../arc05-binding-semantics-and-hygienic-emission/slice04-discard-aware-declarations/cdc-verification.md)
 independently closes all8DT/BS-04 native discard-specific declarations

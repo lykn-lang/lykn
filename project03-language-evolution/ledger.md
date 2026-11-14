@@ -1,5 +1,12 @@
 # project03-language-evolution ledger
 
+Current2026-11-14: Arc05 S05 source/delivery is independently validated at82f1b65b.
+Native hygiene has actual canonical/fragment/CLI/JSON/package and final-gate
+proof. Root closing metadata/NH-08 and BS-05 remain pending; P-BIND/P-QADT and
+all later naming/qualified/module/library/book/human criteria remain open.
+Arc06 LI-04 receives exact c0ed→82 audit inputs; AWEX/MPVR/NUMI retain Arc02.
+Release staysc60; no S06 or integration action follows.
+
 Current authority2026-11-14: operator opens Arc05 S05 native generated-name
 hygiene fromc0ed, same models/Autonomous setup. All8NH/BS-05 and P-BIND/
 P-QADT remain open. BS-01–04 acceptance is unchanged; no S06/release action.

@@ -382,3 +382,33 @@ correction02 adds no new bubble-up or later-owner claim. Final filtered process
 query returned no make/Cargo/Lykn/Deno jobs, the source worktree is clean at
 `82f1b65b92529979afd6c624183912ca31453927`, and source/build ownership returns
 to root.
+
+## Root close reconciliation — NH-08 metadata pending
+
+Root read the separate final-source verdict and independent receipt index:
+NH-01–07 are reproduced/accepted at82f1b65b/tree4bb6bfc9. The exact ten-path
+c0ed→82 delivery, one-path final correction, clean task and adjacent trailers
+were independently checked; original criterion count remains eight with no
+silent deferral/no-op. Initial fa, held32749, all three issued prompts and
+meaningful failures/unknown outcomes remain preserved. Independent artifacts
+are now grouped under artifacts/cdc/final02, including its receipt index and
+actual M6 commands/config/status/output/comparisons. Root baseline/CC inventories
+and profile/cache/skip/warning limits above remain applicable, not relabelled.
+
+Root completed cdc-retrospective.md and substantive routing: Arc05 roadmap and
+ledger; Project03 plan/ledger; Arc04 paused plan and retired S03 prerequisite
+map with all15 dispositions/native759/public499 intact; Arc06 plan/ledger LI-04
+exact c0ed→82 API/output/guide behavior inputs; Project07 plan/ledger with all
+research/library/reader/book/human/licence/actual-home proof still open. The
+approved optional lib/JSR direction remains selected. AWEX has its own preserved
+backlog/Arc02 maintenance destination and independent source comparison, not a
+repair or new runtime matrix. MPVR/NUMI retain their existing maintenance home.
+
+S05 delivered the assigned bounded native storage capability, with a justified
+seven→ten-path physical-name amendment and test-only proof completion. Arc05's
+slice structure stays the same; S06/S07 now explicitly inherit their actual
+public/escaped-source boundaries. No original qualified/module/composition,
+Project07 or higher-scale parent criterion closes from this child alone.
+NH-08 and BS-05 remain open until separate closing-metadata verification; root
+will apply its final disposition. Task source remains clean82f1b65b and release
+remains cleanc60; no S06, merge/push/publication or library trial is opened.

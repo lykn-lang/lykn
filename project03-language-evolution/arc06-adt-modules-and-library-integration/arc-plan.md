@@ -2,7 +2,7 @@
 project: project03-language-evolution
 arc: arc06-adt-modules-and-library-integration
 status: planned
-version: "0.4"
+version: "0.5"
 planned-release: unassigned
 depends-on: []
 related: [arc04-qualified-adts, arc05-binding-semantics-and-hygienic-emission, project07-core-library-research]
@@ -11,6 +11,26 @@ related: [arc04-qualified-adts, arc05-binding-semantics-and-hygienic-emission, p
 # ADT modules and library integration
 
 ## Authority and useful result
+
+2026-11-14 carry-forward: Arc05 S05 source/delivery is independently validated
+at82f1b65b92529979afd6c624183912ca31453927/tree4bb6bfc9; root closing metadata
+remains pending. LI-04 receives the exact c0ed4546→82f1b65b ten-path range:
+complete borrowed source census and whole-unit/one-form entrances; generated
+counter/preferred/reset/failure occupancy behavior; actual-writer physical atom
+collection, static Unicode decoding and candidate keys; early result/yield/
+await/carrier/thread/match/rest/overload locals; completion/ICU/host reference/
+invocation composition; actual file/kernel-JSON/package outputs and guide06.
+Audit generated layout/diagnostic consumers and supported Rust API behavior,
+not only signature additions. New shared helpers are crate-private; this does
+not claim a new public Rust signature, grammar, IR schema or CLI option.
+
+Public naming parity remains Arc05 S06. Exact SOURCE binding identity and
+escaped protected-root classification remain S07/LI-04; conservative private
+occupancy does not resolve them. Raw/fragment/private-marker/dynamic-eval and
+unordered-ICU limits remain explicit. AWEX is an independently source-assessed
+separate Arc02 maintenance input, with no fresh baseline runtime or repair;
+MPVR and NUMI remain there too. All six LI rows and actual qualified/module/
+library/book/human gates remain open. No experiment or new implementation opens.
 
 2026-11-14 carry-forward: [Arc05 S04 source/delivery](../arc05-binding-semantics-and-hygienic-emission/slice04-discard-aware-declarations/cdc-verification.md)
 is independently accepted atc0ed454610f3a384196e4fa003335373819fb2fd,
@@ -127,9 +147,10 @@ requires actual consumers and independent review, with a closing retrospective;
 human/book gates require actual dispositions.
 
 Use existing planning and assigned task homes; refresh pins before authoring.
-Current accepted task source is cleanc0ed4546; release is independently accepted
-c60dea62. The earlier dba24d40/public-discard-held and release0829 checkpoint
-is historical. S04 root closing metadata is independently verified in its owning slice.
+Current independently validated task source is clean82f1b65b, with S05 root
+closing metadata pending; release is independently acceptedc60dea62. Earlier
+c0ed/S04 and dba24d40/public-discard-held/release0829 are historical checkpoints.
+S04 root closing metadata is independently verified in its owning slice.
 Prospective source work uses the established Luna6 High implementer and separate
 Sol6.1 High reviewer after explicit implementation resume. Root owns plans and
 planning Git/index. No new worktree, CC prompt, source/build/probe/experiment,
@@ -137,6 +158,11 @@ merge/push/release, dependency adoption or licence choice is authorized now.
 Repository Lykn-only helper rules apply; no Python exception.
 
 ## Version history
+
+- 2026-11-14 v0.5: Carry S05's exact c0ed→82 native census/generator/physical-
+  key/late-composition/API-output/guide input to LI-04, keeping all six rows and
+  S06/S07/AWEX/qualified/library/book/human gates open. Root metadata is pending;
+  no new implementation or experiment is authorized.
 
 - 2026-11-14 v0.4: Carry Arc05 S04's exact c60→c0ed generated-declaration/
   optional-input/export/guide impact and explicit unsupported routes into LI-04;

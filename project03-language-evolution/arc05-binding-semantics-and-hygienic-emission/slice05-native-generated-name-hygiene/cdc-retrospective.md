@@ -1,7 +1,8 @@
 # S05 retrospective — native generated-name hygiene
 
-2026-11-14, root CDC/coordinator. Analysis during initial implementation;
-final source pin, independent acceptance and closing reconciliation are pending.
+2026-11-14, root CDC/coordinator. Analysis through source/delivery validation
+at82f1b65b; final NH-08 closing-metadata acceptance is pending. Earlier attempt
+observations below retain their original cutoffs and are not fresh-run claims.
 Luna6 High implements; separate Sol6.1 High reviews. This record examines the
 work, including my preparation, and does not independently accept code or
 establish comparative process/model effectiveness.
@@ -16,8 +17,11 @@ S07, public parity S06, qualified and library work separately owned.
 Root inspected the accepted c0ed source/AST and producer/caller sections,
 prior runtime-name draft, S04 retrospective, actual root baseline fixtures and
 their compiled/runtime results, the open set/readiness return and initial CC
-intake/code/test delta. Source/build ownership was serial. No final-source
-runtime or independent implementation result is claimed at this cutoff.
+intake/code/test delta, the corrected actual source/test deltas, exact final
+commit ranges/trailers/status and meaningful doer source/generated/runtime and
+gate receipts. Source/build ownership was serial. Separate Sol performed final
+source review and fresh focused/full/M6/citation/size execution on82f1b65b;
+root does not claim to have replayed or read every retained aggregate byte.
 
 ## Observations and interpretation
 
@@ -174,7 +178,33 @@ references correctly require whole-unit emission. The supported any-parameter
 specimen retains that boundary. Source-grounded closed-carrier reasoning avoids
 inventing a capture inside its fixed getter. Final proof/acceptance remain due.
 
-Pending implementation handoff, independent source/gates, complete eight-row
-disposition, root retrospective completion and BS-05/API/research routing.
-All NH/BS-05 criteria remain open. Release staysc60; no S06, integration,
-push/publication, source renaming, qualified activation or library trial opens.
+Subsequent final-source execution at82f1b65b passed: four native/two CLI groups,
+59 names/Unicode and five gensym cases, fresh optimized artifacts, full repository
+gate with1578 Lykn tests/67 steps and482 docs, actual standalone/materialized
+M670/seven files/all14 comparisons, citations64/601 and fresh48689 gzip under
+81920. Existing docs skips, fixture warnings, cache/profile differences and
+untraced macro-child arguments remain evidence limits, not failures concealed
+by the summary. Final implementation/row details live in cdc-verification.md.
+
+The useful native capability and immediate guide teaching are delivered on the
+task branch; no production edit followed32749d97. Correction02 changed one test
+file to close the actual proof gaps and its first focused native attempt passed.
+Two of five formal refinements were used; local authoring failures and earlier
+unknown/blocked invocations remain separately retained. This count is not a
+comparison of model or methodology effectiveness.
+
+Root's next-slice watch is concrete: map each promised producer/structured
+field to its actual input role and plausible wrong implementation BEFORE the
+full gate; isolate allocation order within the owning first function, and keep
+source/fragment API admission distinct from codegen convenience. Use actual
+writer output for normalization examples and explicit source/planning workdirs
+for every query. S06 inherits physical names/candidate keys but needs its own
+public lifecycle/caller design. These are scoped preparation lessons, not a
+new framework change, additional research trial or proven universal cure.
+
+Root completed substantive parent/API/research routing; NH-08 and BS-05 await
+the separate closing-metadata check. P-BIND/P-QADT, S06–09, Arc04 qualified work,
+Arc06 six LI rows and Project07 research/library/reader/book/human/licence gates
+stay open. AWEX is separately preserved in Arc02 maintenance, alongside MPVR/
+NUMI. Release staysc60; no S06, integration, push/publication, source renaming,
+qualified activation or library trial opens.

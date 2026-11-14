@@ -9,6 +9,13 @@ depends-on: [slice02-native-binding-discards, slice04-discard-aware-declarations
 
 # Native compiler-generated name hygiene
 
+Current closing checkpoint2026-11-14: separate final-source validation ACCEPTS
+NH-01–07 at82f1b65b/tree4bb6bfc9. Root retrospective and substantive later-owner
+reconciliation are complete; NH-08/BS-05 await bounded closing-metadata review.
+All eight original criteria/ten-path delivery and preserved history remain.
+The task is clean and root owns source/build, with no running jobs. Releasec60
+is unchanged; S06 and all later feature/integration/library gates stay unopened.
+
 Current correction02 handoff2026-11-14: CC proposes82f1b65b92529979afd6c624183912ca31453927,
 tree4bb6bfc9e171bc6424548b0f740dd32f0cf98c75. Only the existing native test
 changed from32749d97; full delivery remains ten paths and production is unchanged.

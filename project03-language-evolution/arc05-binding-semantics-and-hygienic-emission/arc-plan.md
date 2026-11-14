@@ -2,7 +2,7 @@
 project: project03-language-evolution
 arc: arc05-binding-semantics-and-hygienic-emission
 status: active
-version: "0.15"
+version: "0.16"
 planned-release: unassigned
 depends-on: []
 related: [arc04-qualified-adts, arc06-adt-modules-and-library-integration]
@@ -11,6 +11,18 @@ related: [arc04-qualified-adts, arc06-adt-modules-and-library-integration]
 # Binding semantics and hygienic emission
 
 ## Authority and outcome
+
+Current S05 closing checkpoint2026-11-14: native generated-name source/delivery
+is independently accepted at82f1b65b/tree4bb6bfc9, NH-01–07 done. Root
+retrospective/parent routing is complete; NH-08 and BS-05 await closing-metadata
+PASS. The ten-path c0ed→82 delivery covers actual physical-name/candidate keys,
+early/late producers and canonical/fragment/file/JSON/package consumers. Two
+formal refinements and all initial/held/failed/unknown records are retained.
+No structural roadmap change is required. S06 physical-name public parity and
+S07 exact SOURCE/protected-root identity remain explicit separate work; Arc06
+LI-04 receives the exact API/output/guide range. AWEX/MPVR/NUMI remain unopened
+Arc02 maintenance, qualified/library/book/human gates remain open and release
+staysc60. No next slice or integration is opened by this close checkpoint.
 
 Current S05 review2026-11-14: separate source-first review holds32749d97 for
 two consolidated missing-proof findings, not an established production defect.
@@ -197,7 +209,7 @@ affected delivery, necessary immediate documentation and independent review.
 | [S02 native remaining discard binding forms](slice02-native-binding-discards/slice-plan.md) — closed9e6fb127 | Completed canonical admitted native catch/loop/callable/method roles, grouped static-key admission and honest simple-multi diagnostics; actual Source/raw-IR entrances distinguished | Accepted49982409 baseline and final independent9-row/gate proof; original HOLDs/refinements retained |
 | [S03 public remaining discard binding forms](slice03-public-binding-discards/slice-plan.md) — closedc60dea62 | Delivered corresponding public/browser behavior, preserved already-admitted non-atom/empty-list discard groups and raw/schema roles, and enforced the honest simple-multi boundary | Independent final9-row proof, focused66/full1578/docs482/M670/14/cites/size; original HOLDs and three refinements retained |
 | [S04 discard-aware declarations](slice04-discard-aware-declarations/slice-plan.md) — closedc0ed | Existing native Func/Bind/BindGroup/Type declarations now describe discard slots/defaults/rest, recursive data inputs and scalar/group/pattern exports; actual TS/CLI/package consumers | Independent all8DT source/gate/closing-metadata proof, root retrospective and later-owner routing |
-| [S05 native compiler-generated name hygiene](slice05-native-generated-name-hygiene/slice-plan.md) — active | Protect remaining compiler temporaries from source, foreign and generated-name collisions | Acceptedc0ed/S04; complete source/early/late producer census and separate readiness before dispatch |
+| [S05 native compiler-generated name hygiene](slice05-native-generated-name-hygiene/slice-plan.md) — source accepted82, close pending | Protect remaining compiler temporaries from source, foreign and generated-name collisions | Acceptedc0ed/S04; independent NH-01–07/fresh full/M670/14/cites/size; root NH-08 metadata pending |
 | S06 public compiler-generated name hygiene | Protect corresponding public producers while preserving private object identities and macro transport limits | Public discard roles; complete producer/finalizer census, actual physical atom names and candidate keys including member/computed/static-escape cases; native S05 protection alone does not prove public parity |
 | S07 native exact source-binding emission | Resolve binding occurrences and allocate safe JS names while retaining hoisting, TDZ, data/API names, foreign targets and JSON behavior | S05; settled source-name policy; actual native writer scopes; explicitly assess escaped SOURCE binding identity/protected-root classification separately from private generated-name occupancy |
 | S08 public exact source-binding emission | Deliver equivalent behavior through normal/fragment/browser/materialized entrances | S06; same language contract; public lifecycle/consumer census |
@@ -277,6 +289,12 @@ substitute helper-language exception. Reader RDEO/RDCL, Arc01 I4 and diagnostic
 work, whole-work audits and the separate book/human gates keep their owners.
 
 ## Version history
+
+- 2026-11-14 v0.16: S05 native source/delivery independently accepted at82,
+  after physical-key correction and test-only proof completion. Preserve eight
+  criteria/ten paths/history; root retrospective/parent routing and NH-08
+  closing-metadata gate retained. S06/S07 prerequisites are explicit; no new
+  structural slice, later execution or release scope.
 
 - 2026-11-14 v0.15: S05 actual attempt11 reveals whole/colon-only census gap;
   preserve initialfa source/failures and prepare explicit ten-path shared

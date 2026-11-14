@@ -1,5 +1,12 @@
 # Project07 ledger
 
+2026-11-14: Arc05 S05 source/delivery at82f1b65b is independently validated
+as a bounded native generated-name prerequisite; root closing metadata is
+pending. All Project07 rows remain open, including final research synthesis,
+original JSON re-pin/composition, guides/book/human, YAML/document/reader and
+licence/bootstrap/home evidence. The approved optional lib/JSR model stays
+selected. No library trial or release action follows; release staysc60.
+
 2026-11-05: The [current approach amendment](project-plan.md#core-library-research)
 selects `lang/lib/` with opt-in `@lykn/*` JSR packages, superseding the future
 Patch home. All P rows remain open. Arc04/P-06/P-07 explicitly owe a consolidated

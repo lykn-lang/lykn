@@ -1,0 +1,12 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.02s
+     Running unittests src/lib.rs (target/debug/deps/lykn_lang-660f810f98f77866)
+
+running 5 tests
+test emitter::gensym::tests::test_default_starts_at_zero ... ok
+test emitter::gensym::tests::test_reset_restarts_counter ... ok
+test emitter::gensym::tests::test_next_produces_sequential_names ... ok
+test emitter::gensym::tests::allocations_skip_normalized_occupancy_and_reset_namespace ... ok
+test emitter::gensym::tests::generated_candidates_compare_decoded_emitted_keys_in_both_directions ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 1212 filtered out; finished in 0.00s
+
