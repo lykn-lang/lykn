@@ -1,0 +1,5 @@
+;; Scoped baseline consumer. Other package files are unchanged in the delivery;
+;; five canonical modules are restored from git show 9e6fb127 into ignored target.
+(import "./baseline-lang/mod.js" (lykn))
+(bind source (Deno:readTextFileSync (get Deno:args 0)))
+(Deno:writeTextFileSync (get Deno:args 1) (lykn source))

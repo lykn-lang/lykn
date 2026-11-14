@@ -3,11 +3,23 @@ project: project03-language-evolution
 arc: arc05-binding-semantics-and-hygienic-emission
 slice: slice03-public-binding-discards
 status: active
-version: "1.0"
+version: "1.1"
 depends-on: [slice02-native-binding-discards]
 ---
 
 # Remaining public/browser discard binding forms
+
+Current assignment2026-11-14: [correction02](cc-prompt-iteration02.md) addresses
+the consolidated independent30d8b77c HOLD R01–05: source child-boundary crossing,
+actual anonymous-generator sentinel layout, a false runtime error oracle,
+required new-path proof and catch-array teaching. Same nine PB criteria and
+fourteen-path complete delivery; this correction changes only six named files.
+Metadata01 is independently reconciled and stays immutable. Source/build is
+root-owned after Sol's clean handback, transferring to Luna on dispatch.
+The design below is clarified: async/for children expand normally at their own
+door, and own callable preparation reuses the corrected real lexical layout.
+No aggregate gate was run by CDC on held source; earlier new8 green is explicitly
+not acceptance. All original prompts/candidates/findings/limitations remain.
 
 ## Authority and useful delivery
 
@@ -326,7 +338,13 @@ corrections proceed autonomously, ambiguous design/evidence gaps return to root.
 
 ## Assignment history
 
-- 2026-11-14 correction01 `cc-prompt-iteration01.md`: current assignment after
+- 2026-11-14 correction02 `cc-prompt-iteration02.md`: current assignment for
+  independent R01–05 at30d8b77c/treeeed76325. Source-ready six-path own-slot/
+  shared-layout/oracle/proof/guide correction; all nine PB rows unchanged/open.
+  Root read complete candidate diff, reviewed witnesses and the consolidated
+  verdict before issue. No writer/whitelist/classifier or new helper machinery.
+  Metadata01 acceptance remains bounded; source30 and HOLD stay immutable.
+- 2026-11-14 correction01 `cc-prompt-iteration01.md`: issued after
   initial CC handoff85ddca63. Root found noncontiguous trailers in both new local
   commits and an incorrect contiguous-trailer claim. No independent source review
   had begun. Preserve original raw commit objects and reword only those two
@@ -357,6 +375,10 @@ NUMI, reader RDEO/RDCL, Arc04 local qualified and Project07/book/human/licence
 owners. Neither native/public discard acceptance nor guide edits close those.
 
 ## Version history
+
+- 2026-11-14 v1.1: Record independent30 HOLD and correction02 for actual child
+  boundaries, writer-admitted generator layout, honest failure/coverage proof
+  and precise catch teaching, preserving original scope and all source history.
 
 - 2026-11-14 v1.0: Prepare operator-opened S03 from accepted9e6fb127, with
   public-specific producer roles, existing grouped admission, signature boundary,

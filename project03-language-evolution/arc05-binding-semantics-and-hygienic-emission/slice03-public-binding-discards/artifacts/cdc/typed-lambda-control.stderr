@@ -1,0 +1,5 @@
+error: Uncaught (in promise) TypeError: anonymous: arg '_' expected number, got string
+    throw new lyknIntrinsicTypeError0("anonymous: arg '_' expected number, got " + typeof discardValue__gensym0);
+          ^
+    at f (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc05-s03-cdc/typed-lambda-control.mjs:6:11)
+    at file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc05-s03-cdc/typed-lambda-control.mjs:10:13

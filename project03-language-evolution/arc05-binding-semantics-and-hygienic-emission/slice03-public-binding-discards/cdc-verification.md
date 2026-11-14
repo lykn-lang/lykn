@@ -101,3 +101,143 @@ implementation criterion is independently accepted here. The later source
 verdict must inspect CC intake/readback, actual candidate/diff and oracles,
 then reproduce the required focused/full/inner M6/citation/fresh-size checks.
 Source/build ownership remains with root; this reviewer has no running jobs.
+
+## Initial implementation verdict — HOLD — 2026-11-14
+
+**HOLD candidate30d8b77c4e5516191fc9d470325c4ead64e9fba4, tree
+eed763256aada46c8bc5e7a848be09c7a1f7f19c.** Same separate Sol6.1 High CDC
+context; Luna6 High implemented. The complete14-path delivery was inspected,
+including all378 lines of the new suite; five mirror pairs were byte-compared
+before omitting duplicate semantic reads. Current full plan/ledger/initial
+prompt/metadata01 prompt, CC intake/closing additions and metadata receipts were
+loaded. Read-only Git confirms clean source and correct replacement messages,
+trees and ancestry. Readiness PASS above remains its historical design verdict.
+
+Fresh evidence and exact command recipes are in
+[artifacts/cdc/candidate30-source-first.md](artifacts/cdc/candidate30-source-first.md),
+with the Lykn consumers, source witnesses, consequential generated output,
+streams and numeric statuses. `make fresh-artifacts`0 preceded staged consumers;
+the new8 suite passes8/0 despite the defects below. No aggregate/full66/M6/
+citations/size gate was run on known-held source. CC's earlier gate receipts
+remain doer-attested at their original conditions.
+
+### Consolidated findings
+
+**R01 — P1, preparation crosses the source child boundary (PB-01/02/04/07).**
+`packages/lang/surface-helpers.js:418–443` recursively prepares an async payload,
+includes typed Source `lambda` in a raw-function helper, and recursively prepares
+any numeric-for initializer. This runs before the child has its own lexical/
+surface/macro decision. Actual valid `(async (lambda ((object :number _)) _))`
+is rejected with `field name must be an atom`; the same source at9e compiles
+and runs99. Scalar async lambda instead leaks `arg 'discardValue__private'`
+in its runtime TypeError through both public Deno and staged browser facades,
+where the unwrapped control says `arg '_'`. A numeric-for initializer calling
+a lexically bound `async` callback around typed lambda similarly corrupts that
+source label; actual9e preserves `_`. Receipts: `typed-object-async-lambda`,
+`baseline-typed-object-async-lambda`, `typed-async-lambda`,
+`browser-typed-async-lambda`, `for-lexical-async` and their controls.
+
+Keep own-slot preparation local: let the normal child expansion route own
+typed classification, lexical resolution and raw preparation. Numeric-for's
+rule concerns its declaration binder, not arbitrary initializer expressions.
+Add actual async typed scalar/object success and exact type-error controls,
+plus a lexical initializer control. The currently bound-but-uncalled async
+arrow at new test107 does not prove its runtime behavior; invoke it as well.
+
+**R02 — P1, an admitted anonymous generator layout is not prepared
+(PB-02/04/07).** The actual writer at `compiler.js:854–881` accepts the documented
+empty-string sentinel `(function* "" (params) ...)` in addition to list-first
+anonymous parameters. `surface-helpers.js:427–430` selects its String node as
+the params slot and leaves `_` literal. The actual public witness
+`(bind f (kernel:function* "" (_) (yield _)))` yields7 against foreign99.
+`lexical-regions.js:36–47` also selects the wrong params/body region for this
+layout, so fixing preparation alone does not establish named/default scope.
+The existing binding projection at binding.js:664–672 already checks args[1]
+for non-list-first layouts; reconcile all consumers with the real writer.
+Retain named/list-first cases and add the sentinel's discard, named form-head
+resolution, default expansion, arity and call/advance controls. Do not widen the
+writer or infer source admission from unsupported kernel prefixes.
+
+**R03 — P2, the throwing-default oracle passes a syntax failure (PB-02/08).**
+New test `test/forms/remaining-discard-bindings.test.js:144–147` puts a `throw`
+statement directly in a default expression. Actual output is
+`function throwDefault(x = throw new Error("default boom");)`, and Deno returns1
+with `SyntaxError: Expression expected`. `executeFailure:31–45` only checks
+nonzero plus a message substring, so the source excerpt's `default boom` makes
+this test pass. A valid helper function called by the default produces an
+actual `Error: default boom` in the contrasting independent receipt.
+Use a valid expression and discriminate actual runtime error class/message
+from parse failure. Apply the helper's failure discrimination to its schema
+TypeError use too; source excerpts are not runtime exception evidence. Preserve
+the original failed oracle rather than recasting its8/0 result as proof.
+
+**R04 — P2, several explicit new-path obligations lack discriminating proof
+(PB-04/05/07/08).** These are required-proof gaps, not additional confirmed
+production defects:
+
+- Spread test201–204 uses args:length and explicit `(get bind 0)`, which do not
+  test whether a spread-bound form name is resolved as a callable head. It has
+  no top-level spread with nested default whose RHS actually needs expansion.
+  Reserved eval rejection is a useful control but does not prove these two
+  separate consumers. Use an opposing form-head result, for example a callable
+  `array` bound through a spread object's index0, and a default RHS requiring
+  real expansion. Assert exact runtime result and once-only/lazy effects.
+- `expandExpr` is imported but unused in the new suite. The retained S01 fragment
+  at discard-bindings.test.js:482–484 uses a nondiscard typed fn and only checks
+  ESTree type; its whole-unit failure is a malformed typed header. They do not
+  exercise this new raw-form fragment producer's private allocation/finalization,
+  failure after preparation, recovery and finalized JSON execution. Add bounded
+  same-context checks through actual expandExpr/compileExpr or compile output.
+- Grouped test223–226 exercises flat aliases/array hole/empty-list admission;
+  its default-effect test227–228 is a single Bind. There is no new-path nested
+  grouped default/rest/static-key/RHS role control. Existing S01 spread/default
+  tests cover already-admitted single/named branches, not this new zero-name
+  literalizer. Add grouped nested/default/rest runtime effects and actual
+  classified-node assertions for unchanged String/number/named/single/RHS roles
+  and normalized-key metadata, using existing product tests rather than a new
+  harness.
+- Delivery test355–374 imports `visible` and calls it, but never inspects the
+  namespace. Retained S01 namespace tests support the unchanged export wrapper;
+  they do not supply this assignment's promised remaining-form/browser namespace
+  observation. Extend the existing consumer to assert exact source-only keys
+  for the representative delivered source, including the browser facade.
+
+Keep eight top-level groups/M6 population70, preserve useful existing tests and
+avoid turning these focused controls into new generic verification machinery.
+
+**R05 — P2, guide merges two different array roles (PB-03/07).**
+`docs/guides/00-lykn-surface-forms.md:1410–1417` says array-pattern `_` is an
+elision and then applies “this meaning” to the legacy catch slot. The public
+catch writer uses expression arrays, and the accepted implementation/test
+intentionally consumes a live value there. Explain that catch distinction
+explicitly, retaining the native/public binding teaching and raw-IR boundary
+without implying all raw array underscores become value binders.
+
+### Scope, retention and nine-row disposition
+
+The metadata01 correction is independently reconciled: all four preserved raw
+objects hash to their named IDs; replacement trailers are adjacent; C1/final
+trees and baseline ancestry are unchanged;85→30 content diff0; exactly14 product
+paths. No further metadata repair is requested. This preserves applicability
+of CC's old source-content results as attestation, not independent acceptance.
+The initial sampled intake and misplaced evidence were corrected before product
+module edits per the appended record; the missing earlier invalid-fixture
+snapshots/aggregate denominator remain disclosed limits, not fabricated proof.
+
+| Row | Initial independent disposition |
+| --- | --- |
+| PB-01 | Open; ordinary/iterator cases reviewed and new8 run, but R01 exposes initializer-role crossing. |
+| PB-02 | HOLD R01/R02 actual source defects and R03 false error oracle. |
+| PB-03 | Source/catch cases reviewed, useful new runtime coverage; R05 teaching correction and final retained-gate proof pending. |
+| PB-04 | HOLD R01/R02 boundary/layout defects and R04 spread/fragment proof gaps. |
+| PB-05 | Source normalization shape/flat live-key cases reviewed; R04 nested/grouped/role proof remains. |
+| PB-06 | Shared guard, direct one-clause delegation and new8 cases supported; no observed signature defect, final acceptance pending repaired candidate gates. |
+| PB-07 | HOLD R01/R02/R04/R05. Raw7/expanded99 and schema/JSON boundaries have useful existing/new evidence, not blanket failure. |
+| PB-08 | HOLD R03/R04; full66/full make check/actual M670/14/final citations/fresh size remain unrun independently until source/oracles are ready. |
+| PB-09 | Open; independent HOLD returned for scoped correction. Root retains retrospective/closure/bubble-up duties and S03 endpoint. |
+
+All9 PB rows remain open. No source/test/ledger/index edit was made by this
+reviewer; only this record and necessary artifacts/cdc evidence were authored.
+Source is still clean30d8b77c/treeeed76325, release/0.6.x remains0829e892. All
+owned commands have completed. Exclusive source/build ownership returns to root
+for a consolidated bounded correction; S04/release/remote actions remain held.

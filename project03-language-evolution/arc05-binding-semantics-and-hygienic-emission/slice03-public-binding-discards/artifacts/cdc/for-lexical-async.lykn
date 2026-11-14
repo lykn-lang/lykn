@@ -1,0 +1,3 @@
+(set-symbol! globalThis "_" 99)
+(bind async (fn (:any callback) (callback "bad")))
+(for (async (lambda (:number _) _)) false () (break))

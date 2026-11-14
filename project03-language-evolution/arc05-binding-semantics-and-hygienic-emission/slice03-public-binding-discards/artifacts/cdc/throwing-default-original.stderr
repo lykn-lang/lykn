@@ -1,0 +1,5 @@
+error: SyntaxError: Expression expected
+  |
+1 | function throwDefault(x = throw new Error("default boom");) {
+  |                           ~~~~~
+    at file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc05-s03-cdc/throwing-default-original.mjs:1:27

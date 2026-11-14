@@ -1,0 +1,13 @@
+Check test/forms/remaining-discard-bindings.test.js
+running 8 tests from ./test/forms/remaining-discard-bindings.test.js
+S03 public declarations and loop binders discard without losing effects ... ok (55ms)
+S03 public callable and class parameter slots preserve arity and laziness ... ok (33ms)
+S03 public catch keeps the writer's expression-binding grammar ... ok (32ms)
+S03 spread parameters project source names and preserve fallback lookup ... ok (15ms)
+S03 public zero-name grouped patterns keep static alias keys ... ok (16ms)
+S03 multi-clause signature guard is early and one-clause builders delegate ... ok (31ms)
+S03 raw compiler IR stays literal while source expansion prepares discards ... ok (86ms)
+S03 browser compilation and staged source facade share public behavior ... ok (43ms)
+
+ok | 8 passed | 0 failed (318ms)
+

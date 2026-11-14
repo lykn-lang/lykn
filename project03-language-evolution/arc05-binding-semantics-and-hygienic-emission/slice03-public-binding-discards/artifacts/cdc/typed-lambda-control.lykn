@@ -1,0 +1,3 @@
+(set-symbol! globalThis "_" 99)
+(bind f (lambda (:number _) _))
+(console:log (f "bad"))

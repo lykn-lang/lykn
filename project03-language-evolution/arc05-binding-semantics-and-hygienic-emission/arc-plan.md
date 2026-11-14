@@ -2,7 +2,7 @@
 project: project03-language-evolution
 arc: arc05-binding-semantics-and-hygienic-emission
 status: active
-version: "0.9"
+version: "0.10"
 planned-release: unassigned
 depends-on: []
 related: [arc04-qualified-adts, arc06-adt-modules-and-library-integration]
@@ -11,6 +11,15 @@ related: [arc04-qualified-adts, arc06-adt-modules-and-library-integration]
 # Binding semantics and hygienic emission
 
 ## Authority and outcome
+
+Current implementation review2026-11-14: S03 candidate30d8b77c is independently
+held for source child-boundary crossing, anonymous-generator layout, a false
+runtime-error oracle, required proof gaps and catch teaching. Its new8 green
+is explicitly not acceptance. [Correction02](slice03-public-binding-discards/cc-prompt-iteration02.md)
+keeps the nine-row/same14-path delivery and limits edits to six files, using
+normal child expansion and shared actual lexical layout. Metadata01 is already
+independently reconciled; reviewed history stays immutable. No structural
+roadmap change or S04/release advancement follows; BS-03 stays open.
 
 Current authority2026-11-14: the operator opens
 [S03 public/browser remaining discards](slice03-public-binding-discards/slice-plan.md),
@@ -196,6 +205,10 @@ substitute helper-language exception. Reader RDEO/RDCL, Arc01 I4 and diagnostic
 work, whole-work audits and the separate book/human gates keep their owners.
 
 ## Version history
+
+- 2026-11-14 v0.10: S03 source-first review holds30 and drives one consolidated
+  six-path correction02 for actual producer/layout defects, discriminating proof
+  and guide clarity. Preserve the approved roadmap and all nine criteria.
 
 - 2026-11-14 v0.9: Prepare operator-opened S03 for remaining public/browser
   discard roles from accepted9e6fb127; record public-specific admission and raw/

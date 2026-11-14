@@ -1,0 +1,4 @@
+(set-symbol! globalThis "_" 99)
+(bind f (kernel:function* "" (_) (yield _)))
+(bind iterator (f 7))
+(console:log (get (iterator:next) "value"))

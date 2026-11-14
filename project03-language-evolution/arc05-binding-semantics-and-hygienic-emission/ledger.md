@@ -1,5 +1,11 @@
 # Binding semantics and hygienic emission ledger
 
+2026-11-14 S03 source-first review holds candidate30d8b77c for R01–05;
+[correction02](slice03-public-binding-discards/cc-prompt-iteration02.md) addresses
+actual child/layout defects, false oracle, promised proof and catch teaching.
+BS-03 and all nine PB rows remain open. Metadata01 alone is independently
+reconciled; no source/arc/project/release acceptance is inferred from green8.
+
 2026-11-14 subsequent authority: operator opens
 [S03](slice03-public-binding-discards/slice-plan.md) for remaining public/browser
 forms under Luna6 High CC / separate Sol6.1 High CDC, Autonomous Mode. All nine

@@ -1,0 +1,13 @@
+error: Uncaught (in promise) Error: field name must be an atom
+			throw new Error("field name must be an atom");
+			      ^
+    at parseObjectDestructure (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/lykn/build/lang/surface.js:132:10)
+    at parseDestructuredParam (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/lykn/build/lang/surface.js:42:10)
+    at parseTypedParams (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/lykn/build/lang/surface-helpers.js:680:21)
+    at emitSurfaceForm (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/lykn/build/lang/classifier.js:672:22)
+    at expandExprInner (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/lykn/build/lang/expander-core.js:2086:22)
+    at expandAt (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/lykn/build/lang/expander-core.js:1889:18)
+    at expandChildrenPlan (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/lykn/build/lang/expander-core.js:981:11)
+    at expandExprInner (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/lykn/build/lang/expander-core.js:2347:34)
+    at expandAt (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/lykn/build/lang/expander-core.js:1889:18)
+    at file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/lykn/build/lang/expander-core.js:2271:67

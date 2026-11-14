@@ -1,0 +1,6 @@
+error: Uncaught (in promise) Error: default boom
+  throw new Error("default boom");
+        ^
+    at explode (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc05-s03-cdc/throwing-default-control.mjs:2:9)
+    at throwDefault (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc05-s03-cdc/throwing-default-control.mjs:4:47)
+    at file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc05-s03-cdc/throwing-default-control.mjs:7:1

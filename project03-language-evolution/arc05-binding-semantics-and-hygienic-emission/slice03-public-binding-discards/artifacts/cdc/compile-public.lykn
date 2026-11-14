@@ -1,0 +1,9 @@
+;; Independent consumer: compile actual public facade input without a JS helper.
+(import "lang/mod.js" (lykn))
+(import "browser/compiler.js" ((alias compileLykn browser-compile)))
+(bind source (Deno:readTextFileSync (get Deno:args 1)))
+(bind output
+  (if (= (get Deno:args 0) "browser")
+    (browser-compile source)
+    (lykn source)))
+(Deno:writeTextFileSync (get Deno:args 2) output)

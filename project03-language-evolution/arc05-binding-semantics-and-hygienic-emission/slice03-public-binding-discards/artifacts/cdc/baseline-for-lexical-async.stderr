@@ -1,0 +1,6 @@
+error: Uncaught (in promise) TypeError: anonymous: arg '_' expected number, got string
+    throw new lyknIntrinsicTypeError0("anonymous: arg '_' expected number, got " + typeof discardValue__gensym0);
+          ^
+    at file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc05-s03-cdc/baseline-for-lexical-async.mjs:7:11
+    at async (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc05-s03-cdc/baseline-for-lexical-async.mjs:4:27)
+    at file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc05-s03-cdc/baseline-for-lexical-async.mjs:5:6

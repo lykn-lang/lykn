@@ -1,0 +1,2 @@
+(kernel:function throw-default ((default x (throw (new Error "default boom")))) (return x))
+(throw-default)

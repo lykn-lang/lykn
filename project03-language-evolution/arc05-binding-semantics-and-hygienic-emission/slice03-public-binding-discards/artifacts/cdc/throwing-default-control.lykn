@@ -1,0 +1,3 @@
+(kernel:function explode () (throw (new Error "default boom")))
+(kernel:function throw-default ((default _ (explode))) (return _))
+(throw-default)
