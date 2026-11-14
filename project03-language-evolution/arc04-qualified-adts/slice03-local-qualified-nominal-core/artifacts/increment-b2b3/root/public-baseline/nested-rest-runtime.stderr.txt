@@ -1,0 +1,5 @@
+error: Uncaught (in promise) TypeError: take: arg 'tail' expected number, got object
+    throw new lyknIntrinsicTypeError0("take: arg 'tail' expected number, got " + typeof tail);
+          ^
+    at take (file:///private/tmp/lykn-public-discard-design/nested-rest-output.mjs:8:11)
+    at file:///private/tmp/lykn-public-discard-design/nested-rest-output.mjs:12:13

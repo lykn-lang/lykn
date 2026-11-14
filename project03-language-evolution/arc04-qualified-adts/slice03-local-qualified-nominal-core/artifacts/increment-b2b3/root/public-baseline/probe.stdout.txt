@@ -1,0 +1,10 @@
+const lyknIntrinsicNumberIsNaN0 = Number.isNaN;
+const lyknIntrinsicTypeError0 = TypeError;
+{
+  const value = Number(7);
+  if (typeof value !== "number" || lyknIntrinsicNumberIsNaN0(value)) {
+    throw new lyknIntrinsicTypeError0("bind 'value': expected number, got " + typeof value);
+  }
+}
+console.log(value);
+

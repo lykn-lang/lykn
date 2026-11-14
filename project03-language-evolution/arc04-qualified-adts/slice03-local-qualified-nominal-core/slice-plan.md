@@ -3,11 +3,28 @@ project: project03-language-evolution
 arc: arc04-qualified-adts
 slice: slice03-local-qualified-nominal-core
 status: active
-version: "1.38"
+version: "1.39"
 depends-on: [slice01-contract-and-emission-design, slice02-existing-adt-correctness]
 ---
 
 # Local qualified nominal core
+
+2026-11-13 v1.39: root prepares the public parsed-callable/Bind counterpart at
+native accepted759567f9. Independent source census confirms five consumers,
+schema separation, private direct-atom source-env filtering gaps and export
+Value/Single handling. Two actual Lykn probes compile/helper-run0 then public
+ESM-run1: checked nonliteral Bind puts its name in a block (later ReferenceError
+instead of7), nested array rest checks the collection as number (TypeError
+instead of1). Source/generated/streams remain in root/public-baseline.
+Recipe21 settles prepared private values/source labels, per-element rest,
+sibling Bind scope, shared duplicate projection, after-user-macro source-only
+exports, canonical pattern spread/literal keys and exact consumer boundaries.
+Separate Sol reads full recipe/prompt and confirms source-ready. Root issues21
+after clean759 handback:13exact paths, five canonical+embedded pairs/new mapped
+seven-group test/two old source assertions/M6derived62+14. Luna owns source/build
+until clean return, then separate Sol validates. Existing non-any nested selector
+annotation/top-simple-multi/raw/catch/nested-colon-alias and all full S03 limits
+stay explicit. No new policy decision, dependency, release or public strip flag.
 
 2026-11-13 v1.38: separate Sol independently accepts B2-DISCARD-N ONLY at
 759567f92bd145b5fbd0fbd4273aef368e52aeba/tree52dd6558eba4a5e9fe057dd03c368327ea578662.
@@ -278,12 +295,13 @@ depth, supported native quotation paths, kernel-only D1 scope corrections and
 validation-only class-member queries. Existing source Func/class aggregate
 scope issues are explicit B2 inputs, not new IC-01 expansion claims.
 
-**Current assignment:** none issued after independent acceptance of
-[iteration20](cc-prompt-iteration20.md) at759567f9/tree52dd6558 for B2-DISCARD-N
-only. The20 assignment was issued
+**Current assignment:** [iteration21](cc-prompt-iteration21.md), issued2026-11-13
+for B2-DISCARD-P against native accepted759567f9/tree52dd6558. Luna now owns
+source/build, root design/planning/Git/ledger, separate Sol final review.
+The accepted20 predecessor was issued
 2026-11-13 against accepted57c76c99cbed07ff992e78aac8afefa4bdf0b2ad/
 treef044d795e88c3dac8e84a73a557cf071edd5327c plus Luna's retained authorized18
-work, after independent export/pattern source-readiness. Root now owns clean
+work, after independent export/pattern source-readiness. Root returned clean
 source/build after independent verification of the combined18–20 checkpoint under the
 operator's B2 design/implementation/independent-validation authorization and
 2026-11-13 source-name decision. B2-LX and B2-UNIT are independently accepted.
@@ -293,7 +311,8 @@ that architecture or ordinary source binding hygiene.
 Both native B2-ICU-N and public B2-ICU-P are independently accepted. The
 general naming/owner work remains open. The operator has now resolved the
 underscore-contract gap (B2-ID-DISCARD): `_` is discard in binding patterns,
-`_value` normal. Native Surface checkpoint iteration20 refines18/19. B2-ID-NAME remains
+`_value` normal. Native20 is accepted; public21 now implements its bounded
+counterpart. B2-ID-NAME remains
 resolved. Public/raw/kernel and all-discard grouped non-atom pattern admission
 plus existing multi-clause default/rest limits retain explicit follow-through.
 For the next issued implementation Luna6High owns task source/build through
@@ -328,6 +347,7 @@ gates survive. No release edits/integration, remote CI, push or publication.
 | cc-prompt-iteration18.md | 2026-11-13 | iteration17 | Operator discard policy, native Surface private values/guards and effects | Retained15-test/CLI checkpoint; refined by19 before full gate/commit, no independent acceptance |
 | cc-prompt-iteration19.md | 2026-11-13 | iteration18 | Source-only export names and canonical spread-pattern/projector parity, preserving catch extent | Retained23-test checkpoint; refined by20 after full01/02 oracle migrations, not accepted |
 | cc-prompt-iteration20.md | 2026-11-13 | iteration19 | Explicit native export JSON and actual public/native ESM parity oracle | Independently accepted759567f9/tree52dd6558 for B2-DISCARD-N only; exact8paths, parent scope remains open |
+| cc-prompt-iteration21.md | 2026-11-13 | iteration20 | Public prepared discard values/guards/scope/export/pattern delivery | Active;13exact paths, Luna implementation then separate Sol review |
 
 The A correction loop used three refinement passes; B1 required no software
 correction. IC-01 is a distinct authorized usable prerequisite, not a retry

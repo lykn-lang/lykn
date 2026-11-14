@@ -1,0 +1,13 @@
+const lyknIntrinsicNumberIsNaN0 = Number.isNaN;
+const lyknIntrinsicTypeError0 = TypeError;
+function take([first, ...tail]) {
+  if (typeof first !== "number" || lyknIntrinsicNumberIsNaN0(first)) {
+    throw new lyknIntrinsicTypeError0("take: arg 'first' expected number, got " + typeof first);
+  }
+  if (typeof tail !== "number" || lyknIntrinsicNumberIsNaN0(tail)) {
+    throw new lyknIntrinsicTypeError0("take: arg 'tail' expected number, got " + typeof tail);
+  }
+  return first;
+}
+console.log(take([1, 2]));
+

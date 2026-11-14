@@ -1,0 +1,4 @@
+error: Uncaught (in promise) ReferenceError: value is not defined
+console.log(value);
+            ^
+    at file:///private/tmp/lykn-public-discard-design/public-output.mjs:9:13

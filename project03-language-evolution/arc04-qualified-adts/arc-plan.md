@@ -2,7 +2,7 @@
 project: project03-language-evolution
 arc: arc04-qualified-adts
 status: active
-version: "1.23"
+version: "1.24"
 related: [project07-core-library-research]
 ---
 
@@ -52,6 +52,12 @@ full/cold55/14/CLI/source/citation/size proof, frozen packet verified by root.
 Only B2-DISCARD-N closes. Public/raw/catch/kernel discard
 parity, DTS/docs and general naming/owner follow-through stay open. No broader
 S03 acceptance is implied by this candidate.
+Public21 is now issued after source-ready recipe review and two actual Lykn
+baselines expose checked Bind block scope and nested-rest collection guards.
+Its bounded public/private environment/guard/export/pattern counterpart uses
+five canonical/embedded file pairs and real mapped browser/cold62/14 proof;
+native acceptance is unchanged. Remaining raw/catch/owner/name and all S03 gates
+retain their original scope.
 B2-ID-NAME is already resolved; this new question does not reopen it.
 No S03 completion follows from these prerequisites.
 The eight-row plan retains local ownership, nominal runtime/guards, APIs/DTS,
