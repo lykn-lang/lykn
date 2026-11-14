@@ -1484,3 +1484,27 @@ All source corrections remain open.
   observation and source snapshot remain intact.
   Source inspection and CC's incomplete observation are not independent
   software reproduction or repair acceptance.
+
+## D-2611-NUMI — native integral-number formatting range risk
+
+- **Discovered:**2026-11-13 during Project03 Arc05 S02 numeric alias readiness.
+- **Source:** assigned contract-predicate-lowering worktree,
+  codex/qualified-adt-core, baseline49982409,
+  crates/lykn-lang/src/codegen/emit.rs:180–189 (`emit_number`). Finite values
+  with zero fractional part are cast from f64 to i64 before printing. The
+  comment assumes they are within i64 range, but the condition checks finiteness
+  and fractional part only. Root and separate Sol both inspected this source.
+- **Strength:** source-grounded risk; no new numeric-range runtime trial or
+  independent behavioral reproduction was performed. Do not count it as an
+  accepted repair or general numeric-formatting diagnosis.
+- **Boundary:** S02 refinement01 fixes alias-key syntax using the existing
+  number writer unchanged. It does not fix or prove large-integral precision/
+  range behavior, and makes no new signed-zero guarantee.
+- **Owner/destination:** Project03 root/CDC, existing
+  [Arc02 maintenance](../project03-language-evolution/arc02-ad-hoc-maintenance/arc-plan.md)
+  candidate. Re-entry is a separately detailed source-ready numeric-emission
+  repair: confirm the intended number contract and writer callers, reproduce
+  representative finite integral values outside i64 range with neighboring
+  controls, preserve fractional/negative-zero/nonfinite behavior and verify
+  native/public/JSON output as applicable. No slice, trial or source expansion
+  is opened by this discovery record.

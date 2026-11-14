@@ -14,8 +14,8 @@ Root's subsequent source review identifies negative numeric alias keys as an
 invalid-JS edge in the existing writer, exposed by grouped zero-name admission.
 [Refinement01](cc-prompt-iteration01.md) adds only codegen/emit.rs to the original
 nine source paths, syntax-correct negative numeric key spelling and existing
-Bool/Null static alias keys. Current implementation remains initial assignment
-is superseded by refinement01 after separate Sol source-readiness approval.
+Bool/Null static alias keys. The initial assignment is superseded by
+refinement01 after separate Sol source-readiness approval.
 Original prompt is preserved. Sol confirms sign-negative numeric brackets,
 existing -0→0 formatting, Bool/Null literal keys and the full9-row scope.
 The final witness must use a genuinely grouped Bind plus getter count; a
