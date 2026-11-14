@@ -73,6 +73,12 @@ typed arrow functions.
 **`fn` constraints**: No own `this`, cannot be used with `new`. For
 untyped kernel-level arrows (no type checks), use the kernel `=>` form.
 
+In public callable parameter lists, `_` consumes its argument without creating
+a source binding; `_value` remains an ordinary parameter name. The body may
+still resolve `_` to an enclosing or global value. Defaults keep their usual
+timing: a generator's parameter defaults run when it is called, while its body
+starts when iteration advances.
+
 **See also**: `01-core-idioms.md` ID-09
 
 ---

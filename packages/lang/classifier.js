@@ -298,6 +298,9 @@ export function classifySurfaceForm(head, args) {
       if (args[0].type !== "atom") {
         throw new Error("func: first argument must be a function name");
       }
+      if (args[1]?.type === "list" && args[1].values[0]?.type === "keyword") {
+        assertMultiClauseSignatureSupported(args.slice(1));
+      }
       return Func(args[0], args.slice(1));
     case "genfunc":
       if (args.length < 2) {
@@ -381,6 +384,9 @@ function parseBindGroup(args) {
         throw new Error(`bind group declares '${name}' more than once`);
       }
       seen.add(name);
+    }
+    if (bindingNamesInPattern(nameNode).length === 0) {
+      nameNode = literalizeDiscardAliasKeys(nameNode);
     }
     bindings.push({ typeKw, nameNode, valueNode });
   }
@@ -748,6 +754,7 @@ export function emitSurfaceForm(node, h) {
         firstAfterName.values.length > 0 &&
         firstAfterName.values[0].type === "keyword"
       ) {
+        assertMultiClauseSignatureSupported(restArgs);
         return buildMultiClauseFunc(funcName, nameNode, restArgs);
       }
       if (firstAfterName && firstAfterName.type === "keyword") {
@@ -980,6 +987,10 @@ export function buildSingleClauseFunc(funcName, funcNameNode, clauseArgs) {
 }
 
 export function buildMultiClauseFunc(funcName, funcNameNode, clauseLists) {
+  assertMultiClauseSignatureSupported(clauseLists);
+  if (clauseLists.length === 1) {
+    return buildSingleClauseFunc(funcName, funcNameNode, clauseLists[0].values);
+  }
   const argsVar = gensym("args");
   const stmts = [];
 
@@ -1191,6 +1202,71 @@ export function buildMultiClauseFunc(funcName, funcNameNode, clauseLists) {
     array(array(sym("rest"), argsVar)),
     ...stmts,
   );
+}
+
+function assertMultiClauseSignatureSupported(clauseLists) {
+  if (clauseLists.length <= 1) return;
+  for (const clause of clauseLists) {
+    const values = clause?.type === "list" ? clause.values : clause;
+    if (!Array.isArray(values)) continue;
+    const parsed = parseKeywordClauses(values);
+    const args = parsed.get("args");
+    if (!args || args.length !== 1 || !isArray(args[0])) continue;
+    for (const param of parseTypedParams(args[0])) {
+      if (!param.destructured && (param.defaultValue || param.isRest)) {
+        throw new Error(
+          "multi-clause func does not support top-level default or rest parameters",
+        );
+      }
+    }
+  }
+}
+
+function literalizeDiscardAliasKeys(pattern) {
+  if (pattern?.type !== "list" || pattern.values.length === 0) return pattern;
+  const [head, ...parts] = pattern.values;
+  if (head?.type !== "atom") return pattern;
+  const recurse = (target) => literalizeDiscardAliasKeys(target);
+  if (head.value === "array") {
+    return { ...pattern, values: [head, ...parts.map((part) => {
+      if (part?.type !== "list" || part.values.length === 0) return part;
+      const childHead = part.values[0]?.type === "atom" ? part.values[0].value : "";
+      if (childHead === "default" && part.values[1]) {
+        return { ...part, values: [part.values[0], recurse(part.values[1]), ...part.values.slice(2)] };
+      }
+      if ((childHead === "rest" || childHead === "spread") && part.values[1]) {
+        return { ...part, values: [part.values[0], recurse(part.values[1]), ...part.values.slice(2)] };
+      }
+      return recurse(part);
+    })] };
+  }
+  if (head.value === "object") {
+    return { ...pattern, values: [head, ...parts.map((part) => {
+      if (part?.type !== "list" || part.values.length === 0) return part;
+      const childHead = part.values[0]?.type === "atom" ? part.values[0].value : "";
+      if (childHead === "alias" && part.values.length >= 3) {
+        const key = part.values[1];
+        if (key?.type === "atom" && /[:.]/.test(key.value)) {
+          throw new Error("bind group name must be an atom or destructuring pattern");
+        }
+        const normalizedKey = key?.type === "atom" || key?.type === "keyword"
+          ? { ...key, type: "string", value: toJsIdentifier(key.value) }
+          : key;
+        return { ...part, values: [part.values[0], normalizedKey, recurse(part.values[2]), ...part.values.slice(3)] };
+      }
+      if (childHead === "default" && part.values[1]) {
+        return { ...part, values: [part.values[0], recurse(part.values[1]), ...part.values.slice(2)] };
+      }
+      if ((childHead === "rest" || childHead === "spread") && part.values[1]) {
+        return { ...part, values: [part.values[0], recurse(part.values[1]), ...part.values.slice(2)] };
+      }
+      return recurse(part);
+    })] };
+  }
+  if ((head.value === "default" || head.value === "rest" || head.value === "spread") && parts[0]) {
+    return { ...pattern, values: [head, recurse(parts[0]), ...parts.slice(1)] };
+  }
+  return pattern;
 }
 
 /**

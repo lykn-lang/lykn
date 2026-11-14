@@ -14,7 +14,7 @@ import { KERNEL_FORMS, KERNEL_ONLY_FORMS, closestKernelForm, kernelOnlyMessage }
 import { markKernel, isKernel } from './kernel-mark.js';
 import { markExpandedHostCall, materializeExpandedHostCalls } from './host-invocation-kernel.js';
 import { moduleBindsReflect, validateProtectedHost } from './protected-host.js';
-import { isStatementOnlyForm } from './surface-helpers.js';
+import { isStatementOnlyForm, prepareSourceDiscardBindings } from './surface-helpers.js';
 import {
   clearCompilerPrivateAtom,
   compilerPrivateAtomInfo,
@@ -1962,10 +1962,11 @@ function expandExprInner(form, env, use = "Legacy", computedMemberCallRequest = 
         (hint ? `; did you mean '${hint}'?` : ''),
       );
     }
-    const stripped = markKernel({
+    const stripped = prepareSourceDiscardBindings({
       type: 'list',
       values: [{ type: 'atom', value: kernelForm }, ...form.values.slice(1)],
     });
+    markKernel(stripped);
     if (kernelForm === "spread" && directCallArgumentRequest) {
       return expandDirectSpreadArgument(stripped, env, directCallArgumentRequest);
     }
@@ -2219,6 +2220,13 @@ function expandExprInner(form, env, use = "Legacy", computedMemberCallRequest = 
   }
   if (isResultOperandUse(use) && (formHead(head) === "if" || formHead(head) === "do")) {
     return expandResultOperand(form, env, use);
+  }
+
+  // Prepare only remaining unmarked source forms after lexical and macro
+  // dispatch have had priority. Compiler-owned surface output and raw compiler
+  // entry points never pass through this source expansion boundary.
+  if (!isKernel(form) && formHead(head) !== null) {
+    form = prepareSourceDiscardBindings(form);
   }
 
   // Dispatch table

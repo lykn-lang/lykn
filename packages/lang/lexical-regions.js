@@ -75,7 +75,7 @@ function parameterDefaultPaths(params, basePath, grammar) {
       const index = typed ? 3 : 2;
       if (node.values[index]) out.push([...path, index]);
       if (!typed && node.values[1]) visit(node.values[1], [...path, 1]);
-    } else if (head === "rest") {
+    } else if (head === "rest" || (head === "spread" && !typed)) {
       const index = typed ? 2 : 1;
       if (node.values[index]) visit(node.values[index], [...path, index]);
     } else if (head === "array" || head === "object") {
@@ -83,7 +83,8 @@ function parameterDefaultPaths(params, basePath, grammar) {
         const child = node.values[i];
         if (child?.type !== "list") continue;
         const childHead = child.values[0]?.type === "atom" ? child.values[0].value : "";
-        if (["default", "rest", "array", "object"].includes(childHead)) visit(child, [...path, i]);
+        if (["default", "rest", "array", "object"].includes(childHead) ||
+          (childHead === "spread" && !typed)) visit(child, [...path, i]);
         else if (childHead === "alias") {
           const nested = typed ? 3 : 2;
           if (child.values[nested]) visit(child.values[nested], [...path, i, nested]);

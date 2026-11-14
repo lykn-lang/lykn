@@ -14,6 +14,7 @@ import {
 import { toJsIdentifier } from "./compiler.js";
 import { markKernel } from "./kernel-mark.js";
 import { markHostReference } from "./compiler-private-atoms.js";
+import { classRegionLayout } from "./lexical-regions.js";
 // Param-shape sub-parsers (still in surface.js, not in this extraction set);
 // parseTypedParams delegates to them, so import them to satisfy the move.
 import {
@@ -404,6 +405,111 @@ export function lowerDiscardBindingPattern(pattern) {
     return { ...pattern, values: [head, lowerBindingPatternChild(parts[0]), ...parts.slice(1)] };
   }
   return pattern;
+}
+
+/** Prepare discard slots in an unmarked public kernel source form only. */
+export function prepareSourceDiscardBindings(form) {
+  if (form?.type !== "list" || form.values.length === 0) return form;
+  const head = form.values[0]?.type === "atom" ? form.values[0].value : "";
+  const values = form.values.slice();
+  const prepareParams = (list) => list?.type === "list"
+    ? { ...list, values: list.values.map(lowerDiscardBindingPattern) }
+    : list;
+  const prepareFunction = (node) => {
+    if (node?.type !== "list" || node.values.length === 0) return node;
+    const childHead = node.values[0]?.type === "atom" ? node.values[0].value : "";
+    if (childHead === "async") {
+      const wrapped = node.values[1];
+      if (!wrapped) return node;
+      return { ...node, values: [node.values[0], prepareFunction(wrapped), ...node.values.slice(2)] };
+    }
+    if (!["function", "function*", "=>", "lambda"].includes(childHead)) return node;
+    const args = node.values.slice(1);
+    const named = ["function", "function*"].includes(childHead) && args[0]?.type === "atom";
+    const paramsIndex = 1 + (named ? 1 : 0);
+    if (node.values[paramsIndex]?.type !== "list") return node;
+    const next = node.values.slice();
+    next[paramsIndex] = prepareParams(next[paramsIndex]);
+    return { ...node, values: next };
+  };
+
+  if (["const", "let", "var"].includes(head) && values[1]) {
+    values[1] = lowerDiscardBindingPattern(values[1]);
+  } else if (["for-of", "for-in", "for-await-of"].includes(head) && values[1]) {
+    values[1] = lowerDiscardBindingPattern(values[1]);
+  } else if (head === "for" && values[1]?.type === "list") {
+    values[1] = prepareSourceDiscardBindings(values[1]);
+  } else if (["function", "function*", "=>", "lambda", "async"].includes(head)) {
+    return prepareFunction(form);
+  } else if (head === "class" || head === "class-expr") {
+    const layout = classRegionLayout(form);
+    if (!layout) return form;
+    const prepareMember = (member) => {
+      if (member?.type !== "list" || member.values.length === 0) return member;
+      const memberHead = member.values[0]?.type === "atom" ? member.values[0].value : "";
+      if (memberHead === "static" || memberHead === "async") {
+        if (!member.values[1]) return member;
+        return { ...member, values: [member.values[0], prepareMember(member.values[1]), ...member.values.slice(2)] };
+      }
+      if (memberHead === "field") return member;
+      const paramsIndex = memberHead === "get" || memberHead === "set" ? 2 : 1;
+      if (member.values[paramsIndex]?.type !== "list") return member;
+      const next = member.values.slice();
+      next[paramsIndex] = prepareParams(next[paramsIndex]);
+      return { ...member, values: next };
+    };
+    const baseIndex = head === "class" ? 2 : 1;
+    for (let i = baseIndex + 1; i < values.length; i++) values[i] = prepareMember(values[i]);
+  } else if (head === "try") {
+    let bodyEnd = values.length;
+    if (values[bodyEnd - 1]?.values?.[0]?.value === "finally") bodyEnd--;
+    const catcher = values[bodyEnd - 1];
+    if (catcher?.type === "list" && catcher.values[0]?.value === "catch" && catcher.values[1]) {
+      const next = catcher.values.slice();
+      next[1] = lowerLegacyCatchBinding(next[1]);
+      values[bodyEnd - 1] = { ...catcher, values: next };
+    }
+  }
+  return { ...form, values };
+}
+
+function lowerLegacyCatchBinding(node) {
+  if (node?.type === "atom") return preparedValue(node);
+  if (node?.type !== "list" || node.values.length === 0) return node;
+  const [head, ...parts] = node.values;
+  const name = head?.type === "atom" ? head.value : "";
+  if (name === "array") {
+    return { ...node, values: [head, ...parts.map(lowerLegacyCatchBinding)] };
+  }
+  if (name === "object") {
+    return {
+      ...node,
+      values: [head, ...parts.map((part) => {
+        if (part?.type === "atom" && part.value === "_") {
+          return array({ type: "string", value: "_" }, preparedValue(part));
+        }
+        if (part?.type !== "list" || part.values.length < 2) return part;
+        const next = part.values.slice();
+        if (next[0]?.type === "atom" && ["rest", "spread", "default"].includes(next[0].value)) {
+          next[1] = lowerLegacyCatchBinding(next[1]);
+          return { ...part, values: next };
+        }
+        if (next[0]?.type === "list") {
+          next[1] = lowerLegacyCatchBinding(next[1]);
+          return { ...part, values: next };
+        }
+        next[1] = lowerLegacyCatchBinding(next[1]);
+        return { ...part, values: next };
+      })],
+    };
+  }
+  if (name === "default" && parts.length >= 2) {
+    return { ...node, values: [head, lowerLegacyCatchBinding(parts[0]), ...parts.slice(1)] };
+  }
+  if ((name === "rest" || name === "spread") && parts.length > 0) {
+    return { ...node, values: [head, lowerLegacyCatchBinding(parts[0]), ...parts.slice(1)] };
+  }
+  return node;
 }
 
 /** Prepare a normal-source Bind binder and its optional scalar annotation. */

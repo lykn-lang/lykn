@@ -682,7 +682,7 @@ function kernelParamNames(list) {
     }
     if (param?.type !== "list") continue;
     const head = param.values[0]?.type === "atom" ? param.values[0].value : "";
-    if (head === "rest" && param.values[1]) {
+    if ((head === "rest" || head === "spread") && param.values[1]) {
       out.push(...patternNames(param.values[1], "param", PatternGrammar.BINDING_PATTERN));
     } else if (head === "default" && param.values[1]) {
       out.push(...patternNames(param.values[1], "param", PatternGrammar.BINDING_PATTERN));

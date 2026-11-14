@@ -1411,11 +1411,15 @@ In a binding pattern, `_` discards that binding value without creating a
 source name; `_value` remains an ordinary name. Array-pattern `_` is an
 elision, while object-pattern shorthand `_` still reads the property named
 `_` and discards its value. Defaults, rest/spread operations, and nested
-patterns keep their normal evaluation behavior. This meaning applies in native
-binding roles such as raw kernel declarations, loops, callable parameters and
-class method parameters. An underscore in an initializer, default expression,
-property key/value, assignment target, function name or schema field keeps
-that role's ordinary meaning.
+patterns keep their normal evaluation behavior. This meaning applies in public
+source binding roles, including `bind`, explicit `kernel:` declarations and
+loops, callable parameters, class method parameters, and the legacy catch
+parameter slot. The public source expander prepares these positions while
+preserving their evaluation behavior. Raw compiler entry points such as
+`compile(read(...))` keep `_` literal; use a public source form for source
+discard semantics. Generated ADT schema fields also keep `_` as a real field
+name. An underscore in an initializer, default expression, property key/value,
+assignment target or function name keeps that role's ordinary meaning.
 
 ---
 
