@@ -1,0 +1,14 @@
+   Compiling lykn-lang v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/crates/lykn-lang)
+   Compiling lykn-cli v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/crates/lykn-cli)
+    Finished `release` profile [optimized] target(s) in 9.58s
+     Running tests/remaining_discard_bindings.rs (target/release/deps/remaining_discard_bindings-3c9e813bb584b46c)
+DISCARD_CLI_CHECK extension=lykn source="(bind pick (kernel:=> (_ _) _)) (console:log (pick 7 8))" exit=Some(0) stdout="" stderr="/private/tmp/lykn-release-c60dea62-cdc/tmp/.tmpALCW7q/discard.lykn: ok (2 top-level expressions)\n"
+DISCARD_CLI_COMPILE extension=lykn strip=false source="(bind pick (kernel:=> (_ _) _)) (console:log (pick 7 8))" exit=Some(0) stdout="" stderr="" generated="const pick = (completionValue__gensym0, completionValue__gensym1) => _;\nconsole.log(pick(7, 8));\n"
+DISCARD_CLI_RUNTIME extension=lykn strip=false exit=Some(0) stdout="99\n" stderr=""
+DISCARD_CLI_COMPILE extension=lykn strip=true source="(bind pick (kernel:=> (_ _) _)) (console:log (pick 7 8))" exit=Some(0) stdout="" stderr="" generated="const pick = (completionValue__gensym0, completionValue__gensym1) => _;\nconsole.log(pick(7, 8));\n"
+DISCARD_CLI_RUNTIME extension=lykn strip=true exit=Some(0) stdout="99\n" stderr=""
+DISCARD_CLI_CHECK extension=lyk source="(bind pick (kernel:=> (_ _) _)) (console:log (pick 7 8))" exit=Some(0) stdout="" stderr="/private/tmp/lykn-release-c60dea62-cdc/tmp/.tmpALCW7q/discard.lyk: ok (2 top-level expressions)\n"
+DISCARD_CLI_COMPILE extension=lyk strip=false source="(bind pick (kernel:=> (_ _) _)) (console:log (pick 7 8))" exit=Some(0) stdout="" stderr="" generated="const pick = (completionValue__gensym0, completionValue__gensym1) => _;\nconsole.log(pick(7, 8));\n"
+DISCARD_CLI_RUNTIME extension=lyk strip=false exit=Some(0) stdout="99\n" stderr=""
+DISCARD_CLI_COMPILE extension=lyk strip=true source="(bind pick (kernel:=> (_ _) _)) (console:log (pick 7 8))" exit=Some(0) stdout="" stderr="" generated="const pick = (completionValue__gensym0, completionValue__gensym1) => _;\nconsole.log(pick(7, 8));\n"
+DISCARD_CLI_RUNTIME extension=lyk strip=true exit=Some(0) stdout="99\n" stderr=""

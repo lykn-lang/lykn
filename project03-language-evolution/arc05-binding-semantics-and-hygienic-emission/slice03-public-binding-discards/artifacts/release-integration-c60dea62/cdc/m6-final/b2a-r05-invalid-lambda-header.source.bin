@@ -1,0 +1,2 @@
+(macro header-probe () (get null "header-body-was-expanded"))
+(bind invalid (lambda (:number 9) (header-probe)))

@@ -1,7 +1,7 @@
 # S03 local release integration —2026-11-14
 
-Current status: root executed the authorized fast-forward; CC validation and
-independent release acceptance remain pending. This record follows the existing
+Current status: independently accepted local release integration atc60dea62;
+all RI-01–03 done. Root reconciled the separate Sol verdict below. This follows the existing
 release-integration artifact convention, not a new S03 refinement.
 
 The operator authorizes local release/0.6.x fast-forward to
@@ -27,9 +27,9 @@ No source commit or product edit occurred. Local merge has no hosted-CI effect.
 
 | Gate | Status | Required evidence |
 | --- | --- | --- |
-| RI-01 | open | Exact authorized fast-forward/reflog/ancestry, equal task/release tree and clean source |
-| RI-02 | open | CC fresh release build/full gates, actual M670/all14 delivered comparisons and exact binary/source identities |
-| RI-03 | open | Separate Sol fresh release verification, final citations/size and explicit green S04 baseline |
+| RI-01 | done | Independent exact FF/reflog/ancestry, task/release0/0/equal9c247edc tree and clean source |
+| RI-02 | done | Fresh CC and separate Sol full gates/M670/all14; optimized release CLI2/0 separately executed, binary profiles/hash identities distinguished below |
+| RI-03 | done | [Separate Sol ACCEPT](#independent-release-verdict--accept--2026-11-14), fresh full1578/67/docs482/native1205/M670/14/cites64/601/gzip48689; user-authorized S04 baseline green |
 
 S03's independent [final source verdict](../cdc-verification.md#final-correction03-verdict--accept--2026-11-14)
 and closing metadata remain at their original scope. Existing release-check
@@ -129,3 +129,144 @@ The complete raw command receipts are under `artifacts/release-integration-c60de
 - Fresh `make bundle-size-check` exited0 at gzip48,689 bytes, baseline27,630, delta+21,059, below81,920. The exact command downloaded esbuild from npm and emitted four existing astring conditional-export warning occurrences. Raw streams/status are retained; no optional Cargo docs or duplicate docs command was run.
 
 The run used owned `/private/tmp/lykn-release-c60dea62-cc/{xdg,tmp,npm}` roots and the explicitly shared warm `DENO_DIR=/Users/oubiwann/Library/Caches/deno`; it makes no uncached JSR/network-success claim. Source/release tree stays clean and no CC jobs remain. This is proposed RI evidence only. Exclusive release build/output ownership returns to root for separate Sol verification; RI-02/03 disposition and any decision to proceed to S04 remain open.
+
+## Independent release intake — 2026-11-14
+
+Same separate OpenAI gpt-6.1-sol/high CDC context `/root/arc05_s03_cdc` now owns
+release validation only; root owns planning/index/RI statuses and read-only S04
+preparation. Read the full131-line integration record, including CC intake and
+results, complete release AGENTS.md in1–60/61–186, actual Makefile release/
+fresh/full/doc/citation/size recipes, complete156-line remaining_discard_bindings
+test and complete M6 materialization/selection/comparison test1000–1165. Apply
+the previously loaded testing/intake/independent-evidence contracts and S03
+source ACCEPT/closing metadata at this exact unchanged source/tree.
+
+Read-only checks show release/0.6.x and task both clean atc60dea62/tree9c247edc,
+zero left/right divergence. Actual release reflog records the authorized
+0829e892→c60 Fast-forward; old0829 is an ancestor. This is not a new merge or
+source change. Prior independent S03 source/oracle acceptance is applicable
+because commit/tree are identical, but its task-worktree execution will not
+substitute for the fresh release-worktree gates.
+
+The real profile distinction is binding: default `make check` invokes Cargo
+tests in the test/debug profile. M6 copies `env!("CARGO_BIN_EXE_lykn")`, so its
+standalone embedded delivery is not by itself optimized-release CLI semantic
+proof. `make fresh-artifacts` builds optimized target/release/lykn, installs
+bin/lykn and stages packages; make's product/doc wrappers use that installed
+binary. In addition to the prescribed full/M6/citation/fresh-size gates, run
+the existing bounded `cargo test --release -p lykn-cli --test
+remaining_discard_bindings -- --nocapture` target: its two tests exercise the
+release-profile CLI's actual Source/.lyk check, checked/stripped compilation,
+generated ESM and unsupported-signature diagnostics. Record binary paths and
+hashes and distinguish those actual routes rather than relabelling debug M6.
+No new fixture/helper, source edit or optional doc gate is needed.
+
+Fresh owned `/private/tmp/lykn-release-c60dea62-cdc/{xdg,tmp,npm}` and this
+record's sibling `release-integration-c60dea62/cdc/m6-final` will contain the
+independent raw evidence. Shared warm DENO_DIR is explicitly
+`/Users/oubiwann/Library/Caches/deno`. All prior CC/task packets remain intact.
+RI rows stay open pending independent results/root reconciliation. No source,
+test, Git/index, dependency, publication or RI-row edit is authorized here.
+
+## Independent release verdict — ACCEPT — 2026-11-14
+
+Same separately selected Sol6.1 High reviewer independently accepts the local
+release integration atc60dea62d126bb07557a7f4f7183662dec3f6a58, tree
+9c247edcf632ef2e038078a2833e727db949730d. RI-01–03 are independently satisfied;
+root alone updates their row statuses. Release and task remain equal/clean.
+This is a green S04 baseline under the operator's recorded conditional
+authority, not publication, tagging, hosted CI or later-feature acceptance.
+
+### Fresh release-worktree execution
+
+All commands ran from `/Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x`.
+Environment: shared warm DENO_DIR=`/Users/oubiwann/Library/Caches/deno`;
+fresh owned XDG_CACHE_HOME/TMPDIR/NPM_CONFIG_CACHE respectively
+`/private/tmp/lykn-release-c60dea62-cdc/{xdg,tmp,npm}`. For full make check,
+LYKN_MACRO_DEPENDENCIES_EVIDENCE_DIR was the precreated absolute sibling
+`release-integration-c60dea62/cdc/m6-final`. Complete separate stdout/stderr/
+numeric-status triplets are retained in that record's `cdc/` home:
+
+| Stem | Actual command | Fresh independent result |
+| --- | --- | --- |
+| fresh | `make fresh-artifacts` |0; optimized CLI installed and packages staged before consumers |
+| release-profile | `cargo test --release -p lykn-cli --test remaining_discard_bindings -- --nocapture` |0;2 passed/0 failed; actual optimized CLI check/checked+stripped compile/Source+.lyk ESM and early multi-signature rejection |
+| make-check | `make check` |0; full product1578/67steps/0; docs482/0; workspace Rust passed including default-profile lang lib1205/0 |
+| cited | `make check-cited-paths` |0 at release HEAD;64 documents/601 historical citations |
+| size | `make bundle-size-check` |0 fresh at release HEAD;48689 gzip bytes below81920, baseline27630/delta21059 |
+
+The existing two-test release target is the necessary bounded optimized-CLI
+proof selected on independent dispatch; no new fixture or helper was authored.
+Its retained stderr shows the release-profile integration executable and all
+four positive Source/.lyk checked/stripped ESM runs returning99 with empty
+runtime stderr. The negative test checks the exact early signature diagnostic
+and absence of generated output. Only one independent full make check was run;
+docs were included once, with no optional Cargo docs or duplicate docs run.
+
+Actual M6 standalone materialization status0 and strict child70/0 were read
+from the inner command/config/status/stdout/stderr, not inferred from outer
+success. The selected seven files are the reviewed62 retained+8 S03 population.
+Saved config maps lang to this release run's new cold-XDG materialized compiler
+and browser to release staged output. All14 equality receipts were read:
+canonical=embedded and canonical=materialized are true for each,28 true flags.
+
+### Binary/profile identities and actual route
+
+`cdc/cli-sha256.txt` records these hashes after the builds settled; they were
+rechecked after final size with identical results:
+
+| Release-worktree path | SHA256 |
+| --- | --- |
+| bin/lykn |8f49c5b120d30c4756cdb38c3f31b23415e8591f0848624573c01f1dabf72e85|
+| target/release/lykn |8f49c5b120d30c4756cdb38c3f31b23415e8591f0848624573c01f1dabf72e85|
+| target/debug/lykn |eeedf46a7fb541731596e119228463dee5eb42b5395a957b6f3599938507c814|
+
+Default full-check M6 uses CARGO_BIN_EXE_lykn from
+`target/debug/deps/macro_dependencies-c2da4081568226dd`; the actual compiled
+CLI path is release-worktree `target/debug/lykn`. Its source copies that binary
+to the standalone temp route shown in the M6 receipt. It is default-profile
+embedded/materialization/public proof, not optimized-release semantic proof.
+The temporary copied binary is not retained or independently hashed here.
+
+The separately executed optimized target was
+`target/release/deps/remaining_discard_bindings-3c9e813bb584b46c`; its compiled
+CARGO_BIN_EXE path is release-worktree `target/release/lykn`. Native `strings`
+plus fixed-path `rg -o -F` observations of those two executed test binaries are
+retained in `m6-test-compiled-cli-path.txt` and
+`release-test-compiled-cli-path.txt`, corroborating the inspected direct
+Command::new(env!(...)) routes. Make's product/doc recipes invoke installed
+bin/lykn, whose bytes equal the optimized binary. These are separate actual
+routes with explicitly separate proof strength; the full Rust suite was not
+relabeled an optimized-profile suite.
+
+### RI dispositions, applicability and limits
+
+| Gate | Independent disposition |
+| --- | --- |
+| RI-01 | Satisfied: actual authorized FF reflog0829→c60, ancestry, equal task/release c60/tree9c and0/0 divergence, clean source. No new Git mutation by reviewer. |
+| RI-02 | Satisfied: CC evidence inspected and independently corroborated by fresh release build/full/M670/all14, with optimized/default binary identities and separate optimized two-test execution above. |
+| RI-03 | Satisfied: separate Sol fresh release-worktree verification, final64/601 citations and48689/81920 size, exact clean green c60 baseline for S04. |
+
+Original S03 source/row acceptance remains valid at the identical immutable
+commit/tree, and all old source/refinement/metadata records remain unchanged.
+It supplies source-contract context; the fresh release gates above supply
+release-worktree execution. CC and old task gate results have not been promoted
+or substituted for these independent runs.
+
+Correct docs categories remain482 testable/executed blocks,15 separate
+Skip/Fragment exclusions and nine no-block input files, across22 generated
+test files. The existing JSR end-to-end fixture self-skipped because jsr.io was
+unreachable. No warning/error line occurred in the full check. Size stderr
+reports two esbuild registry downloads and four existing astring condition-order
+warning occurrences. Warm Deno cache, cold M6 XDG materialization and cached-only
+strict child are distinct conditions. Nested macro child argv remains not
+separately traced; browser proof remains compile-to-ESM and produced-module
+execution, with no browser run/load/CSP or registry/publication claim.
+
+All owned commands completed naturally0 (optimized-test session65971;
+full-check session18168). Final read-only checks show release clean atc60/tree9c
+and identical task branch. No source/test/Git/index/RI-row edit, cache deletion,
+dependency, remote or publication action occurred. Only this independent record
+and named cdc raw evidence were authored. Exclusive release build/output
+ownership returns to root, with no owned jobs. Root may reconcile RI statuses
+and proceed with authorized S04 preparation/execution on the task branch.

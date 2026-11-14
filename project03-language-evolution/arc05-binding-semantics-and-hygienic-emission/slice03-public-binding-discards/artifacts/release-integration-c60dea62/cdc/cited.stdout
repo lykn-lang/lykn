@@ -1,0 +1,2 @@
+[1;34mChecking cited paths resolve in git...[0m
+[1;32m✓ Cited-path check passed[0m (64 documents on release/0.6.x; 601 historical citations accepted via scripts/cited-paths-census.tsv)
