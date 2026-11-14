@@ -344,6 +344,15 @@ corrections proceed autonomously, ambiguous design/evidence gaps return to root.
   Root read complete candidate diff, reviewed witnesses and the consolidated
   verdict before issue. No writer/whitelist/classifier or new helper machinery.
   Metadata01 acceptance remains bounded; source30 and HOLD stay immutable.
+  Returned at3d21eab58cb3d28714338e8742dbb0a9c519822b,
+  treeb7788f6564863f51d5e8fe62979098b583b7b4b6, clean/no jobs, exact six-path
+  delta and original14-path delivery. CC attests focused66/0, complete logged
+  full1578/67/docs482/0, M670/14, cites64/601 and fresh48691/81920 gzip; new
+  evidence lives under artifacts/cc/correction02 with prior packets intact.
+  Fifteen annotated skip/fragment doc blocks and nine no-block inputs are
+  distinct; JSR network self-skip/cache/download/tracing and lost interim
+  authoring-log limits remain explicit. All PB rows wait for Sol source-first
+  review and independent gates; root transfers source/build on dispatch.
 - 2026-11-14 correction01 `cc-prompt-iteration01.md`: issued after
   initial CC handoff85ddca63. Root found noncontiguous trailers in both new local
   commits and an incorrect contiguous-trailer claim. No independent source review

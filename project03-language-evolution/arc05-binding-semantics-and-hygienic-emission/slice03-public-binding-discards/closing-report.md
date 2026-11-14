@@ -77,3 +77,25 @@ No full focused, aggregate or M6 runtime gate was repeated: those prior doer-att
 | PB-09 | Remains open for separate Sol source-first nine-row review and root retrospective/ledger reconciliation. |
 
 **Later owners remain held.** S04 source declaration and DTS follow-up; S05–08 naming/ADT work; Arc06 LI-04 classified-IR, immediate guide, and internal helper export/API review; Arc05 S09 variadic signature design; NUMI; RDEO/RDCL reader work; Arc04 local qualified work; and Project07/library/dependency/license, book and explicit human acceptance remain in their existing plans/owners. No roadmap row is advanced or closed by this bubble-up, and no release or S04 work is opened.
+
+## Correction02 — source-boundary and proof repair (2026-11-14)
+
+Correction02 addresses independent candidate30 HOLD findings R01–R05 within its exact six paths. Final source commit is `3d21eab58cb3d28714338e8742dbb0a9c519822b`, tree `b7788f6564863f51d5e8fe62979098b583b7b4b6`, on `codex/qualified-adt-core`; parent is prior metadata01 final `30d8b77c4e5516191fc9d470325c4ead64e9fba4` / tree `eed763256aada46c8bc5e7a848be09c7a1f7f19c`. The six changed product paths are `packages/lang/surface-helpers.js`, `packages/lang/lexical-regions.js`, their two embedded mirrors, `test/forms/remaining-discard-bindings.test.js`, and `docs/guides/00-lykn-surface-forms.md`. The original baseline-to-final fourteen-path set is unchanged. Both mirror comparisons are byte-equal, `git diff --check` is clean, the source worktree is clean, and actual commit message trailers are adjacent. The prior HOLD, original candidate and commits remain immutable.
+
+### Correction02 gate evidence
+
+- Intake/readback and required extents: `artifacts/cc/intake.md`, correction02 sections; the contract record preceded source edits.
+- Focused exact four-file command: `artifacts/cc/correction02/focused-rerun04.log` / `.status`, exit0, 66/0 (21 lexical + 30 walker parity + 8 S03 + 7 retained discard). Earlier fixture failures and the one overwritten parse failure are described with their precise retention limits in the correction02 intake section; they are not erased or counted as final failures.
+- `make fresh-artifacts`: exit0; `artifacts/cc/correction02/fresh-artifacts.log` / `.status`.
+- One final `make check`: exit0 with complete 5,962-line raw output at `artifacts/cc/correction02/make-check.log` and `.status`. Full Lykn/JS corpus: 1,578 passed (67 steps), 0 failed. Docs tests: 482 passed, 0 failed; 15 annotated skip/fragment blocks, plus nine no-Lykn-block inputs. One existing JSR e2e test self-skipped because jsr.io was unreachable. No full-check warning lines observed; no separate `make docs` or Cargo doc was run.
+- M6 materialization in new `artifacts/cc/correction02/m6-final/` (prior candidate packets untouched): inner strict result 70 passed/0 failed (62 retained + 8 S03), status0; all14 canonical/embedded/materialized comparison receipts true. The packet's `m6-embedded-public-strict.command.txt`, config and streams are present. Its nested command argv was not separately traced; that limit is retained.
+- Final-HEAD `make check-cited-paths`: exit0, 64 docs/601 accepted historical citations; `artifacts/cc/correction02/check-cited-paths.log` / `.status`.
+- Fresh final-HEAD `make bundle-size-check`: exit0, gzip 48,691 bytes against 81,920; baseline 27,630, delta +21,061. The run downloaded esbuild from npm and emitted repeated existing astring conditional-export warnings. Receipts: `artifacts/cc/correction02/bundle-size-check.log` / `.status`.
+
+### Nine-row CC proposal and downstream limits
+
+All rows remain open pending the separate Sol source-first review and root disposition. This correction directly supplies renewed CC evidence for PB-01 (child-boundary, typed async and loop controls), PB-02 (actual generator sentinel/layout and timing), PB-03 (legacy catch distinction), PB-04 (callable spread and fragment lifecycle), PB-05 (nested grouped effect/key metadata checks), PB-06 (prior unchanged signature behavior rerun in focused suite), PB-07 (actual Error/TypeError, JSON/raw/schema and dual-facade behavior), and PB-08 (full focused/aggregate/M6/citation/size gates with stated limits). PB-09 remains open for independent verdict, root retrospective and ledger reconciliation. This is CC evidence, not independent acceptance.
+
+The immediate guide now distinguishes ordinary binding-pattern array elision from a bare legacy `(catch (array _) ...)` expression slot, which reads the thrown item without introducing a source name. Public raw IR and generated schema roles stay distinct. Arc06 LI-04 still owns classified-IR/key representation and immediate helper/API review; Arc05 S09 owns later omitted/variadic signature design. S04–S08, release, propagation, remote CI, publication, book/library/licence and explicit human acceptance remain held. The behavior demonstrated is browser-facade compile-to-ESM through actual module import; no browser loader, run/load/CSP or publication claim is made.
+
+The root has exclusive source/build ownership now; no CC jobs remain. Do not mark a row accepted or close S03 from this handoff.
