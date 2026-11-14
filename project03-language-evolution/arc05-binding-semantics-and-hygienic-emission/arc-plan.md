@@ -103,12 +103,16 @@ explicit2026-11-13 resume; later slices need their own opening. Preserve prior r
 history; new filenames do not reset exhausted allowances. An iteration refines
 one delivery; a new capability receives its own slice.
 
-No source/build/probe/experiment/merge/push/publication/licence/dependency action
-is authorized here. Helpers use Lykn under repository guidance; no Python or
+Source/build work is authorized only by the active S01 assignment. No separate
+probe/experiment/merge/push/publication/licence/dependency action follows from
+this roadmap. Helpers use Lykn under repository guidance; no Python or
 substitute helper-language exception. Reader RDEO/RDCL, Arc01 I4 and diagnostic
 work, whole-work audits and the separate book/human gates keep their owners.
 
 ## Version history
+
+- 2026-11-13 v0.2: Open S01 under explicit operator implementation authority;
+  preserve later candidates and historical acceptance boundaries.
 
 - 2026-11-13 v0.1: Operator-approved planning home for binding work extracted
   from S03; preserve acceptances/HOLD/paused22 and record eight candidate slices.
