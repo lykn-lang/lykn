@@ -1,0 +1,33 @@
+   Compiling lykn-cli v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.52s
+     Running tests/discard_declarations.rs (target/debug/deps/discard_declarations-f4c3b66a5d98b6ab)
+DISCARD_DECLARATIONS_CLI output="/private/tmp/lykn-arc05-s04-cc/tmp/.tmpbmvd3d/exports.js" strip_assertions=false status=Some(0) stdout="" stderr=""
+DISCARD_DECLARATIONS_CLI output="/private/tmp/lykn-arc05-s04-cc/tmp/.tmp0ltJkC/schema.js" strip_assertions=false status=Some(0) stdout="" stderr=""
+DISCARD_DECLARATIONS_CLI output="/private/tmp/lykn-arc05-s04-cc/tmp/.tmpzlF573/cli-module.js" strip_assertions=false status=Some(0) stdout="" stderr="51:29: warning: unused binding 'arg0'\n  suggestion: prefix with underscore: _arg0\n52:29: warning: unused binding 'arg0'\n  suggestion: prefix with underscore: _arg0\n"
+DISCARD_DECLARATIONS_CLI output="/private/tmp/lykn-arc05-s04-cc/tmp/.tmp76mMIN/module.js" strip_assertions=false status=Some(0) stdout="" stderr="51:29: warning: unused binding 'arg0'\n  suggestion: prefix with underscore: _arg0\n52:29: warning: unused binding 'arg0'\n  suggestion: prefix with underscore: _arg0\n"
+DISCARD_DECLARATIONS_DENO consumer="/private/tmp/lykn-arc05-s04-cc/tmp/.tmp0ltJkC/schema-consumer.ts" status=Some(0) stdout="" stderr="Check schema-consumer.ts\n"
+
+thread 'constructor_discard_fields_remain_typed_data' (108931140) panicked at crates/lykn-cli/tests/discard_declarations.rs:792:5:
+assertion `left == right` failed
+  left: [123, 34, 116, 97, 103, 34, 58, 34, 83, 97, 109, 112, 108, 101, 34, 44, 34, 95, 34, 58, 55, 125, 10, 84, 121, 112, 101, 69, 114, 114, 111, 114, 58, 83, 97, 109, 112, 108, 101, 58, 32, 102, 105, 101, 108, 100, 32, 39, 95, 39, 32, 101, 120, 112, 101, 99, 116, 101, 100, 32, 110, 117, 109, 98, 101, 114, 44, 32, 103, 111, 116, 32, 115, 116, 114, 105, 110, 103, 10]
+ right: [123, 34, 116, 97, 103, 34, 58, 34, 83, 97, 109, 112, 108, 101, 34, 44, 34, 95, 34, 58, 55, 125, 10, 84, 121, 112, 101, 69, 114, 114, 111, 114, 58, 69, 120, 112, 101, 99, 116, 101, 100, 32, 110, 117, 109, 98, 101, 114, 32, 102, 111, 114, 32, 83, 97, 109, 112, 108, 101, 46, 95, 44, 32, 103, 111, 116, 32, 115, 116, 114, 105, 110, 103, 10]
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+DISCARD_DECLARATIONS_DENO consumer="/private/tmp/lykn-arc05-s04-cc/tmp/.tmpbmvd3d/exports-consumer.ts" status=Some(0) stdout="" stderr="Check exports-consumer.ts\n"
+DISCARD_DECLARATIONS_DENO consumer="/private/tmp/lykn-arc05-s04-cc/tmp/.tmp76mMIN/consumer.ts" status=Some(0) stdout="" stderr="Check consumer.ts\n"
+DISCARD_DECLARATIONS_CLI output="/private/tmp/lykn-arc05-s04-cc/tmp/.tmpbmvd3d/discard-only.js" strip_assertions=false status=Some(0) stdout="" stderr=""
+DISCARD_DECLARATIONS_DENO consumer="/private/tmp/lykn-arc05-s04-cc/tmp/.tmpzlF573/package-consumer.ts" status=Some(0) stdout="" stderr="Check package-consumer.ts\n"
+DISCARD_DECLARATIONS_DENO consumer="/private/tmp/lykn-arc05-s04-cc/tmp/.tmp76mMIN/consumer-bad.ts" status=Some(1) stdout="" stderr="Check consumer-bad.ts\nTS2345 [ERROR]: Argument of type 'string' is not assignable to parameter of type 'number'.\ncallSlots(\"wrong\", \"discarded\", 7, 11, \"last\", true);\n          ~~~~~~~\n    at file:///private/tmp/lykn-arc05-s04-cc/tmp/.tmp76mMIN/consumer-bad.ts:4:11\n\nerror: Type checking failed.\n"
+DISCARD_DECLARATIONS_CLI output="/private/tmp/lykn-arc05-s04-cc/tmp/.tmp76mMIN/module-stripped.js" strip_assertions=true status=Some(0) stdout="" stderr="51:29: warning: unused binding 'arg0'\n  suggestion: prefix with underscore: _arg0\n52:29: warning: unused binding 'arg0'\n  suggestion: prefix with underscore: _arg0\n"
+DISCARD_DECLARATIONS_DENO consumer="/private/tmp/lykn-arc05-s04-cc/tmp/.tmpbmvd3d/empty-consumer.ts" status=Some(0) stdout="" stderr="Check empty-consumer.ts\n"
+DISCARD_DECLARATIONS_CLI output="/private/tmp/lykn-arc05-s04-cc/tmp/.tmpbmvd3d/reused.js" strip_assertions=false status=Some(0) stdout="" stderr=""
+DISCARD_DECLARATIONS_CLI output="/private/tmp/lykn-arc05-s04-cc/tmp/.tmpbmvd3d/reused.js" strip_assertions=false status=Some(0) stdout="" stderr=""
+DISCARD_DECLARATIONS_CLI output="/private/tmp/lykn-arc05-s04-cc/tmp/.tmpbmvd3d/empty.js" strip_assertions=false status=Some(0) stdout="" stderr=""
+DISCARD_DECLARATIONS_CLI output="/private/tmp/lykn-arc05-s04-cc/tmp/.tmpbmvd3d/default.js" strip_assertions=false status=Some(0) stdout="" stderr=""
+DISCARD_DECLARATIONS_CLI output="/private/tmp/lykn-arc05-s04-cc/tmp/.tmpbmvd3d/default-mixed.js" strip_assertions=false status=Some(0) stdout="" stderr=""
+DISCARD_DECLARATIONS_CLI output="/private/tmp/lykn-arc05-s04-cc/tmp/.tmpbmvd3d/reexport.js" strip_assertions=false status=Some(0) stdout="" stderr=""
+DISCARD_DECLARATIONS_CLI output="/private/tmp/lykn-arc05-s04-cc/tmp/.tmpbmvd3d/reexport-mixed.js" strip_assertions=false status=Some(0) stdout="" stderr=""
+DISCARD_DECLARATIONS_CLI output="/private/tmp/lykn-arc05-s04-cc/tmp/.tmpbmvd3d/kernel-export.js" strip_assertions=false status=Some(0) stdout="" stderr=""
+DISCARD_DECLARATIONS_CLI output="/private/tmp/lykn-arc05-s04-cc/tmp/.tmpbmvd3d/kernel-export-mixed.js" strip_assertions=false status=Some(0) stdout="" stderr=""
+DISCARD_DECLARATIONS_CLI output="/private/tmp/lykn-arc05-s04-cc/tmp/.tmpbmvd3d/bad-exports-empty.js" strip_assertions=false status=Some(1) stdout="" stderr="1:1: error: exports requires at least one name\n  suggestion: write (exports name ...)\n"
+DISCARD_DECLARATIONS_CLI output="/private/tmp/lykn-arc05-s04-cc/tmp/.tmpbmvd3d/bad-exports-wildcard.js" strip_assertions=false status=Some(1) stdout="" stderr="1:10: error: exports cannot export the wildcard name '_'\n"
+error: test failed, to rerun pass `-p lykn-cli --test discard_declarations`

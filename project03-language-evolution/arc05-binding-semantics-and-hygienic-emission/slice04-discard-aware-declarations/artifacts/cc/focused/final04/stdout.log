@@ -1,0 +1,14 @@
+
+running 4 tests
+test constructor_discard_fields_remain_typed_data ... FAILED
+test lykn_build_package_emits_the_same_discard_declarations ... ok
+test generated_declarations_typecheck_real_discard_default_rest_and_pattern_inputs ... ok
+test inline_and_named_binding_exports_match_runtime_and_empty_module_rules ... ok
+
+failures:
+
+failures:
+    constructor_discard_fields_remain_typed_data
+
+test result: FAILED. 3 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.16s
+

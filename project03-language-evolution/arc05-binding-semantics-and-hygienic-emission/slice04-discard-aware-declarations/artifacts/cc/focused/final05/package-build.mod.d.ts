@@ -1,0 +1,15 @@
+export function slots(arg0_2: number, arg1: string, _value: number, arg0: number, arg2: string, arg0_1: boolean): unknown[];
+export function foreignDiscard(_value: number): number;
+export function beforeRequired(fixed: number, arg1: string | undefined, tail: boolean): void;
+export function trailingDefault(fixed: number, arg1?: string): void;
+export function restDefault(arg0?: number, ...values: string[]): void;
+export function tupleBeforeRequired(arg0: [number | undefined, string]): void;
+export function tupleTrailing(arg0: [number, (string | undefined)?, ...boolean[]]): void;
+export function objectDefault(arg0: { _: number; label?: string | undefined }): void;
+export function anonymousSlot(arg0_2: { field: number }, arg0?: string, arg0_1?: number): void;
+export function namedBeforeSlot(arg1: string, arg1_1: { field: number }): void;
+export function discardRest(head: number, ...arg1: string[]): void;
+export function tupleSkip(arg0: [number, unknown, string]): void;
+export function tupleOptionalSkip(arg0: [number, (unknown | undefined)?]): void;
+export function choose(arg0_1: number, arg0: string): number;
+export function choose(arg0_1: string, arg0: number): number;

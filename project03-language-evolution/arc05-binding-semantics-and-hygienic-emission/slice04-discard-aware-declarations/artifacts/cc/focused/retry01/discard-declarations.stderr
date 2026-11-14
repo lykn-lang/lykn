@@ -1,0 +1,120 @@
+   Compiling lykn-cli v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.53s
+     Running tests/discard_declarations.rs (target/debug/deps/discard_declarations-f4c3b66a5d98b6ab)
+DISCARD_DECLARATIONS_CLI output="/private/tmp/lykn-arc05-s04-cc/tmp/.tmpGL6KZP/exports.js" strip_assertions=false status=Some(1) stdout="" stderr="5:23: error: 'public' is a JavaScript reserved word and cannot be used as a lykn binding name\n  suggestion: rename the binding name (e.g. `public_`)\n5:38: error: 'private' is a JavaScript reserved word and cannot be used as a lykn binding name\n  suggestion: rename the binding name (e.g. `private_`)\n"
+
+thread 'inline_and_named_binding_exports_match_runtime_and_empty_module_rules' (108916001) panicked at crates/lykn-cli/tests/discard_declarations.rs:315:5:
+export compile failed: 5:23: error: 'public' is a JavaScript reserved word and cannot be used as a lykn binding name
+  suggestion: rename the binding name (e.g. `public_`)
+5:38: error: 'private' is a JavaScript reserved word and cannot be used as a lykn binding name
+  suggestion: rename the binding name (e.g. `private_`)
+
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+DISCARD_DECLARATIONS_CLI output="/private/tmp/lykn-arc05-s04-cc/tmp/.tmpJg64Nd/schema.js" strip_assertions=false status=Some(0) stdout="" stderr=""
+DISCARD_DECLARATIONS_CLI output="/private/tmp/lykn-arc05-s04-cc/tmp/.tmpJuVf2X/module.js" strip_assertions=false status=Some(0) stdout="" stderr="7:18: warning: unused binding 'fixed'\n  suggestion: prefix with underscore: _fixed\n19:34: warning: unused binding 'first'\n  suggestion: prefix with underscore: _first\n23:82: warning: unused binding 'tail'\n  suggestion: prefix with underscore: _tail\n23:48: warning: unused binding 'second'\n  suggestion: prefix with underscore: _second\n"
+DISCARD_DECLARATIONS_DENO consumer="/private/tmp/lykn-arc05-s04-cc/tmp/.tmpJg64Nd/schema-consumer.ts" status=Some(0) stdout="" stderr="Check schema-consumer.ts\n"
+DISCARD_DECLARATIONS_DENO consumer="/private/tmp/lykn-arc05-s04-cc/tmp/.tmpJuVf2X/consumer.ts" status=Some(1) stdout="" stderr="Check consumer.ts\nTS1361 [ERROR]: 'beforeRequired' cannot be used as a value because it was imported using 'import type'.\nbeforeRequired(1, undefined, true);\n~~~~~~~~~~~~~~\n    at file:///private/tmp/lykn-arc05-s04-cc/tmp/.tmpJuVf2X/consumer.ts:9:1\n\n    'beforeRequired' was imported here.\n    import type { slots, beforeRequired, trailingDefault, restDefault, tupleBeforeRequired, tupleTrailing, objectDefault } from \"./module.d.ts\";\n                         ~~~~~~~~~~~~~~\n        at file:///private/tmp/lykn-arc05-s04-cc/tmp/.tmpJuVf2X/consumer.ts:1:22\n\nTS1361 [ERROR]: 'trailingDefault' cannot be used as a value because it was imported using 'import type'.\ntrailingDefault(1);\n~~~~~~~~~~~~~~~\n    at file:///private/tmp/lykn-arc05-s04-cc/tmp/.tmpJuVf2X/consumer.ts:10:1\n\n    'trailingDefault' was imported here.\n    import type { slots, beforeRequired, trailingDefault, restDefault, tupleBeforeRequired, tupleTrailing, objectDefault } from \"./module.d.ts\";\n                                         ~~~~~~~~~~~~~~~\n        at file:///private/tmp/lykn-arc05-s04-cc/tmp/.tmpJuVf2X/consumer.ts:1:38\n\nTS1361 [ERROR]: 'trailingDefault' cannot be used as a value because it was imported using 'import type'.\ntrailingDefault(1, undefined);\n~~~~~~~~~~~~~~~\n    at file:///private/tmp/lykn-arc05-s04-cc/tmp/.tmpJuVf2X/consumer.ts:11:1\n\n    'trailingDefault' was imported here.\n    import type { slots, beforeRequired, trailingDefault, restDefault, tupleBeforeRequired, tupleTrailing, objectDefault } from \"./module.d.ts\";\n                                         ~~~~~~~~~~~~~~~\n        at file:///private/tmp/lykn-arc05-s04-cc/tmp/.tmpJuVf2X/consumer.ts:1:38\n\nTS1361 [ERROR]: 'restDefault' cannot be used as a value because it was imported using 'import type'.\nrestDefault(undefined, \"one\", \"two\");\n~~~~~~~~~~~\n    at file:///private/tmp/lykn-arc05-s04-cc/tmp/.tmpJuVf2X/consumer.ts:12:1\n\n    'restDefault' was imported here.\n    import type { slots, beforeRequired, trailingDefault, restDefault, tupleBeforeRequired, tupleTrailing, objectDefault } from \"./module.d.ts\";\n                                                          ~~~~~~~~~~~\n        at file:///private/tmp/lykn-arc05-s04-cc/tmp/.tmpJuVf2X/consumer.ts:1:55\n\nTS1361 [ERROR]: 'restDefault' cannot be used as a value because it was imported using 'import type'.\nrestDefault(4, \"one\");\n~~~~~~~~~~~\n    at file:///private/tmp/lykn-arc05-s04-cc/tmp/.tmpJuVf2X/consumer.ts:13:1\n\n    'restDefault' was imported here.\n    import type { slots, beforeRequired, trailingDefault, restDefault, tupleBeforeRequired, tupleTrailing, objectDefault } from \"./module.d.ts\";\n                                                          ~~~~~~~~~~~\n        at file:///private/tmp/lykn-arc05-s04-cc/tmp/.tmpJuVf2X/consumer.ts:1:55\n\nTS1361 [ERROR]: 'tupleBeforeRequired' cannot be used as a value because it was imported using 'import type'.\ntupleBeforeRequired([undefined, \"tail\"]);\n~~~~~~~~~~~~~~~~~~~\n    at file:///private/tmp/lykn-arc05-s04-cc/tmp/.tmpJuVf2X/consumer.ts:14:1\n\n    'tupleBeforeRequired' was imported here.\n    import type { slots, beforeRequired, trailingDefault, restDefault, tupleBeforeRequired, tupleTrailing, objectDefault } from \"./module.d.ts\";\n                                                                       ~~~~~~~~~~~~~~~~~~~\n        at file:///private/tmp/lykn-arc05-s04-cc/tmp/.tmpJuVf2X/consumer.ts:1:68\n\nTS1361 [ERROR]: 'tupleTrailing' cannot be used as a value because it was imported using 'import type'.\ntupleTrailing([1, undefined, true]);\n~~~~~~~~~~~~~\n    at file:///private/tmp/lykn-arc05-s04-cc/tmp/.tmpJuVf2X/consumer.ts:15:1\n\n    'tupleTrailing' was imported here.\n    import type { slots, beforeRequired, trailingDefault, restDefault, tupleBeforeRequired, tupleTrailing, objectDefault } from \"./module.d.ts\";\n                                                                                            ~~~~~~~~~~~~~\n        at file:///private/tmp/lykn-arc05-s04-cc/tmp/.tmpJuVf2X/consumer.ts:1:89\n\nTS1361 [ERROR]: 'objectDefault' cannot be used as a value because it was imported using 'import type'.\nobjectDefault({ _: 1, label: undefined });\n~~~~~~~~~~~~~\n    at file:///private/tmp/lykn-arc05-s04-cc/tmp/.tmpJuVf2X/consumer.ts:16:1\n\n    'objectDefault' was imported here.\n    import type { slots, beforeRequired, trailingDefault, restDefault, tupleBeforeRequired, tupleTrailing, objectDefault } from \"./module.d.ts\";\n                                                                                                           ~~~~~~~~~~~~~\n        at file:///private/tmp/lykn-arc05-s04-cc/tmp/.tmpJuVf2X/consumer.ts:1:104\n\nFound 8 errors.\n\nerror: Type checking failed.\n"
+
+thread 'generated_declarations_typecheck_real_discard_default_rest_and_pattern_inputs' (108916000) panicked at crates/lykn-cli/tests/discard_declarations.rs:241:5:
+generated declaration consumer failed: Check consumer.ts
+TS1361 [ERROR]: 'beforeRequired' cannot be used as a value because it was imported using 'import type'.
+beforeRequired(1, undefined, true);
+~~~~~~~~~~~~~~
+    at file:///private/tmp/lykn-arc05-s04-cc/tmp/.tmpJuVf2X/consumer.ts:9:1
+
+    'beforeRequired' was imported here.
+    import type { slots, beforeRequired, trailingDefault, restDefault, tupleBeforeRequired, tupleTrailing, objectDefault } from "./module.d.ts";
+                         ~~~~~~~~~~~~~~
+        at file:///private/tmp/lykn-arc05-s04-cc/tmp/.tmpJuVf2X/consumer.ts:1:22
+
+TS1361 [ERROR]: 'trailingDefault' cannot be used as a value because it was imported using 'import type'.
+trailingDefault(1);
+~~~~~~~~~~~~~~~
+    at file:///private/tmp/lykn-arc05-s04-cc/tmp/.tmpJuVf2X/consumer.ts:10:1
+
+    'trailingDefault' was imported here.
+    import type { slots, beforeRequired, trailingDefault, restDefault, tupleBeforeRequired, tupleTrailing, objectDefault } from "./module.d.ts";
+                                         ~~~~~~~~~~~~~~~
+        at file:///private/tmp/lykn-arc05-s04-cc/tmp/.tmpJuVf2X/consumer.ts:1:38
+
+TS1361 [ERROR]: 'trailingDefault' cannot be used as a value because it was imported using 'import type'.
+trailingDefault(1, undefined);
+~~~~~~~~~~~~~~~
+    at file:///private/tmp/lykn-arc05-s04-cc/tmp/.tmpJuVf2X/consumer.ts:11:1
+
+    'trailingDefault' was imported here.
+    import type { slots, beforeRequired, trailingDefault, restDefault, tupleBeforeRequired, tupleTrailing, objectDefault } from "./module.d.ts";
+                                         ~~~~~~~~~~~~~~~
+        at file:///private/tmp/lykn-arc05-s04-cc/tmp/.tmpJuVf2X/consumer.ts:1:38
+
+TS1361 [ERROR]: 'restDefault' cannot be used as a value because it was imported using 'import type'.
+restDefault(undefined, "one", "two");
+~~~~~~~~~~~
+    at file:///private/tmp/lykn-arc05-s04-cc/tmp/.tmpJuVf2X/consumer.ts:12:1
+
+    'restDefault' was imported here.
+    import type { slots, beforeRequired, trailingDefault, restDefault, tupleBeforeRequired, tupleTrailing, objectDefault } from "./module.d.ts";
+                                                          ~~~~~~~~~~~
+        at file:///private/tmp/lykn-arc05-s04-cc/tmp/.tmpJuVf2X/consumer.ts:1:55
+
+TS1361 [ERROR]: 'restDefault' cannot be used as a value because it was imported using 'import type'.
+restDefault(4, "one");
+~~~~~~~~~~~
+    at file:///private/tmp/lykn-arc05-s04-cc/tmp/.tmpJuVf2X/consumer.ts:13:1
+
+    'restDefault' was imported here.
+    import type { slots, beforeRequired, trailingDefault, restDefault, tupleBeforeRequired, tupleTrailing, objectDefault } from "./module.d.ts";
+                                                          ~~~~~~~~~~~
+        at file:///private/tmp/lykn-arc05-s04-cc/tmp/.tmpJuVf2X/consumer.ts:1:55
+
+TS1361 [ERROR]: 'tupleBeforeRequired' cannot be used as a value because it was imported using 'import type'.
+tupleBeforeRequired([undefined, "tail"]);
+~~~~~~~~~~~~~~~~~~~
+    at file:///private/tmp/lykn-arc05-s04-cc/tmp/.tmpJuVf2X/consumer.ts:14:1
+
+    'tupleBeforeRequired' was imported here.
+    import type { slots, beforeRequired, trailingDefault, restDefault, tupleBeforeRequired, tupleTrailing, objectDefault } from "./module.d.ts";
+                                                                       ~~~~~~~~~~~~~~~~~~~
+        at file:///private/tmp/lykn-arc05-s04-cc/tmp/.tmpJuVf2X/consumer.ts:1:68
+
+TS1361 [ERROR]: 'tupleTrailing' cannot be used as a value because it was imported using 'import type'.
+tupleTrailing([1, undefined, true]);
+~~~~~~~~~~~~~
+    at file:///private/tmp/lykn-arc05-s04-cc/tmp/.tmpJuVf2X/consumer.ts:15:1
+
+    'tupleTrailing' was imported here.
+    import type { slots, beforeRequired, trailingDefault, restDefault, tupleBeforeRequired, tupleTrailing, objectDefault } from "./module.d.ts";
+                                                                                            ~~~~~~~~~~~~~
+        at file:///private/tmp/lykn-arc05-s04-cc/tmp/.tmpJuVf2X/consumer.ts:1:89
+
+TS1361 [ERROR]: 'objectDefault' cannot be used as a value because it was imported using 'import type'.
+objectDefault({ _: 1, label: undefined });
+~~~~~~~~~~~~~
+    at file:///private/tmp/lykn-arc05-s04-cc/tmp/.tmpJuVf2X/consumer.ts:16:1
+
+    'objectDefault' was imported here.
+    import type { slots, beforeRequired, trailingDefault, restDefault, tupleBeforeRequired, tupleTrailing, objectDefault } from "./module.d.ts";
+                                                                                                           ~~~~~~~~~~~~~
+        at file:///private/tmp/lykn-arc05-s04-cc/tmp/.tmpJuVf2X/consumer.ts:1:104
+
+Found 8 errors.
+
+error: Type checking failed.
+
+DISCARD_DECLARATIONS_DENO consumer="/private/tmp/lykn-arc05-s04-cc/tmp/.tmpWNgMeE/package-consumer.ts" status=Some(1) stdout="" stderr="Check package-consumer.ts\nTS1361 [ERROR]: 'objectDefault' cannot be used as a value because it was imported using 'import type'.\nobjectDefault({ _: 1, label: undefined });\n~~~~~~~~~~~~~\n    at file:///private/tmp/lykn-arc05-s04-cc/tmp/.tmpWNgMeE/package-consumer.ts:5:1\n\n    'objectDefault' was imported here.\n    import type { slots, objectDefault } from \"./target/lykn/build/discarded/mod.d.ts\";\n                         ~~~~~~~~~~~~~\n        at file:///private/tmp/lykn-arc05-s04-cc/tmp/.tmpWNgMeE/package-consumer.ts:1:22\n\nerror: Type checking failed.\n"
+
+thread 'lykn_build_package_emits_the_same_discard_declarations' (108916002) panicked at crates/lykn-cli/tests/discard_declarations.rs:508:5:
+package declaration consumer failed: Check package-consumer.ts
+TS1361 [ERROR]: 'objectDefault' cannot be used as a value because it was imported using 'import type'.
+objectDefault({ _: 1, label: undefined });
+~~~~~~~~~~~~~
+    at file:///private/tmp/lykn-arc05-s04-cc/tmp/.tmpWNgMeE/package-consumer.ts:5:1
+
+    'objectDefault' was imported here.
+    import type { slots, objectDefault } from "./target/lykn/build/discarded/mod.d.ts";
+                         ~~~~~~~~~~~~~
+        at file:///private/tmp/lykn-arc05-s04-cc/tmp/.tmpWNgMeE/package-consumer.ts:1:22
+
+error: Type checking failed.
+
+error: test failed, to rerun pass `-p lykn-cli --test discard_declarations`

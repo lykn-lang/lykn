@@ -256,6 +256,16 @@ issued. Each refinement uses a new cc-prompt-iterationNN.md and retained finding
   definitions/recipe/tests/manifest; same four paths/eight rows. Issued after
   committed open set; task source/build transfers to fresh Luna CC on dispatch.
   No implementation acceptance or spent refinement is inferred from readiness.
+  Returned for independent review at918f2e9c4237770fc7b2e0e950d726e735e95198,
+  tree37b1cd6e7a457caf94933a35cdac54335c7afb66, cleantask/nojobs, exact4paths.
+  CC attests native32/CLI4, fullRust1786 across40harnessrows/product1578/67/
+  docs482, actual M670/all14, final64/601 citations and48689/81920 gzip.
+  Source red/invalid clients/interim fixture/code/gate failures remain explicit,
+  including missing interim test snapshots. Initial0refinements: these are
+  local authoring attempts, not a new review refinement. Root corrected the
+  doer report location to canonical closing-report.md after clean handoff;
+  both location mistakes and root's relative-path prompt ambiguity remain
+  retrospective inputs. All8 DT rows await separate Sol source/gate review.
 
 ## Version history
 

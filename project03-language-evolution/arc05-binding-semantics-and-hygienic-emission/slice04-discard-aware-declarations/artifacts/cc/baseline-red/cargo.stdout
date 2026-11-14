@@ -1,0 +1,6 @@
+
+running 1 test
+test c60_repeated_discard_parameter_declarations_are_a_real_typescript_red ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.60s
+

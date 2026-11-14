@@ -1,0 +1,34 @@
+   Compiling lykn-lang v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang)
+   Compiling lykn-cli v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.39s
+     Running tests/discard_declarations.rs (target/debug/deps/discard_declarations-f4c3b66a5d98b6ab)
+DISCARD_DECLARATIONS_CLI output="/private/tmp/lykn-arc05-s04-cc/tmp/.tmpa9zJWm/module.js" strip_assertions=false status=Some(1) stdout="" stderr="31:10: error: method call on a parenthesized expression is not supported (the receiver is an expression, not a name)\n  suggestion: thread the method call: (-> <expr> (:string …)); or bind first: (bind v <expr>) (v:string …). To pass a keyword as a string argument to a computed function, use a string literal: (<expr> \"string\" …)\n"
+DISCARD_DECLARATIONS_CLI output="/private/tmp/lykn-arc05-s04-cc/tmp/.tmpaMmLqc/schema.js" strip_assertions=false status=Some
+thread 'generated_declarations_typecheck_real_discard_default_rest_and_pattern_inputs' (108926114) panicked at crates/lykn-cli/tests/discard_declarations.rs(0) stdout="" stderr=""
+:204:5:
+Lykn compile failed: 31:10: error: method call on a parenthesized expression is not supported (the receiver is an expression, not a name)
+  suggestion: thread the method call: (-> <expr> (:string …)); or bind first: (bind v <expr>) (v:string …). To pass a keyword as a string argument to a computed function, use a string literal: (<expr> "string" …)
+
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+DISCARD_DECLARATIONS_CLI output="
+thread 'lykn_build_package_emits_the_same_discard_declarations' (108926116) panicked at crates/lykn-cli/tests/discard_declarations.rs:633:5:
+lykn build failed: error: ./packages/discarded/mod.lykn: 31:10: error: method call on a parenthesized expression is not supported (the receiver is an expression, not a name)
+  suggestion: thread the method call: (-> <expr> (:string …)); or bind first: (bind v <expr>) (v:string …). To pass a keyword as a string argument to a computed function, use a string literal: (<expr> "string" …)
+
+/private/tmp/lykn-arc05-s04-cc/tmp/.tmpCtDwfW/exports.js" strip_assertions=false status=Some(0) stdout="" stderr=""
+DISCARD_DECLARATIONS_DENO consumer="/private/tmp/lykn-arc05-s04-cc/tmp/.tmpaMmLqc/schema-consumer.ts" status=Some(0) stdout="" stderr="Check schema-consumer.ts\n"
+DISCARD_DECLARATIONS_DENO consumer="/private/tmp/lykn-arc05-s04-cc/tmp/.tmpCtDwfW/exports-consumer.ts" status=Some(0) stdout="" stderr="Check exports-consumer.ts\n"
+DISCARD_DECLARATIONS_CLI output="/private/tmp/lykn-arc05-s04-cc/tmp/.tmpCtDwfW/discard-only.js" strip_assertions=false status=Some(0) stdout="" stderr=""
+DISCARD_DECLARATIONS_DENO consumer="/private/tmp/lykn-arc05-s04-cc/tmp/.tmpCtDwfW/empty-consumer.ts" status=Some(0) stdout="" stderr="Check empty-consumer.ts\n"
+DISCARD_DECLARATIONS_CLI output="/private/tmp/lykn-arc05-s04-cc/tmp/.tmpCtDwfW/reused.js" strip_assertions=false status=Some(0) stdout="" stderr=""
+DISCARD_DECLARATIONS_CLI output="/private/tmp/lykn-arc05-s04-cc/tmp/.tmpCtDwfW/reused.js" strip_assertions=false status=Some(0) stdout="" stderr=""
+DISCARD_DECLARATIONS_CLI output="/private/tmp/lykn-arc05-s04-cc/tmp/.tmpCtDwfW/empty.js" strip_assertions=false status=Some(0) stdout="" stderr=""
+DISCARD_DECLARATIONS_CLI output="/private/tmp/lykn-arc05-s04-cc/tmp/.tmpCtDwfW/default.js" strip_assertions=false status=Some(0) stdout="" stderr=""
+DISCARD_DECLARATIONS_CLI output="/private/tmp/lykn-arc05-s04-cc/tmp/.tmpCtDwfW/default-mixed.js" strip_assertions=false status=Some(0) stdout="" stderr=""
+DISCARD_DECLARATIONS_CLI output="/private/tmp/lykn-arc05-s04-cc/tmp/.tmpCtDwfW/reexport.js" strip_assertions=false status=Some(0) stdout="" stderr=""
+DISCARD_DECLARATIONS_CLI output="/private/tmp/lykn-arc05-s04-cc/tmp/.tmpCtDwfW/reexport-mixed.js" strip_assertions=false status=Some(0) stdout="" stderr=""
+DISCARD_DECLARATIONS_CLI output="/private/tmp/lykn-arc05-s04-cc/tmp/.tmpCtDwfW/kernel-export.js" strip_assertions=false status=Some(0) stdout="" stderr=""
+DISCARD_DECLARATIONS_CLI output="/private/tmp/lykn-arc05-s04-cc/tmp/.tmpCtDwfW/kernel-export-mixed.js" strip_assertions=false status=Some(0) stdout="" stderr=""
+DISCARD_DECLARATIONS_CLI output="/private/tmp/lykn-arc05-s04-cc/tmp/.tmpCtDwfW/bad-exports-empty.js" strip_assertions=false status=Some(1) stdout="" stderr="1:1: error: exports requires at least one name\n  suggestion: write (exports name ...)\n"
+DISCARD_DECLARATIONS_CLI output="/private/tmp/lykn-arc05-s04-cc/tmp/.tmpCtDwfW/bad-exports-wildcard.js" strip_assertions=false status=Some(1) stdout="" stderr="1:10: error: exports cannot export the wildcard name '_'\n"
+error: test failed, to rerun pass `-p lykn-cli --test discard_declarations`

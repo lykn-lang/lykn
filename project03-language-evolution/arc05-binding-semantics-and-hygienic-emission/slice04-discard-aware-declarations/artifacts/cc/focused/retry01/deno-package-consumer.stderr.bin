@@ -1,0 +1,12 @@
+Check package-consumer.ts
+TS1361 [ERROR]: 'objectDefault' cannot be used as a value because it was imported using 'import type'.
+objectDefault({ _: 1, label: undefined });
+~~~~~~~~~~~~~
+    at file:///private/tmp/lykn-arc05-s04-cc/tmp/.tmpWNgMeE/package-consumer.ts:5:1
+
+    'objectDefault' was imported here.
+    import type { slots, objectDefault } from "./target/lykn/build/discarded/mod.d.ts";
+                         ~~~~~~~~~~~~~
+        at file:///private/tmp/lykn-arc05-s04-cc/tmp/.tmpWNgMeE/package-consumer.ts:1:22
+
+error: Type checking failed.

@@ -1,0 +1,8 @@
+7:18: warning: unused binding 'fixed'
+  suggestion: prefix with underscore: _fixed
+19:34: warning: unused binding 'first'
+  suggestion: prefix with underscore: _first
+23:48: warning: unused binding 'second'
+  suggestion: prefix with underscore: _second
+23:82: warning: unused binding 'tail'
+  suggestion: prefix with underscore: _tail

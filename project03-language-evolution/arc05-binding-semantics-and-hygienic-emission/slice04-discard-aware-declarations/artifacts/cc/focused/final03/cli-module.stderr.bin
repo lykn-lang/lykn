@@ -1,0 +1,2 @@
+31:10: error: method call on a parenthesized expression is not supported (the receiver is an expression, not a name)
+  suggestion: thread the method call: (-> <expr> (:string …)); or bind first: (bind v <expr>) (v:string …). To pass a keyword as a string argument to a computed function, use a string literal: (<expr> "string" …)

@@ -1,0 +1,27 @@
+   Compiling lykn-lang v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang)
+   Compiling lykn-cli v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.36s
+     Running tests/discard_declarations.rs (target/debug/deps/discard_declarations-f4c3b66a5d98b6ab)
+DISCARD_DECLARATIONS_CLI output="/private/tmp/lykn-arc05-s04-cc/tmp/.tmpI453X3/schema.js" strip_assertions=false status=Some(0) stdout="" stderr=""
+DISCARD_DECLARATIONS_CLI output="/private/tmp/lykn-arc05-s04-cc/tmp/.tmpxJzKeu/exports.js" strip_assertions=false status=Some(0) stdout="" stderr=""
+DISCARD_DECLARATIONS_CLI output="/private/tmp/lykn-arc05-s04-cc/tmp/.tmp8LE9aP/module.js" strip_assertions=false status=Some(0) stdout="" stderr="55:29: warning: unused binding 'arg0'\n  suggestion: prefix with underscore: _arg0\n56:29: warning: unused binding 'arg0'\n  suggestion: prefix with underscore: _arg0\n"
+DISCARD_DECLARATIONS_CLI output="/private/tmp/lykn-arc05-s04-cc/tmp/.tmpjBQhdE/cli-module.js" strip_assertions=false status=Some(0) stdout="" stderr="55:29: warning: unused binding 'arg0'\n  suggestion: prefix with underscore: _arg0\n56:29: warning: unused binding 'arg0'\n  suggestion: prefix with underscore: _arg0\n"
+DISCARD_DECLARATIONS_DENO consumer="/private/tmp/lykn-arc05-s04-cc/tmp/.tmp8LE9aP/consumer.ts" status=Some(0) stdout="" stderr="Check consumer.ts\n"
+DISCARD_DECLARATIONS_DENO consumer="/private/tmp/lykn-arc05-s04-cc/tmp/.tmpxJzKeu/exports-consumer.ts" status=Some(0) stdout="" stderr="Check exports-consumer.ts\n"
+DISCARD_DECLARATIONS_DENO consumer="/private/tmp/lykn-arc05-s04-cc/tmp/.tmpjBQhdE/package-consumer.ts" status=Some(0) stdout="" stderr="Check package-consumer.ts\n"
+DISCARD_DECLARATIONS_CLI output="/private/tmp/lykn-arc05-s04-cc/tmp/.tmpxJzKeu/discard-only.js" strip_assertions=false status=Some(0) stdout="" stderr=""
+DISCARD_DECLARATIONS_DENO consumer="/private/tmp/lykn-arc05-s04-cc/tmp/.tmpI453X3/schema-consumer.ts" status=Some(0) stdout="" stderr="Check schema-consumer.ts\n"
+DISCARD_DECLARATIONS_DENO consumer="/private/tmp/lykn-arc05-s04-cc/tmp/.tmp8LE9aP/consumer-bad.ts" status=Some(1) stdout="" stderr="Check consumer-bad.ts\nTS2345 [ERROR]: Argument of type 'string' is not assignable to parameter of type 'number'.\ncallSlots(\"wrong\", \"discarded\", false, 7, 11, \"last\", true);\n          ~~~~~~~\n    at file:///private/tmp/lykn-arc05-s04-cc/tmp/.tmp8LE9aP/consumer-bad.ts:4:11\n\nerror: Type checking failed.\n"
+DISCARD_DECLARATIONS_CLI output="/private/tmp/lykn-arc05-s04-cc/tmp/.tmp8LE9aP/module-stripped.js" strip_assertions=true status=Some(0) stdout="" stderr="55:29: warning: unused binding 'arg0'\n  suggestion: prefix with underscore: _arg0\n56:29: warning: unused binding 'arg0'\n  suggestion: prefix with underscore: _arg0\n"
+DISCARD_DECLARATIONS_DENO consumer="/private/tmp/lykn-arc05-s04-cc/tmp/.tmpxJzKeu/empty-consumer.ts" status=Some(0) stdout="" stderr="Check empty-consumer.ts\n"
+DISCARD_DECLARATIONS_CLI output="/private/tmp/lykn-arc05-s04-cc/tmp/.tmpxJzKeu/reused.js" strip_assertions=false status=Some(0) stdout="" stderr=""
+DISCARD_DECLARATIONS_CLI output="/private/tmp/lykn-arc05-s04-cc/tmp/.tmpxJzKeu/reused.js" strip_assertions=false status=Some(0) stdout="" stderr=""
+DISCARD_DECLARATIONS_CLI output="/private/tmp/lykn-arc05-s04-cc/tmp/.tmpxJzKeu/empty.js" strip_assertions=false status=Some(0) stdout="" stderr=""
+DISCARD_DECLARATIONS_CLI output="/private/tmp/lykn-arc05-s04-cc/tmp/.tmpxJzKeu/default.js" strip_assertions=false status=Some(0) stdout="" stderr=""
+DISCARD_DECLARATIONS_CLI output="/private/tmp/lykn-arc05-s04-cc/tmp/.tmpxJzKeu/default-mixed.js" strip_assertions=false status=Some(0) stdout="" stderr=""
+DISCARD_DECLARATIONS_CLI output="/private/tmp/lykn-arc05-s04-cc/tmp/.tmpxJzKeu/reexport.js" strip_assertions=false status=Some(0) stdout="" stderr=""
+DISCARD_DECLARATIONS_CLI output="/private/tmp/lykn-arc05-s04-cc/tmp/.tmpxJzKeu/reexport-mixed.js" strip_assertions=false status=Some(0) stdout="" stderr=""
+DISCARD_DECLARATIONS_CLI output="/private/tmp/lykn-arc05-s04-cc/tmp/.tmpxJzKeu/kernel-export.js" strip_assertions=false status=Some(0) stdout="" stderr=""
+DISCARD_DECLARATIONS_CLI output="/private/tmp/lykn-arc05-s04-cc/tmp/.tmpxJzKeu/kernel-export-mixed.js" strip_assertions=false status=Some(0) stdout="" stderr=""
+DISCARD_DECLARATIONS_CLI output="/private/tmp/lykn-arc05-s04-cc/tmp/.tmpxJzKeu/bad-exports-empty.js" strip_assertions=false status=Some(1) stdout="" stderr="1:1: error: exports requires at least one name\n  suggestion: write (exports name ...)\n"
+DISCARD_DECLARATIONS_CLI output="/private/tmp/lykn-arc05-s04-cc/tmp/.tmpxJzKeu/bad-exports-wildcard.js" strip_assertions=false status=Some(1) stdout="" stderr="1:10: error: exports cannot export the wildcard name '_'\n"

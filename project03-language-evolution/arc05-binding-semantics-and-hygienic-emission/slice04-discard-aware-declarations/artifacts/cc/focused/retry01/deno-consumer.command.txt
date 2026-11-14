@@ -1,0 +1,5 @@
+program="deno"
+args=["check", "--no-remote", "--no-npm", "--cached-only", "--no-lock", "--config", "/private/tmp/lykn-arc05-s04-cc/tmp/.tmpJuVf2X/deno.json", "/private/tmp/lykn-arc05-s04-cc/tmp/.tmpJuVf2X/consumer.ts"]
+cwd=Some("/private/tmp/lykn-arc05-s04-cc/tmp/.tmpJuVf2X")
+env_overrides=
+

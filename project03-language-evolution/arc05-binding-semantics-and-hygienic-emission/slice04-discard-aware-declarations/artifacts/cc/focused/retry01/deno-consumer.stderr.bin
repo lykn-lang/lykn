@@ -1,0 +1,84 @@
+Check consumer.ts
+TS1361 [ERROR]: 'beforeRequired' cannot be used as a value because it was imported using 'import type'.
+beforeRequired(1, undefined, true);
+~~~~~~~~~~~~~~
+    at file:///private/tmp/lykn-arc05-s04-cc/tmp/.tmpJuVf2X/consumer.ts:9:1
+
+    'beforeRequired' was imported here.
+    import type { slots, beforeRequired, trailingDefault, restDefault, tupleBeforeRequired, tupleTrailing, objectDefault } from "./module.d.ts";
+                         ~~~~~~~~~~~~~~
+        at file:///private/tmp/lykn-arc05-s04-cc/tmp/.tmpJuVf2X/consumer.ts:1:22
+
+TS1361 [ERROR]: 'trailingDefault' cannot be used as a value because it was imported using 'import type'.
+trailingDefault(1);
+~~~~~~~~~~~~~~~
+    at file:///private/tmp/lykn-arc05-s04-cc/tmp/.tmpJuVf2X/consumer.ts:10:1
+
+    'trailingDefault' was imported here.
+    import type { slots, beforeRequired, trailingDefault, restDefault, tupleBeforeRequired, tupleTrailing, objectDefault } from "./module.d.ts";
+                                         ~~~~~~~~~~~~~~~
+        at file:///private/tmp/lykn-arc05-s04-cc/tmp/.tmpJuVf2X/consumer.ts:1:38
+
+TS1361 [ERROR]: 'trailingDefault' cannot be used as a value because it was imported using 'import type'.
+trailingDefault(1, undefined);
+~~~~~~~~~~~~~~~
+    at file:///private/tmp/lykn-arc05-s04-cc/tmp/.tmpJuVf2X/consumer.ts:11:1
+
+    'trailingDefault' was imported here.
+    import type { slots, beforeRequired, trailingDefault, restDefault, tupleBeforeRequired, tupleTrailing, objectDefault } from "./module.d.ts";
+                                         ~~~~~~~~~~~~~~~
+        at file:///private/tmp/lykn-arc05-s04-cc/tmp/.tmpJuVf2X/consumer.ts:1:38
+
+TS1361 [ERROR]: 'restDefault' cannot be used as a value because it was imported using 'import type'.
+restDefault(undefined, "one", "two");
+~~~~~~~~~~~
+    at file:///private/tmp/lykn-arc05-s04-cc/tmp/.tmpJuVf2X/consumer.ts:12:1
+
+    'restDefault' was imported here.
+    import type { slots, beforeRequired, trailingDefault, restDefault, tupleBeforeRequired, tupleTrailing, objectDefault } from "./module.d.ts";
+                                                          ~~~~~~~~~~~
+        at file:///private/tmp/lykn-arc05-s04-cc/tmp/.tmpJuVf2X/consumer.ts:1:55
+
+TS1361 [ERROR]: 'restDefault' cannot be used as a value because it was imported using 'import type'.
+restDefault(4, "one");
+~~~~~~~~~~~
+    at file:///private/tmp/lykn-arc05-s04-cc/tmp/.tmpJuVf2X/consumer.ts:13:1
+
+    'restDefault' was imported here.
+    import type { slots, beforeRequired, trailingDefault, restDefault, tupleBeforeRequired, tupleTrailing, objectDefault } from "./module.d.ts";
+                                                          ~~~~~~~~~~~
+        at file:///private/tmp/lykn-arc05-s04-cc/tmp/.tmpJuVf2X/consumer.ts:1:55
+
+TS1361 [ERROR]: 'tupleBeforeRequired' cannot be used as a value because it was imported using 'import type'.
+tupleBeforeRequired([undefined, "tail"]);
+~~~~~~~~~~~~~~~~~~~
+    at file:///private/tmp/lykn-arc05-s04-cc/tmp/.tmpJuVf2X/consumer.ts:14:1
+
+    'tupleBeforeRequired' was imported here.
+    import type { slots, beforeRequired, trailingDefault, restDefault, tupleBeforeRequired, tupleTrailing, objectDefault } from "./module.d.ts";
+                                                                       ~~~~~~~~~~~~~~~~~~~
+        at file:///private/tmp/lykn-arc05-s04-cc/tmp/.tmpJuVf2X/consumer.ts:1:68
+
+TS1361 [ERROR]: 'tupleTrailing' cannot be used as a value because it was imported using 'import type'.
+tupleTrailing([1, undefined, true]);
+~~~~~~~~~~~~~
+    at file:///private/tmp/lykn-arc05-s04-cc/tmp/.tmpJuVf2X/consumer.ts:15:1
+
+    'tupleTrailing' was imported here.
+    import type { slots, beforeRequired, trailingDefault, restDefault, tupleBeforeRequired, tupleTrailing, objectDefault } from "./module.d.ts";
+                                                                                            ~~~~~~~~~~~~~
+        at file:///private/tmp/lykn-arc05-s04-cc/tmp/.tmpJuVf2X/consumer.ts:1:89
+
+TS1361 [ERROR]: 'objectDefault' cannot be used as a value because it was imported using 'import type'.
+objectDefault({ _: 1, label: undefined });
+~~~~~~~~~~~~~
+    at file:///private/tmp/lykn-arc05-s04-cc/tmp/.tmpJuVf2X/consumer.ts:16:1
+
+    'objectDefault' was imported here.
+    import type { slots, beforeRequired, trailingDefault, restDefault, tupleBeforeRequired, tupleTrailing, objectDefault } from "./module.d.ts";
+                                                                                                           ~~~~~~~~~~~~~
+        at file:///private/tmp/lykn-arc05-s04-cc/tmp/.tmpJuVf2X/consumer.ts:1:104
+
+Found 8 errors.
+
+error: Type checking failed.

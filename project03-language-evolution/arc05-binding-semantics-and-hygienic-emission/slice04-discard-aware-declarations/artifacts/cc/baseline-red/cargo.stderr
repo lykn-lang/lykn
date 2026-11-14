@@ -1,0 +1,4 @@
+   Compiling lykn-cli v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.48s
+     Running tests/discard_declarations.rs (target/debug/deps/discard_declarations-f4c3b66a5d98b6ab)
+DISCARD_DTS_BASELINE declaration="export function ignore(_: number, _: string): void;\n" check_status=Some(1) stdout="" stderr="Check consumer.ts\nTS2300 [ERROR]: Duplicate identifier '_'.\nexport function ignore(_: number, _: string): void;\n                       ^\n    at file:///private/tmp/lykn-arc05-s04-cc/tmp/.tmpIO5bXm/generated.d.ts:1:24\n\nTS2300 [ERROR]: Duplicate identifier '_'.\nexport function ignore(_: number, _: string): void;\n                                  ^\n    at file:///private/tmp/lykn-arc05-s04-cc/tmp/.tmpIO5bXm/generated.d.ts:1:35\n\nFound 2 errors.\n\nerror: Type checking failed.\n"

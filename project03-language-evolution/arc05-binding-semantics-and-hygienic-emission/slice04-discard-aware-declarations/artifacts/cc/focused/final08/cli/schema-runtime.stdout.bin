@@ -1,0 +1,2 @@
+{"tag":"Sample","_":7}
+TypeError:Sample: field '_' expected number, got string

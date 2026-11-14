@@ -1,0 +1,5 @@
+error: SyntaxError: Unexpected token `,`. Expected an identifier
+  |
+5 | const {"number", count, "string", _: completionValue__gensym0} = { count: 99, _:...
+  |                ~
+    at file:///private/tmp/lykn-arc05-s04-cc/tmp/.tmp3dOUtn/exports.js:5:16

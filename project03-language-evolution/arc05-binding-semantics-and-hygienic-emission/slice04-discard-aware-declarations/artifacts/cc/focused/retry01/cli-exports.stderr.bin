@@ -1,0 +1,4 @@
+5:23: error: 'public' is a JavaScript reserved word and cannot be used as a lykn binding name
+  suggestion: rename the binding name (e.g. `public_`)
+5:38: error: 'private' is a JavaScript reserved word and cannot be used as a lykn binding name
+  suggestion: rename the binding name (e.g. `private_`)

@@ -1,0 +1,21 @@
+   Compiling lykn-cli v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.50s
+     Running tests/discard_declarations.rs (target/debug/deps/discard_declarations-f4c3b66a5d98b6ab)
+DISCARD_DECLARATIONS_CLI output="/private/tmp/lykn-arc05-s04-cc/tmp/.tmp3dOUtn/exports.js" strip_assertions=false status=Some(0) stdout="" stderr=""
+DISCARD_DECLARATIONS_CLI output="/private/tmp/lykn-arc05-s04-cc/tmp/.tmpsCBlbV/schema.js" strip_assertions=false status=Some(0) stdout="" stderr=""
+DISCARD_DECLARATIONS_CLI output="/private/tmp/lykn-arc05-s04-cc/tmp/.tmpY7q3xO/module.js" strip_assertions=false status=Some(0) stdout="" stderr="7:18: warning: unused binding 'fixed'\n  suggestion: prefix with underscore: _fixed\n19:34: warning: unused binding 'first'\n  suggestion: prefix with underscore: _first\n23:82: warning: unused binding 'tail'\n  suggestion: prefix with underscore: _tail\n23:48: warning: unused binding 'second'\n  suggestion: prefix with underscore: _second\n"
+
+thread 'inline_and_named_binding_exports_match_runtime_and_empty_module_rules' (108917003) panicked at crates/lykn-cli/tests/discard_declarations.rs:380:5:
+namespace runtime failed: error: SyntaxError: Unexpected token `,`. Expected an identifier
+  |
+5 | const {"number", count, "string", _: completionValue__gensym0} = { count: 99, _:...
+  |                ~
+    at file:///private/tmp/lykn-arc05-s04-cc/tmp/.tmp3dOUtn/exports.js:5:16
+
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+DISCARD_DECLARATIONS_DENO consumer="/private/tmp/lykn-arc05-s04-cc/tmp/.tmpsCBlbV/schema-consumer.ts" status=Some(0) stdout="" stderr="Check schema-consumer.ts\n"
+DISCARD_DECLARATIONS_DENO consumer="/private/tmp/lykn-arc05-s04-cc/tmp/.tmp6qfUjB/package-consumer.ts" status=Some(0) stdout="" stderr="Check package-consumer.ts\n"
+DISCARD_DECLARATIONS_DENO consumer="/private/tmp/lykn-arc05-s04-cc/tmp/.tmpY7q3xO/consumer.ts" status=Some(0) stdout="" stderr="Check consumer.ts\n"
+DISCARD_DECLARATIONS_DENO consumer="/private/tmp/lykn-arc05-s04-cc/tmp/.tmpY7q3xO/consumer-bad.ts" status=Some(1) stdout="" stderr="Check consumer-bad.ts\nTS2345 [ERROR]: Argument of type 'string' is not assignable to parameter of type 'number'.\ncallSlots(\"wrong\", \"discarded\", 7, 11, \"last\");\n          ~~~~~~~\n    at file:///private/tmp/lykn-arc05-s04-cc/tmp/.tmpY7q3xO/consumer-bad.ts:4:11\n\nerror: Type checking failed.\n"
+DISCARD_DECLARATIONS_CLI output="/private/tmp/lykn-arc05-s04-cc/tmp/.tmpY7q3xO/module-stripped.js" strip_assertions=true status=Some(0) stdout="" stderr="7:18: warning: unused binding 'fixed'\n  suggestion: prefix with underscore: _fixed\n19:34: warning: unused binding 'first'\n  suggestion: prefix with underscore: _first\n23:48: warning: unused binding 'second'\n  suggestion: prefix with underscore: _second\n23:82: warning: unused binding 'tail'\n  suggestion: prefix with underscore: _tail\n"
+error: test failed, to rerun pass `-p lykn-cli --test discard_declarations`

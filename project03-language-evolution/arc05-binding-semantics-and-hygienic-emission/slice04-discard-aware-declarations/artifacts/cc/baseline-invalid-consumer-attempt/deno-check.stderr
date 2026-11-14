@@ -1,0 +1,24 @@
+Check consumer.ts
+TS1361 [ERROR]: 'ignore' cannot be used as a value because it was imported using 'import type'.
+ignore(1, "text");
+~~~~~~
+    at file:///private/tmp/lykn-arc05-s04-cc/tmp/.tmpFPmq1g/consumer.ts:2:1
+
+    'ignore' was imported here.
+    import type { ignore } from "./generated.d.ts";
+                  ~~~~~~
+        at file:///private/tmp/lykn-arc05-s04-cc/tmp/.tmpFPmq1g/consumer.ts:1:15
+
+TS2300 [ERROR]: Duplicate identifier '_'.
+export function ignore(_: number, _: string): void;
+                       ^
+    at file:///private/tmp/lykn-arc05-s04-cc/tmp/.tmpFPmq1g/generated.d.ts:1:24
+
+TS2300 [ERROR]: Duplicate identifier '_'.
+export function ignore(_: number, _: string): void;
+                                  ^
+    at file:///private/tmp/lykn-arc05-s04-cc/tmp/.tmpFPmq1g/generated.d.ts:1:35
+
+Found 3 errors.
+
+error: Type checking failed.

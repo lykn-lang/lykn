@@ -1,0 +1,108 @@
+   Compiling lykn-lang v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang)
+error[E0308]: mismatched types
+   --> crates/lykn-lang/src/emitter/dts.rs:392:63
+    |
+392 |         if selected_names.is_some_and(|names| !names.contains(binding.name)) {
+    |                                                      -------- ^^^^^^^^^^^^ expected `&_`, found `String`
+    |                                                      |
+    |                                                      arguments to this method are incorrect
+    |
+    = note: expected reference `&_`
+                  found struct `std::string::String`
+note: method defined here
+   --> /Users/oubiwann/.rustup/toolchains/1.97.0-aarch64-apple-darwin/lib/rustlib/src/rust/library/std/src/collections/hash/set.rs:806:12
+    |
+806 |     pub fn contains<Q: ?Sized>(&self, value: &Q) -> bool
+    |            ^^^^^^^^
+help: consider borrowing here
+    |
+392 |         if selected_names.is_some_and(|names| !names.contains(&binding.name)) {
+    |                                                               +
+
+error[E0308]: mismatched types
+   --> crates/lykn-lang/src/emitter/dts.rs:395:32
+    |
+395 |         if scalar_name == Some(binding.name) {
+    |                           ---- ^^^^^^^^^^^^ expected `&str`, found `String`
+    |                           |
+    |                           arguments to this enum variant are incorrect
+    |
+help: the type constructed contains `std::string::String` due to the type of the argument passed
+   --> crates/lykn-lang/src/emitter/dts.rs:395:27
+    |
+395 |         if scalar_name == Some(binding.name) {
+    |                           ^^^^^------------^
+    |                                |
+    |                                this argument influences the type of `Some`
+note: tuple variant defined here
+   --> /Users/oubiwann/.rustup/toolchains/1.97.0-aarch64-apple-darwin/lib/rustlib/src/rust/library/core/src/option.rs:605:5
+    |
+605 |     Some(#[stable(feature = "rust1", since = "1.0.0")] T),
+    |     ^^^^
+help: consider borrowing here
+    |
+395 |         if scalar_name == Some(&binding.name) {
+    |                                +
+
+error[E0308]: mismatched types
+   --> crates/lykn-lang/src/emitter/dts.rs:397:45
+    |
+397 |                 out.push_str(&emit_bind_dts(binding.name, ann, exported, registry));
+    |                               ------------- ^^^^^^^^^^^^ expected `&str`, found `String`
+    |                               |
+    |                               arguments to this function are incorrect
+    |
+note: function defined here
+   --> crates/lykn-lang/src/emitter/dts.rs:254:8
+    |
+254 | pub fn emit_bind_dts(
+    |        ^^^^^^^^^^^^^
+255 |     name: &str,
+    |     ----------
+help: consider borrowing here
+    |
+397 |                 out.push_str(&emit_bind_dts(&binding.name, ann, exported, registry));
+    |                                             +
+
+error[E0308]: mismatched types
+   --> crates/lykn-lang/src/emitter/dts.rs:399:54
+    |
+399 |                 out.push_str(&emit_bind_inferred_dts(binding.name, value, exported));
+    |                               ---------------------- ^^^^^^^^^^^^ expected `&str`, found `String`
+    |                               |
+    |                               arguments to this function are incorrect
+    |
+note: function defined here
+   --> crates/lykn-lang/src/emitter/dts.rs:480:4
+    |
+480 | fn emit_bind_inferred_dts(name: &str, value: &crate::ast::sexpr::SExpr, exported: bool) -> String {
+    |    ^^^^^^^^^^^^^^^^^^^^^^ ----------
+help: consider borrowing here
+    |
+399 |                 out.push_str(&emit_bind_inferred_dts(&binding.name, value, exported));
+    |                                                      +
+
+error[E0308]: mismatched types
+   --> crates/lykn-lang/src/emitter/dts.rs:403:17
+    |
+402 |             out.push_str(&emit_bind_dts(
+    |                           ------------- arguments to this function are incorrect
+403 |                 binding.name,
+    |                 ^^^^^^^^^^^^ expected `&str`, found `String`
+    |
+note: function defined here
+   --> crates/lykn-lang/src/emitter/dts.rs:254:8
+    |
+254 | pub fn emit_bind_dts(
+    |        ^^^^^^^^^^^^^
+255 |     name: &str,
+    |     ----------
+help: consider borrowing here
+    |
+403 |                 &binding.name,
+    |                 +
+
+For more information about this error, try `rustc --explain E0308`.
+error: could not compile `lykn-lang` (lib) due to 5 previous errors
+warning: build failed, waiting for other jobs to finish...
+error: could not compile `lykn-lang` (lib test) due to 5 previous errors

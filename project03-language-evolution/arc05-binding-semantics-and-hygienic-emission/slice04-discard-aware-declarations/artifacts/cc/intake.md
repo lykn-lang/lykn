@@ -1,0 +1,219 @@
+# S04 CC intake and contract readback
+
+2026-11-14. Implementer: Luna6 High, Autonomous Mode. This is the assigned
+source checkout, not the release or planning worktree.
+
+## Starting authority and state
+
+- `/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering`,
+  `codex/qualified-adt-core`, HEAD `c60dea62d126bb07557a7f4f7183662dec3f6a58`,
+  tree `9c247edcf632ef2e038078a2833e727db949730d`; clean before this evidence
+  file. This matches the pin in the assignment and the independently accepted
+  release tree.
+- Required-full reads: issued `cc-prompt.md` (all 140 lines); `slice-plan.md`
+  (all 248 lines); `ledger.md` (all 14 lines); task `AGENTS.md` (all 186
+  lines); `crates/lykn-lang/src/emitter/dts.rs` (all 660 lines, including all
+  existing tests). These were read in bounded calls; an earlier combined
+  display was clipped and recovered as separate reads. The eight DT rows remain
+  open; no row is accepted by this intake.
+- S03 evidence read: complete `artifacts/release-integration-c60dea62.md`,
+  including RI-01–03 and separate Sol ACCEPT; `cdc-retrospective.md` Outcome
+  and inspection (lines 1–28), observations and successful repairs (29–83),
+  follow-through/recommendations (84–114). S03 is immutable same-tree context,
+  not a substitute for S04 proof.
+- Source guidance read from this task checkout: `skills/lykn/SKILL.md` complete
+  Before You Do Anything (36–75) and Bindings & Mutation (172–239);
+  `docs/guides/00-lykn-surface-forms.md` complete bind/export/function and
+  type sections (78–285, 498–571); `docs/guides/06-functions-closures.md`
+  ID-01 (14–52) and ID-30 (1040–1075). Surface source is pinned c60, not the
+  planning checkout.
+- Skills resolved from the installed catalog and loaded: rust-guidelines
+  entrypoint plus complete AP-09/AP-12/AP-13 sections; testing entrypoint and
+  complete Testing Discipline plus Validation Gates Proportionate Proof;
+  engineering-methods entrypoint and Required reading/CC intake (guide07
+  297–390); work-verification entrypoint, Evidence Strength and Independent
+  Verification including correction-review rules. No skill was substituted.
+
+## Source extents and observed contracts
+
+- `ast/surface.rs`: complete definitions for `TypedParam`, `DestructuredField`,
+  `ArrayParamElement`, `ParamShape`, their shape helpers, `FuncClause`,
+  `Constructor`, `BindBinding`, and `SurfaceForm` variants Bind/BindGroup/Func/
+  Type/Export/Exports (lines 1–75, 153–180, 205–218, 257–end; targeted ranges
+  were read). `TypedParam` stores default and rest independently. Object fields
+  distinguish typed simple leaves and nested aliases; array patterns distinguish
+  typed entries, rest, skip holes, nested and aliased nested patterns. `FuncClause`
+  owns its own args, return, contracts, body and span.
+- `binding.rs`: complete `binding_names_in_pattern` implementation (944–948),
+  plus its pattern-walker context (binding kinds and pattern dispatch read at
+  85–140 and 220–290). This returns source `BindingSite`s and is the native
+  binding projection, not a textual underscore filter.
+- `emitter/forms.rs`: export dispatch around `Export` (520–558) and complete
+  `direct_bind_export_names` helper (3234–3253). It projects each Bind name or
+  each BindGroup pair through `binding_names_in_pattern(..., BindingKind::Bind)`
+  in source order. This is the reusable authority for DTS exports.
+- `classifier/forms.rs`: `classify_form_inner`, strict and kernel-only
+  dispatch (843–1078); `classify_export` and `classify_exports` (1080–1112,
+  1255–1284); `classify_kernel_escape` (46–70); complete typed parameter parser
+  and object/array pattern parser extents (2781–3280). The parser represents
+  defaults only in explicit `(default :type name value)` forms and rest only in
+  final simple/array rest positions; object property labels are retained
+  separately from bound aliases. Empty `exports` and `exports _` are errors.
+  Unsupported export forms are `KernelPassthrough`; explicit `kernel:export`
+  strips its prefix to raw `(export ...)`. Strict/lax dispatch both preserve
+  those cases. Parser admission is fixed; this task changes declaration
+  interpretation only.
+- `ast/sexpr.rs`: complete `as_atom`/`atom_parts`/`as_form_head` contract
+  (360–405). `as_form_head` is present only for unresolved atoms with no host
+  reference; a resolved lexical call head must not count as syntax. A top-level
+  passthrough export census must examine only the raw form head through this
+  API, not descendant or string text.
+- `compile.rs`: complete `compile_source_with_dts` (217–273). It reads,
+  expands, resolves, validates, classifies, analyzes once, emits JS from that
+  `AnalyzedUnit`, then calls `emit_dts_module`; empty declaration text maps to
+  `None`. `main.rs` compile-file output branch (470–526) writes JS first and
+  writes a `.d.ts` sidecar only when present. It does not delete an older sidecar;
+  this is an observed CLI lifecycle boundary to account for in the allowed test,
+  without adding production plumbing. `dist.rs` complete `compile_lykn_sources`
+  (182–278) independently analyzes each Lykn source and calls the same
+  `emit_dts_module` when package `emitDts` is enabled.
+- Existing caller/test patterns: complete
+  `crates/lykn-cli/tests/compile_validation_parity.rs` (231 lines), including
+  `TempDir`, `Command`, actual CLI files, read-before-assert receipts and a
+  runtime Deno command; complete `crates/lykn-cli/tests/emission_failures.rs`
+  (598 lines), including package fixture (`emitDts:true`), `build_project`,
+  `TempDir`/`Command`, runtime receipts and stale-output sentinel patterns.
+  These define permissible fixtures only; neither is edited.
+- Declaration emitter: full `dts.rs` read establishes the current behavior:
+  simple params use normalized source names; destructured args use `arg{i}`;
+  defaults/rest are ignored; object optional properties render with `?` but do
+  not explicitly admit `undefined`; tuple skips are `unknown`; inline export
+  supports only scalar Bind/Func/Type and ignores destructured Bind/BindGroup;
+  named Exports supports scalar Bind/BindGroup and functions/types; empty output
+  has no module marker. Low-level type and bind renderers are used beyond
+  module-level projections and must remain compatible.
+- Prior review evidence: S03 retrospective identifies the earlier false-positive
+  pattern where a syntax diagnostic excerpt was mistaken for runtime rejection;
+  the implemented tests must inspect actual tool exit/diagnostic class, and
+  source-specific preparation must follow its actual producer. The S04 proof
+  therefore needs actual generated declarations and actual Deno checking, not
+  snapshots alone.
+
+## Contract readback before dependent edits
+
+The correction belongs solely in native `dts.rs`, one new CLI integration test,
+then immediate factual teaching in guides00 and 06. For each `FuncClause`,
+parameter positions/types remain positional while only `_` and anonymous
+pattern parameters receive deterministic compiler labels. Reserve all normalized
+meaningful simple labels before allocating `arg{i}`/suffixes; keep allocation
+local to that clause, so a later named `arg0` cannot collide. Do not rename
+`_value` or schema/object property keys. Required/default/rest optionality must
+be computed from the last required input position: trailing defaults use `?`,
+defaults before a later required argument admit explicit `undefined`, rest is
+per-element typed, nested caller parameters remain required. Apply the same
+rules recursively to tuple defaults/skips and object default fields, including
+`undefined` under exact optional properties, without widening the fixed
+multi-clause admission rule.
+
+At module entrances, export only source-bound names obtained via the existing
+binding walker; share Bind/BindGroup declaration logic for inline and named
+exports. Destructured leaves are `unknown`, while scalar literal/type inference
+stays as it is. The easy-to-miss empty-module rule is deliberately conservative:
+`export {}` is valid only when explicit export forms exist and all are handled
+inline Bind/BindGroup forms with no projected names. Default/re-export and
+kernel-escaped raw exports are `KernelPassthrough` and veto this marker when the
+raw unresolved head is `export`. Empty non-module source stays sidecar-free;
+Type constructor `_` remains typed data. Preserve unsupported signature/raw
+export vetoes, contracts, returns and warnings, bound call heads, runtime JS,
+serialized schema/property roles, and existing low-level helper signatures.
+
+Proof must start with a valid actual Deno type-check failure from the c60
+compiler before production edits. Final evidence must then flow through an
+actual successful `AnalyzedUnit`, normal and stripped CLI output, package
+`emitDts:true`, generated local `.d.ts` TypeScript imports checked with strict,
+exactOptionalPropertyTypes and skipLibCheck false (offline/no npm), actual runtime
+outputs/namespace, and the repository's prescribed final gates. Rust unit/string
+tests alone cannot prove declaration validity or the file/package consumer
+routes. Root owns planning Git and ledger state; my report is proposed-done for
+separate Sol, not acceptance.
+
+No contradiction or unresolved contract choice was found during intake. No
+product file has been edited yet.
+
+## Location correction — 2026-11-14
+
+The initial intake bytes were mistakenly created under the source checkout's
+`artifacts/cc/`. Before running the baseline or editing product code, I moved
+those bytes unchanged to the canonical planning location required by the slice
+prompt: `/Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/arc05-binding-semantics-and-hygienic-emission/slice04-discard-aware-declarations/artifacts/cc/intake.md`.
+This append preserves the original intake text and records the correction. No
+other source artifact was moved; source `artifacts/cc/` is removed only if now
+empty. Root owns planning Git/index and no planning index operation was done.
+
+## Required c60 semantic red — before production edits
+
+The first consumer attempt (preserved in `baseline-invalid-consumer-attempt/`)
+used an `import type` binding as a runtime value and correctly produced an
+additional TS1361; that invalid consumer is not counted as the semantic red.
+The test was corrected to a type-only import, `typeof` type alias, and declared
+call-signature variable, then rerun against unchanged c60 production code.
+
+`baseline-red/cargo.status` is `0`: the focused Rust witness ran 1/1 and passed
+its assertion that the actual checker rejects the generated declaration.
+`baseline-red/generated.d.ts` is the compiler's real output:
+`export function ignore(_: number, _: string): void;`. The saved
+`baseline-red/consumer.ts` is valid TypeScript importing this local `.d.ts`;
+`baseline-red/deno.json` has `strict:true`,
+`exactOptionalPropertyTypes:true`, `skipLibCheck:false`. The actual offline Deno
+command and stdout/stderr/status are preserved as
+`baseline-red/deno-check.command`, `.stdout`, `.stderr`, `.status`; nested Deno
+exit is 1 with exactly two TS2300 `Duplicate identifier '_'` errors and no
+other diagnostic. CLI compile stdout/stderr/status and the complete cargo test
+streams/status are also preserved. This is the required valid semantic red;
+`baseline-red/test-source.rs` records the pre-production witness.
+
+## CC execution evidence — 2026-11-14
+
+Implementation changed exactly the four permitted product paths and committed
+them on `codex/qualified-adt-core` as `918f2e9c4237770fc7b2e0e950d726e735e95198`
+(tree `37b1cd6e7a457caf94933a35cdac54335c7afb66`, parent c60
+authority `c60dea62d126bb07557a7f4f7183662dec3f6a58`). Final source status is
+clean. The commit has both adjacent Codex and Billo AI trailers.
+
+The pre-edit baseline red remains the valid unchanged-c60 case recorded above:
+actual generated duplicate `_` parameter declaration, one Rust witness passed,
+and offline Deno exited 1 with two TS2300 diagnostics. The invalid earlier TS1361
+consumer remains a separately labeled failed attempt, not the red oracle.
+
+Current focused receipts are under `artifacts/cc/focused/final08/`: native DTS
+unit suite 32/32 passed (1,179 filtered from the library harness); CLI generated
+DTS suite 4/4 passed. The Deno config used by those tests explicitly enables
+`strict`, `exactOptionalPropertyTypes`, and `skipLibCheck:false`, with local
+`.d.ts` imports and offline/no-npm options. Positive consumers cover discarded
+positions, defaults, rest, tuple optional skips, object data, destructuring label
+collisions, fixed overloads, exact export namespaces, package declarations and
+typed constructor inputs. The unguarded wrong-type call exited 1 with TS2345.
+Checked and stripped JS runtime outputs agree; a true discarded parameter with
+foreign global `_ = 99` resolves to 99, while `_value` returns its supplied 7.
+The constructor positive and invalid input produce the expected data and a real
+`TypeError`. CLI and package declarations for identical source match byte for
+byte. The overloaded test specimen emits two existing unused-binding warnings
+for its intentionally unused named argument; those streams are retained.
+
+`make fresh-artifacts` passed in `fresh-artifacts/final03/`. Final full `make
+check` is status 0 in `gates/make-check-final03/`: 40 Cargo harness result rows,
+1,786 Rust tests passed, zero failed or ignored; 99 `.lykn` product test inputs
+compiled; the product suite passed 1,578 tests across 67 steps, zero failed;
+documentation passed 482 tests, zero failed. Documentation accounting remains
+separate: 15 annotation/fragment exclusions and 9 inputs with no Lykn blocks.
+The M6 inner Deno 2.9.6 run used the recorded command/config and seven explicit
+source test paths, with 70 passed and zero failed. All 14 delivery comparisons
+report canonical equality to both embedded and materialized output. Five
+compiler warnings from those probes remain in the captured M6 streams; no
+source-level M6 code or counter changed.
+
+Final-HEAD `make check-cited-paths` passed for 64 documents and 601 accepted
+historical citations. Fresh `make bundle-size-check` passed against the 81,920
+byte gzip limit: raw 379,173 bytes, minified 181,014 bytes, gzip 48,689 bytes.
+That size command downloaded esbuild into the Deno cache and captured astring
+package-condition warnings; it made no project dependency or lockfile change.

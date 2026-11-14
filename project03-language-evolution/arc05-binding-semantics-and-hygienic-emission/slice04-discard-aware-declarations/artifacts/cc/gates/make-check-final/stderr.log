@@ -1,0 +1,25 @@
+    Finished `release` profile [optimized] target(s) in 0.08s
+    Checking lykn-lang v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang)
+error: redundant guard
+   --> crates/lykn-lang/src/emitter/dts.rs:447:20
+    |
+447 |                   if matches!(raw, SExpr::List { values, .. }
+    |  ____________________^
+448 | |                     if values.first().and_then(SExpr::as_form_head) == Some("export")) =>
+    | |______________________________________________________________________________________^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.97.0/index.html#redundant_guards
+    = note: `-D clippy::redundant-guards` implied by `-D warnings`
+    = help: to override `-D warnings` add `#[allow(clippy::redundant_guards)]`
+help: try
+    |
+446 -             SurfaceForm::KernelPassthrough { raw, .. }
+447 -                 if matches!(raw, SExpr::List { values, .. }
+448 -                     if values.first().and_then(SExpr::as_form_head) == Some("export")) =>
+446 +             SurfaceForm::KernelPassthrough { raw: SExpr::List { values, .. }, .. } if values.first().and_then(SExpr::as_form_head) == Some("export") =>
+    |
+
+error: could not compile `lykn-lang` (lib) due to 1 previous error
+warning: build failed, waiting for other jobs to finish...
+error: could not compile `lykn-lang` (lib test) due to 1 previous error
+make: *** [lint] Error 101

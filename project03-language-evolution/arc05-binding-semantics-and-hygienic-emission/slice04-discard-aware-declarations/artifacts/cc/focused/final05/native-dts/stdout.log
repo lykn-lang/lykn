@@ -1,0 +1,77 @@
+
+running 32 tests
+test emitter::dts::tests::test_destructured_array_default_and_skip_optional_positions ... ok
+test emitter::dts::tests::test_emit_bind_inferred_null_to_unknown ... ok
+test emitter::dts::tests::test_emit_bind_inferred_number ... ok
+test emitter::dts::tests::test_emit_bind_lisp_case ... ok
+test emitter::dts::tests::test_emit_bind_inferred_computed_to_unknown ... ok
+test emitter::dts::tests::test_emit_bind_inferred_boolean ... ok
+test emitter::dts::tests::test_emit_bind ... ok
+test emitter::dts::tests::test_emit_bind_inferred_string ... ok
+test emitter::dts::tests::test_emit_func_no_returns_warning ... ok
+test emitter::dts::tests::test_emit_func_multi_clause_overloads ... ok
+test emitter::dts::tests::test_emit_func_single_clause ... ok
+test emitter::dts::tests::test_emit_type_adt ... ok
+test emitter::dts::tests::test_func_args_describe_defaults_before_required_and_rest ... ok
+test emitter::dts::tests::test_func_args_reserve_meaningful_names_before_allocating_discards ... ok
+test emitter::dts::tests::test_param_destructured_array_with_rest ... ok
+test emitter::dts::tests::test_param_destructured_object ... ok
+test emitter::dts::tests::test_param_simple ... ok
+test emitter::dts::tests::test_module_exports_from_successful_analyzed_unit_project_source_bindings ... ok
+test emitter::dts::tests::test_empty_module_marker_requires_only_handled_empty_inline_exports ... ok
+test emitter::dts::tests::test_type_any ... ok
+test emitter::dts::tests::test_type_array ... ok
+test emitter::dts::tests::test_type_bigint ... ok
+test emitter::dts::tests::test_type_boolean ... ok
+test emitter::dts::tests::test_type_function ... ok
+test emitter::dts::tests::test_type_number ... ok
+test emitter::dts::tests::test_type_object ... ok
+test emitter::dts::tests::test_type_promise ... ok
+test emitter::dts::tests::test_type_string ... ok
+test emitter::dts::tests::test_type_symbol ... ok
+test emitter::dts::tests::test_type_user ... ok
+test emitter::dts::tests::test_type_void ... ok
+test emitter::dts::tests::test_successful_fresh_analyzed_units_have_local_labels_and_keep_warnings ... ok
+
+test result: ok. 32 passed; 0 failed; 0 ignored; 0 measured; 1179 filtered out; finished in 0.00s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 1 filtered out; finished in 0.00s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 22 filtered out; finished in 0.00s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 23 filtered out; finished in 0.00s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 18 filtered out; finished in 0.00s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 9 filtered out; finished in 0.00s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 28 filtered out; finished in 0.00s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 5 filtered out; finished in 0.00s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 24 filtered out; finished in 0.00s
+

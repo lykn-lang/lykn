@@ -1,0 +1,5 @@
+program="deno"
+args=["run", "--no-config", "--no-remote", "--cached-only", "--no-npm", "--deny-net", "--no-prompt", "/private/tmp/lykn-arc05-s04-cc/tmp/.tmpMjZa64/schema-runtime.js"]
+cwd=Some("/private/tmp/lykn-arc05-s04-cc/tmp/.tmpMjZa64")
+env_overrides=
+
