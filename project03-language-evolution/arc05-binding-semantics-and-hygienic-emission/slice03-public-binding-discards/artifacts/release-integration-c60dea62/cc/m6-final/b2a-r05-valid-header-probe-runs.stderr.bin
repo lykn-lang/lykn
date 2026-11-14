@@ -1,0 +1,2 @@
+1:56: warning: unused binding 'value'
+  suggestion: prefix with underscore: _value
