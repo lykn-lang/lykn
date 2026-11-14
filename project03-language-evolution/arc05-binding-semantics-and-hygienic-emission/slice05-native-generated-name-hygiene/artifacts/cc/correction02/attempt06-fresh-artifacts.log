@@ -1,0 +1,6 @@
+[1;36m• Refreshing test artifacts (release binary + build dir)...[0m
+    Finished `release` profile [optimized] target(s) in 0.10s
+@lykn/lang built in target/lykn/build/lang/
+@lykn/browser built in target/lykn/build/browser/
+@lykn/testing built in target/lykn/build/testing/
+[1;32m✓ Test artifacts fresh[0m

@@ -9,6 +9,12 @@ depends-on: [slice02-native-binding-discards, slice04-discard-aware-declarations
 
 # Native compiler-generated name hygiene
 
+Current correction02 handoff2026-11-14: CC proposes82f1b65b92529979afd6c624183912ca31453927,
+tree4bb6bfc9e171bc6424548b0f740dd32f0cf98c75. Only the existing native test
+changed from32749d97; full delivery remains ten paths and production is unchanged.
+Task is clean/no owned jobs; source/build returns to root for separate final
+Sol source review/fresh gates. All8NH/BS-05 remain open;2/5 refinements spent.
+
 Current correction02 issue2026-11-14: separate source-first review of
 32749d97 holds missing NH-01/02/04 producer proofs, not a demonstrated production
 defect. Complete recursive typed leaves, first-function later-sibling skip,

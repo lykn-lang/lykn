@@ -250,3 +250,135 @@ or dismissed by using the supported top-level await shape. The arc roadmap
 keeps its structure, with S06 physical-name/candidate-key and S07 escaped-source/
 protected-root prerequisites made explicit. Final implementation acceptance and
 root close/parent reconciliation remain due; release staysc60.
+
+# Correction02 CC proposed native proof completion
+
+Correction02 is a bounded, one-file test-only continuation of correction01.
+The prior correction01 report, artifacts, initial fa candidate, prompts, and
+failures remain unchanged. This section adds the four HOLD-targeted native
+proofs and their final delivery evidence; it does not claim independent
+acceptance. All8NH/BS-05 remain open.
+
+## Pins and exact scope
+
+- Dispatch started from clean source
+  `32749d97216cba269fb5e4a4d454e26ece6c11dc`, tree
+  `f4a955ab32c9bcbadf9ac47eb06ec9e79e2b971c`, branch
+  `codex/qualified-adt-core`. The correction02 planning issue is
+  `9009d509`.
+- One-path correction commit is
+  `82f1b65b92529979afd6c624183912ca31453927`, tree
+  `4bb6bfc9e171bc6424548b0f740dd32f0cf98c75`, parent `32749d97`. The raw
+  message was checked; `Co-authored-by: Codex` and `Co-authored-by: Billo AI`
+  trailers are adjacent. It changes only
+  `crates/lykn-lang/tests/generated_name_hygiene.rs`.
+- The full c0ed→82f1b65b product delivery still has exactly ten paths: the
+  prior correction01 seven-path delta plus initial `emitter/mod.rs`,
+  `emitter/source_names.rs`, and `docs/guides/06-functions-closures.md`.
+  No production, CLI, guide, dependency, lock, AST, resolver, DTS, protected
+  policy, JS compiler or M6 population file changed in correction02.
+
+## Four corrected native proof inputs
+
+The full focused native log is `artifacts/cc/correction02/attempt04-focused-native.log`.
+It shows all four existing native integration groups passing. The first
+combined typed fixture now slices generated JS at the later `function nested(`
+and asserts the first `collide` function itself contains its checked result
+helper `result__gensym2`; the real `7 7` execution remains. This rejects a
+per-form-only census that would let the first function take a name reserved by
+a later sibling.
+
+A recursive object→array→object default parameter is absent from the function
+body. The generated checked function binds normalized `result__gensym0` and
+uses `result__gensym1` for the checked result; it runs7 in checked and stripped
+modes. The stripped output correctly omits the checked helper while retaining
+the reconstructed leaf.
+
+The public `emit_form` input now has `:any t__gensym0` only as a reconstructed
+parameter; its body is `(some-> 7 (+ 1))`. The recorded output is
+`function one(t__gensym0)` with actual inner `t__gensym1` storage; executing
+`one(99)` yields8, and the retained context allocates `t__gensym2` next. The
+existing failed-form reuse/mode and raw-literal controls remain. The real
+whole-module host-reference rejection remains in place and was not weakened.
+
+The canonical Bind-RHS async do/await carrier opposes source
+`value_box__gensym0=99`. In both modes the emitted async IIFE boxes the awaited
+7 and unboxes through distinct `value_box__gensym1[0]`; runtime is exactly
+`7 99 before`, so the source effect runs once and the foreign value remains99.
+The carrier parameter encloses only its fixed getter; no fabricated source
+capture is asserted.
+
+## Focused and full gate receipts
+
+- `attempt02-format.log` and `attempt03-clippy.log`: `cargo fmt --check` and
+  Clippy for both Rust packages/tests with warnings denied passed. The first
+  focused attempt `attempt01-focused-native.log` also passed all4 groups before
+  adding explicit fragment source/JS logging; the final `attempt04` is the
+  complete durable source/generated/runtime receipt.
+- `attempt05-focused-cli.log`: unchanged CLI integration 2/2 passed. It retains
+  both source suffixes, checked/strip runtime, actual JSON compiler consumer,
+  and built package API/declaration/runtime checks.
+- `attempt06-fresh-artifacts.log`: `make fresh-artifacts` exit0. The one full
+  command was `LYKN_MACRO_DEPENDENCIES_EVIDENCE_DIR=<absolute correction02/m6>
+  make check`; terminal session32873 drained exit0. `make check` includes the
+  documentation phase once; no extra docs target was run. The Lykn suite says
+  `ok | 1578 passed (67 steps) | 0 failed (16s)`. The docs harness generated
+  22 files / 482 blocks (15 skipped) and documentation tests passed.
+- The precreated M6 receipt directory is
+  `artifacts/cc/correction02/m6/`. The standalone copied CLI compile and the
+  strict public Deno consumer both have success/code0 statuses. The strict
+  `--cached-only --no-prompt --config` command ran these exact seven files:
+  `test/forms/embedded-adt-pattern.test.js`,
+  `test/forms/surface-type-context.test.js`,
+  `test/forms/reserved-binding-output.test.js`,
+  `test/forms/icu-generated-names.test.js`,
+  `test/expander/lexical-regions.test.js`,
+  `test/forms/discard-bindings.test.js`, and
+  `test/forms/remaining-discard-bindings.test.js`. Its output is
+  `ok | 70 passed | 0 failed (2s)`; no skips are reported. All fourteen
+  per-file comparisons record both canonical/embedded and
+  canonical/materialized byte equality as true. The command used a private
+  per-run XDG cache, inherited `/Users/oubiwann/Library/Caches/deno`, and the
+  correction02 evidence environment. The inner compile stderr has five fixture
+  warnings (unused `Option`, `InnerValue`, `ZeroForms`, and `value`, plus one
+  unreachable match clause); strict public stderr is empty. Commands, config,
+  source/generated files, statuses, stdout/stderr, and comparison receipts are
+  retained under `m6/`; outer log is `attempt07-make-check.log` and its
+  denominator summary is `attempt07-make-check-summary.txt`.
+- Final-head `make check-cited-paths` is attempt08, exit0 (64 documents; 601
+  historical citations accepted). Fresh `make bundle-size-check` is attempt09,
+  exit0: gzip baseline27,630 bytes, current48,689 bytes, within the81,920-byte
+  ceiling. Full outputs and explicit command/exit markers are retained in
+  those logs.
+
+## Eight CC row proposals (still open)
+
+| Criterion | Correction02 proposal and source evidence | Disposition |
+| --- | --- | --- |
+| NH-01 — Complete owned source names are reserved before native helper allocation | First-function sibling isolation plus recursive absent-body nested default proves all-unit pre-seeding and recursive parameter occupancy; prior physical census controls remain. | Proposed pass; independent source-first review pending |
+| NH-02 — Every early native generated-binding producer uses the reserved namespace | Actual async do/await carrier reserves `value_box__gensym0` and allocates distinct value_box1; existing early producer controls remain. | Proposed pass; independent source-first review pending |
+| NH-03 — Names preserve behavior, effects, checks and data/API roles | Recursive checked/strip values, fragment call, carrier value99 and once-only `before` effect pass; existing error/iterator/data/API controls remain. | Proposed pass; independent source-first review pending |
+| NH-04 — Owned units and supported fragment entrances retain their lifecycle boundaries | First allocation is isolated before a sibling; supported public `:any` fragment proves absent-body parameter census, actual t1 call result8 and retained next t2; failure/reuse/raw limits remain. | Proposed pass; independent source-first review pending |
+| NH-05 — Existing late allocators and private host/completion protocols compose | Correction01 canonical ICU/host/invocation/completion source cases rerun within the passing native group and full workspace check. | Proposed pass; independent source-first review pending |
+| NH-06 — Actual CLI, JSON and package delivery uses the protected native producers | Unchanged real CLI/JSON/package group passes focused and inside full check; M6 materialized delivery also passes 70/7/all14. | Proposed pass; independent source-first review pending |
+| NH-07 — Final source and mandatory delivery gates pass | Focused native/CLI, format/Clippy, fresh artifacts, one full check/docs, actual M6, one-path commit, final cited-path and fresh size are recorded. | Proposed pass; independent source-first review pending |
+| NH-08 — Independent close preserves history, scope and later owners | Only the authorized existing native test file changed; correction01/AWEX histories and exact ten-path delivery remain; no S06/AWEX repair/release is claimed. | Proposed pass; independent source-first review and root reconciliation pending |
+
+## Final correction02 handoff
+
+Final source HEAD is `82f1b65b92529979afd6c624183912ca31453927`, tree
+`4bb6bfc9e171bc6424548b0f740dd32f0cf98c75`, on `codex/qualified-adt-core`.
+The source worktree is clean. The full ten-path c0ed range and one-path
+correction range were inspected; no S06, AWEX repair, release, push or merge
+was performed. All8NH/BS-05 remain open: these are CC proposed row outcomes,
+not acceptance. AWEX remains separately routed, and root retains planning
+Git/index/status/rows/acceptance, retrospective and reconciliation.
+
+Correction02 inventory update: new doer logs, exact commit message and final
+handoff are under `artifacts/cc/correction02/`; M6 source/generated/config/
+command/status/stdout/stderr and fourteen comparisons are under `m6/`. The
+existing correction01 inventory, limits and AWEX routing remain applicable;
+correction02 adds no new bubble-up or later-owner claim. Final filtered process
+query returned no make/Cargo/Lykn/Deno jobs, the source worktree is clean at
+`82f1b65b92529979afd6c624183912ca31453927`, and source/build ownership returns
+to root.

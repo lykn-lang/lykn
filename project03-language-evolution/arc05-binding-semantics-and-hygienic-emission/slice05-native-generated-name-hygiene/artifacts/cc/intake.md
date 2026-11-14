@@ -121,3 +121,85 @@ all eight NH criteria remain unchanged/open. Focused proof is followed by
 fresh-artifacts, a Clippy preflight, one fully captured final `make check`,
 actual M6 70/7 plus all 14 comparisons, exact commit, final-HEAD citations and
 fresh 81920-byte cap check; none is waived by earlier candidate evidence.
+
+## Correction02 pre-edit source and oracle readback
+
+**Dispatch pin:** correction02 planning issue
+`9009d509` directs test-only work from clean source HEAD
+`32749d97216cba269fb5e4a4d454e26ece6c11dc`, tree
+`f4a955ab32c9bcbadf9ac47eb06ec9e79e2b971c`, branch
+`codex/qualified-adt-core`. The preserved initial `fa6562a1` and correction01
+`32749d97` commits, their attempt histories and close remain unchanged. Only
+`crates/lykn-lang/tests/generated_name_hygiene.rs` may change; source/build
+ownership is this CC's exclusive dispatch, while root owns planning Git/index/
+rows. Ten-path c0ed→delivery scope and eight open NH rows remain fixed; this is
+test-only and does not assert or repair a production defect.
+
+**Required documents read before edits:** the complete canonical
+`cc-prompt-iteration02.md`; current plan `slice-plan.md` v1.2 including
+correction02 section E, exact scope/gates/history; all eight rows in `ledger.md`;
+the complete correction01 independent source-first HOLD and correction02
+actual-text readiness PASS in `cdc-verification.md`; current complete
+`closing-report.md`; and the full 417-line native integration test. The plan's
+four wrong-implementation distinctions are read as exact requirements, not
+coverage labels: first-function sibling allocation must be isolated before the
+second declaration; recursive object→array→object default leaf must be absent
+from the body and normalize `result__gensym0!`; the supported `:any` fragment
+parameter `t__gensym0` must be absent from its some-thread body; and a real
+Bind-RHS async do/await carrier must oppose `value_box__gensym0` while its
+fixed getter storage is distinct and one `before` effect remains. Keep the
+rejected checked `:number`/`:returns` fragment out because the actual public
+API rejects unfinished host references.
+
+**Source reading with recovery:** read `forms.rs` public `emit_form` at
+286–307, including both whole-module host invocation and host-reference marker
+rejections. The named existing rejection oracle is actually in
+`crates/lykn-lang/tests/emission_results.rs:246–278` (the initially tried
+`src/emitter/emission_results.rs` path does not exist); recovered by listing
+source/test paths and read the actual test. It asserts the compiler-owned
+reference diagnostic/span, then shows whole-unit JSON lowers the reference.
+Read the recursive `source_names.rs` parameter walk through `ParamShape`,
+`DestructuredField`, `ArrayParamElement`, `TypedParam`, annotation, nested
+alias, pattern and defaults; literal SExpr strings remain excluded. Read
+`forms.rs:226–235` actual `unbox_awaited_value` implementation and the
+async/value-context producer/callers `5620–5758`, including
+`emit_do`'s `any_current_await`, array boxing and async IIFE unbox. Read the
+existing actual nested input at `crates/lykn-cli/tests/discard_declarations.rs:
+160–194`; it confirms the object alias → array → nested object parameter syntax.
+The full current native group shows the corrected attempt11, completion, ICU,
+host/invocation and JSON controls that must remain intact.
+
+**Pre-edit test contract:**
+
+1. In the existing combined typed fixture, assert that the first `collide`
+   function specifically allocates `result__gensym2` before `function nested(`;
+   a whole-module search does not distinguish a per-form allocator. Preserve
+   actual runtime `7 7`.
+2. Add the recursive alias/array/object default function and call with
+   `(obj :items #a((obj)))`. Require the actual normalized parameter leaf,
+   checked result helper `result__gensym1`, and runtime7. Run checked and
+   stripped output; do not require the checked-only helper after strip.
+3. Replace the public fragment specimen's body-read parameter with the
+   `:any t__gensym0` absent-body + `(some-> 7 (+ 1))` source. Assert the actual
+   emitted function parameter and `t__gensym1` some-thread local, execute
+   `one(99)`→8, then assert context `next("t")` gives `t__gensym2`. Preserve
+   the supplementary failure/reuse/mode/raw controls and existing whole-unit
+   reference rejection; no API weakening or fabricated raw IR.
+4. Add the canonical bind-RHS `(do ... (await ...))` carrier input in checked
+   and stripped modes. `value_box__gensym0=99` is read as foreign source data;
+   generated unbox carrier uses distinct `value_box__gensym1`, boxes/unboxes
+   the awaited result through the actual source producer, and outputs
+   `7 99 before` exactly once. The carrier's parameter encloses only its fixed
+   getter; assert actual helper presence/distinct identity and result/effect,
+   never claim it captures a foreign source read inside its own fixed body.
+
+Retain every existing native control and make no CLI/test-helper/production
+change. Use existing native `compile`, `compile_strip`, `run`, `reader` →
+resolver → classifier → analyze → emit and `emit_form` paths. Log full actual
+source/generated JS and runtime command/status/stdout/stderr to the new
+correction02 attempt receipts; failures remain preserved. Preflight/focused,
+fresh-artifacts and one full `make check` with precreated absolute M6 evidence
+are required; inspect actual 7/70/all14, commit only this one path with exact
+message file/adjacent trailers, then final-HEAD citations and fresh81920 size.
+No extra docs target, new scripts, dependencies, source-language parity,
+S06/S07/AWEX repair, or ledger acceptance is authorized.
