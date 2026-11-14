@@ -1383,7 +1383,13 @@ fn emit_alias_pattern(w: &mut JsWriter, args: &[SExpr]) -> Result<(), LyknError>
     // (alias original local) → original: local
     // (alias original local default) → original: local = default
     if args.len() >= 2 {
-        emit_expr(w, &args[0], 0)?;
+        if matches!(&args[0], SExpr::Number { value, .. } if value.is_sign_negative()) {
+            w.write("[");
+            emit_expr(w, &args[0], 0)?;
+            w.write("]");
+        } else {
+            emit_expr(w, &args[0], 0)?;
+        }
         w.write(": ");
         emit_pattern(w, &args[1])?;
         if args.len() >= 3 {
@@ -1823,6 +1829,18 @@ mod tests {
     #[test]
     fn test_emit_number_integer() {
         assert_eq!(emit_to_string(&num(42.0)), "42");
+    }
+
+    #[test]
+    fn negative_numeric_alias_keys_use_computed_pattern_spelling() {
+        let alias = list(vec![atom("alias"), num(-1.0), atom("_")]);
+        assert_eq!(emit_to_string(&alias), "[-1]: _");
+
+        let negative_zero = list(vec![atom("alias"), num(-0.0), atom("_")]);
+        assert_eq!(emit_to_string(&negative_zero), "[0]: _");
+
+        let positive_zero = list(vec![atom("alias"), num(0.0), atom("_")]);
+        assert_eq!(emit_to_string(&positive_zero), "0: _");
     }
 
     #[test]

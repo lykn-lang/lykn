@@ -354,6 +354,13 @@ fn collect_default_paths(node: &SExpr, path: &[usize], typed: bool, out: &mut Ve
                 collect_default_paths(&values[1], &nested, typed, out);
             }
         }
+        Some("rest") | Some("spread") if !typed => {
+            if let Some(nested) = values.get(1) {
+                let mut nested_path = path.to_vec();
+                nested_path.push(1);
+                collect_default_paths(nested, &nested_path, typed, out);
+            }
+        }
         Some("rest") => {
             let nested_index = if typed { 2 } else { 1 };
             if let Some(nested) = values.get(nested_index) {
@@ -371,6 +378,9 @@ fn collect_default_paths(node: &SExpr, path: &[usize], typed: bool, out: &mut Ve
                 member_path.push(index);
                 match parts.first().and_then(SExpr::as_atom) {
                     Some("default" | "rest" | "array" | "object") => {
+                        collect_default_paths(member, &member_path, typed, out)
+                    }
+                    Some("spread") if !typed => {
                         collect_default_paths(member, &member_path, typed, out)
                     }
                     Some("alias") => {
@@ -523,4 +533,28 @@ pub(crate) fn at_path<'a>(root: &'a SExpr, path: &OccurrencePath) -> Option<&'a 
         SExpr::List { values, .. } => values.get(*index),
         _ => None,
     })
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::reader;
+
+    #[test]
+    fn untyped_spread_defaults_retain_nested_value_paths() {
+        let forms = reader::read(
+            "(kernel:=> ((spread (object (default value (lookup)) (default nested (other))))) value)",
+        )
+        .expect("spread parameter parses");
+        let regions = function_regions(&forms[0]).expect("kernel arrow regions");
+        let clause = &regions.clauses[0];
+        assert_eq!(clause.default_paths.len(), 2);
+        let values = clause
+            .default_paths
+            .iter()
+            .filter_map(|path| at_path(&forms[0], path))
+            .map(ToString::to_string)
+            .collect::<Vec<_>>();
+        assert_eq!(values, ["(lookup)", "(other)"]);
+    }
 }

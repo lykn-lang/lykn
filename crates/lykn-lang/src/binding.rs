@@ -869,7 +869,7 @@ pub(crate) fn kernel_param_names(params: &SExpr) -> Vec<BindingOccurrence<'_>> {
                 });
             }
             SExpr::List { values, .. } => match values.first().and_then(SExpr::as_atom) {
-                Some("rest" | "default") => {
+                Some("rest" | "spread" | "default") => {
                     if let Some(binding) = values.get(1) {
                         pattern_occurrences_with_grammar(
                             binding,
@@ -1700,6 +1700,27 @@ mod tests {
                 .collect::<Vec<_>>(),
             vec!["present"]
         );
+    }
+
+    #[test]
+    fn kernel_spread_parameter_projection_and_reserved_validation_agree() {
+        let params = read("((spread (object (default value 7))) _) ").expect("parse params");
+        assert_eq!(
+            kernel_param_names(&params[0])
+                .into_iter()
+                .map(|site| site.atom.as_atom().expect("projected atom"))
+                .collect::<Vec<_>>(),
+            vec!["value"]
+        );
+
+        let reserved = read("(kernel:=> ((spread eval)) 1)").expect("parse reserved binder");
+        let diagnostics = validate_reserved_names(&reserved);
+        assert!(diagnostics.iter().any(|diagnostic| {
+            diagnostic.message.contains("eval")
+                && diagnostic
+                    .message
+                    .contains("strict-mode binding identifier")
+        }));
     }
 
     #[test]

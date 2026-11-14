@@ -1358,6 +1358,7 @@ fn parse_bind_group(args: &[SExpr], span: Span) -> Result<Vec<BindBinding>, Diag
         }
         if binding_names_in_pattern(name, BindingKind::Bind).is_empty()
             && name.as_atom() != Some("_")
+            && !is_structurally_valid_discard_pattern(name)
         {
             return Err(err(
                 "bind group name must be an atom or destructuring pattern",
@@ -1378,6 +1379,100 @@ fn parse_bind_group(args: &[SExpr], span: Span) -> Result<Vec<BindBinding>, Diag
         ));
     }
     Ok(bindings)
+}
+
+fn is_structurally_valid_discard_pattern(pattern: &SExpr) -> bool {
+    let Some(values) = pattern.as_list() else {
+        return false;
+    };
+    match values.first().and_then(SExpr::as_atom) {
+        Some("array") => valid_discard_array_members(&values[1..]),
+        Some("object") => valid_discard_object_members(&values[1..]),
+        _ => false,
+    }
+}
+
+fn is_discard_binding_target(pattern: &SExpr) -> bool {
+    if pattern.as_atom() == Some("_") {
+        return true;
+    }
+    let Some(values) = pattern.as_list() else {
+        return false;
+    };
+    match values.first().and_then(SExpr::as_atom) {
+        Some("array") => valid_discard_array_members(&values[1..]),
+        Some("object") => valid_discard_object_members(&values[1..]),
+        _ => false,
+    }
+}
+
+fn is_discard_binding_element(pattern: &SExpr) -> bool {
+    if is_discard_binding_target(pattern) {
+        return true;
+    }
+    let Some(values) = pattern.as_list() else {
+        return false;
+    };
+    values.first().and_then(SExpr::as_atom) == Some("default")
+        && values.len() == 3
+        && is_discard_binding_target(&values[1])
+}
+
+fn valid_discard_array_members(members: &[SExpr]) -> bool {
+    for (index, member) in members.iter().enumerate() {
+        if member.as_atom() == Some("_") {
+            continue;
+        }
+        let Some(parts) = member.as_list() else {
+            return false;
+        };
+        match parts.first().and_then(SExpr::as_atom) {
+            Some("array" | "object") if is_structurally_valid_discard_pattern(member) => {}
+            Some("default") if parts.len() == 3 && is_discard_binding_target(&parts[1]) => {}
+            Some("rest" | "spread")
+                if parts.len() == 2
+                    && index + 1 == members.len()
+                    && is_discard_binding_target(&parts[1]) => {}
+            _ => return false,
+        }
+    }
+    true
+}
+
+fn valid_discard_object_members(members: &[SExpr]) -> bool {
+    for (index, member) in members.iter().enumerate() {
+        if member.as_atom() == Some("_") {
+            continue;
+        }
+        let Some(parts) = member.as_list() else {
+            return false;
+        };
+        match parts.first().and_then(SExpr::as_atom) {
+            Some("default") if parts.len() == 3 && parts[1].as_atom() == Some("_") => {}
+            Some("alias")
+                if (parts.len() == 3 || parts.len() == 4)
+                    && matches!(
+                        parts[1],
+                        SExpr::Atom(_)
+                            | SExpr::Keyword { .. }
+                            | SExpr::String { .. }
+                            | SExpr::Number { .. }
+                            | SExpr::Bool { .. }
+                            | SExpr::Null { .. }
+                    )
+                    && if parts.len() == 3 {
+                        is_discard_binding_element(&parts[2])
+                    } else {
+                        is_discard_binding_target(&parts[2])
+                    } => {}
+            Some("rest" | "spread")
+                if parts.len() == 2
+                    && index + 1 == members.len()
+                    && parts[1].as_atom() == Some("_") => {}
+            _ => return false,
+        }
+    }
+    true
 }
 
 fn bind_binding_arg_slots(args: &[SExpr]) -> Vec<(usize, usize, Option<TypeAnnotation>)> {
@@ -1697,6 +1792,12 @@ fn classify_func<'tree>(
         for clause_expr in rest {
             clauses.push(parse_func_clause(clause_expr, span, capture)?);
         }
+        if let Some(parameter_span) = multi_clause_simple_default_rest(&clauses) {
+            return Err(err(
+                "multi-clause func does not support top-level default or rest parameters",
+                parameter_span,
+            ));
+        }
         return Ok(SurfaceForm::Func {
             name: name.0,
             name_span: name.1,
@@ -1732,6 +1833,20 @@ fn classify_func<'tree>(
         name_span: name.1,
         clauses: vec![clause],
         span,
+    })
+}
+
+pub(crate) fn multi_clause_simple_default_rest(clauses: &[FuncClause]) -> Option<Span> {
+    (clauses.len() > 1).then_some(())?;
+    clauses.iter().find_map(|clause| {
+        clause.args.iter().find_map(|parameter| match parameter {
+            ParamShape::Simple(parameter)
+                if parameter.default_value.is_some() || parameter.is_rest =>
+            {
+                Some(parameter.name_span)
+            }
+            _ => None,
+        })
     })
 }
 

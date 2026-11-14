@@ -41,7 +41,11 @@ use format::JsWriter;
 /// Emit a module (list of kernel forms) as JavaScript source text.
 ///
 /// Each top-level form is emitted as a statement. The resulting string is
-/// ready to be written to a `.js` file.
+/// ready to be written to a `.js` file. This low-level API writes the supplied
+/// kernel IR literally: Source-level discard preparation belongs to the native
+/// emitter, so a caller supplying an arrow parameter named `_` gets that
+/// identifier unchanged. Generated schema fields and other IR consumers rely
+/// on this boundary.
 pub fn emit_module_js(forms: &[SExpr]) -> Result<String, LyknError> {
     emit_module_with_invocations(forms, &[])
 }
@@ -322,6 +326,13 @@ mod tests {
         assert!(js.contains("function greet(name)"));
         assert!(js.contains("return `Hello, ${name}!`"));
         assert!(js.contains("greet(\"world\");"));
+    }
+
+    #[test]
+    fn raw_codegen_keeps_supplied_underscore_parameter_literal() {
+        let arrow = list(vec![atom("=>"), list(vec![atom("_")]), atom("_")]);
+        let forms = vec![list(vec![atom("const"), atom("pick"), arrow])];
+        assert_eq!(emit_module_js(&forms).unwrap(), "const pick = _ => _;\n");
     }
 
     #[test]

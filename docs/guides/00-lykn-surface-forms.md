@@ -122,7 +122,10 @@ compile errors. Typed pairs are supported inside the group:
   :string role (?? record:role "user"))
 ```
 
-The binding position may still use destructuring patterns for untyped pairs.
+The binding position may still use destructuring patterns for untyped pairs,
+including patterns that bind no names, such as an empty array/object pattern
+or a pattern made only of `_` discards. These patterns still evaluate the
+initializer and perform their normal destructuring work.
 
 In an eligible ordinary named function, a simple-name `bind` initializer can
 consume a result-producing `do`, `if`, or `match` without moving source
@@ -1320,6 +1323,11 @@ to the kernel compiler unchanged.
 
 ## Kernel Functions
 
+The `lambda` row below documents both the native Source form and the literal
+raw IR writer form. `kernel:lambda` is not an admitted escape. Native Source
+uses the typed `(lambda (:any name) body...)` form; direct raw code generation
+keeps supplied `_` parameters and references literal.
+
 | lykn | JS | Notes |
 |---|---|---|
 | `(=> (a b) (+ a b))` | `(a, b) => a + b` | Arrow function |
@@ -1386,9 +1394,22 @@ is `const`; reach it explicitly with `(kernel:const …)` when needed).
 (bind (array _ _ third) arr)
 ```
 
+In a binding pattern, `_` discards that binding value without creating a
+source name; `_value` remains an ordinary name. Array-pattern `_` is an
+elision, while object-pattern shorthand `_` still reads the property named
+`_` and discards its value. Defaults, rest/spread operations, and nested
+patterns keep their normal evaluation behavior. This meaning applies in native
+binding roles such as raw kernel declarations, loops, callable parameters and
+class method parameters. An underscore in an initializer, default expression,
+property key/value, assignment target, function name or schema field keeps
+that role's ordinary meaning.
+
 ---
 
 ## Classes (kernel forms)
+
+`class` and `class-expr` are native Source forms and raw IR forms; they are not
+admitted as `kernel:class` or `kernel:class-expr` escapes.
 
 ```lykn
 (class Dog (Animal)

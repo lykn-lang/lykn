@@ -1062,6 +1062,13 @@ checking `arguments.length` or `typeof` inside the function body. Each
 clause has its own type annotations and contracts. The compiler
 generates the dispatch logic.
 
+Multi-clause dispatch currently requires fixed simple-parameter arity: a
+top-level simple parameter cannot have a default or rest marker in a function
+with more than one clause. Put defaults/rest inside a destructured parameter
+when that pattern fits the API, or use a single-clause function for an ordinary
+default/rest parameter. Dispatch selection does not infer omitted-argument or
+variadic behavior.
+
 ---
 
 ---

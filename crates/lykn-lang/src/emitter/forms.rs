@@ -898,10 +898,12 @@ fn emit_direct_try_children(
             ctx.expr_context = saved_context;
         }
     }
-    SExpr::List {
+    let mut emitted = SExpr::List {
         values: emitted,
         span,
-    }
+    };
+    lower_kernel_discard_roles(&mut emitted, ctx);
+    emitted
 }
 
 fn emit_kernel_children(
@@ -932,9 +934,193 @@ fn emit_kernel_children(
         new_values.push(emit_expr(child, ctx, registry));
     }
     ctx.expr_context = saved_ctx;
-    SExpr::List {
+    let mut emitted = SExpr::List {
         values: new_values,
         span,
+    };
+    lower_kernel_discard_roles(&mut emitted, ctx);
+    emitted
+}
+
+/// Prepare only the binding slots consumed by the raw kernel writer. Children
+/// have already been emitted with their ordinary value/property contexts.
+fn lower_kernel_discard_roles(expr: &mut SExpr, ctx: &mut EmitterContext) {
+    let SExpr::List { values, .. } = expr else {
+        return;
+    };
+    let Some(head) = values.first().and_then(SExpr::as_atom) else {
+        return;
+    };
+    match head {
+        "const" | "let" | "var" => {
+            if let Some(binding) = values.get_mut(1) {
+                *binding = lower_discard_binding_pattern(binding, ctx);
+            }
+        }
+        "for-of" | "for-in" | "for-await-of" => {
+            if let Some(binding) = values.get_mut(1) {
+                *binding = lower_discard_binding_pattern(binding, ctx);
+            }
+        }
+        "for" => {
+            if let Some(SExpr::List { values: init, .. }) = values.get_mut(1)
+                && matches!(
+                    init.first().and_then(SExpr::as_atom),
+                    Some("const" | "let" | "var")
+                )
+                && let Some(binding) = init.get_mut(1)
+            {
+                *binding = lower_discard_binding_pattern(binding, ctx);
+            }
+        }
+        "function" | "function*" | "=>" | "lambda" => {
+            let params_index = if matches!(head, "function" | "function*")
+                && values.get(1).is_some_and(|name| name.as_atom().is_some())
+            {
+                2
+            } else {
+                1
+            };
+            lower_kernel_parameter_list(values.get_mut(params_index), ctx);
+        }
+        "try" => lower_legacy_catch_clauses(values, ctx),
+        _ => {}
+    }
+}
+
+fn lower_kernel_parameter_list(params: Option<&mut SExpr>, ctx: &mut EmitterContext) {
+    let Some(SExpr::List { values, .. }) = params else {
+        return;
+    };
+    for parameter in values {
+        *parameter = lower_discard_binding_pattern(parameter, ctx);
+    }
+}
+
+fn lower_legacy_catch_clauses(values: &mut [SExpr], ctx: &mut EmitterContext) {
+    let selected = values
+        .iter()
+        .enumerate()
+        .skip(1)
+        .filter_map(|(index, clause)| {
+            (clause.as_list()?.first()?.as_atom() == Some("catch")).then_some(index)
+        })
+        .next_back();
+    if let Some(index) = selected
+        && let SExpr::List { values: clause, .. } = &mut values[index]
+        && let Some(binding) = clause.get_mut(1)
+    {
+        *binding = lower_legacy_catch_binding(binding, ctx);
+    }
+}
+
+/// Catch parameters use the legacy expression-pattern writer. Preserve its
+/// property/value slots while giving source `_` a private binding identity.
+fn lower_legacy_catch_binding(expr: &SExpr, ctx: &mut EmitterContext) -> SExpr {
+    if expr.as_atom() == Some("_") {
+        return SExpr::completion_value_atom(ctx.next_completion_value_id(), expr.span());
+    }
+    let SExpr::List { values, span } = expr else {
+        return expr.clone();
+    };
+    let Some(head) = values.first().and_then(SExpr::as_atom) else {
+        return expr.clone();
+    };
+    if head == "array" {
+        let mut lowered = values.clone();
+        for member in lowered.iter_mut().skip(1) {
+            *member = if member.as_atom() == Some("_") {
+                SExpr::completion_value_atom(ctx.next_completion_value_id(), member.span())
+            } else if let Some(parts) = member.as_list() {
+                match parts.first().and_then(SExpr::as_atom) {
+                    Some("spread") if parts.len() >= 2 => {
+                        let mut mapped = parts.to_vec();
+                        mapped[1] = lower_legacy_catch_binding(&parts[1], ctx);
+                        SExpr::List {
+                            values: mapped,
+                            span: member.span(),
+                        }
+                    }
+                    Some("default" | "rest" | "alias") => {
+                        lower_discard_binding_pattern(member, ctx)
+                    }
+                    _ => lower_legacy_catch_binding(member, ctx),
+                }
+            } else {
+                member.clone()
+            };
+        }
+        return SExpr::List {
+            values: lowered,
+            span: *span,
+        };
+    }
+    if head != "object" {
+        if matches!(head, "default" | "rest") && values.len() >= 2 {
+            let mut lowered = values.clone();
+            lowered[1] = lower_discard_binding_pattern(&values[1], ctx);
+            return SExpr::List {
+                values: lowered,
+                span: *span,
+            };
+        }
+        if head == "alias" && values.len() >= 3 {
+            let mut lowered = values.clone();
+            lowered[2] = lower_discard_binding_pattern(&values[2], ctx);
+            return SExpr::List {
+                values: lowered,
+                span: *span,
+            };
+        }
+        if head == "spread" && values.len() >= 2 {
+            let mut lowered = values.clone();
+            lowered[1] = lower_legacy_catch_binding(&values[1], ctx);
+            return SExpr::List {
+                values: lowered,
+                span: *span,
+            };
+        }
+        return expr.clone();
+    }
+
+    let mut lowered = Vec::with_capacity(values.len());
+    lowered.push(values[0].clone());
+    for member in values.iter().skip(1) {
+        match member {
+            SExpr::Atom(_) if member.as_atom() == Some("_") => {
+                lowered.push(list(vec![
+                    atom("_"),
+                    SExpr::completion_value_atom(ctx.next_completion_value_id(), member.span()),
+                ]));
+            }
+            SExpr::List {
+                values: parts,
+                span: part_span,
+            } if !parts.is_empty() => {
+                if parts.first().and_then(SExpr::as_atom) == Some("spread") && parts.len() >= 2 {
+                    let mut mapped = parts.clone();
+                    mapped[1] = lower_legacy_catch_binding(&parts[1], ctx);
+                    lowered.push(SExpr::List {
+                        values: mapped,
+                        span: *part_span,
+                    });
+                } else {
+                    let mut mapped = parts.clone();
+                    if let Some(value) = mapped.get_mut(1) {
+                        *value = lower_legacy_catch_binding(value, ctx);
+                    }
+                    lowered.push(SExpr::List {
+                        values: mapped,
+                        span: *part_span,
+                    });
+                }
+            }
+            _ => lowered.push(member.clone()),
+        }
+    }
+    SExpr::List {
+        values: lowered,
+        span: *span,
     }
 }
 
@@ -2897,6 +3083,19 @@ fn lower_discard_binding_pattern(expr: &SExpr, ctx: &mut EmitterContext) -> SExp
             SExpr::completion_value_atom(ctx.next_completion_value_id(), expr.span())
         }
         SExpr::List { values, span }
+            if matches!(
+                values.first().and_then(SExpr::as_atom),
+                Some("default" | "rest" | "spread")
+            ) && values.len() >= 2 =>
+        {
+            let mut lowered = values.clone();
+            lowered[1] = lower_discard_binding_pattern(&values[1], ctx);
+            SExpr::List {
+                values: lowered,
+                span: *span,
+            }
+        }
+        SExpr::List { values, span }
             if values.first().and_then(SExpr::as_atom) == Some("object") =>
         {
             let mut lowered = Vec::with_capacity(values.len());
@@ -3798,6 +3997,15 @@ fn emit_func(
     ctx: &mut EmitterContext,
     registry: &TypeRegistry,
 ) -> Vec<SExpr> {
+    if let Some(parameter_span) =
+        crate::classifier::forms::multi_clause_simple_default_rest(clauses)
+    {
+        ctx.record_fatal(codegen_error(
+            "multi-clause func does not support top-level default or rest parameters",
+            parameter_span,
+        ));
+        return Vec::new();
+    }
     if clauses.len() == 1 {
         vec![emit_func_single(name, &clauses[0], span, ctx, registry)]
     } else {
@@ -5311,6 +5519,11 @@ fn emit_class_member_form(
         } => {
             let mut member_items: Vec<SExpr> =
                 prefix.iter().map(|e| emit_expr(e, ctx, registry)).collect();
+            if let Some(SExpr::List { values: params, .. }) = member_items.last_mut() {
+                for parameter in params {
+                    *parameter = lower_discard_binding_pattern(parameter, ctx);
+                }
+            }
 
             let saved = ctx.in_class_body;
             let saved_direct_region = ctx.direct_return_region;
