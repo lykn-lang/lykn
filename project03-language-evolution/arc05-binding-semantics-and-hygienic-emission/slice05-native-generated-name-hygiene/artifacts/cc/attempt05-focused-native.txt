@@ -1,0 +1,3 @@
+Command: cargo test -p lykn-lang --test generated_name_hygiene -- --nocapture
+Source state: dirty CC tree with expanded producer and lifecycle controls.
+Exit: 101, 3 passed, 1 failed. The added throw-timing source put a statement-position `do` block in a `+` value operand, which raw codegen correctly treated as invalid expression structure. This was a fixture-shape mistake. Reframe the side effect/throw as a named function call from a some-thread step; retain exact caught Error/name/message/count assertion. The debug kernel dump for the rest test was removed; generated JS retains the actual source/consumer receipt.

@@ -1,0 +1,3 @@
+Command: cargo test -p lykn-lang --test generated_name_hygiene -- --nocapture && cargo test -p lykn-cli --test generated_name_hygiene -- --nocapture
+Source state: dirty CC tree; first complete four-group native suite and two-group CLI suite.
+Native result: 4 passed, 0 failed. CLI result: package-build group passed; file/JSON group stopped at an incorrect `stderr.is_empty()` assertion after a successful compile emitted the expected unused-variable warning for `result__gensym0`. Prompt explicitly says this warning is not runtime failure or false success. Correction: remove warning-free requirement; preserve warning in output and judge runtime behavior separately.

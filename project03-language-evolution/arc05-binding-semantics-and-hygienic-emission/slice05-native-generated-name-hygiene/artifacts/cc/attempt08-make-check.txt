@@ -1,0 +1,3 @@
+Command: LYKN_MACRO_DEPENDENCIES_EVIDENCE_DIR=<absolute artifacts/cc/m6> DENO_DIR=/Users/oubiwann/Library/Caches/deno make check
+Source state: dirty CC implementation tree, after fresh-artifacts and focused native/CLI gates. This captured invocation has a complete numeric result and log in attempt08-make-check.log.
+Exit: 2. Outdated-dependency check, cited-path check (64 docs; 601 historical citations accepted), and optimized release build (3.4M) passed. Clippy rejected `fs::write(&file, &source)` in generated_name_hygiene.rs:23 as needless borrow. Repair: pass `source`; reran formatting and both focused targets successfully. No test suite, docs or M6 ran.

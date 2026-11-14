@@ -1,0 +1,71 @@
+   Compiling lykn-lang v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.51s
+     Running tests/generated_name_hygiene.rs (target/debug/deps/generated_name_hygiene-bb65fe7cae3d0755)
+
+running 1 test
+NATIVE_PRODUCER_SOURCE="(bind t__gensym0 99) (console:log (some-> 7 (+ t__gensym0)))" strip=false
+NATIVE_PRODUCER_JS="const t__gensym0 = 99;\nconsole.log((() => {\n  const t__gensym1 = 7;\n  if (t__gensym1 == null) {\n    return t__gensym1;\n  }\n  return t__gensym1 + t__gensym0;\n})());\n"
+NATIVE_RUNTIME command=deno eval --config project.json --ext=js status=Some(0) stdout="106\n" stderr=""
+NATIVE_PRODUCER_SOURCE="(bind t__gensym0 99) (console:log (some-> 7 (+ t__gensym0)))" strip=true
+NATIVE_PRODUCER_JS="const t__gensym0 = 99;\nconsole.log((() => {\n  const t__gensym1 = 7;\n  if (t__gensym1 == null) {\n    return t__gensym1;\n  }\n  return t__gensym1 + t__gensym0;\n})());\n"
+NATIVE_RUNTIME command=deno eval --config project.json --ext=js status=Some(0) stdout="106\n" stderr=""
+NATIVE_PRODUCER_SOURCE="(bind rest__gensym1 (obj :drop 7 :keep 9)) (bind kept (dissoc rest__gensym1 :drop)) (console:log kept:keep)" strip=false
+NATIVE_PRODUCER_JS="const rest__gensym1 = { drop: 7, keep: 9 };\nconst kept = (() => {\n  const {drop: ___gensym0, ...rest__gensym2} = rest__gensym1;\n  return rest__gensym2;\n})();\nconsole.log(kept.keep);\n"
+NATIVE_RUNTIME command=deno eval --config project.json --ext=js status=Some(0) stdout="9\n" stderr=""
+NATIVE_PRODUCER_SOURCE="(bind rest__gensym1 (obj :drop 7 :keep 9)) (bind kept (dissoc rest__gensym1 :drop)) (console:log kept:keep)" strip=true
+NATIVE_PRODUCER_JS="const rest__gensym1 = { drop: 7, keep: 9 };\nconst kept = (() => {\n  const {drop: ___gensym0, ...rest__gensym2} = rest__gensym1;\n  return rest__gensym2;\n})();\nconsole.log(kept.keep);\n"
+NATIVE_RUNTIME command=deno eval --config project.json --ext=js status=Some(0) stdout="9\n" stderr=""
+NATIVE_PRODUCER_SOURCE="(bind await__gensym0 (obj :child 7)) (some-> (await (Promise:resolve await__gensym0:child)) (+ 1) (console:log))" strip=false
+NATIVE_PRODUCER_JS="const await__gensym0 = { child: 7 };\n{\n  const await__gensym1 = await Promise.resolve(await__gensym0.child);\n  (() => {\n    const t__gensym2 = await__gensym1;\n    if (t__gensym2 == null) {\n      return t__gensym2;\n    }\n    const t__gensym3 = t__gensym2 + 1;\n    if (t__gensym3 == null) {\n      return t__gensym3;\n    }\n    return console.log(t__gensym3);\n  })();\n}\n"
+NATIVE_RUNTIME command=deno eval --config project.json --ext=js status=Some(0) stdout="8\n" stderr=""
+NATIVE_PRODUCER_SOURCE="(bind await__gensym0 (obj :child 7)) (some-> (await (Promise:resolve await__gensym0:child)) (+ 1) (console:log))" strip=true
+NATIVE_PRODUCER_JS="const await__gensym0 = { child: 7 };\n{\n  const await__gensym1 = await Promise.resolve(await__gensym0.child);\n  (() => {\n    const t__gensym2 = await__gensym1;\n    if (t__gensym2 == null) {\n      return t__gensym2;\n    }\n    const t__gensym3 = t__gensym2 + 1;\n    if (t__gensym3 == null) {\n      return t__gensym3;\n    }\n    return console.log(t__gensym3);\n  })();\n}\n"
+NATIVE_RUNTIME command=deno eval --config project.json --ext=js status=Some(0) stdout="8\n" stderr=""
+NATIVE_PRODUCER_SOURCE="(bind yv__gensym0 7) (genfunc numbers :args () :yields :number :body (yield yv__gensym0)) (bind iterator (numbers)) (bind item (iterator:next)) (bind end (iterator:next)) (console:log item:value item:done end:done)" strip=false
+NATIVE_PRODUCER_JS="const lyknIntrinsicNumberIsNaN0 = Number.isNaN;\nconst lyknIntrinsicTypeError0 = TypeError;\nconst yv__gensym0 = 7;\nfunction* numbers() {\n  yield (() => {\n    const yv__gensym1 = yv__gensym0;\n    if (typeof yv__gensym1 !== \"number\" || lyknIntrinsicNumberIsNaN0(yv__gensym1)) {\n      throw new lyknIntrinsicTypeError0(\"numbers: yield 'yv__gensym1' expected number, got \" + typeof yv__gensym1);\n    }\n    return yv__gensym1;\n  })();\n}\nconst iterator = numbers();\nconst item = iterator.next();\nconst end = iterator.next();\nconsole.log(item.value, item.done, end.done);\n"
+NATIVE_RUNTIME command=deno eval --config project.json --ext=js status=Some(0) stdout="7 false true\n" stderr=""
+NATIVE_PRODUCER_SOURCE="(bind yv__gensym0 7) (genfunc numbers :args () :yields :number :body (yield yv__gensym0)) (bind iterator (numbers)) (bind item (iterator:next)) (bind end (iterator:next)) (console:log item:value item:done end:done)" strip=true
+NATIVE_PRODUCER_JS="const yv__gensym0 = 7;\nfunction* numbers() {\n  yield yv__gensym0;\n}\nconst iterator = numbers();\nconst item = iterator.next();\nconst end = iterator.next();\nconsole.log(item.value, item.done, end.done);\n"
+NATIVE_RUNTIME command=deno eval --config project.json --ext=js status=Some(0) stdout="7 false true\n" stderr=""
+NATIVE_COLON_ROOT_SOURCE="(some-> (await (Promise:resolve await__gensym0:child)) (+ 1) (console:log))" strip=false
+NATIVE_COLON_ROOT_JS="{\n  const await__gensym1 = await Promise.resolve(await__gensym0.child);\n  (() => {\n    const t__gensym2 = await__gensym1;\n    if (t__gensym2 == null) {\n      return t__gensym2;\n    }\n    const t__gensym3 = t__gensym2 + 1;\n    if (t__gensym3 == null) {\n      return t__gensym3;\n    }\n    return console.log(t__gensym3);\n  })();\n}\n"
+NATIVE_RUNTIME command=deno eval --config project.json --ext=js status=Some(0) stdout="8\n" stderr=""
+NATIVE_COLON_ROOT_SOURCE="(some-> (await (Promise:resolve await__gensym0:child)) (+ 1) (console:log))" strip=true
+NATIVE_COLON_ROOT_JS="{\n  const await__gensym1 = await Promise.resolve(await__gensym0.child);\n  (() => {\n    const t__gensym2 = await__gensym1;\n    if (t__gensym2 == null) {\n      return t__gensym2;\n    }\n    const t__gensym3 = t__gensym2 + 1;\n    if (t__gensym3 == null) {\n      return t__gensym3;\n    }\n    return console.log(t__gensym3);\n  })();\n}\n"
+NATIVE_RUNTIME command=deno eval --config project.json --ext=js status=Some(0) stdout="8\n" stderr=""
+NATIVE_DOTTED_ROOT_SOURCE="(some-> (await (Promise:resolve await__gensym0.child)) (+ 1) (console:log))"
+NATIVE_DOTTED_ROOT_JS="{\n  const await__gensym0 = await Promise.resolve(await__gensym0.child);\n  (() => {\n    const t__gensym1 = await__gensym0;\n    if (t__gensym1 == null) {\n      return t__gensym1;\n    }\n    const t__gensym2 = t__gensym1 + 1;\n    if (t__gensym2 == null) {\n      return t__gensym2;\n    }\n    return console.log(t__gensym2);\n  })();\n}\n"
+NATIVE_RUNTIME command=deno eval --config project.json --ext=js status=Some(1) stdout="" stderr="error: Uncaught (in promise) ReferenceError: Cannot access 'await__gensym0' before initialization\n  const await__gensym0 = await Promise.resolve(await__gensym0.child);\n                                               ^\n    at file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/$deno$eval.js:3:48\n"
+
+thread 'shared_early_producers_preserve_opposing_source_values_and_effects' (109175324) panicked at crates/lykn-lang/tests/generated_name_hygiene.rs:32:5:
+generated ESM failed: error: Uncaught (in promise) ReferenceError: Cannot access 'await__gensym0' before initialization
+  const await__gensym0 = await Promise.resolve(await__gensym0.child);
+                                               ^
+    at file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/$deno$eval.js:3:48
+
+{
+  const await__gensym0 = await Promise.resolve(await__gensym0.child);
+  (() => {
+    const t__gensym1 = await__gensym0;
+    if (t__gensym1 == null) {
+      return t__gensym1;
+    }
+    const t__gensym2 = t__gensym1 + 1;
+    if (t__gensym2 == null) {
+      return t__gensym2;
+    }
+    return console.log(t__gensym2);
+  })();
+}
+
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test shared_early_producers_preserve_opposing_source_values_and_effects ... FAILED
+
+failures:
+
+failures:
+    shared_early_producers_preserve_opposing_source_values_and_effects
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 3 filtered out; finished in 0.19s
+
+error: test failed, to rerun pass `-p lykn-lang --test generated_name_hygiene`

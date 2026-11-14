@@ -1,0 +1,4 @@
+Command: cargo test -p lykn-lang --test generated_name_hygiene -- --nocapture
+Source state: dirty CC working tree after initial implementation; test source used unavailable SExpr::list helper.
+Exit: 101
+Compiler diagnostic: crates/lykn-lang/tests/generated_name_hygiene.rs:106 and :109, no associated function SExpr::list; compiler points to public SExpr::List enum variant / SExpr::atom. Corrective action: use SExpr::List { values, span } directly. No product result was established by this failed compile attempt.

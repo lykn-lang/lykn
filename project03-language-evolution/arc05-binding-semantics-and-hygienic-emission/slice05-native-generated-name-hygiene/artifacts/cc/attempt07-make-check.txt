@@ -1,0 +1,3 @@
+Command: LYKN_MACRO_DEPENDENCIES_EVIDENCE_DIR=<canonical artifacts/cc/m6> DENO_DIR=/Users/oubiwann/Library/Caches/deno make check
+Source state: dirty CC implementation tree, before commit, after fresh-artifacts and focused native/CLI gates.
+Exit: 2 from make check at lint/clippy. Dependency freshness passed, cited-path check passed (64 documents; 601 historical citations accepted), optimized release build passed (3.4M binary). Clippy failed with `items after a test module` at emitter/gensym.rs:73 because two imports had been appended after the test module. No full test suite, docs, or M6 population ran. Repair: move imports to file header; rerun full make check with the same required evidence/cache environment and retain this failed attempt.

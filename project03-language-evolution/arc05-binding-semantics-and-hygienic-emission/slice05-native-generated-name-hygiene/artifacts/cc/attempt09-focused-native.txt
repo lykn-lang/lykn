@@ -1,0 +1,2 @@
+Command: rustfmt on six named Rust files; focused native generated_name_hygiene target with --nocapture.
+Exit: 101 (4 cases, 2 passed, 2 failed). The expanded causal fixture exposed two test-input construction errors: the adjacent suffix signature used two separate :args forms instead of the grammar's single multi-parameter :args list, and the failed-context source referred to t__gensym0 while the opposing caller value was t__gensym3. No production behavior issue was found. Corrected both fixture inputs; see attempt10-focused-native.log.

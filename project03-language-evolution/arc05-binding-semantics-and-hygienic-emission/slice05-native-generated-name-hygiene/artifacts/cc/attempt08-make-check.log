@@ -1,0 +1,32 @@
+[1;34mChecking for outdated dependencies...[0m
+
+
+[1;32m✓ All dependencies up to date[0m
+[1;34mChecking cited paths resolve in git...[0m
+[1;32m✓ Cited-path check passed[0m (64 documents on codex/qualified-adt-core; 601 historical citations accepted via scripts/cited-paths-census.tsv)
+[1;34mCleaning bin directory...[0m
+[1;32m✓ Clean complete[0m
+[1;34mCreating bin directory...[0m
+[1;32m✓ Directory created[0m
+[1;34mBuilding Lykn in release mode...[0m
+[1;36m• Compiling optimized workspace...[0m
+    Finished `release` profile [optimized] target(s) in 0.06s
+[1;36m• Copying binaries to ./bin/[0m
+  [1;32m✓[0m lykn (size: 3.4M)
+[1;32m✓ Release build complete[0m
+[1;36m→ Optimized binaries in ./bin/[0m
+[1;34mRunning linter checks...[0m
+[1;36m• Running clippy...[0m
+    Checking lykn-cli v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli)
+error: the borrowed expression implements the required traits
+  --> crates/lykn-cli/tests/generated_name_hygiene.rs:23:26
+   |
+23 |         fs::write(&file, &source).unwrap();
+   |                          ^^^^^^^ help: change this to: `source`
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.97.0/index.html#needless_borrows_for_generic_args
+   = note: `-D clippy::needless-borrows-for-generic-args` implied by `-D warnings`
+   = help: to override `-D warnings` add `#[allow(clippy::needless_borrows_for_generic_args)]`
+
+error: could not compile `lykn-cli` (test "generated_name_hygiene") due to 1 previous error
+make: *** [lint] Error 101

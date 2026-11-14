@@ -1,0 +1,5 @@
+Command: cargo test -p lykn-lang --test generated_name_hygiene -- --nocapture
+Source state: dirty CC tree; first test source revision compiled after using SExpr::List.
+Exit: 101, 4 tests: 2 passed, 2 failed.
+Observed failures: standalone emit_form fixture used a typed number parameter, which intentionally leaves a host-reference marker and is rejected by the public fragment API; change to :any while retaining the post-result helper collision. Await-initial some-thread fixture was embedded in a value argument, but actual producer emits a block (not a value expression) for this source shape and generated JS had SyntaxError at await__gensym1. Reframe as statement-position some-thread with console:log as final step, preserving actual await hoist and observed value. These source-shape failures do not establish a product defect and must remain distinct from semantic reds.
+Other observed positives: normalized reconstructed typed name avoided duplicate, multi-clause args became args__gensym0 and actual 7/ok/99 succeeded, some-thread and dissoc opposing source values passed.

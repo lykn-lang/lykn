@@ -1,0 +1,3 @@
+Command: cargo test -p lykn-cli --test generated_name_hygiene -- --nocapture
+Source state: dirty CC tree after moving the JSON compiler consumer into both strip-mode branches.
+Exit: 101 at compile. JSON block had been moved outside the `for strip` loop but still referenced `strip`, so Rust correctly reported E0425 at lines 78 and 100. Correction: place the actual JSON compiler consumer inside the strip loop. No CLI runtime result was established on this attempt.

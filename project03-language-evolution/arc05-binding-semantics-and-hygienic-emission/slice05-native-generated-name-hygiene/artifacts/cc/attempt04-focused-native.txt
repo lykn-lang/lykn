@@ -1,0 +1,4 @@
+Command: cargo test -p lykn-lang --test generated_name_hygiene -- --nocapture
+Source state: dirty CC tree after adding candidate-suffix and rest/match proof.
+Exit: 101, 3 passed, 1 failed. Product semantics in the log showed overload rest storage `args__gensym1`, length `args__gensym1.length`, and indexed `args__gensym1[0]`; test incorrectly searched for a raw kernel `(get ...)` spelling after codegen had correctly lowered it to JS bracket indexing. Correction: assert generated JS output. The match test emitted very large debug kernel output; remove that diagnostic dump and retain source/generated JS only.
+Other passing coverage: typed normalized/nested, generator, source-name rest guard and runtime, lifecycle, raw writer.
