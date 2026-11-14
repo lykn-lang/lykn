@@ -1065,6 +1065,7 @@ fn m6_embedded_compiler_payload_matches_canonical_and_runs_from_cold_cache() {
         "compiler-private-atoms.js",
         "expander-core.js",
         "function-clauses.js",
+        "host-invocation.js",
         "host-invocation-kernel.js",
         "identifier.js",
         "lexical-regions.js",
@@ -1126,6 +1127,7 @@ fn m6_embedded_compiler_payload_matches_canonical_and_runs_from_cold_cache() {
         repository.join("test/forms/surface-type-context.test.js"),
         repository.join("test/forms/reserved-binding-output.test.js"),
         repository.join("test/forms/icu-generated-names.test.js"),
+        repository.join("test/forms/public-generated-names.test.js"),
         repository.join("test/expander/lexical-regions.test.js"),
         repository.join("test/forms/discard-bindings.test.js"),
         repository.join("test/forms/remaining-discard-bindings.test.js"),
@@ -1159,7 +1161,7 @@ fn m6_embedded_compiler_payload_matches_canonical_and_runs_from_cold_cache() {
         String::from_utf8_lossy(&public_result.stderr)
     );
     assert!(
-        public_output.contains("ok | 70 passed | 0 failed"),
-        "M6 must execute the derived 70-case retained, IC-01, B2a, B2b2, B2-DISCARD-P, and S03 materialized population (5 + 6 + 17 + 21 + 6 + 7 + 8), output: {public_output}"
+        public_output.contains("ok | 78 passed | 0 failed"),
+        "M6 must execute the derived 78-case retained, IC-01, B2a, B2b2, B2-DISCARD-P, S03, and S06 materialized population (5 + 6 + 17 + 21 + 6 + 7 + 8 + 8), output: {public_output}"
     );
 }

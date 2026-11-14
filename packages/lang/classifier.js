@@ -60,7 +60,18 @@ import {
 import { isKernel, markKernel } from "./kernel-mark.js";
 import { bindingNamesInPattern, isMatchGuardSlot } from "./binding.js";
 import { FUNC_CLAUSE_KEYS, genfnBodyLayout, parseKeywordClauses } from "./function-clauses.js";
+import { createGeneratedNameAllocator, physicalIdentifierKeys } from "./identifier.js";
+import { isCompilerPrivateAtom } from "./compiler-private-atoms.js";
 export { FUNC_CLAUSE_KEYS, genfnBodyLayout, parseKeywordClauses } from "./function-clauses.js";
+
+function allocatorFor(syntax, generatedNames, rawGensym = gensym) {
+  if (generatedNames) return generatedNames;
+  const allocator = createGeneratedNameAllocator(rawGensym);
+  allocator.reserveSyntax(syntax, {
+    skipNode: (node) => node.type === "atom" && isCompilerPrivateAtom(node),
+  });
+  return allocator;
+}
 
 /**
  * Classify a surface form head atom. Returns a typed AST node if the
@@ -491,7 +502,9 @@ function emitCondChain(clauses, h) {
 }
 
 export function emitSurfaceForm(node, h) {
-  const { sym, array, gensym, typeContext } = h;
+  const { sym, array, typeContext } = h;
+  const generatedNames = allocatorFor(node, h.generatedNames, h.gensym ?? gensym);
+  const nextName = generatedNames.next;
   switch (node.type) {
     case "Not":
       return array(sym("!"), node.operand);
@@ -517,9 +530,9 @@ export function emitSurfaceForm(node, h) {
     }
     case "Dissoc": {
       const aliasPatterns = node.keys.map((k) =>
-        array(sym("alias"), sym(k), gensym("_"))
+        array(sym("alias"), sym(k), nextName("_"))
       );
-      const restVar = gensym("rest");
+      const restVar = nextName("rest");
       const pattern = array(
         sym("object"),
         ...aliasPatterns,
@@ -559,7 +572,7 @@ export function emitSurfaceForm(node, h) {
     }
     case "SomeThread": {
       const stmts = [];
-      let prevVar = gensym("t");
+      let prevVar = nextName("t");
       stmts.push(array(sym("const"), prevVar, node.initial));
       stmts.push(
         array(
@@ -591,7 +604,7 @@ export function emitSurfaceForm(node, h) {
         if (i === node.steps.length - 1) {
           stmts.push(array(sym("return"), callExpr));
         } else {
-          const nextVar = gensym("t");
+          const nextVar = nextName("t");
           stmts.push(array(sym("const"), nextVar, callExpr));
           stmts.push(
             array(
@@ -609,10 +622,7 @@ export function emitSurfaceForm(node, h) {
     case "IfLet": {
       const pattern = node.bindingPair.values[0];
       const expr = node.bindingPair.values[1];
-      const reserved = reserveNodeNames([pattern, expr, node.thenBody, node.elseBody]);
-      let tempVar = gensym("t");
-      while (reserved.has(toJsIdentifier(tempVar.value))) tempVar = gensym("t");
-      reserved.add(toJsIdentifier(tempVar.value));
+      const tempVar = nextName("t");
       const stmts = [array(sym("const"), tempVar, expr)];
       const result = compileLetPattern(pattern, tempVar, { typeContext });
       if (!result) {
@@ -642,10 +652,7 @@ export function emitSurfaceForm(node, h) {
     case "WhenLet": {
       const pattern = node.bindingPair.values[0];
       const expr = node.bindingPair.values[1];
-      const reserved = reserveNodeNames([pattern, expr, ...node.bodyForms]);
-      let tempVar = gensym("t");
-      while (reserved.has(toJsIdentifier(tempVar.value))) tempVar = gensym("t");
-      reserved.add(toJsIdentifier(tempVar.value));
+      const tempVar = nextName("t");
       const stmts = [array(sym("const"), tempVar, expr)];
       const result = compileLetPattern(pattern, tempVar, { typeContext });
       if (!result) {
@@ -755,10 +762,10 @@ export function emitSurfaceForm(node, h) {
         firstAfterName.values[0].type === "keyword"
       ) {
         assertMultiClauseSignatureSupported(restArgs);
-        return buildMultiClauseFunc(funcName, nameNode, restArgs);
+        return buildMultiClauseFunc(funcName, nameNode, restArgs, { generatedNames });
       }
       if (firstAfterName && firstAfterName.type === "keyword") {
-        return buildSingleClauseFunc(funcName, nameNode, restArgs);
+        return buildSingleClauseFunc(funcName, nameNode, restArgs, { generatedNames });
       }
       return array(
         sym("function"),
@@ -768,7 +775,7 @@ export function emitSurfaceForm(node, h) {
       );
     }
     case "GenFunc":
-      return emitGenfuncMacro([node.nameNode, ...node.restArgs]);
+      return emitGenfuncMacro([node.nameNode, ...node.restArgs], { generatedNames });
     case "GenFn": {
       const a = node.args;
       const layout = genfnBodyLayout(a);
@@ -789,7 +796,7 @@ export function emitSurfaceForm(node, h) {
         yieldsType.value !== "any"
       ) {
         instrumentedBody = bodyForms.map((e) =>
-          instrumentYields(e, yieldsType, "anonymous")
+          instrumentYields(e, yieldsType, "anonymous", { generatedNames })
         );
       }
       return array(
@@ -800,7 +807,7 @@ export function emitSurfaceForm(node, h) {
       );
     }
     case "Match":
-      return emitMatchMacro([node.expr, ...node.clauses], { typeContext });
+      return emitMatchMacro([node.expr, ...node.clauses], { typeContext, generatedNames });
     case "TypeDef":
       return emitTypeMacro([node.typeName, ...node.constructors], { typeContext });
     default:
@@ -827,7 +834,9 @@ export function funcBodyProtectsStatementExit(node) {
     !["any", "void"].includes(declared.value);
 }
 
-export function buildSingleClauseFunc(funcName, funcNameNode, clauseArgs) {
+export function buildSingleClauseFunc(funcName, funcNameNode, clauseArgs, { generatedNames } = {}) {
+  generatedNames = allocatorFor([sym(funcName), funcNameNode, clauseArgs], generatedNames);
+  const gensym = generatedNames.next;
   const clauses = parseKeywordClauses(clauseArgs);
   const argsClause = clauses.get("args");
   const returnsClause = clauses.get("returns");
@@ -986,10 +995,12 @@ export function buildSingleClauseFunc(funcName, funcNameNode, clauseArgs) {
   );
 }
 
-export function buildMultiClauseFunc(funcName, funcNameNode, clauseLists) {
+export function buildMultiClauseFunc(funcName, funcNameNode, clauseLists, { generatedNames } = {}) {
   assertMultiClauseSignatureSupported(clauseLists);
+  generatedNames = allocatorFor([sym(funcName), funcNameNode, clauseLists], generatedNames);
+  const gensym = generatedNames.next;
   if (clauseLists.length === 1) {
-    return buildSingleClauseFunc(funcName, funcNameNode, clauseLists[0].values);
+    return buildSingleClauseFunc(funcName, funcNameNode, clauseLists[0].values, { generatedNames });
   }
   const argsVar = gensym("args");
   const stmts = [];
@@ -1274,7 +1285,8 @@ function literalizeDiscardAliasKeys(pattern) {
  * @param {Map<string, Function>} macroEnv
  */
 
-export function emitGenfuncMacro(args) {
+export function emitGenfuncMacro(args, { generatedNames } = {}) {
+  generatedNames = allocatorFor(args, generatedNames);
   if (args.length < 2) {
     throw new Error("genfunc requires at least a name and :yields/:body");
   }
@@ -1339,7 +1351,7 @@ export function emitGenfuncMacro(args) {
     const yieldsType = yieldsClause[0];
     if (isKeyword(yieldsType) && yieldsType.value !== "any") {
       instrumentedBody = bodyClause.map((expr) =>
-        instrumentYields(expr, yieldsType, funcName)
+        instrumentYields(expr, yieldsType, funcName, { generatedNames })
       );
     }
   }
@@ -1376,16 +1388,15 @@ function parseMatchClause(clause, i) {
   return { pattern, guard, bodyForms };
 }
 
-export function emitMatchMacro(args, { typeContext } = {}) {
+export function emitMatchMacro(args, { typeContext, generatedNames } = {}) {
   if (args.length < 2) {
     throw new Error("match requires an expression and at least one clause");
   }
   const expr = args[0];
   const clauses = args.slice(1);
-  const reserved = reserveNodeNames(args);
-  let targetVar = gensym("target");
-  while (reserved.has(toJsIdentifier(targetVar.value))) targetVar = gensym("target");
-  reserved.add(toJsIdentifier(targetVar.value));
+  generatedNames = allocatorFor(args, generatedNames);
+  const gensym = generatedNames.next;
+  const targetVar = gensym("target");
   const stmts = [array(sym("const"), targetVar, expr)];
 
   for (let i = 0; i < clauses.length; i++) {
@@ -1479,9 +1490,8 @@ function reserveNodeNames(nodes, reserved = new Set()) {
       return;
     }
     if (node.type === "atom" && typeof node.value === "string") {
-      for (const part of node.value.split(":")) {
-        if (part) reserved.add(toJsIdentifier(part));
-      }
+      if (isCompilerPrivateAtom(node)) return;
+      for (const name of physicalIdentifierKeys(node.value)) reserved.add(name);
     }
     for (const [key, value] of Object.entries(node)) {
       if (key !== "type" && key !== "value") visit(value);
@@ -1500,11 +1510,13 @@ export function emitMatchStatementMacro(args, {
   extendEnv,
   typeContext,
   reserveNames,
+  generatedNames,
 }) {
   if (args.length < 2) throw new Error("match requires an expression and at least one clause");
-  const reserved = reserveNames(args);
-  let provisional = gensym("target");
-  while (reserved.has(toJsIdentifier(provisional.value))) provisional = gensym("target");
+  generatedNames = allocatorFor(args, generatedNames);
+  const gensym = generatedNames.next;
+  const reserved = reserveNames ? reserveNames(args) : reserveNodeNames(args);
+  const provisional = gensym("target");
   const header = expandHeader ?? ((form, scope) => ({ prefix: [], value: expandValue(form, scope) }));
   const subject = header(args[0], env);
   const clauses = [];
@@ -1521,7 +1533,7 @@ export function emitMatchStatementMacro(args, {
       body: expandBody(bodyForms, clauseEnv) });
   }
 
-  reserveNames([
+  const emittedForms = [
     subject.value,
     ...subject.prefix,
     ...clauses.flatMap((c) => [
@@ -1529,15 +1541,17 @@ export function emitMatchStatementMacro(args, {
       ...(c.guard?.prefix ?? []),
       ...c.body,
     ]),
-  ], reserved);
+  ];
+  if (reserveNames) reserveNames(emittedForms, reserved);
+  else reserveNodeNames(emittedForms, reserved);
+  generatedNames.reserveSyntax(emittedForms, {
+    skipNode: (node) => node.type === "atom" && isCompilerPrivateAtom(node),
+  });
   let target = provisional;
   if (reserved.has(toJsIdentifier(provisional.value))) {
     target = gensym("target");
-    while (reserved.has(toJsIdentifier(target.value))) target = gensym("target");
   }
-  reserved.add(toJsIdentifier(target.value));
-  let matched = gensym("matched");
-  while (reserved.has(toJsIdentifier(matched.value))) matched = gensym("matched");
+  const matched = gensym("matched");
 
   const retarget = (node, oldTarget, declarationName = false) => {
     if (!node || typeof node !== "object") return node;
@@ -1662,14 +1676,16 @@ export function emitTypeMacro(args, { typeContext } = {}) {
  * Returns Map<string, any[]>.
  */
 // DD-37 M22: extracted from registerSurfaceMacros inner scope.
-export function instrumentYields(node, yieldsType, funcName) {
+export function instrumentYields(node, yieldsType, funcName, { generatedNames } = {}) {
+  generatedNames = allocatorFor(node, generatedNames);
+  const gensym = generatedNames.next;
   if (!node || node.type !== "list") return node;
   const vals = node.values;
   if (vals.length === 0) return node;
   if (
     vals[0].type === "atom" && vals[0].value === "yield" && vals.length >= 2
   ) {
-    const yieldedExpr = instrumentYields(vals[1], yieldsType, funcName);
+    const yieldedExpr = instrumentYields(vals[1], yieldsType, funcName, { generatedNames });
     const vVar = gensym("yv");
     const check = buildTypeCheck(vVar, yieldsType, funcName, "yield");
     if (check) {
@@ -1691,7 +1707,7 @@ export function instrumentYields(node, yieldsType, funcName) {
   }
   return {
     ...node,
-    values: vals.map((v) => instrumentYields(v, yieldsType, funcName)),
+    values: vals.map((v) => instrumentYields(v, yieldsType, funcName, { generatedNames })),
   };
 }
 

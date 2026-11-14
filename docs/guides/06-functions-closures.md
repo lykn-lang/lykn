@@ -71,6 +71,16 @@ the supplied kernel names literally and does not provide source-level name
 hygiene. This boundary does not rewrite user bindings or promise general macro
 hygiene.
 
+The public JavaScript compiler also protects its statically generated locals
+across a complete Source input, including names revealed at existing macro
+expansion points. Its one-form expansion and direct classifier builders can
+account only for the form or ordinary-name arguments they receive; use the
+whole-unit entry when later sibling forms matter. This protection does not
+rename source bindings, reserve a user prefix, or discover names produced by
+arbitrary evaluation. The existing macro `gensym` API and its counter behavior
+remain unchanged. Exact Source binding identity and full macro hygiene are
+separate compiler work.
+
 ---
 
 ## ID-02: `fn` for Callbacks and Inline Functions

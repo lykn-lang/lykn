@@ -33,7 +33,8 @@ import {
   bindingNamesInPattern,
   kernelParameterNames,
 } from './binding.js';
-import { atOccurrencePath, classRegionLayout } from './lexical-regions.js';
+import { atOccurrencePath } from './lexical-regions.js';
+import { createGeneratedNameAllocator, physicalIdentifierKeys } from './identifier.js';
 
 // --- AST Node API ---
 
@@ -61,6 +62,9 @@ export function sym(name) {
  * @returns {{ type: 'atom', value: string }}
  */
 export function gensym(prefix = 'g') {
+  if (!Number.isSafeInteger(gensymCounter) || !Number.isSafeInteger(gensymCounter + 1)) {
+    throw new Error('gensym counter exhausted');
+  }
   return { type: 'atom', value: `${prefix}__gensym${gensymCounter++}` };
 }
 
@@ -741,15 +745,22 @@ const dispatchTable = Object.assign(Object.create(null), {
 /** Shared empty environment (never mutated — `extendEnv` copies). */
 const EMPTY_ENV = new Set();
 
-function createExpansionEnvironment(bindings, typeContext) {
-  return { bindings: new Set(bindings), typeContext };
+function createExpansionEnvironment(bindings, typeContext, generatedNames) {
+  return { bindings: new Set(bindings), typeContext, generatedNames };
 }
 
 function extendEnv(env, names) {
   return {
     bindings: extendBindingEnv(env.bindings, names),
     typeContext: env.typeContext,
+    generatedNames: env.generatedNames,
   };
+}
+
+function reserveOwnedGeneratedNames(generatedNames, syntax) {
+  generatedNames.reserveSyntax(syntax, {
+    skipNode: (node) => node.type === "atom" && compilerPrivateAtomInfo(node) !== undefined,
+  });
 }
 const directResultBlocks = new WeakSet();
 const returnOperandValues = new WeakSet();
@@ -1251,8 +1262,7 @@ function emittedNames(nodes, reserved = new Set()) {
       if (compilerPrivateAtomInfo(node) !== undefined) {
         return;
       }
-      reserved.add(toJsIdentifier(node.value));
-      for (const part of node.value.split(":").filter(Boolean)) reserved.add(toJsIdentifier(part));
+      for (const name of physicalIdentifierKeys(node.value)) reserved.add(name);
     } else if (node.type === "list") node.values.forEach(walk);
     else if (node.type === "cons") { walk(node.car); walk(node.cdr); }
   };
@@ -1273,9 +1283,13 @@ function finalizeCompilerPrivateAtoms(forms) {
       if (groups === undefined) { groups = new Map(); names.set(marker.identity, groups); }
       let name = groups.get(marker.prefix);
       if (name === undefined) {
-        do { name = `${marker.prefix}__gensym${next++}`; }
-        while (reserved.has(toJsIdentifier(name)));
-        reserved.add(toJsIdentifier(name));
+        do {
+          if (!Number.isSafeInteger(next) || !Number.isSafeInteger(next + 1)) {
+            throw new Error('completion: generated identifier allocation exhausted');
+          }
+          name = `${marker.prefix}__gensym${next++}`;
+        } while ([...physicalIdentifierKeys(name)].some((key) => reserved.has(key)));
+        for (const key of physicalIdentifierKeys(name)) reserved.add(key);
         groups.set(marker.prefix, name);
       }
       node.value = name;
@@ -1296,6 +1310,7 @@ function emitSurfaceMatchStatement(args, env) {
     expandValue: (form, scope) => expandSingle(form, scope, "Value", "match expression"),
     expandBody: (forms, scope) => expandChildrenSeq(forms, scope, "Statement"),
     reserveNames: emittedNames,
+    generatedNames: env.generatedNames,
   });
 }
 
@@ -1308,6 +1323,7 @@ function emitSurfaceMatchDirect(args, env) {
     expandHeader: (form, scope) => expandDirectValuePlan(form, scope),
     expandBody: (forms, scope) => expandChildrenSeq(forms, scope, "DirectStatement"),
     reserveNames: emittedNames,
+    generatedNames: env.generatedNames,
   });
 }
 
@@ -1364,6 +1380,7 @@ function emitSurfaceMatchResult(args, env, use) {
     expandHeader: (form, scope) => expandDirectValuePlan(form, scope),
     expandBody: (forms, scope) => expandResultClause(forms, scope, use),
     reserveNames: emittedNames,
+    generatedNames: env.generatedNames,
   });
   directResultBlocks.add(result);
   return result;
@@ -1830,7 +1847,8 @@ function expandDirectBind(args, env) {
   const { valueNode } = simpleDirectBind(args);
   const emitted = emitSurfaceForm(
     { type: 'Bind', args },
-    { sym, array, gensym, isKeyword, typeContext: env.typeContext },
+    { sym, array, gensym: env.generatedNames.next, generatedNames: env.generatedNames,
+      isKeyword, typeContext: env.typeContext },
   );
   const emittedForms = Array.isArray(emitted) ? emitted : [emitted];
   const kernel = emittedForms[0];
@@ -1864,9 +1882,11 @@ function expandDirectBind(args, env) {
  */
 export function expandExpr(form, env = EMPTY_ENV) {
   form = cloneOccurrenceSyntax(form);
+  const generatedNames = createGeneratedNameAllocator(gensym);
+  reserveOwnedGeneratedNames(generatedNames, form);
   validateReservedNames([form], { bindings: env });
   const privateCountAtStart = compilerPrivateAtomCount;
-  const expansionEnv = createExpansionEnvironment(env, createSurfaceTypeContext());
+  const expansionEnv = createExpansionEnvironment(env, createSurfaceTypeContext(), generatedNames);
   const result = expandAt(form, expansionEnv, "Legacy");
   if (compilerPrivateAtomCount !== privateCountAtStart) {
     finalizeCompilerPrivateAtoms(Array.isArray(result) ? result : [result]);
@@ -2058,7 +2078,8 @@ function expandExprInner(form, env, use = "Legacy", computedMemberCallRequest = 
           }
           const kernel = emitSurfaceForm(
             { type: "Bind", args },
-            { sym, array, gensym, isKeyword, typeContext: cur.typeContext },
+            { sym, array, gensym: cur.generatedNames.next, generatedNames: cur.generatedNames,
+              isKeyword, typeContext: cur.typeContext },
           );
           const emitted = Array.isArray(kernel) ? kernel : [kernel];
           for (const item of emitted) {
@@ -2083,7 +2104,10 @@ function expandExprInner(form, env, use = "Legacy", computedMemberCallRequest = 
         if (assignment !== null) return assignment;
       }
 
-      const kernel = emitSurfaceForm(astNode, { sym, array, gensym, isKeyword, typeContext: env.typeContext });
+      const kernel = emitSurfaceForm(astNode, {
+        sym, array, gensym: env.generatedNames.next, generatedNames: env.generatedNames,
+        isKeyword, typeContext: env.typeContext,
+      });
       const kernelUse = use === "Protected"
         ? "Protected"
         : use === "Legacy"
@@ -2117,6 +2141,7 @@ function expandExprInner(form, env, use = "Legacy", computedMemberCallRequest = 
       const macroArgs = current.values.slice(1);
       try {
         current = cloneOccurrenceSyntax(macroEnv.get(macroName)(...macroArgs));
+        reserveOwnedGeneratedNames(env.generatedNames, current);
       } catch (err) {
         throw new Error(`error expanding macro '${macroName}': ${err.message}`, { cause: err });
       }
@@ -2445,14 +2470,14 @@ function findSymbolRefs(forms, names) {
  * @param {*[]} forms - Forms after Pass 1 (macros removed)
  * @returns {*[]} Fully expanded forms
  */
-function pass2ExpandAll(forms) {
+function pass2ExpandAll(forms, generatedNames) {
   const result = [];
   const compilerPrivateAtomsAtStart = compilerPrivateAtomCount;
   // Top-level forms are a sibling SEQUENCE: a `bind`/`import` at top level is in
   // scope for the following top-level forms (mirror of Rust's outermost
   // `resolve_seq`), so a later `(array 987)` after `(bind array 0)` resolves to
   // the binding.
-  let env = createExpansionEnvironment(EMPTY_ENV, createSurfaceTypeContext());
+  let env = createExpansionEnvironment(EMPTY_ENV, createSurfaceTypeContext(), generatedNames);
   for (const form of forms) {
     const expanded = expandAt(form, env, "Statement", null, null, RESULT_SLOT.SEQUENCE);
     const siblings = Array.isArray(expanded) ? expanded : [expanded];
@@ -2527,10 +2552,13 @@ export function expandWithMacroImports(forms, context = {}, processImports) {
   // surface forms to kernel during expansion). Covers `export`ed names and the
   // `kernel:` name slot.
   const ownedForms = cloneOccurrenceSyntax(forms);
+  const generatedNames = createGeneratedNameAllocator(gensym);
+  reserveOwnedGeneratedNames(generatedNames, ownedForms);
   validateReservedNames(ownedForms);
   const afterPass0 = processImports(ownedForms, { filePath, compilationStack });
+  reserveOwnedGeneratedNames(generatedNames, afterPass0);
   const afterPass1 = pass1RegisterMacros(afterPass0);
-  const expanded = pass2ExpandAll(afterPass1);
+  const expanded = pass2ExpandAll(afterPass1, generatedNames);
   validateReservedNames(expanded);
   // DD-58 strict (default-on): reject unsanctioned top-level kernel-only decls
   // in the fully-expanded output — covers user-written bare decls and

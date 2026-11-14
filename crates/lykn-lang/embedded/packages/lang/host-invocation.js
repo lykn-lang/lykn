@@ -2,6 +2,7 @@
 // This module is intentionally imported by its internal path only.
 
 import { INLINE_APPLY_MODULE, REFLECT_APPLY_ID, validateAnchor } from './host-invocation-shared.js';
+import { emittedIdentifierKeys } from './identifier.js';
 
 const REQUEST_BRAND = Symbol('lykn host invocation request');
 const PROVISIONAL = new WeakMap();
@@ -75,7 +76,9 @@ export function finalizeHostInvocations(program, exprs) {
   const names = new Set();
   const calls = [];
   visitAst(program, node => {
-    if (node.type === 'Identifier') names.add(node.name);
+    if (node.type === 'Identifier') {
+      for (const name of emittedIdentifierKeys(node.name)) names.add(name);
+    }
     if (node.type === 'CallExpression' && PROVISIONAL.has(node)) calls.push(node);
   });
   const needsInlineImport = hasModuleReflectBinding(program);
@@ -83,7 +86,12 @@ export function finalizeHostInvocations(program, exprs) {
     throw new Error('orphaned or duplicate provisional host invocation call');
   }
   let index = 0;
-  while (names.has(`lyknHostReflectApply${index}`)) index++;
+  while ([...emittedIdentifierKeys(`lyknHostReflectApply${index}`)].some((name) => names.has(name))) {
+    if (!Number.isSafeInteger(index + 1)) {
+      throw new Error('lazy host invocation helper allocation exhausted');
+    }
+    index++;
+  }
   const helperName = `lyknHostReflectApply${index}`;
   for (const call of calls) {
     const request = PROVISIONAL.get(call);

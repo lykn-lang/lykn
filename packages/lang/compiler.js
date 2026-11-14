@@ -7,7 +7,7 @@ import { parseIcu, collectSlotNames, IcuParseError } from './icu-parser.js';
 import { moduleBindsRoot, validateProtectedHost } from './protected-host.js';
 import { requestedHostCall, finalizeHostInvocations } from './host-invocation.js';
 import { clearHostReference, formHead, hostReferenceOf } from './compiler-private-atoms.js';
-import { toJsIdentifier } from './identifier.js';
+import { emittedIdentifierKeys, physicalIdentifierKeys, toJsIdentifier, toJsIdentifierParts } from './identifier.js';
 
 export { toJsIdentifier } from './identifier.js';
 export { formHead } from './compiler-private-atoms.js';
@@ -38,7 +38,7 @@ export function lowerHostReferences(forms) {
         requests.add(reference);
         referenceOccurrences.push(node);
       }
-      for (const segment of node.value.split(':')) reserved.add(toJsIdentifier(segment));
+      for (const name of physicalIdentifierKeys(node.value)) reserved.add(name);
     }
     if (node.type === 'list') for (const child of node.values) visit(child);
     if (node.type === 'cons') { visit(node.car); visit(node.cdr); }
@@ -55,8 +55,13 @@ export function lowerHostReferences(forms) {
     const base = `lyknIntrinsic${reference}`;
     let suffix = 0;
     let alias = `${base}${suffix}`;
-    while (reserved.has(alias)) alias = `${base}${++suffix}`;
-    reserved.add(alias);
+    while ([...physicalIdentifierKeys(alias)].some((name) => reserved.has(name))) {
+      if (!Number.isSafeInteger(suffix + 1)) {
+        throw new Error('compiler: generated host-reference allocation exhausted');
+      }
+      alias = `${base}${++suffix}`;
+    }
+    for (const name of physicalIdentifierKeys(alias)) reserved.add(name);
     aliases.set(reference, alias);
     if (moduleBindsRoot(forms, root, formHeadOptions)) {
       inlineImports.push({ type: 'list', values: [
@@ -198,7 +203,7 @@ function reserveIcuIdentifiers(node, occupied, visited = new WeakSet()) {
   visited.add(node);
 
   if (node.type === 'Identifier') {
-    occupied.add(node.name);
+    for (const name of emittedIdentifierKeys(node.name)) occupied.add(name);
     return;
   }
   if (node.type === 'Literal') return;
@@ -223,8 +228,9 @@ function createIcuNameAllocator(expressions) {
   let nextSelectorIndex = 0;
 
   function allocate(preferred) {
-    if (!occupied.has(preferred)) {
-      occupied.add(preferred);
+    const keys = physicalIdentifierKeys(preferred);
+    if (![...keys].some((name) => occupied.has(name))) {
+      for (const name of keys) occupied.add(name);
       return { type: 'Identifier', name: preferred };
     }
 
@@ -235,8 +241,9 @@ function createIcuNameAllocator(expressions) {
       const suffix = nextSuffix;
       nextSuffix += 1;
       const candidate = `${preferred}__lyknGenerated${suffix}`;
-      if (!occupied.has(candidate)) {
-        occupied.add(candidate);
+      const candidateKeys = physicalIdentifierKeys(candidate);
+      if (![...candidateKeys].some((name) => occupied.has(name))) {
+        for (const name of candidateKeys) occupied.add(name);
         return { type: 'Identifier', name: candidate };
       }
     }
@@ -1854,13 +1861,12 @@ export function compileExpr(node, position = 'statement') {
         } else if (first === 'super') {
           result = { type: 'Super' };
         } else {
-          result = { type: 'Identifier', name: toJsIdentifier(first) };
+          result = { type: 'Identifier', name: toJsIdentifierParts(first)[0].name };
         }
 
         for (let i = 1; i < segments.length; i++) {
           const seg = segments[i];
-          const isPrivate = seg.startsWith('-');
-          const propName = toJsIdentifier(seg);
+          const { name: propName, private: isPrivate } = toJsIdentifierParts(`root:${seg}`)[1];
           result = {
             type: 'MemberExpression',
             object: result,
@@ -1875,7 +1881,7 @@ export function compileExpr(node, position = 'statement') {
       }
 
       // 4. Regular identifier with camelCase
-      return { type: 'Identifier', name: toJsIdentifier(val) };
+      return { type: 'Identifier', name: toJsIdentifierParts(val)[0].name };
     }
     case 'list': {
       if (node.values.length === 0) {

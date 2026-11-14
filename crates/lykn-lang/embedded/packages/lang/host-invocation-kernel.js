@@ -1,5 +1,6 @@
 import { markKernel } from './kernel-mark.js';
 import { INLINE_APPLY_MODULE, REFLECT_APPLY_ID, validateAnchor } from './host-invocation-shared.js';
+import { physicalIdentifierKeys } from './identifier.js';
 
 const EXPANDED_REQUESTS = new WeakMap();
 
@@ -42,7 +43,7 @@ export function materializeExpandedHostCalls(forms, {
   const collect = node => {
     if (!node || typeof node !== 'object') return;
     if (node.type === 'atom') {
-      for (const segment of node.value.split(':')) names.add(toJsIdentifier(segment));
+      for (const name of physicalIdentifierKeys(node.value)) names.add(name);
     } else if (node.type === 'list') node.values.forEach(collect);
     else if (node.type === 'cons') { collect(node.car); collect(node.cdr); }
   };
@@ -50,7 +51,12 @@ export function materializeExpandedHostCalls(forms, {
   for (const node of nodes) validateAnchor(node);
   validateProtectedHost(forms, { toJsIdentifier, formHead });
   let index = 0;
-  while (names.has(`lyknHostReflectApply${index}`)) index++;
+  while ([...physicalIdentifierKeys(`lyknHostReflectApply${index}`)].some((name) => names.has(name))) {
+    if (!Number.isSafeInteger(index + 1)) {
+      throw new Error('expanded host invocation helper allocation exhausted');
+    }
+    index++;
+  }
   const helper = `lyknHostReflectApply${index}`;
   for (const node of nodes) {
     const id = EXPANDED_REQUESTS.get(node);
