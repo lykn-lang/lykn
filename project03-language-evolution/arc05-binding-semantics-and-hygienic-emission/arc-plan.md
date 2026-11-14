@@ -2,7 +2,7 @@
 project: project03-language-evolution
 arc: arc05-binding-semantics-and-hygienic-emission
 status: active
-version: "0.5"
+version: "0.6"
 planned-release: unassigned
 depends-on: []
 related: [arc04-qualified-adts, arc06-adt-modules-and-library-integration]
@@ -19,6 +19,15 @@ slice close/report only. Root completed source-ready preparation from clean
 accepted49982409; separate Sol approved the corrected draft before CC issue.
 S03–08 and release/remote actions remain unopened. The S01
 completion and earlier authority below are preserved checkpoints.
+
+S02 initial candidate3617a3ae is independently held for four consolidated
+documentation/static-key/oracle findings. [Correction03](slice02-native-binding-discards/cc-prompt-iteration03.md)
+retains all9ND criteria and the ten-path inherited delivery; only three source
+files change in that correction. Static member-expression Atom keys are rejected
+by the new zero-name guard (colon and dotted spellings); literal keys remain.
+Source/schema/iterator behavior is independently supported by focused execution,
+but full acceptance/final delivery gates wait for corrected code, docs and
+discriminating product oracles. No new feature or later slice is opened.
 
 Current outcome2026-11-13: [S01 is independently closed](slice01-public-source-discards/cdc-verification.md)
 at4998240927909c3abc0172dfef2b56076b19f708, treeb18e75dc06888a771bd7f3aa92a3c2cb1a7e1dc8.
@@ -158,6 +167,10 @@ substitute helper-language exception. Reader RDEO/RDCL, Arc01 I4 and diagnostic
 work, whole-work audits and the separate book/human gates keep their owners.
 
 ## Version history
+
+- 2026-11-13 v0.6: Retain S02 independent3617HOLD and four findings; issue
+  consolidated three-path correction03 after source-readiness approval, with
+  full criteria, history and independent final gates preserved.
 
 - 2026-11-13 v0.5: Record S02 refinement01 negative alias-key syntax follow-
   through and refinement02 corrected frontend admission facts. Preserve full

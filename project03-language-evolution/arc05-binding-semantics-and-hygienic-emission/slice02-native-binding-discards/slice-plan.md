@@ -3,11 +3,22 @@ project: project03-language-evolution
 arc: arc05-binding-semantics-and-hygienic-emission
 slice: slice02-native-binding-discards
 status: active
-version: "1.2"
+version: "1.3"
 depends-on: [slice01-public-source-discards]
 ---
 
 # Remaining native discard binding forms
+
+2026-11-13 independent initial HOLD at3617a3ae records four findings: guide
+Source/raw-IR contradiction, wrong loop getter observation, member-expression
+Atom admitted as static alias key, and a nondiscriminating raw lambda control.
+[Correction03](cc-prompt-iteration03.md) is issued for those findings;
+all9ND rows remain open and full original scope is retained. Review fresh44
+native/4CLI and pure Lykn supplement pass; its full gate was interrupted130,
+not a successful final check. Original candidate/HOLD/evidence remain intact.
+Separate Sol approved the complete correction, including both colon and dotted
+member-Atom negatives and preserved literal String keys. Source/build transfers
+to Luna on dispatch. No source-code acceptance is inferred from readiness.
 
 2026-11-13 issued refinement02 corrects root/reviewer admission assumptions:
 actual KERNEL_FORMS excludes lambda/class/class-expr. Those prefixed escapes
@@ -216,19 +227,28 @@ runtime discriminators; separate Sol confirmed source-ready. No source edits,
 probes or build ran during preparation. This was draft review, not an executed
 CC correction or acceptance of implementation.
 
-Current assignment is cc-prompt-iteration02.md, preserving all initial work
+Latest initial candidate assignment was cc-prompt-iteration02.md, preserving all initial work
 and constraints, the explicit tenth-path syntax repair and actual frontend
 admission distinction. Separate Sol confirmed its complete amendment against
 the actual whitelist/escape classifier before issue. No implementation
 acceptance is claimed by either readiness review.
 
+Current assignment is cc-prompt-iteration03.md for independent R01–04. The
+initial candidate and reviewer HOLD remain preserved; correction source scope
+is classifier/forms.rs, native remaining_discard_bindings.rs and guide00 only.
+
 | Prompt | Date | Predecessor | Purpose | State |
 | --- | --- | --- | --- | --- |
 | cc-prompt.md | 2026-11-13 | S01 accepted49982409 | Remaining native binding discards and explicit admission/signature dispositions | Executed in progress; superseded by refinement01 with all scope retained |
 | cc-prompt-iteration01.md | 2026-11-13 | cc-prompt.md, initial work in progress | Preserve full scope; make admitted literal numeric keys valid JS and retain existing Bool/Null key roles | Executed in progress; superseded by refinement02 with full scope retained |
-| cc-prompt-iteration02.md | 2026-11-13 | cc-prompt-iteration01.md, implementation in progress | Correct frontend admission assumptions; retain actual Source/raw-IR/unsupported-prefix distinction | Issued; Luna retains exclusive source/build ownership |
+| cc-prompt-iteration02.md | 2026-11-13 | cc-prompt-iteration01.md, implementation in progress | Correct frontend admission assumptions; retain actual Source/raw-IR/unsupported-prefix distinction | Returned3617a3ae; independently held R01–04 |
+| cc-prompt-iteration03.md | 2026-11-13 | Candidate3617a3ae and independent R01–04 HOLD | Correct docs/oracles and static-key role guard, preserving all9criteria | Issued; Luna receives exclusive source/build on dispatch |
 
 ## Version history
+
+- 2026-11-13 v1.3: Retain independent3617HOLD and four consolidated findings;
+  prepare three-path correction with actual IteratorValue control and static
+  expression-key rejection, preserving full9-row contract and final gates.
 
 - 2026-11-13 v1.2: Correct kernel-prefix admission assumptions surfaced by
   real callable/class fixture checks. Preserve namespace rejection and require
