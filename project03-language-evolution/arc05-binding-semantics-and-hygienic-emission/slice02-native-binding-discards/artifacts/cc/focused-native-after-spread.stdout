@@ -1,0 +1,19 @@
+
+running 9 tests
+test multi_clause_simple_defaults_are_diagnosed_by_classification_and_direct_emit ... ok
+test named_raw_function_keeps_its_name_and_discards_each_parameter ... ok
+test class_parameter_roles_and_legacy_catch_keep_values_and_keys ... ok
+test raw_arrow_discards_leave_foreign_underscore_visible ... ok
+test grouped_numeric_alias_key_emits_a_valid_javascript_property ... FAILED
+test grouped_discard_patterns_are_structural_and_keep_writer_operations ... ok
+test raw_declarations_and_iteration_bindings_preserve_effects_and_foreign_values ... ok
+test raw_default_rest_spread_and_async_parameter_roles_stay_lazy_and_private ... ok
+test single_clause_simple_default_remains_supported ... ok
+
+failures:
+
+failures:
+    grouped_numeric_alias_key_emits_a_valid_javascript_property
+
+test result: FAILED. 8 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+

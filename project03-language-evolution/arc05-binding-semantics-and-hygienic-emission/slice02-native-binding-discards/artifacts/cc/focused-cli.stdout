@@ -1,0 +1,12 @@
+
+running 2 tests
+test source_kernel_escape_and_lyk_fixtures_check_compile_and_run_as_esm ... FAILED
+test multi_clause_simple_default_is_rejected_by_check_and_both_compile_modes ... ok
+
+failures:
+
+failures:
+    source_kernel_escape_and_lyk_fixtures_check_compile_and_run_as_esm
+
+test result: FAILED. 1 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.24s
+

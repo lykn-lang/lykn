@@ -1,0 +1,14 @@
+   Compiling lykn-lang v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.57s
+     Running tests/remaining_discard_bindings.rs (target/debug/deps/remaining_discard_bindings-d4815e8f437b24b7)
+GROUPED_NUMERIC_ALIAS source="(bind (object (alias -1 _)) record) (console:log _ )" generated="const {-1: completionValue__gensym0} = record;\nconsole.log(_);\n" exit=Some(1) stdout="" stderr="error: SyntaxError: Expected ';', '}' or <eof>\n  |\n1 | globalThis._ = 99; globalThis.record = {-1: 7};\n  |                                           ~\n    at file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/$deno$eval.js:1:43\n"
+
+thread 'grouped_numeric_alias_key_emits_a_valid_javascript_property' (107999897) panicked at crates/lykn-lang/tests/remaining_discard_bindings.rs:222:5:
+error: SyntaxError: Expected ';', '}' or <eof>
+  |
+1 | globalThis._ = 99; globalThis.record = {-1: 7};
+  |                                           ~
+    at file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/$deno$eval.js:1:43
+
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+error: test failed, to rerun pass `-p lykn-lang --test remaining_discard_bindings`

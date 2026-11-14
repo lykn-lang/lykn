@@ -1,0 +1,4 @@
+   Compiling lykn-lang v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.22s
+     Running tests/remaining_discard_bindings.rs (target/debug/deps/remaining_discard_bindings-d4815e8f437b24b7)
+WHOLE_JSON_GROUPED_DISCARD source="(bind (object (alias -1 _) (alias :value _)) record (array _ _) sequence) (console:log _ reads)" generated="const {[-1]: completionValue__gensym0, \"value\": completionValue__gensym1} = record;\nconst [, ,] = sequence;\nconsole.log(_, reads);\n" exit=Some(0) stdout="99 2\n" stderr=""

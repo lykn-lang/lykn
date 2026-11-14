@@ -1,0 +1,11 @@
+
+running 1 test
+test grouped_numeric_alias_key_emits_a_valid_javascript_property ... FAILED
+
+failures:
+
+failures:
+    grouped_numeric_alias_key_emits_a_valid_javascript_property
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 8 filtered out; finished in 0.11s
+

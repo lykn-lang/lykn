@@ -1,0 +1,4 @@
+   Compiling lykn-lang v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.14s
+     Running tests/remaining_discard_bindings.rs (target/debug/deps/remaining_discard_bindings-d4815e8f437b24b7)
+RAW_CODEGEN_LAMBDA source="(const pick (lambda (_) (return _))) (console:log (pick 7))" generated="const pick = function(_) {\n  return _;\n};\nconsole.log(pick(7));\n" exit=Some(0) stdout="7\n" stderr=""

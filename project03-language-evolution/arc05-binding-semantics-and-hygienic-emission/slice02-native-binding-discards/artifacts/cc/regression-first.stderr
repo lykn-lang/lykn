@@ -1,0 +1,13 @@
+   Compiling lykn-lang v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 3.89s
+     Running tests/remaining_discard_bindings.rs (target/debug/deps/remaining_discard_bindings-d4815e8f437b24b7)
+RAW_ARROW_DISCARD source="(bind pick (kernel:=> (_ _) _)) (console:log (pick 7 8))" generated="const pick = (_, _) => _;\nconsole.log(pick(7, 8));\n" exit=Some(1) stdout="" stderr="error: Uncaught SyntaxError: Duplicate parameter name not allowed in this context\nconst pick = (_, _) => _;\n                 ^\n    at <anonymous> (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/$deno$eval.js:2:18)\n"
+
+thread 'raw_arrow_discards_leave_foreign_underscore_visible' (107962185) panicked at crates/lykn-lang/tests/remaining_discard_bindings.rs:37:5:
+error: Uncaught SyntaxError: Duplicate parameter name not allowed in this context
+const pick = (_, _) => _;
+                 ^
+    at <anonymous> (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/$deno$eval.js:2:18)
+
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+error: test failed, to rerun pass `-p lykn-lang --test remaining_discard_bindings`

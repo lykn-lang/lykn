@@ -1,0 +1,4 @@
+   Compiling lykn-lang v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.91s
+     Running tests/remaining_discard_bindings.rs (target/debug/deps/remaining_discard_bindings-d4815e8f437b24b7)
+RAW_SPREAD_PROJECTION source="\n        (kernel:function invoke\n          ((spread (array (default callback (fallback)))))\n          (return (callback)))\n        (kernel:function fallback () (return (kernel:=> () 7)))\n        (console:log (invoke))\n    " generated="function invoke(...[callback = fallback()]) {\n  return callback();\n}\nfunction fallback() {\n  return () => 7;\n}\nconsole.log(invoke());\n" exit=Some(0) stdout="7\n" stderr=""

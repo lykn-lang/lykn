@@ -1,0 +1,11 @@
+
+running 1 test
+test raw_arrow_discards_leave_foreign_underscore_visible ... FAILED
+
+failures:
+
+failures:
+    raw_arrow_discards_leave_foreign_underscore_visible
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.19s
+

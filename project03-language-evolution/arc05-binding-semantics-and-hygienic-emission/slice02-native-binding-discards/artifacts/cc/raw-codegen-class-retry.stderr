@@ -1,0 +1,4 @@
+   Compiling lykn-lang v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.97s
+     Running tests/remaining_discard_bindings.rs (target/debug/deps/remaining_discard_bindings-d4815e8f437b24b7)
+RAW_CODEGEN_CLASS source="(class RawExample () (set value (_) (console:log _))) (const instance (new RawExample))" generated="class RawExample {\n  set value(_) {\n    console.log(_);\n  }\n}\nconst instance = new RawExample();\n" exit=Some(0) stdout="7\n" stderr=""

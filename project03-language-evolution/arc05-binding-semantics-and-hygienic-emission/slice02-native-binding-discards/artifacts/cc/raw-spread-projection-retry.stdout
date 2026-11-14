@@ -1,0 +1,6 @@
+
+running 1 test
+test raw_spread_pattern_default_and_body_names_resolve_in_their_real_roles ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 17 filtered out; finished in 0.03s
+

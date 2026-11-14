@@ -1,0 +1,11 @@
+   Compiling lykn-lang v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.09s
+     Running tests/remaining_discard_bindings.rs (target/debug/deps/remaining_discard_bindings-d4815e8f437b24b7)
+CLASS_PARAMETER_ROUTES source="\n        (class SurfaceExample ()\n          (get fixed () (return 7))\n          (set value (_) (console:log _)))\n        (bind surface (new SurfaceExample))\n        (class KernelExample ()\n          (constructor (_) (console:log _))\n          (set value (_) (console:log _)))\n        (bind kernel_instance (new KernelExample 1))\n        (bind ExpressionExample\n          (class-expr ()\n            (constructor (_) (console:log _))\n            (set value (_) (console:log _))))\n        (bind expression_instance (new ExpressionExample 2))\n        (console:log surface:fixed)\n    " generated="class SurfaceExample {\n  get fixed() {\n    return 7;\n  }\n  set value(completionValue__gensym0) {\n    console.log(_);\n  }\n}\nconst surface = new SurfaceExample();\nclass KernelExample {\n  constructor(completionValue__gensym1) {\n    console.log(_);\n  }\n  set value(completionValue__gensym2) {\n    console.log(_);\n  }\n}\nconst kernel_instance = new KernelExample(1);\nconst ExpressionExample = class {\n  constructor(completionValue__gensym3) {\n    console.log(_);\n  }\n  set value(completionValue__gensym4) {\n    console.log(_);\n  }\n};\nconst expression_instance = new ExpressionExample(2);\nconsole.log(surface.fixed);\n" exit=Some(0) stdout="99\n99\n7\n99\n99\n99\n" stderr=""
+
+thread 'class_get_set_and_explicit_kernel_roots_prepare_only_parameter_slots' (108047417) panicked at crates/lykn-lang/tests/remaining_discard_bindings.rs:256:5:
+assertion `left == right` failed
+  left: "99\n99\n7\n99\n99\n99\n"
+ right: "99\n99\n99\n7\n99\n99\n"
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+error: test failed, to rerun pass `-p lykn-lang --test remaining_discard_bindings`

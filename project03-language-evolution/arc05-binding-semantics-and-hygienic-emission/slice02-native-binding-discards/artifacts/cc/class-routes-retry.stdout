@@ -1,0 +1,11 @@
+
+running 1 test
+test class_get_set_and_explicit_kernel_roots_prepare_only_parameter_slots ... FAILED
+
+failures:
+
+failures:
+    class_get_set_and_explicit_kernel_roots_prepare_only_parameter_slots
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 16 filtered out; finished in 0.11s
+

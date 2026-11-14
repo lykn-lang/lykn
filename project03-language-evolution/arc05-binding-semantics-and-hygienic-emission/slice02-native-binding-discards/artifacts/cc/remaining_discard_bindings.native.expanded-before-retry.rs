@@ -1,0 +1,265 @@
+use std::process::Command;
+
+use lykn_lang::{analysis, classifier, codegen, emitter, reader, resolver};
+
+fn compile(source: &str) -> String {
+    let forms = reader::read(source).expect("fixture reads");
+    let resolved = resolver::resolve(&forms);
+    let classified = classifier::classify(&resolved).expect("fixture classifies");
+    let unit = analysis::analyze(classified).expect("fixture analyzes");
+    let kernel = emitter::emit(&unit, false).expect("fixture emits");
+    codegen::emit_module_js(&kernel).expect("fixture generates JavaScript")
+}
+
+fn run(js: &str, prelude: &str, suffix: &str) -> std::process::Output {
+    let script = format!("{prelude}\n{js}\n{suffix}");
+    Command::new("deno")
+        .arg("eval")
+        .arg("--config")
+        .arg("project.json")
+        .arg("--ext=js")
+        .arg(script)
+        .current_dir(env!("CARGO_MANIFEST_DIR").to_string() + "/../..")
+        .output()
+        .expect("Deno is required for discard runtime evidence")
+}
+
+fn stdout(output: &std::process::Output) -> String {
+    String::from_utf8(output.stdout.clone()).expect("Deno stdout is UTF-8")
+}
+
+#[test]
+fn raw_arrow_discards_leave_foreign_underscore_visible() {
+    let source = "(bind pick (kernel:=> (_ _) _)) (console:log (pick 7 8))";
+    let js = compile(source);
+    let output = run(&js, "globalThis._ = 99;", "");
+    eprintln!(
+        "RAW_ARROW_DISCARD source={source:?} generated={js:?} exit={:?} stdout={:?} stderr={:?}",
+        output.status.code(),
+        String::from_utf8_lossy(&output.stdout),
+        String::from_utf8_lossy(&output.stderr)
+    );
+    assert!(
+        output.status.success(),
+        "{}",
+        String::from_utf8_lossy(&output.stderr)
+    );
+    assert_eq!(stdout(&output), "99\n");
+    assert!(
+        output.stderr.is_empty(),
+        "{}",
+        String::from_utf8_lossy(&output.stderr)
+    );
+}
+
+#[test]
+fn named_raw_function_keeps_its_name_and_discards_each_parameter() {
+    let source = "(kernel:function choose (_ _) (return _)) (console:log (choose 7 8))";
+    let js = compile(source);
+    let output = run(&js, "globalThis._ = 99;", "");
+    eprintln!(
+        "RAW_NAMED_FUNCTION source={source:?} generated={js:?} exit={:?} stdout={:?} stderr={:?}",
+        output.status.code(),
+        String::from_utf8_lossy(&output.stdout),
+        String::from_utf8_lossy(&output.stderr)
+    );
+    assert!(
+        output.status.success(),
+        "{}",
+        String::from_utf8_lossy(&output.stderr)
+    );
+    assert_eq!(stdout(&output), "99\n");
+    assert!(output.stderr.is_empty());
+}
+
+#[test]
+fn single_clause_simple_default_remains_supported() {
+    let source = "(func choose :args ((default :any value 7)) :body value) (console:log (choose))";
+    let js = compile(source);
+    let output = run(&js, "", "");
+    eprintln!(
+        "SINGLE_DEFAULT source={source:?} generated={js:?} exit={:?} stdout={:?} stderr={:?}",
+        output.status.code(),
+        String::from_utf8_lossy(&output.stdout),
+        String::from_utf8_lossy(&output.stderr)
+    );
+    assert!(
+        output.status.success(),
+        "{}",
+        String::from_utf8_lossy(&output.stderr)
+    );
+    assert_eq!(stdout(&output), "7\n");
+    assert!(output.stderr.is_empty());
+}
+
+#[test]
+fn raw_declarations_and_iteration_bindings_preserve_effects_and_foreign_values() {
+    let source = "(kernel:const _ (bump \"const\")) (kernel:let _ (bump \"let\")) (kernel:var _ (bump \"var\")) (kernel:for (kernel:let _ (bump \"for\")) true () (break)) (kernel:for-in _ record (console:log _)) (kernel:for-of _ values (console:log _)) (bind consume (async (kernel:=> () (kernel:for-await-of _ asyncValues (console:log _))))) (await (consume)) (console:log _ ) (console:log (events:join \",\"))";
+    let js = compile(source);
+    let output = run(
+        &js,
+        "globalThis._ = 99; globalThis.events = []; globalThis.bump = value => { events.push(value); return value; }; globalThis.record = {a: 1, b: 2}; globalThis.values = [1, 2]; globalThis.asyncValues = { [Symbol.asyncIterator]() { let index = 0; return { async next() { return index < 2 ? {value: ++index, done: false} : {done: true}; } }; } };",
+        "",
+    );
+    eprintln!(
+        "RAW_DECL_LOOP source={source:?} generated={js:?} exit={:?} stdout={:?} stderr={:?}",
+        output.status.code(),
+        String::from_utf8_lossy(&output.stdout),
+        String::from_utf8_lossy(&output.stderr)
+    );
+    assert!(
+        output.status.success(),
+        "{}",
+        String::from_utf8_lossy(&output.stderr)
+    );
+    assert_eq!(stdout(&output), "99\n99\n99\n99\n99\n99\n99\nconst,let,var,for\n");
+    assert!(output.stderr.is_empty());
+}
+
+#[test]
+fn class_parameter_roles_and_legacy_catch_keep_values_and_keys() {
+    let source = "(class Example () (constructor (_) (bind result _)) (read (_) (return _)) (static (read-static (_) (return _))) (async (read-async (_) (return (await (Promise:resolve _))))) (field _ 7)) (bind instance (new Example 1)) (console:log (instance:read 2)) (console:log (Example:read-static 3)) (console:log (await (instance:read-async 4))) (console:log instance:_) (try (throw 7) (catch _ (console:log _))) (try (throw (array 7 8)) (catch (array _ other) (console:log _ other))) (try (throw (object (_ 1))) (catch (object _) (console:log _)))";
+    let js = compile(source);
+    let output = run(&js, "globalThis._ = 99;", "");
+    eprintln!(
+        "CLASS_CATCH source={source:?} generated={js:?} exit={:?} stdout={:?} stderr={:?}",
+        output.status.code(),
+        String::from_utf8_lossy(&output.stdout),
+        String::from_utf8_lossy(&output.stderr)
+    );
+    assert!(
+        output.status.success(),
+        "{}",
+        String::from_utf8_lossy(&output.stderr)
+    );
+    assert_eq!(stdout(&output), "99\n99\n99\n7\n99\n99 8\n99\n");
+    assert!(output.stderr.is_empty());
+}
+
+#[test]
+fn raw_default_rest_spread_and_async_parameter_roles_stay_lazy_and_private() {
+    let source = "(bind defaulted (kernel:=> ((default _ (bump))) _)) (bind rested (kernel:=> ((rest _)) _)) (bind spreaded (kernel:=> ((spread _)) _)) (bind asynced (async (kernel:=> (_) (await (Promise:resolve _))))) (console:log (defaulted 7)) (console:log (defaulted)) (console:log (rested 1 2)) (console:log (spreaded 3 4)) (console:log (await (asynced 5))) (console:log defaultCalls) (console:log defaulted:length) (console:log rested:length) (console:log spreaded:length)";
+    let js = compile(source);
+    let output = run(
+        &js,
+        "globalThis._ = 99; globalThis.defaultCalls = 0; globalThis.bump = () => { defaultCalls++; return _; };",
+        "",
+    );
+    eprintln!(
+        "RAW_PARAMETER_FAMILIES source={source:?} generated={js:?} exit={:?} stdout={:?} stderr={:?}",
+        output.status.code(),
+        String::from_utf8_lossy(&output.stdout),
+        String::from_utf8_lossy(&output.stderr)
+    );
+    assert!(
+        output.status.success(),
+        "{}",
+        String::from_utf8_lossy(&output.stderr)
+    );
+    assert_eq!(stdout(&output), "99\n99\n99\n99\n99\n1\n0\n0\n0\n");
+    assert!(output.stderr.is_empty());
+}
+
+#[test]
+fn grouped_discard_patterns_are_structural_and_keep_writer_operations() {
+    let source =
+        "(bind (array _ _) inputs (object (alias :value _) (spread _)) record) (console:log _)";
+    let js = compile(source);
+    let output = run(
+        &js,
+        "globalThis._ = 99; globalThis.inputs = [1, 2]; globalThis.record = {value: 3, extra: 4};",
+        "",
+    );
+    eprintln!(
+        "GROUPED_DISCARD source={source:?} generated={js:?} exit={:?} stdout={:?} stderr={:?}",
+        output.status.code(),
+        String::from_utf8_lossy(&output.stdout),
+        String::from_utf8_lossy(&output.stderr)
+    );
+    assert!(
+        output.status.success(),
+        "{}",
+        String::from_utf8_lossy(&output.stderr)
+    );
+    assert_eq!(stdout(&output), "99\n");
+    assert!(output.stderr.is_empty());
+
+    for source in [
+        "(bind (array (rest _) _) [] named 1)",
+        "(bind (object (spread _) (alias :value _)) {} named 1)",
+        "(bind (call) 1 named 2)",
+    ] {
+        let forms = reader::read(source).expect("invalid group fixture reads");
+        let resolved = resolver::resolve(&forms);
+        let error = classifier::classify(&resolved).expect_err("malformed zero-name group rejects");
+        assert!(
+            error
+                .iter()
+                .any(|diagnostic| diagnostic.message.contains("bind group name must be")),
+            "{source}: {error:?}"
+        );
+    }
+}
+
+#[test]
+fn multi_clause_simple_defaults_are_diagnosed_by_classification_and_direct_emit() {
+    use lykn_lang::ast::sexpr::SExpr;
+    use lykn_lang::ast::surface::{
+        FuncClause, ParamShape, SurfaceForm, TypeAnnotation, TypedParam,
+    };
+    use lykn_lang::reader::source_loc::Span;
+
+    const MESSAGE: &str = "multi-clause func does not support top-level default or rest parameters";
+    for source in [
+        "(func f (:args ((default :any value 7)) :body 1) (:args (:string other) :body 2))",
+        "(func f (:args ((rest :any values)) :body 1) (:args ((object :any other)) :body 2))",
+    ] {
+        let forms = reader::read(source).expect("multi-clause fixture reads");
+        let resolved = resolver::resolve(&forms);
+        let errors = classifier::classify(&resolved)
+            .expect_err("check rejects unsupported simple default or rest");
+        assert!(
+            errors.iter().any(|error| error.message == MESSAGE),
+            "{errors:?}"
+        );
+    }
+
+    let span = Span::default();
+    for (default_value, is_rest) in [
+        (Some(SExpr::Number { value: 7.0, span }), false),
+        (None, true),
+    ] {
+        let parameter = ParamShape::Simple(TypedParam {
+            type_ann: TypeAnnotation {
+                name: "any".to_string(),
+                span,
+            },
+            name: "value".to_string(),
+            name_span: span,
+            default_value,
+            is_rest,
+        });
+        let clause = FuncClause {
+            args: vec![parameter],
+            returns: None,
+            pre: None,
+            post: None,
+            body: vec![SExpr::Number { value: 1.0, span }],
+            span,
+        };
+        let form = SurfaceForm::Func {
+            name: "f".to_string(),
+            name_span: span,
+            clauses: vec![clause.clone(), clause],
+            span,
+        };
+        let mut context = emitter::context::EmitterContext::new(false);
+        let registry = analysis::type_registry::TypeRegistry::default();
+        let error = emitter::forms::emit_form(&form, &mut context, &registry)
+            .expect_err("direct AST emission rejects unsupported simple default or rest");
+        let lykn_lang::error::LyknError::Codegen(diagnostic) = error else {
+            panic!("expected existing codegen diagnostic");
+        };
+        assert_eq!(diagnostic.message, MESSAGE);
+    }
+}

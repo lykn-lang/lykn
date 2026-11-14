@@ -1,0 +1,3 @@
+   Compiling lykn-cli v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.68s
+     Running tests/variadic_for_bodies.rs (target/debug/deps/variadic_for_bodies-dc06f81c033262f2)

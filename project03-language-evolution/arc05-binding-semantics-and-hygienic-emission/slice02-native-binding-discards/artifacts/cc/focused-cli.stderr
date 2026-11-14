@@ -1,0 +1,10 @@
+   Compiling lykn-lang v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang)
+   Compiling lykn-cli v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 6.21s
+     Running tests/remaining_discard_bindings.rs (target/debug/deps/remaining_discard_bindings-3dd8d50e5eda7d68)
+
+thread 'source_kernel_escape_and_lyk_fixtures_check_compile_and_run_as_esm' (107985727) panicked at crates/lykn-cli/tests/remaining_discard_bindings.rs:39:9:
+lykn check stderr: /private/tmp/lykn-arc05-s02-cc/tmp/.tmpEBnSku/discard.lykn: ok (2 top-level expressions)
+
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+error: test failed, to rerun pass `-p lykn-cli --test remaining_discard_bindings`
