@@ -1,0 +1,5 @@
+error: SyntaxError: Unexpected token `|`. Expected identifier, string literal, numeric literal or [ for the computed key
+  |
+4 | const {|: completionValue__gensym0} = record;
+  |        ~
+    at file:///private/tmp/lykn-arc05-s02-cc/tmp/r03-pipe-static-key-pre-fix.mjs:4:8

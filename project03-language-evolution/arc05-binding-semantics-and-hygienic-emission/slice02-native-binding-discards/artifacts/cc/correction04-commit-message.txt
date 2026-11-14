@@ -1,0 +1,7 @@
+fix: normalize grouped discard alias keys
+
+Preserve static alias names in newly admitted grouped discard patterns.
+Keep Source and raw kernel IR examples distinct in the surface guide.
+
+Co-authored-by: Codex <noreply@openai.com>
+Co-authored-by: Billo AI <ai-engineering@billo.systems>

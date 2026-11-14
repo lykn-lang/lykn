@@ -1,0 +1,39 @@
+Diff in /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang/src/classifier/forms.rs:1454:
+         }
+         _ => return pattern.clone(),
+     }
+-    SExpr::List { values, span: *span }
++    SExpr::List {
++        values,
++        span: *span,
++    }
+ }
+ 
+ fn literalize_discard_binding_target(target: &SExpr) -> SExpr {
+Diff in /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang/src/classifier/forms.rs:1543:
+ fn literalize_static_discard_alias_key(key: &SExpr) -> SExpr {
+     let normalized = match key {
+         SExpr::Atom(_) => key.as_atom().map(crate::codegen::names::to_js_identifier),
+-        SExpr::Keyword { .. } => key.as_keyword().map(crate::codegen::names::to_js_identifier),
++        SExpr::Keyword { .. } => key
++            .as_keyword()
++            .map(crate::codegen::names::to_js_identifier),
+         _ => None,
+     };
+     match normalized {
+Diff in /Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang/tests/remaining_discard_bindings.rs:531:
+         .name
+         .as_list()
+         .expect("classified object pattern is a list");
+-    let expected = ["|", "someName", "keywordName", "some-name", "caféName", "absentName"];
++    let expected = [
++        "|",
++        "someName",
++        "keywordName",
++        "some-name",
++        "caféName",
++        "absentName",
++    ];
+     for (index, expected_key) in expected.iter().enumerate() {
+         let original_alias = original_members[index + 1]
+             .as_list()

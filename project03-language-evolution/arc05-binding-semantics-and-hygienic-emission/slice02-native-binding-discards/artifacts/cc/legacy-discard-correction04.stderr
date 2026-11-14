@@ -1,0 +1,4 @@
+    Blocking waiting for file lock on build directory
+   Compiling lykn-lang v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 3.25s
+     Running tests/discard_bindings.rs (target/debug/deps/discard_bindings-3e9aefe0c9ea9e06)
