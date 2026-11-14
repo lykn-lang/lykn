@@ -1,0 +1,4 @@
+fix: reject member keys in grouped discard patterns
+
+Co-authored-by: Codex <noreply@openai.com>
+Co-authored-by: Billo AI <ai-engineering@billo.systems>

@@ -1,0 +1,14 @@
+    Blocking waiting for file lock on build directory
+   Compiling lykn-cli v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-cli)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 13.03s
+     Running tests/remaining_discard_bindings.rs (target/debug/deps/remaining_discard_bindings-3dd8d50e5eda7d68)
+DISCARD_CLI_CHECK extension=lykn source="(bind pick (kernel:=> (_ _) _)) (console:log (pick 7 8))" exit=Some(0) stdout="" stderr="/private/tmp/lykn-arc05-s02-cc/tmp/.tmpZSYLVG/discard.lykn: ok (2 top-level expressions)\n"
+DISCARD_CLI_COMPILE extension=lykn strip=false source="(bind pick (kernel:=> (_ _) _)) (console:log (pick 7 8))" exit=Some(0) stdout="" stderr="" generated="const pick = (completionValue__gensym0, completionValue__gensym1) => _;\nconsole.log(pick(7, 8));\n"
+DISCARD_CLI_RUNTIME extension=lykn strip=false exit=Some(0) stdout="99\n" stderr=""
+DISCARD_CLI_COMPILE extension=lykn strip=true source="(bind pick (kernel:=> (_ _) _)) (console:log (pick 7 8))" exit=Some(0) stdout="" stderr="" generated="const pick = (completionValue__gensym0, completionValue__gensym1) => _;\nconsole.log(pick(7, 8));\n"
+DISCARD_CLI_RUNTIME extension=lykn strip=true exit=Some(0) stdout="99\n" stderr=""
+DISCARD_CLI_CHECK extension=lyk source="(bind pick (kernel:=> (_ _) _)) (console:log (pick 7 8))" exit=Some(0) stdout="" stderr="/private/tmp/lykn-arc05-s02-cc/tmp/.tmpZSYLVG/discard.lyk: ok (2 top-level expressions)\n"
+DISCARD_CLI_COMPILE extension=lyk strip=false source="(bind pick (kernel:=> (_ _) _)) (console:log (pick 7 8))" exit=Some(0) stdout="" stderr="" generated="const pick = (completionValue__gensym0, completionValue__gensym1) => _;\nconsole.log(pick(7, 8));\n"
+DISCARD_CLI_RUNTIME extension=lyk strip=false exit=Some(0) stdout="99\n" stderr=""
+DISCARD_CLI_COMPILE extension=lyk strip=true source="(bind pick (kernel:=> (_ _) _)) (console:log (pick 7 8))" exit=Some(0) stdout="" stderr="" generated="const pick = (completionValue__gensym0, completionValue__gensym1) => _;\nconsole.log(pick(7, 8));\n"
+DISCARD_CLI_RUNTIME extension=lyk strip=true exit=Some(0) stdout="99\n" stderr=""

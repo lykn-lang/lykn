@@ -1,0 +1,11 @@
+
+running 1 test
+test grouped_member_expression_alias_keys_are_rejected_before_codegen ... FAILED
+
+failures:
+
+failures:
+    grouped_member_expression_alias_keys_are_rejected_before_codegen
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 21 filtered out; finished in 0.00s
+

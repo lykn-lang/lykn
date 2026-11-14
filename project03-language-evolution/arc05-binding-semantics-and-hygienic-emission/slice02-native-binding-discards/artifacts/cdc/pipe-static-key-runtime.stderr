@@ -1,0 +1,5 @@
+error: SyntaxError: Unexpected token `|`. Expected identifier, string literal, numeric literal or [ for the computed key
+  |
+4 | const {|: completionValue__gensym0} = record;
+  |        ~
+    at file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/arc05-s02-cdc/pipe-static-key.mjs:4:8

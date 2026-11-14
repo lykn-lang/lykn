@@ -1,0 +1,5 @@
+(set! globalThis:_ 99)
+(bind record (obj))
+(Object:defineProperty record "|" (obj :get (kernel:=> () 7)))
+(bind (object (alias | _)) record (array) (array))
+(console:log _)

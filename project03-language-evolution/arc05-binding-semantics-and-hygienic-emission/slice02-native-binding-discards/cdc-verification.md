@@ -184,3 +184,56 @@ The correction should preserve all ten-path/nine-row scope, actual namespace
 negatives and history. Final fresh full/M6/citations/size verification waits for
 the corrected candidate. No S03, merge, push, release, library/book/human or
 whole-arc acceptance follows from these observations.
+
+## Correction03 pre-gate review — 2026-11-14
+
+Reviewed clean correction commit `28733980289e535f2b767aa5789b32d811ae97d9`,
+tree `d09837b225f66aa634a10069eec4de4e6a2231c7`, parent3617a3ae. Read the entire
+three-path delta, affected current definitions and CC's appended correction
+readback/closing sections. The malformed first co-author attempt08ba3743 is
+retained by CC as the original commit object; current correction metadata is
+reported separately and does not rewrite the initial candidate's history.
+
+**Verdict remains HOLD before final gates.** R02 is now addressed at source
+level: each fresh row iterable's first actual IteratorResult has the observed
+value getter, the discard arm expects0 reads and the named arm2, with independent
+outer next1/return1 retained. R04 now distinguishes foreign99 from argument7
+and asserts literal raw parameter/body spelling. These fixes are inspectable
+and discriminating; no full or focused gate was run by this reviewer at this
+pre-gate handoff.
+
+R01's namespace prose and lambda distinction are corrected, but the table now
+explicitly promises direct raw `codegen::emit_module_js` IR while its final row
+still says `(assign this:x value)` writes assignment. `codegen/emit.rs:250–348`
+has no `assign` dispatch: raw assignment is `=`, and unknown `assign` emits a
+function call. The Source-only class-body teaching belongs separately from the
+raw table, or that row must use actual raw `=`. Retain the useful adjacent
+Source class example.
+
+R03's colon/dot exclusions are implemented, but the finite pipe Atom remains
+admitted and generates malformed JS. Actual source: the static-key predicate
+only excludes colon/dot; `PUNCTUATION_TABLE` has no pipe; the normalizer's regular
+character branch preserves pipe; alias emission writes it bare. The authorized
+single bounded Lykn fixture `artifacts/cdc/pipe-static-key.lykn` was preserved
+before execution. Using CC's staged release CLI, compilation exited0 with empty
+stderr and generated `const {|: completionValue__gensym0} = record;`; executing
+that actual module with Deno exited1 with `Unexpected token |` at that exact
+generated declaration. This is an observed finite product failure, distinct
+from the earlier source-only member-key finding. No compiler rebuild or broad
+key/reader investigation was performed; fresh final gates remain pending.
+
+Root's proposed representation repair matches the existing static role: in
+newly admitted zero-name grouped patterns only, normalize admitted Atom and
+Keyword alias keys through existing `to_js_identifier` into owned String nodes
+with original spans, then use the existing String writer. Recurse only through
+binding targets and preserve default RHSs and values. Keep member-expression
+Atom rejection, literal String spelling, numeric/Bool/Null handling, already
+admitted named-pattern behavior and raw codegen unchanged. This avoids extending
+a character blacklist or changing the general identifier/Unicode policy. It
+requires a reviewed correction assignment; no implementation was made here.
+
+Finite-case receipts: `pipe-static-key-compile.*`, `pipe-static-key-runtime.*`,
+the preserved input and `pipe-static-key.generated.mjs`. All commands used the
+same source cwd/warm Deno/owned CDC cache environment listed above. No tool
+session remains running. Source/build returns clean to root for the consolidated
+static-role and remaining table-label correction; final gates were not started.

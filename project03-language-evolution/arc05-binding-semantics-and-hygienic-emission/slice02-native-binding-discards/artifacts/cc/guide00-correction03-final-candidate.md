@@ -1,0 +1,1486 @@
+# lykn Surface Forms Reference
+
+The complete catalog of lykn syntax. Every form compiles to
+kernel forms, which compile to JavaScript. No runtime dependencies.
+
+Target environment: **Deno**, **ESM-only**, **`deno lint` + `deno fmt`** on compiled
+output, lykn/surface syntax throughout.
+
+All examples verified by `lykn test --docs`.
+
+The compiler's protected host write rules are documented in the
+[Protected host contract v1](../host-contract.md).
+
+---
+
+## How to Read This Guide
+
+- **lykn column**: the surface syntax you write
+- **Notes**: caveats, edge cases, related forms
+- Forms marked **(surface)** are high-level forms that expand to kernel forms
+- Forms marked **(kernel)** are low-level forms that map directly to JS
+
+---
+
+## Syntax Fundamentals
+
+### Colon Syntax (member access)
+
+Colons in identifiers compile to `.` property access at compile time. No
+runtime cost.
+
+| lykn | JS | Notes |
+|---|---|---|
+| `console:log` | `console.log` | Member access |
+| `items:length` | `items.length` | Property access |
+| `user:to-string` | `user.toString` | camelCase applied |
+| `Math:floor` | `Math.floor` | Stdlib access |
+| `this:-name` | `this.#_name` | Private field (leading `-`) |
+
+Colons split left-to-right. `a:b:c` becomes `a.b.c`. The leading `-`
+prefix on the last segment maps to a `#_` private field.
+
+### Keywords (leading colon)
+
+A leading colon makes an atom a keyword. Keywords serve two purposes:
+
+1. **Object keys** in `obj`, `assoc`, `dissoc` — `:name` becomes the key `"name"`
+2. **Type annotations** in `func`, `fn`, `type` — `:number`, `:string`, `:any`, etc.
+
+Keywords are not values at runtime. They are compile-time markers that the
+surface macros consume.
+
+### lisp-case to camelCase Conversion
+
+Hyphens in identifiers are automatically converted to camelCase:
+
+| lykn | JS |
+|---|---|
+| `my-function` | `myFunction` |
+| `first-name` | `firstName` |
+| `method-result` | `methodResult` |
+| `abs-val` | `absVal` |
+
+This applies to bindings, function names, object keys, and all
+identifiers. The conversion is purely lexical.
+
+### Comments
+
+| Syntax | Scope | Notes |
+|---|---|---|
+| `; text` | Line | Everything after `;` to end of line |
+| `;; text` | Line | Convention for top-level comments |
+| `#; expr` | Expression | Discards the next form (JS compiler only; see Known Gaps) |
+| `#\| ... \|#` | Block | Nestable block comments (JS compiler only; see Known Gaps) |
+
+---
+
+## Bindings & Mutation
+
+### bind (surface)
+
+Immutable binding. Compiles to `const`.
+
+```lykn
+(bind x 42)
+```
+
+Type annotation with runtime enforcement (DD-24):
+
+```lykn
+(bind :number age 42)
+```
+
+For literal values, the type is verified at compile time (no runtime
+cost). Type-incompatible literals are compile errors. For non-literal
+initializers, a runtime type check is emitted:
+
+```lykn
+(bind :number result (compute-something))
+```
+
+Runtime checks can be stripped with `--strip-assertions`.
+
+`bind` always produces `const`. For mutable state, use `cell`.
+
+Grouped `bind` keeps related local bindings together:
+
+```lykn
+(bind
+  email record:email
+  role (?? record:role "user")
+  label (role-label role))
+```
+
+Grouped bindings are sequential. Each initializer can reference names from
+earlier pairs in the same `bind`, and duplicate names in the same group are
+compile errors. Typed pairs are supported inside the group:
+
+```lykn
+(bind
+  :string email record:email
+  :string role (?? record:role "user"))
+```
+
+The binding position may still use destructuring patterns for untyped pairs,
+including patterns that bind no names, such as an empty array/object pattern
+or a pattern made only of `_` discards. These patterns still evaluate the
+initializer and perform their normal destructuring work.
+
+In an eligible ordinary named function, a simple-name `bind` initializer can
+consume a result-producing `do`, `if`, or `match` without moving source
+`return`, `break`, or `continue` into an extra function. A transfer keeps its
+original function or loop target and skips the original `const` and following
+statements; a normally completed path initializes that `const` in its original
+scope. The public JavaScript direct-bind path currently covers untyped and
+`:any` simple names. Other typed public binds and destructuring keep their
+existing paths.
+
+In the same eligible function region, an `if` test and a `match` subject or
+guard may also run a statement prefix before producing their value. A subject
+prefix runs before candidate selection; a guard prefix runs after that
+candidate's pattern bindings. Source returns still exit the original function.
+The surface `and` and `or` forms, and recognized `kernel:&&`, `kernel:||`, and
+`kernel:??` forms, evaluate later operands only when selected and preserve the
+selected operand's value. Pure value-only forms keep their ordinary expression
+output.
+
+### cell / express / swap! / reset! (surface)
+
+Controlled mutation via cell containers. A cell wraps a value in an
+object with a `.value` property, giving you explicit, visible mutation
+points.
+
+**cell** — create a mutable container:
+
+```lykn
+(bind counter (cell 0))
+```
+
+**express** — read the cell's current value:
+
+```lykn
+(express counter)
+```
+
+**swap!** — update the cell by applying a function to the current value:
+
+```lykn
+(swap! counter (=> (n) (+ n 1)))
+```
+
+`swap!` accepts extra arguments that are passed after the current value:
+
+```lykn
+(swap! counter f a b)
+```
+
+**reset!** — set the cell to a new value directly:
+
+```lykn
+(reset! counter 0)
+```
+
+**Putting it together:**
+
+```lykn
+(bind x 42)
+(console:log x)
+
+(bind counter (cell 0))
+(console:log (express counter))
+(swap! counter (=> (n) (+ n 1)))
+(console:log (express counter))
+(reset! counter 99)
+(console:log (express counter))
+```
+
+```
+42
+0
+1
+99
+```
+
+---
+
+## Functions
+
+### func (surface) — named, with contracts
+
+`func` defines named functions with optional typed parameters, return
+type checks, and pre/post contracts.
+
+**Zero-arg shorthand** — last expression is implicit return:
+
+```lykn
+(func now (Date:now))
+```
+
+In a single-clause `func` with no postcondition and no return annotation (or
+`:returns :any`), explicit `return` and the implicit final result return
+directly from that function. Returns inside a nested function still belong to
+the nested function; typed returns, postconditions, generators, and
+multi-clause functions keep their own lowering rules.
+
+On these direct statement, simple-name `bind` initializer, and explicit
+return-operand paths, a call through a bare lexical binding remains an
+ordinary call even when its name matches a surface form, such as a parameter
+named `and`. The callable is evaluated before its arguments, which run
+left-to-right. In an argument lowered as a statement sequence, a direct
+`return`, `break`, or `continue` keeps its surrounding function or loop target
+and skips later arguments and the call. A lexical call with a spread argument
+and an argument whose evaluation needs a statement sequence is rejected.
+
+On the same paths, a single ordinary static colon member call such as
+`(receiver:read-entry arg)` also preserves JavaScript evaluation order when an
+argument needs a statement sequence: the receiver is evaluated first, its
+property is read once before the arguments, and the saved method is invoked
+with the original receiver. A direct transfer in an argument skips the later
+arguments and invocation. A lifted member call with a spread argument is
+rejected; a member call without lifted arguments keeps its ordinary form.
+
+A computed member call can use the same paths by grouping `get` as the callee,
+for example `((get receiver key) arg)`. When receiver, key, or argument
+evaluation needs a statement sequence, the receiver is saved before the key,
+the property is read once, and the method keeps its receiver when called. A
+spread argument is rejected when any part of the call needs lifting. An
+unlifted call keeps its ordinary computed-access form.
+
+Multi-expression body:
+
+```lykn
+(func pick
+  (bind idx (Math:floor (* (Math:random) taglines:length)))
+  (taglines:at idx))
+```
+
+**Single clause with type annotations:**
+
+```lykn
+(func add
+  :args (:number a :number b)
+  :returns :number
+  :body (+ a b))
+```
+
+`:returns :void` suppresses return value and return-type check:
+
+```lykn
+(func greet
+  :args (:string name)
+  :returns :void
+  :body (console:log name))
+```
+
+**Supported type annotations:**
+
+| Annotation | JS check |
+|---|---|
+| `:number` | `typeof !== "number" \|\| Number.isNaN(...)` |
+| `:string` | `typeof !== "string"` |
+| `:boolean` | `typeof !== "boolean"` |
+| `:function` | `typeof !== "function"` |
+| `:object` | `typeof !== "object" \|\| === null` |
+| `:array` | `!Array.isArray(...)` |
+| `:symbol` | `typeof !== "symbol"` |
+| `:bigint` | `typeof !== "bigint"` |
+| `:any` | No check |
+| `:void` | No return (`:returns` only) |
+| `:<UserType>` | `typeof !== "object" \|\| null \|\| !("tag" in ...)` |
+
+**Pre-conditions** (`:pre`) — caller blame:
+
+```lykn
+(func pos
+  :args (:number x) :returns :number
+  :pre (> x 0)
+  :body x)
+```
+
+**Post-conditions** (`:post`) — callee blame. Use `~` (tilde) to
+reference the return value:
+
+```lykn
+(func abs-val
+  :args (:number x) :returns :number
+  :post (>= ~ 0)
+  :body (if (< x 0) (- 0 x) x))
+```
+
+**Multi-clause** — overloaded on arity and types:
+
+```lykn
+(func greet
+  (:args (:string name) :returns :string
+   :body (+ "Hello, " name))
+  (:args (:string g :string name) :returns :string
+   :body (+ g ", " name)))
+```
+
+**`--strip-assertions` flag** removes all type checks and contracts:
+
+```sh
+lykn compile file.lykn --strip-assertions
+```
+
+```lykn
+(func add :args (:number a :number b) :returns :number :body (+ a b))
+```
+
+**Destructured parameters** (DD-25) — a destructuring pattern
+(`object` or `array`) can appear in `:args` where a `:type name`
+pair would go. Every field inside the pattern requires a type keyword.
+
+```lykn
+;; Object destructuring — fields are typed
+(func greet
+  :args ((object :string name :number age))
+  :returns :string
+  :body (template name " is " age))
+```
+
+```lykn
+;; Array destructuring with rest
+(func first-and-rest
+  :args ((array :number head (rest :number tail)))
+  :body (console:log head tail))
+
+;; Mixed destructured + simple
+(func handler
+  :args ((object :string method :string url) :any body)
+  :body (console:log method url body))
+```
+
+**Default values** (DD-25.1) — `(default :type name value)` inside
+a destructuring pattern:
+
+```lykn
+(func connect
+  :args ((object :string host
+                 :number port
+                 (default :boolean ssl true)))
+  :body (open-connection host port ssl))
+```
+
+**Nested destructuring** (DD-25.1) — use `alias` for object
+nesting (names the intermediate property). Array nesting is
+positional (no alias needed).
+
+```lykn
+(func f
+  :args ((object :string name
+                 (alias :any addr (object :string city :string zip))))
+  :body (template name " in " city))
+```
+
+**Multi-clause dispatch**: destructured `object` params dispatch as
+`:object`, destructured `array` as `:array`. Two clauses that both
+destructure objects at the same position overlap — compile error.
+
+### fn (surface) — anonymous, arrow output
+
+`fn` creates typed arrow functions. Same typed parameter syntax as
+`func`, including destructured params.
+
+```lykn
+(fn (:number x) (* x 2))
+```
+
+Zero-arg:
+
+```lykn
+(fn () (Date:now))
+```
+
+With `:any` (no type check):
+
+```lykn
+(fn (:any x) x)
+```
+
+With destructured params (DD-25):
+
+```lykn
+(fn ((object :string name :number age)) (console:log name age))
+```
+
+### lambda (surface) — alias for fn
+
+`lambda` is an exact alias for `fn`. Same syntax, same output.
+
+```lykn
+(lambda (:number x) (+ x 1))
+```
+
+### genfunc (surface) — named generator with typed yields
+
+`genfunc` defines named generator functions with optional typed
+parameters, `:yields` type checking, and contracts. Parallels `func`.
+
+```lykn
+(genfunc range
+  :args (:number start :number end)
+  :yields :number
+  :body
+  (for (let i start) (< i end) (+= i 1)
+    (yield i)))
+```
+
+`:yields :type` emits per-yield runtime type checks in dev mode via
+IIFE wrappers. `:yields :any` skips checks. Omitting `:yields`
+also skips checks. `yield*` (delegation) is never instrumented —
+the delegated generator is responsible for its own checks.
+
+Zero-arg shorthand (no `:args`):
+
+```lykn
+(genfunc fibonacci
+  :yields :number
+  :body
+  (let a 0) (let b 1)
+  (while true
+    (yield a)
+    (let temp a) (= a b) (= b (+ temp b))))
+```
+
+Async generators: `(async (genfunc ...))`. Export a named async generator
+with `(exports name)` at module top level.
+
+### genfn (surface) — anonymous typed generator
+
+`genfn` creates anonymous generator expressions. Same typed
+parameter syntax as `fn`, with optional `:yields` annotation.
+
+```lykn
+(bind gen (genfn (:number start :number end)
+  :yields :number
+  (for (let i start) (< i end) (+= i 1)
+    (yield i))))
+```
+
+Without `:yields`:
+
+```lykn
+(bind gen (genfn () (yield 1) (yield 2)))
+```
+
+**Putting it together:**
+
+```lykn
+(func add
+  :args (:number a :number b)
+  :returns :number
+  :body (+ a b))
+(console:log (add 3 4))
+
+(func greet
+  :args (:string name)
+  :returns :void
+  :body (console:log (template "Hello, " name "!")))
+(greet "world")
+
+(func double
+  :args (:number x) :returns :number
+  :post (> ~ x)
+  :body (* x 2))
+(console:log (double 5))
+```
+
+```
+7
+Hello, world!
+10
+```
+
+---
+
+## Types & Pattern Matching
+
+### type (surface) — algebraic data types
+
+Define tagged constructors. Each constructor is a function (or constant
+for zero-field variants) that returns `{ tag: "Name", ...fields }`.
+
+```lykn
+(type Option (Some :any value) None)
+```
+
+With typed fields:
+
+```lykn
+(type Shape
+  (Circle :number radius)
+  (Rect :number width :number height)
+  (Point))
+```
+
+Zero-field constructors become constants (not functions). Call `Point`
+directly, not `Point()`.
+
+**Prelude types** — `Option` (`Some`/`None`) and `Result` (`Ok`/`Err`)
+are pre-registered in the type registry so `match` can resolve their
+fields without a preceding `type` declaration.
+
+### match (surface) — exhaustive pattern matching
+
+Pattern match on values. In value position, `match` wraps in an IIFE and
+returns the selected clause value. At a direct, unprotected statement
+position, it evaluates the subject once, tries clauses in order, and continues
+after a guard fails. A selected clause runs in the surrounding function and
+loop, so `return`, `break`, and `continue` keep their ordinary targets. If no
+clause selects, direct statement-position `match` throws
+`match: no matching pattern` unless an unguarded wildcard or binding clause
+makes the match exhaustive. Matches inside existing consumed wrappers and
+checked-exit function bodies keep their current path.
+
+In an ordinary named function with no postcondition and no return annotation
+(or `:returns :any`), a match used as an explicit return operand or implicit
+final result keeps its clauses in the function's lexical region and returns
+the selected result directly from that function. Other value-position matches
+retain their existing wrapper.
+
+The subject is evaluated in the incoming scope. Each clause's pattern is
+structural syntax, and its bindings scope only over that clause's guard and
+ordered body; body declarations are visible to later expressions in the same
+clause.
+
+**Literal patterns:**
+
+```lykn
+(match status
+  (200 "ok")
+  (404 "not found")
+  (_ "unknown"))
+```
+
+**ADT constructor patterns:**
+
+```lykn
+(type Option (Some :any value) None)
+(match opt
+  ((Some v) v)
+  (None 0))
+```
+
+**Structural object patterns:**
+
+```lykn
+(match resp
+  ((obj :ok true :data d) d)
+  (_ "error"))
+```
+
+**Guard clauses** (`:when`):
+
+```lykn
+(match opt
+  ((Some v) :when (> v 10) "big")
+  ((Some v) "small")
+  (None "none"))
+```
+
+**Pattern types summary:**
+
+| Pattern | Matches | Binds |
+|---|---|---|
+| `_` | Anything (wildcard) | Nothing |
+| `42` | Number literal | Nothing |
+| `"ok"` | String literal | Nothing |
+| `true` / `false` / `null` | Literal | Nothing |
+| `x` | Anything (binding) | `const x = target` |
+| `None` | Zero-field ADT (PascalCase) | Nothing |
+| `(Some v)` | ADT constructor | Named fields |
+| `(obj :key v)` | Structural object | Selected fields |
+
+Without a wildcard or binding as the last clause, `match` adds a
+`throw new Error("match: no matching pattern")` fallback.
+
+### if-let / when-let (surface) — conditional binding
+
+**if-let** — bind + branch in one form. Always an IIFE.
+
+Simple binding (null check):
+
+```lykn
+(if-let (user (find-user id))
+  (greet user)
+  "not found")
+```
+
+ADT pattern:
+
+```lykn
+(if-let ((Some v) (find-user id))
+  (greet v)
+  "none")
+```
+
+**when-let** — same as `if-let` but without the else branch:
+
+```lykn
+(when-let (user (find-user id))
+  (greet user))
+```
+
+**Putting it together:**
+
+```lykn
+(type Option (Some :any value) None)
+
+(bind a (Some 42))
+(bind b None)
+
+(console:log (match a
+  ((Some v) v)
+  (None "nothing")))
+
+(console:log (match b
+  ((Some v) v)
+  (None "nothing")))
+
+(console:log (match 404
+  (200 "ok")
+  (404 "not found")
+  (_ "unknown")))
+```
+
+```
+42
+nothing
+not found
+```
+
+---
+
+## Objects & Immutable Updates
+
+### obj (surface) — construction
+
+Build objects from keyword-value pairs. Keywords become camelCase keys.
+
+```lykn
+(obj :name "Duncan" :age 42)
+```
+
+Kebab-case keys auto-convert:
+
+```lykn
+(obj :first-name "Duncan")
+```
+
+Empty object:
+
+```lykn
+(obj)
+```
+
+### assoc (surface) — immutable field update
+
+Returns a new object with updated fields via spread:
+
+```lykn
+(assoc user :age 43)
+```
+
+Multiple fields:
+
+```lykn
+(assoc obj :a 1 :b 2)
+```
+
+### dissoc (surface) — immutable field removal
+
+Returns a new object without the specified keys. Compiles to an IIFE
+with destructuring:
+
+```lykn
+(dissoc obj :password)
+```
+
+Multiple keys:
+
+```lykn
+(dissoc obj :a :b)
+```
+
+### conj (surface) — immutable collection append
+
+Returns a new array with an item appended:
+
+```lykn
+(conj items 42)
+```
+
+With an expression:
+
+```lykn
+(conj items (+ 1 2))
+```
+
+**Putting it together:**
+
+```lykn
+(bind user (obj :name "Duncan" :age 42))
+(console:log user:name)
+(console:log user:age)
+
+(bind updated (assoc user :age 43))
+(console:log updated:age)
+
+(bind items #a(1 2 3))
+(console:log (conj items 4))
+```
+
+```
+Duncan
+42
+43
+[ 1, 2, 3, 4 ]
+```
+
+---
+
+## Threading Macros
+
+### -> (thread-first)
+
+Threads a value through a series of forms, inserting it as the **first**
+argument.
+
+```lykn
+(-> 5 (+ 3) (* 2))
+```
+
+With bare functions (not lists):
+
+```lykn
+(-> x f g)
+```
+
+**Keyword method calls** — a keyword step calls a method on the threaded value:
+
+```lykn
+(-> user (get :name) (:to-upper-case))
+```
+
+### ->> (thread-last)
+
+Threads a value as the **last** argument:
+
+```lykn
+(->> items (filter even?) (map double))
+```
+
+With bare functions, `->` and `->>` behave identically (single-arg calls):
+
+```lykn
+(->> x f g)
+```
+
+### some-> / some->> (nil-safe threading)
+
+Like `->` / `->>` but short-circuits on `null`/`undefined`. Compiles to
+an IIFE with null checks at each step.
+
+```lykn
+(some-> user (get :name) (:to-upper-case))
+```
+
+```lykn
+(some->> items (filter even?) (map double))
+```
+
+The null check uses `== null` (loose equality), which catches both
+`null` and `undefined`.
+
+**Putting it together:**
+
+```lykn
+(console:log (-> 5 (+ 3) (* 2)))
+(console:log (-> "hello world" (:to-upper-case)))
+```
+
+```
+16
+HELLO WORLD
+```
+
+---
+
+## Modules
+
+### import
+
+```lykn
+(import "./utils.js" (add subtract))
+```
+
+Default import:
+
+```lykn
+(import "./config.js" config)
+```
+
+### export
+
+Module-level named exports use `(exports name1 name2 ...)`:
+
+```lykn
+(exports greet VERSION)
+
+(func greet
+  :args (:string name)
+  :returns :string
+  :body (template "Hello, " name))
+
+(bind VERSION "0.6.0")
+```
+
+`exports` is a top-level declaration for names defined in the current
+module. Names must resolve to top-level runtime bindings such as `func`,
+`bind`, imported locals, class names, or type constructor values. Duplicate
+or missing names are compile errors.
+
+Inline export wrappers remain accepted for 0.6.0 compatibility:
+
+```lykn
+(export (func legacy-greet
+  :args (:string name)
+  :returns :string
+  :body (template "Hello, " name)))
+```
+
+Prefer `(exports ...)` for new module code. Use `mod.lykn` as a package
+entrypoint/barrel module with selective re-exports from sibling modules:
+
+```lykn
+(export "./auth/session.js" (names login logout))
+```
+
+Default export:
+
+```lykn
+(export default main-fn)
+```
+
+### dynamic-import
+
+```lykn
+(dynamic-import "./mod.js")
+```
+
+---
+
+## Control Flow (kernel forms)
+
+### do — sequence of expressions, position-aware
+
+`(do expr1 expr2 ... final)` evaluates each expression in order and
+yields the value of the final expression.
+
+**Position-aware:**
+- **Statement position:** emits a block. The final expression's value
+  is discarded.
+- **Expression position:** IIFE-wrapped, with the final expression
+  returned.
+
+In an ordinary named function with no postcondition and no return annotation
+(or `:returns :any`), a `do` used as an explicit return operand or implicit
+final result keeps its sequence in the function's lexical region. Its final
+value returns from that function; loop transfers in its statements keep their
+surrounding loop target. Other value-position `do` forms retain their existing
+wrapper.
+
+```lykn
+;; Statement position — sequence with no value flow
+(do
+  (console:log "step 1")
+  (console:log "step 2"))
+
+;; Expression position — value of `(+ a b)` flows out
+(bind result
+  (do
+    (validate! a)
+    (validate! b)
+    (+ a b)))
+```
+
+**Not to be confused with `do-while`** — that's a separate kernel
+loop form (see "Control flow" section below).
+
+See DD-50.5 for full position-aware emission rules.
+
+### if / ? (ternary)
+
+```lykn
+(if (> x 0)
+  (console:log "positive")
+  (console:log "non-positive"))
+```
+
+Ternary expression:
+
+```lykn
+(? (> x 0) "yes" "no")
+```
+
+**Position-aware compilation (DD-50):** `if` in expression position
+compiles to a ternary `cond ? then : else` when both branches are
+pure expressions, or an IIFE when a branch is a statement form
+(`throw`, `return`, etc.). `if` in statement position emits a
+standard `if`-statement. A no-else `if` in expression position is
+also a compile/check error — use `?` explicitly, add an else branch, or
+restructure as a statement. Each statement arm is emitted in its own lexical
+block. An arm can see incoming names, and declarations inside it stay in that
+arm. The alternate starts from the same incoming scope as the consequent. In a
+grouped `bind`, later initializers can use earlier names in that group. These
+blocks do not add functions, so `return`, `break`, and `continue` still reach
+their surrounding function or loop.
+
+In an ordinary named function with no postcondition and no return annotation
+(or `:returns :any`), a returned or implicit-tail `if` with a statement arm
+keeps its branches in that function's lexical region and returns each selected
+value directly. Pure value arms remain a ternary; other value-position `if`
+forms retain their existing wrapper.
+
+**Style:** Prefer `?` for expression position; prefer `if` for
+statement position. The compiler treats them as functionally
+equivalent in expression position, but explicit forms communicate
+intent at the source level.
+
+For LLM-generated code, treat this preference as a hard rule
+(always use `?` in expression position, always use `if` in
+statement position). LLMs flatten soft style preferences toward
+uniform compliance, so explicit phrasing makes the convention
+reliable in generated output.
+
+### cond (surface) — ordered predicate/result clauses
+
+Use `cond` for a sequence of predicate/result clauses:
+
+```lykn
+(cond
+  ((= role "admin") "Administrator")
+  ((= role "editor") "Editor")
+  (:else "User"))
+```
+
+Clauses are checked in order. Each clause is a two-item list of predicate
+and result; `:else` is the default branch and must be the final clause.
+In expression position, `cond` requires `:else` so the emitted JavaScript
+always returns a value:
+
+```lykn
+(bind label
+  (cond
+    ((= status "ok") "Ready")
+    (:else "Blocked")))
+```
+
+A statement-position `cond` may omit `:else`; if no predicate matches,
+no branch runs and the statement produces no value. Use `?` for compact
+binary expression choices, `if` for one-off statement branches, `cond`
+for ordered predicate chains, and `match` for structural or ADT dispatch.
+
+### for-of / while / for / do-while
+
+```lykn
+(for-of item items (console:log item))
+```
+
+```lykn
+(while (> n 0) (console:log n) (= n (- n 1)))
+```
+
+C-style for:
+
+```lykn
+(for (let i 0) (< i 10) (++ i) (console:log i))
+```
+
+The first three forms are the initializer, test, and update headers. The
+initializer may declare a binding; expressions consumed in these headers
+require values. Every following form runs in order as a statement in the loop
+body.
+
+do-while:
+
+```lykn
+(do-while (> n 0) (console:log n) (= n (- n 1)))
+```
+
+The test is the first form. Every following form runs in order as a statement
+in the loop body.
+
+### try / catch / finally
+
+```lykn
+(try
+  (risky)
+  (catch e (console:log e))
+  (finally (cleanup)))
+```
+
+### throw
+
+```lykn
+(throw (new Error "oops"))
+```
+
+### switch / break / continue
+
+```lykn
+(switch status
+  ("ok" (console:log "good") (break))
+  (default (console:log "bad")))
+```
+
+---
+
+## Expressions (kernel forms)
+
+### template (template literals)
+
+```lykn
+(template "hi " name "!")
+```
+
+Strings become literal text segments; everything else becomes
+`${...}` interpolations.
+
+### tag (tagged templates)
+
+```lykn
+(tag html (template "<p>" text "</p>"))
+```
+
+### regex
+
+```lykn
+(regex "^hello" "gi")
+```
+
+### new
+
+```lykn
+(new Thing 1 2)
+```
+
+### get (computed access)
+
+```lykn
+(get arr 0)
+```
+
+```lykn
+(get user :name)
+```
+
+---
+
+## Data Literals
+
+### #a(...) — array
+
+```lykn
+#a(1 2 3)
+```
+
+### #o(...) — object
+
+```lykn
+#o((name "x") (age 42))
+```
+
+### #NNr — radix literals
+
+```lykn
+#16rff
+```
+
+```lykn
+#2r11110000
+```
+
+Radix literals are evaluated at read time and compiled as plain numbers.
+
+**Putting it together:**
+
+```lykn
+(console:log #a(1 2 3))
+(console:log #16rff)
+(console:log #2r11110000)
+```
+
+```
+[ 1, 2, 3 ]
+255
+240
+```
+
+---
+
+## Operators
+
+### Arithmetic (kernel)
+
+| lykn | JS | Notes |
+|---|---|---|
+| `(+ a b c)` | `a + b + c` | Variadic |
+| `(- a b)` | `a - b` | |
+| `(* x y)` | `x * y` | |
+| `(/ a b)` | `a / b` | |
+| `(% a b)` | `a % b` | Remainder |
+| `(** base exp)` | `base ** exp` | Exponentiation |
+
+### Equality (surface — DD-22)
+
+| lykn | JS | Notes |
+|---|---|---|
+| `(= a b)` | `a === b` | **Strict equality** (not assignment!) |
+| `(!= a b)` | `a !== b` | Strict inequality |
+| `(= a b c)` | `a === b && b === c` | Variadic pairwise chain |
+
+`=` means equality in surface lykn — matching every Lisp dialect.
+There is no assignment operator in surface syntax; all mutation goes
+through named forms: `bind`, `reset!`, `swap!`, `assoc`, `dissoc`,
+`conj`.
+
+For the rare `== null` idiom, use the `js:eq` escape hatch:
+
+```lykn
+(js:eq x null)
+```
+
+### Logical (surface — DD-22)
+
+| lykn | JS | Notes |
+|---|---|---|
+| `(and a b)` | `a && b` | Short-circuit AND |
+| `(or a b)` | `a \|\| b` | Short-circuit OR |
+| `(not x)` | `!x` | Logical NOT (unary only) |
+| `(and a b c d)` | `a && b && c && d` | Variadic left-to-right |
+| `(or a b c d)` | `a \|\| b \|\| c \|\| d` | Variadic left-to-right |
+| `(not (not x))` | `!!x` | Nested |
+
+`and`/`or` are short-circuit operators (not function calls). `not`
+accepts exactly one argument.
+
+**Putting it together:**
+
+```lykn
+(console:log (= 1 1))
+(console:log (!= 1 2))
+(console:log (and true true false))
+(console:log (or false false 42))
+(console:log (not false))
+```
+
+```
+true
+true
+false
+42
+true
+```
+
+### Comparison (kernel)
+
+| lykn | JS | Notes |
+|---|---|---|
+| `(< a b)` | `a < b` | |
+| `(> a b)` | `a > b` | |
+| `(<= a b)` | `a <= b` | |
+| `(>= a b)` | `a >= b` | |
+
+### Nullish (kernel)
+
+| lykn | JS |
+|---|---|
+| `(?? a b)` | `a ?? b` |
+
+### Assignment (kernel — not available in surface)
+
+These operators are used internally by the compiler and in kernel
+passthrough. Surface code should use `bind`, `reset!`, `swap!` instead.
+
+| lykn | JS | Notes |
+|---|---|---|
+| `(= x 1)` | `x = 1` | Kernel assignment (surface `=` is equality) |
+| `(+= x 1)` | `x += 1` | Compound assignment |
+| `(-= x 1)` | `x -= 1` | |
+| `(++ x)` | `++x` | Prefix increment |
+| `(-- x)` | `--x` | Prefix decrement |
+
+> **Note:** In surface lykn, `(= a b)` compiles to `a === b` (strict
+> equality). The kernel `=` (assignment) is only used internally by
+> surface macros like `reset!` and `swap!`, and in kernel passthrough
+> for classes and `for` loops. See DD-22.
+
+---
+
+## Macros
+
+### macro (definition)
+
+Define compile-time macros with quasiquote templates:
+
+```lykn
+(macro when (test (rest body))
+  `(if ,test (block ,@body)))
+```
+
+After definition, `when` expands at compile time:
+
+```lykn
+(when true
+  (console:log "it works"))
+
+(when false
+  (console:log "you should not see this"))
+```
+
+```
+it works
+```
+
+### import-macros
+
+Import macros from a local file or published package. Only the listed
+macros are imported.
+
+**Local file** (relative path, must end with `.lykn` or `.lyk`):
+
+```lykn,skip
+(import-macros "./lib.lykn" (when unless))
+```
+
+**Published package** via `jsr:` or `npm:` specifier (DD-34):
+
+```lykn,skip
+(import-macros "jsr:@lykn/testing" (test is-equal ok))
+```
+
+**Bare name** resolved via the project import map in `project.json`:
+
+```lykn,skip
+(import-macros "my-macros" (my-form))
+```
+
+Resolution uses a three-tier scheme:
+1. **Scheme-prefixed** (`jsr:`, `npm:`, `file:`, `https:`) — delegated
+   to Deno's module resolver
+2. **Bare names** — looked up in the project import map
+3. **Filesystem paths** (`./`, `../`) — relative to the importing file
+
+The macro entry point in a resolved package is found via:
+1. `deno.json` field `lykn.macroEntry`
+2. Fallback files: `mod.lykn`, `mod.lyk`, `macros.lykn`, `macros.lyk`,
+   `index.lykn`, `index.lyk`
+3. `deno.json` field `exports` if it points to a `.lykn`/`.lyk` file
+
+### Quasiquote (`` ` ``, `,`, `,@`)
+
+| Syntax | Meaning |
+|---|---|
+| `` `(if ,test ,body) `` | Template with holes |
+| `,expr` | Unquote — insert value |
+| `,@expr` | Splice — insert list elements |
+
+### gensym / #gen
+
+Hygienic symbol generation for macros:
+
+| Syntax | Purpose |
+|---|---|
+| `(gensym "prefix")` | Programmatic gensym |
+| `temp#gen` | Auto-gensym suffix — each unique `name#gen` in a macro body gets a fresh symbol |
+
+---
+
+## JS Interop
+
+### js: namespace
+
+Surface forms for explicit JS interop:
+
+| lykn | JS | Notes |
+|---|---|---|
+| `(js:typeof x)` | `typeof x` | typeof operator |
+| `(js:eq a b)` | `a == b` | Loose equality |
+| `(js:call console:log "hi")` | `console.log("hi")` | Explicit method call |
+| `(js:bind obj:method obj)` | `obj.method.bind(obj)` | Bind method |
+| `(js:eval code)` | `eval(code)` | eval |
+
+### Kernel form passthrough
+
+Strict Source has explicit entrances for kernel forms; raw kernel IR examples
+are not automatically Source syntax. Use the admitted `kernel:` escape for
+kernel-only declarations such as `const`, `let`, `var`, `function`, and
+`function*`. Surface arrows keep their Source spelling, while admitted
+passthrough forms such as `yield`, `yield*`, and `for-await-of` use their
+ordinary spellings. `class` and `class-expr` are native Source forms; their
+`kernel:` prefixes are not admitted escapes.
+
+---
+
+## Raw kernel IR function reference
+
+The table below describes compiler-facing raw kernel IR for the direct
+`codegen::emit_module_js` writer. Its first-column examples are not all normal
+strict Source spellings. For the declaration rows, strict Source uses
+`(kernel:const ...)`, `(kernel:let ...)`, `(kernel:var ...)`,
+`(kernel:function ...)`, and `(kernel:function* ...)`. Surface arrows and
+admitted passthrough forms keep their actual spellings, such as `(=> ...)`,
+`(yield ...)`, `(yield* ...)`, and `(for-await-of ...)`. The raw lambda row is
+only a literal IR example: normal Source uses the typed
+`(lambda (:any name) body...)` form, while `kernel:lambda` is not admitted.
+Likewise, Source `(class ...)` and `(class-expr ...)` remain available, while
+`kernel:class` and `kernel:class-expr` are not admitted. The raw codegen writer
+keeps supplied `_` parameters and references literal; it does not add Source
+escapes or perform Source discard preparation.
+
+| lykn | JS | Notes |
+|---|---|---|
+| `(=> (a b) (+ a b))` | `(a, b) => a + b` | Arrow function |
+| `(function add (a b) (return (+ a b)))` | `function add(a, b) { return a + b; }` | Declaration |
+| `(lambda (a) (return a))` | `function(a) { return a; }` | Anonymous function expression |
+| `(async (=> () (await (fetch url))))` | `async () => await fetch(url)` | Async wrapper |
+| `(=> ((default x 0)) x)` | `(x = 0) => x` | Default parameter |
+| `(function f (a (rest args)) (return args))` | `function f(a, ...args) { return args; }` | Rest parameter |
+| `(function* gen () (yield 1) (yield 2))` | `function* gen() { yield 1; yield 2; }` | Generator |
+| `(yield expr)` | `yield expr` | Yield value |
+| `(yield* other)` | `yield* other` | Delegate to iterable |
+| `(for-await-of item stream (process item))` | `for await (const item of stream) { process(item); }` | Async iteration |
+| `(async (function* gen () ...))` | `async function* gen() { ... }` | Async generator |
+| `(assign this:x value)` | `this.x = value` | Class body only (DD-27) |
+
+**Class bodies** (DD-27): Surface forms expand inside `class`
+method and constructor bodies. `=` is equality, `bind` produces
+`const`, `set!` works, threading macros work. Use `assign` for
+`this`-property assignment in constructors.
+
+```lykn
+(class Dog ()
+  (constructor (name)
+    (assign this:name name))
+  (greet ()
+    (bind msg (template "Hi, I'm " this:name))
+    (return msg)))
+```
+
+---
+
+## Destructuring
+
+Surface destructuring is written with `bind` (the underlying kernel form
+is `const`; reach it explicitly with `(kernel:const …)` when needed).
+
+### Object patterns
+
+```lykn
+(bind (object name age) person)
+```
+
+### Alias
+
+```lykn
+(bind (object (alias data items)) obj)
+```
+
+### Default
+
+```lykn
+(bind (object (default x 0)) point)
+```
+
+### Array patterns
+
+```lykn
+(bind (array first (rest tail)) list)
+```
+
+### Skip with _
+
+```lykn
+(bind (array _ _ third) arr)
+```
+
+In a binding pattern, `_` discards that binding value without creating a
+source name; `_value` remains an ordinary name. Array-pattern `_` is an
+elision, while object-pattern shorthand `_` still reads the property named
+`_` and discards its value. Defaults, rest/spread operations, and nested
+patterns keep their normal evaluation behavior. This meaning applies in native
+binding roles such as raw kernel declarations, loops, callable parameters and
+class method parameters. An underscore in an initializer, default expression,
+property key/value, assignment target, function name or schema field keeps
+that role's ordinary meaning.
+
+---
+
+## Classes (kernel forms)
+
+`class` and `class-expr` are native Source forms and raw IR forms; they are not
+admitted as `kernel:class` or `kernel:class-expr` escapes.
+
+```lykn
+(class Dog (Animal)
+  (field -count 0)
+  (constructor ((name))
+    (super name)
+    (= this:-count (+ this:-count 1)))
+  (speak () (return (+ this:name " barks")))
+  (static (field species "Canine")))
+```
+
+| Feature | lykn | JS |
+|---|---|---|
+| Extends | `(class Dog (Animal) ...)` | `class Dog extends Animal { ... }` |
+| Private field | `(field -count 0)` | `#_count = 0` |
+| Static | `(static (field count 0))` | `static count = 0` |
+| Private access | `this:-count` | `this.#_count` |
+
+---
+
+## Misc Kernel Forms
+
+| lykn | JS | Notes |
+|---|---|---|
+| `(object (name "x") age)` | `{name: "x", age}` | Object literal (kernel) |
+| `(array 1 2 (spread rest))` | `[1, 2, ...rest]` | Array literal (kernel) |
+| `(seq a b c)` | `a, b, c` | Comma expression |
+| `(typeof x)` | `typeof x` | typeof operator |
+| `(debugger)` | `debugger` | Debugger statement |
+| `(block stmts...)` | `{ stmts }` | Block scope |
+
+---
+
+## Known Gaps
+
+The following forms appear in design documents (DD-15 through DD-21) or
+the README but behave differently than documented, or are only available
+in one compiler:
+
+### JS compiler only (not in Rust compiler)
+
+- **`#;` (expression comment)** — The `#;` reader dispatch for discarding
+  the next form is implemented in the JS reader but not yet in the Rust
+  reader. The Rust compiler reports `unknown dispatch character after #`.
+- **`#|...|#` (block comment)** — Nestable block comments are
+  implemented in the JS reader but not the Rust reader.
+- **`cons`, `list`, `car`, `cdr`** — Listed in the README as data
+  literals producing linked-list structures (`[1, 2]`, `[1, [2, [3, null]]]`,
+  `x[0]`, `x[1]`). In the Rust compiler, these compile as ordinary
+  function calls. They require user-defined runtime functions.
+
+### Fixed in v0.4.0 (DD-22)
+
+The following v0.3.0 issues have been resolved:
+
+- **`=` is now strict equality** — `(= a b)` compiles to `a === b`,
+  matching every Lisp dialect. Assignment is handled by named forms
+  (`bind`, `reset!`, `swap!`).
+- **`!=` is now strict inequality** — `(!= a b)` compiles to `a !== b`.
+- **`and`/`or`/`not` are now logical operators** — `(and x y)` compiles
+  to `x && y` (short-circuit), not `and(x, y)` (function call).

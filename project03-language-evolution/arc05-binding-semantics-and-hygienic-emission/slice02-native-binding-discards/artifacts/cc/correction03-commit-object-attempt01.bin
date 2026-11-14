@@ -1,0 +1,10 @@
+tree d09837b225f66aa634a10069eec4de4e6a2231c7
+parent 3617a3aecf69cd4f6a39cd9ebb68e09cdc5c15e9
+author Duncan McGreggor <oubiwann@gmail.com> 1794636052 -0600
+committer Duncan McGreggor <oubiwann@gmail.com> 1794636052 -0600
+
+fix: reject member keys in grouped discard patterns
+
+Co-authored-by: Codex <noreply@openai.com>
+
+Co-authored-by: Billo AI <ai-engineering@billo.systems

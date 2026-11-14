@@ -1,0 +1,11 @@
+commit 08ba3743440aaccdbfd1a999ca47fe296a92c720
+Author:     Duncan McGreggor <oubiwann@gmail.com>
+AuthorDate: Sat Nov 14 00:00:52 2026 -0600
+Commit:     Duncan McGreggor <oubiwann@gmail.com>
+CommitDate: Sat Nov 14 00:00:52 2026 -0600
+
+    fix: reject member keys in grouped discard patterns
+    
+    Co-authored-by: Codex <noreply@openai.com>
+    
+    Co-authored-by: Billo AI <ai-engineering@billo.systems

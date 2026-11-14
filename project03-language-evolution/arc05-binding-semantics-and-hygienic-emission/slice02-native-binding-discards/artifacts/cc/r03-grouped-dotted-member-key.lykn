@@ -1,0 +1,2 @@
+(bind (object (alias owner.key _)) record (array _ _) sequence)
+(console:log _)
