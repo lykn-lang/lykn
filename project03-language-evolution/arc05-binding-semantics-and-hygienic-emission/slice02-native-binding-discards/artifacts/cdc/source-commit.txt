@@ -1,0 +1,10 @@
+commit 3617a3aecf69cd4f6a39cd9ebb68e09cdc5c15e9
+Author:     Duncan McGreggor <oubiwann@gmail.com>
+AuthorDate: Fri Nov 13 23:23:43 2026 -0600
+Commit:     Duncan McGreggor <oubiwann@gmail.com>
+CommitDate: Fri Nov 13 23:23:43 2026 -0600
+
+    feat: complete native discard binding roles
+    
+    Co-authored-by: Codex <noreply@openai.com>
+    Co-authored-by: Billo AI <ai-engineering@billo.systems>

@@ -1,0 +1,7 @@
+hole 99 2 2 1 1
+named 1 2 2 2 1
+catch 99 2 2 2 1
+spread 99 1 1
+call 99 7 41 2 1,7
+before 1,7,argument
+after 99 1,7,argument,advance

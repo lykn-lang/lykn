@@ -1,0 +1,8 @@
+40:1: warning: unused binding 'events'
+  suggestion: prefix with underscore: _events
+47:1: warning: unused binding 'cursor'
+  suggestion: prefix with underscore: _cursor
+49:1: warning: unused binding 'step'
+  suggestion: prefix with underscore: _step
+2:1: warning: unused binding 'metrics'
+  suggestion: prefix with underscore: _metrics
