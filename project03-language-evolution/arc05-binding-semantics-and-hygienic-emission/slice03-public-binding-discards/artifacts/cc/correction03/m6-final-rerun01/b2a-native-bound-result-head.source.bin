@@ -1,0 +1,1 @@
+(macro redirect () `(invoke 1)) (macro invoke (x) `99) (bind invoke (fn (:number x) (+ x 40))) (console:log (redirect))

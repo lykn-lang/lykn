@@ -99,3 +99,41 @@ All rows remain open pending the separate Sol source-first review and root dispo
 The immediate guide now distinguishes ordinary binding-pattern array elision from a bare legacy `(catch (array _) ...)` expression slot, which reads the thrown item without introducing a source name. Public raw IR and generated schema roles stay distinct. Arc06 LI-04 still owns classified-IR/key representation and immediate helper/API review; Arc05 S09 owns later omitted/variadic signature design. S04–S08, release, propagation, remote CI, publication, book/library/licence and explicit human acceptance remain held. The behavior demonstrated is browser-facade compile-to-ESM through actual module import; no browser loader, run/load/CSP or publication claim is made.
 
 The root has exclusive source/build ownership now; no CC jobs remain. Do not mark a row accepted or close S03 from this handoff.
+
+## 2026-11-14 correction03 CC handoff — proposed done, independent review pending
+
+Correction03 was implemented and gated on the assigned source branch. Final source HEAD is `c60dea62d126bb07557a7f4f7183662dec3f6a58`, tree `9c247edcf632ef2e038078a2833e727db949730d`, parent `3d21eab58cb3d28714338e8742dbb0a9c519822b`, branch `codex/qualified-adt-core`. The exact three-path delta from 3d is `packages/lang/binding.js`, `crates/lykn-lang/embedded/packages/lang/binding.js`, and `test/forms/remaining-discard-bindings.test.js`; canonical and embedded binding modules compare byte-for-byte. `git diff --check` passed before commit, the source worktree is clean, commit trailers are adjacent, and the product paths remain inside the original14-path delivery boundary. No planning Git/index/ledger change, amend, rebase, push, merge, release, or remote action occurred.
+
+### R06 change and behavior
+
+`bindingScopePlan` now routes already resolved raw `function`, `function*`, and `=>` heads through existing `functionRegionLayout`, regardless of the kernel mark. `lambda` remains marked-only. This lets existing `expandFunctionRegions` keep the parameter-list container structural while expanding callable defaults and body in the computed local environment. The change does not mark raw forms kernel, grant sanctioning, change lexical/user-macro priority, alter the layout helper, or modify any other source path.
+
+The pre-repair valid semantic red at3d is retained in `artifacts/cc/correction03/pre-repair-focused.*`: focused 65/1, expected arrow arity/result `1 99`, actual `2 99` after the `discardValue__private` macro consumed the ordinary `(=> (_) _)` parameter list. Final existing eight-group suite adds dual Deno/browser arrow checks (macro invocation count0, length1/result99), an unmarked arrow expanded through `expandExpr`, an explicit-lax raw named function and String-empty anonymous generator, and source-priority controls for a bound typed `fn` named `lambda` and a user macro named `function`. The raw generator uses a default RHS macro expanded exactly once; actual execution observes default fallback at generator-call time, body effects only on `.next()`, and a phase shift showing the default closure captured the call-time value. It retains the seven earlier PB-specific groups unchanged. The exact four-file focused command after `make fresh-artifacts` passed 66/0 (`focused-final.*`).
+
+A malformed `get` call in the first post-repair new sentinel fixture produced a 65/1 authoring failure in `focused.*`; the source fixture was corrected, and the output/status remain preserved. The first full make check on the narrow repair but before the added raw default timing case is also preserved in `make-check.*`, exit0; it is not substituted for the final run. `fresh-artifacts-rerun01.*`, `focused-final.*`, and the corrected final full gate have distinct filenames.
+
+### Final gates and limits
+
+Final `make check` ran after all product/test edits and before the exact tested tree was committed; it exited0 on tree `9c247edcf632ef2e038078a2833e727db949730d`. Complete stdout/stderr/status are `artifacts/cc/correction03/make-check-final.*`. The product JS/Lykn corpus reports 1,578 passed across 67 steps, 0 failed. Documentation tests report 482 passed/0 failed. The generator enumerated 22 docs test files; its 15 skipped blocks are annotations (`Skip`/`Fragment`) and separate from nine informational no-Lykn-block inputs. One existing JSR end-to-end test self-skipped because jsr.io was unreachable. No separate `make docs` or optional Cargo doc gate was run; `make check` includes the documentation test gate. Final `make check` emitted no failure. These counts and exclusions are read from the complete captured streams, not estimated from a partial tool display.
+
+The final new M6 packet is isolated at `artifacts/cc/correction03/m6-final-rerun01/`; the earlier pre-gap M6 packet remains at `m6-final/`. Inner strict public test command used Deno2.9.6 with the recorded embedded config and seven prescribed files, status0, exact70 passed/0 failed (62 retained + 8 S03); its stdout and stderr are retained. Embedded delivery materialization status is0. Fourteen comparison files each record both `canonical_equals_embedded=true` and `canonical_equals_materialized=true` (28 true assertions; no false flags). The inner packet records `macro_child_argv=not separately traced`; this remains an explicit evidence limit. Shared `DENO_DIR=/Users/oubiwann/Library/Caches/deno` was intentionally warm; correction03's XDG/tmp/npm and M6 output roots are distinct from prior correction packets. No uncached JSR/network test is claimed from M6.
+
+After commit, final-HEAD `make check-cited-paths` exited0: 64 documents and 601 historical citations accepted (`check-cited-paths-final.*`). Fresh final-HEAD `make bundle-size-check` exited0: gzip 48,689 bytes, baseline 27,630, delta +21,059, below the 81,920-byte limit (`bundle-size-final.*`). It downloaded esbuild from npm and emitted repeated existing astring conditional-export warnings that the `browser` condition follows `import`/`require`. No source changed after these gates. The complete final M6 pair audit is `m6-final-rerun01-comparison-audit.txt`.
+
+### Nine PB row proposal and bubble-up
+
+All nine rows remain open for Sol's independent source-first review and root disposition; the table records only proposed CC evidence, not acceptance.
+
+| Row | Correction03 CC evidence / remaining disposition |
+| --- | --- |
+| PB-01 | Prior declaration/loop/effect/iterator controls remain in the exact final66 focused set; no R06 change to those paths. Independent review remains open. |
+| PB-02 | Final suite now directly exercises unmarked arrow, strict-false raw named function and anonymous generator callable regions; existing typed/class controls remain. Independent source review remains open. |
+| PB-03 | Existing legacy catch-expression behavior and distinction controls remain in final focused set; no correction03 source change. |
+| PB-04 | `expandExpr` unmarked callable-fragment macro collision is now directly covered; earlier spread/default/lifecycle controls remain. Independent lifecycle review remains open. |
+| PB-05 | Existing grouped-pattern effects and classified-key controls remain unchanged and rerun. |
+| PB-06 | Existing signature/direct-builder cases remain unchanged and rerun; correction03 does not expand signature scope. |
+| PB-07 | Dual public facade and explicit-lax versus marked/raw boundaries remain exercised; browser claim remains compile-to-ESM plus execution of produced ESM via Deno, not browser loader/CSP policy. |
+| PB-08 | Final focused66/0, make check0 with product1578/67 and docs482/0, exact M6 70/0 + fourteen dual comparisons, final citations64/601, and fresh gzip48689/81920 are CC evidence only. |
+| PB-09 | Open for independent Sol verdict, root retrospective/ledger reconciliation, and closeout. |
+
+No roadmap/contract expansion surfaced. Retain BS-03's public/native responsibility separation and Arc06 LI-04 classified-IR/key/API follow-up; S04 and later naming/signature/API work, release/propagation, publication, and explicit human acceptance stay with their existing owners. Source/build ownership returns to root for the separate Sol review; no CC processes remain. CC does not accept or close its own evidence.
