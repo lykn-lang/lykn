@@ -1,5 +1,10 @@
 # S03 CC implementation handoff
 
+Subsequent2026-11-14: [local releasec60 integration](artifacts/release-integration-c60dea62.md#independent-release-verdict--accept--2026-11-14)
+is independently accepted after explicit operator authority. RI-01–03 done;
+release and task matchc60/tree9c. S04 is now separately opened. Earlier source
+closing statements below describe their original pre-integration checkpoint.
+
 ## Root final closing metadata —2026-11-14
 
 The original doer statements and dated corrections below remain historical.

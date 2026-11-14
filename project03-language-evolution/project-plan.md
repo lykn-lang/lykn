@@ -1,7 +1,7 @@
 ---
 project: project03-language-evolution
 status: research
-version: "1.66"
+version: "1.67"
 planned-release: "0.7.0"
 depends-on: ["project02-language-toolchain-alignment"]
 blocks: []
@@ -11,6 +11,16 @@ related: ["project04-c-lang", "project07-core-library-research"]
 # Language evolution
 
 ## Current approved structure —2026-11-13
+
+Subsequent authority2026-11-14: release/0.6.x was locally fast-forwarded to
+c60dea62 and [independently accepted](arc05-binding-semantics-and-hygienic-emission/slice03-public-binding-discards/artifacts/release-integration-c60dea62.md#independent-release-verdict--accept--2026-11-14)
+after actual fresh release and optimized-CLI checks. The operator opens
+[Arc05 S04](arc05-binding-semantics-and-hygienic-emission/slice04-discard-aware-declarations/slice-plan.md)
+if green; that condition is met. Same Luna6 High CC / separate Sol6.1 High CDC,
+Autonomous Mode through S04 independent task-branch close/retrospective/routing.
+All8DT/BS-04 remain open during preparation; P-BIND/P-QADT and all later
+qualified/composition/library/research/book/human gates stay open. No further
+merge/push/publication or S05 opening. Earlier release0829 notes are history.
 
 Final delivery2026-11-14: [Arc05 S03](arc05-binding-semantics-and-hygienic-emission/slice03-public-binding-discards/cdc-verification.md#final-correction03-verdict--accept--2026-11-14)
 independently closes all9PB/BS-03 atc60dea62/tree9c247edc. Remaining admitted
@@ -1075,6 +1085,10 @@ with their source and status distinctions. A future
 implementation definition of done is not established by this migration.
 
 ## Version history
+
+- 2026-11-14 v1.67: Independently validate authorized releasec60 integration,
+  then open conditional Arc05 S04 for bounded discard-aware declarations and
+  real TS/CLI/package proof; preserve remaining feature/composition gates.
 
 - 2026-11-14 v1.66: Arc05 S03 independently closes all9PB/BS-03 atc60dea62;
   reconcile retrospective and API/IR/research carry-forward without broadening

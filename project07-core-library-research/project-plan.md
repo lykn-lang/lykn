@@ -9,6 +9,13 @@ related: ["project02-language-toolchain-alignment", "project03-language-evolutio
 
 # Core library research
 
+2026-11-14 integration checkpoint: release/0.6.x now equals independently
+accepted [c60 local integration](../project03-language-evolution/arc05-binding-semantics-and-hygienic-emission/slice03-public-binding-discards/artifacts/release-integration-c60dea62.md#independent-release-verdict--accept--2026-11-14).
+The conditional next step is active Project03 Arc05 S04 discard-aware native
+declarations. No library trial resumes; naming/qualified prerequisites, reader
+RDEO/RDCL, final research synthesis, YAML/document, book/human and licence
+obligations remain open. Earlier release0829 checkpoints are historical.
+
 2026-11-14 compiler prerequisite update: [Project03 Arc05 S03](../project03-language-evolution/arc05-binding-semantics-and-hygienic-emission/slice03-public-binding-discards/cdc-verification.md#final-correction03-verdict--accept--2026-11-14)
 independently accepts remaining public/browser binding discards atc60dea62,
 including actual fragment/materialized proof and immediate guide corrections.

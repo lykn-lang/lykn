@@ -2,7 +2,7 @@
 project: project03-language-evolution
 arc: arc05-binding-semantics-and-hygienic-emission
 status: active
-version: "0.11"
+version: "0.12"
 planned-release: unassigned
 depends-on: []
 related: [arc04-qualified-adts, arc06-adt-modules-and-library-integration]
@@ -11,6 +11,17 @@ related: [arc04-qualified-adts, arc06-adt-modules-and-library-integration]
 # Binding semantics and hygienic emission
 
 ## Authority and outcome
+
+Subsequent authority2026-11-14: operator authorized exact releasec60 fast-forward,
+fresh validation/independent review and S04 if green. [Local integration is
+accepted](slice03-public-binding-discards/artifacts/release-integration-c60dea62.md#independent-release-verdict--accept--2026-11-14),
+RI-01–03 done; release and task are cleanc60/tree9c247edc. [S04 discard-aware
+declarations](slice04-discard-aware-declarations/slice-plan.md) is now open for
+source-ready implementation and independent close, Luna6 High CC / Sol6.1 High
+CDC, Autonomous Mode. Root owns design/planning/index; fresh bounded contexts
+review the existing native DTS route before issue. BS-04 remains open; no
+S05/later feature or further merge/remote action is authorized. Earlier release
+0829 and unopened-S04 statements below are historical checkpoints.
 
 Final delivery2026-11-14: [S03 independently closes](slice03-public-binding-discards/cdc-verification.md#final-correction03-verdict--accept--2026-11-14)
 atc60dea62d126bb07557a7f4f7183662dec3f6a58/tree9c247edc. All9 PB and
@@ -143,7 +154,7 @@ affected delivery, necessary immediate documentation and independent review.
 | [S01 public Source discard completion](slice01-public-source-discards/slice-plan.md) — closed49982409 | Restored nested catch-default validation and independently finished the existing public discard contract across canonical/browser/materialized paths | Native759, held publicdba, original21 scope and R01 witness; original failures preserved |
 | [S02 native remaining discard binding forms](slice02-native-binding-discards/slice-plan.md) — closed9e6fb127 | Completed canonical admitted native catch/loop/callable/method roles, grouped static-key admission and honest simple-multi diagnostics; actual Source/raw-IR entrances distinguished | Accepted49982409 baseline and final independent9-row/gate proof; original HOLDs/refinements retained |
 | [S03 public remaining discard binding forms](slice03-public-binding-discards/slice-plan.md) — closedc60dea62 | Delivered corresponding public/browser behavior, preserved already-admitted non-atom/empty-list discard groups and raw/schema roles, and enforced the honest simple-multi boundary | Independent final9-row proof, focused66/full1578/docs482/M670/14/cites/size; original HOLDs and three refinements retained |
-| S04 discard-aware declarations | Keep parameters, schema fields and exported declarations consistent with actual discard behavior | S02/S03 semantics; actual TypeScript declaration consumer |
+| [S04 discard-aware declarations](slice04-discard-aware-declarations/slice-plan.md) — active | Keep existing native Func/Bind/BindGroup/Type declarations consistent with actual discard slots/defaults/rest, data fields and source exports; actual TS/CLI/package consumers | Independently integratedc60 S02/S03 semantics; separate source-readiness review before CC dispatch |
 | S05 native compiler-generated name hygiene | Protect remaining compiler temporaries from source, foreign and generated-name collisions | Native discard roles; complete producer/reservation census |
 | S06 public compiler-generated name hygiene | Protect corresponding public producers while preserving private object identities and macro transport limits | Public discard roles; complete producer/finalizer census |
 | S07 native exact source-binding emission | Resolve binding occurrences and allocate safe JS names while retaining hoisting, TDZ, data/API names, foreign targets and JSON behavior | S05; settled source-name policy; actual native writer scopes |
@@ -221,6 +232,10 @@ substitute helper-language exception. Reader RDEO/RDCL, Arc01 I4 and diagnostic
 work, whole-work audits and the separate book/human gates keep their owners.
 
 ## Version history
+
+- 2026-11-14 v0.12: Record independently accepted c60 local release integration
+  and operator-opened S04 declaration work with same models/Autonomous Mode.
+  BS-04 stays open pending independent source/delivery proof; later gates intact.
 
 - 2026-11-14 v0.11: S03 completes BS-03 at independently acceptedc60dea62.
   Retain all nine criteria and R01–06 history; root retrospective and downstream

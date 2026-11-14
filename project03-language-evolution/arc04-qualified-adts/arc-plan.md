@@ -2,13 +2,20 @@
 project: project03-language-evolution
 arc: arc04-qualified-adts
 status: replanning
-version: "2.3"
+version: "2.4"
 related: [arc05-binding-semantics-and-hygienic-emission, arc06-adt-modules-and-library-integration, project07-core-library-research]
 ---
 
 # Qualified ADTs
 
 ## Current v2.0 scope and authority
+
+Current checkpoint2026-11-14: [release/0.6.x atc60](../arc05-binding-semantics-and-hygienic-emission/slice03-public-binding-discards/artifacts/release-integration-c60dea62.md#independent-release-verdict--accept--2026-11-14)
+is independently integrated/validated. Operator-authorized Arc05 S04 opens
+discard-aware native declarations on that task baseline. Arc04 local qualified
+implementation stays paused; original retired-row/759/499 evidence is unchanged.
+All later naming/owner/ABI/composition/library/book/human gates retain owners.
+Older release0829/unopened-S04 notes below are historical.
 
 Current checkpoint2026-11-14: [Arc05 S03](../arc05-binding-semantics-and-hygienic-emission/slice03-public-binding-discards/cdc-verification.md#final-correction03-verdict--accept--2026-11-14)
 independently delivers remaining public/browser binding discards atc60dea62.
@@ -300,6 +307,9 @@ Project07's original research evidence, final synthesis and library handoffs
 survive this detour, including every YAML and human-review obligation.
 
 ## Version history
+
+- 2026-11-14 v2.4: Record independently integratedc60 and Arc05 S04 opening;
+  no qualified-feature activation or retired-row status change.
 
 - 2026-11-14 v2.3: Record accepted Arc05 S03 public/browser binding prerequisite
   c60dea62 without broadening retired-row evidence or activating qualified ADTs.

@@ -9,6 +9,11 @@ depends-on: [slice02-native-binding-discards]
 
 # Remaining public/browser discard binding forms
 
+Subsequent2026-11-14: the operator-authorized [local releasec60 integration](artifacts/release-integration-c60dea62.md#independent-release-verdict--accept--2026-11-14)
+passes RI-01–03 independently. The same accepted source/tree is now on release;
+S04 opens separately. The source close and earlier release0829 observations
+below retain their original chronology and scope.
+
 Final outcome2026-11-14: separate Sol6.1 High independently
 [accepts correction03](cdc-verification.md#final-correction03-verdict--accept--2026-11-14)
 at c60dea62d126bb07557a7f4f7183662dec3f6a58,

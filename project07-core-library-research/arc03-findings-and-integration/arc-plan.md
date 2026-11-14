@@ -1,5 +1,11 @@
 # Arc03 — Findings and integration
 
+2026-11-14 integration checkpoint: [release/0.6.x c60](../../project03-language-evolution/arc05-binding-semantics-and-hygienic-emission/slice03-public-binding-discards/artifacts/release-integration-c60dea62.md#independent-release-verdict--accept--2026-11-14)
+is independently accepted; Project03 Arc05 S04 declarations opens conditionally
+on that green baseline. This does not activate library/research trials or alter
+reader RDEO/RDCL, qualified/naming, synthesis/book/human/licence obligations.
+Earlier release0829 references remain historical.
+
 2026-11-14 later checkpoint: [Project03 Arc05 S03](../../project03-language-evolution/arc05-binding-semantics-and-hygienic-emission/slice03-public-binding-discards/cdc-verification.md#final-correction03-verdict--accept--2026-11-14)
 independently accepts remaining public/browser binding discards atc60dea62.
 Native S02 and public S03 are accepted prerequisites; DTS/naming/qualified

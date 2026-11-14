@@ -1,5 +1,11 @@
 # Binding semantics and hygienic emission ledger
 
+2026-11-14 subsequent authority: c60 local release integration RI-01–03 is
+independently accepted; [S04](slice04-discard-aware-declarations/slice-plan.md)
+opens under Luna6 High CC / separate Sol6.1 High CDC, Autonomous Mode.
+All8DT/BS-04 remain open. BS-01–03 done, BS-04–09 open. Source-ready DTS
+repair and actual consumers precede acceptance; no later work/remote action.
+
 Final2026-11-14: [S03 independently closes](slice03-public-binding-discards/cdc-verification.md#final-correction03-verdict--accept--2026-11-14)
 all9 PB atc60dea62/tree9c247edc; root retrospective and parent reconciliation
 complete BS-03. BS-01–03 done, BS-04–09 open. Original HOLDs below are history;

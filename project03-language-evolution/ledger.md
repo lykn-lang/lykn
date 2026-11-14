@@ -1,5 +1,10 @@
 # project03-language-evolution ledger
 
+2026-11-14 subsequent authority: [releasec60 integration](arc05-binding-semantics-and-hygienic-emission/slice03-public-binding-discards/artifacts/release-integration-c60dea62.md#independent-release-verdict--accept--2026-11-14)
+RI-01–03 independently done; operator-authorized Arc05 S04 opens with same
+Luna6 High CC/Sol6.1 High CDC, Autonomous Mode. All8DT/BS-04 and P-BIND/P-QADT
+remain open. No S05/further integration or library/release publication follows.
+
 Final2026-11-14: [Arc05 S03](arc05-binding-semantics-and-hygienic-emission/slice03-public-binding-discards/cdc-verification.md#final-correction03-verdict--accept--2026-11-14)
 independently closes all9PB/BS-03 atc60dea62/tree9c247edc, with root
 retrospective and parent routing. BS-01–03 are done; P-BIND/P-QADT and remaining
