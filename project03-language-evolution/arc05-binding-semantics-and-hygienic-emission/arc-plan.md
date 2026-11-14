@@ -2,7 +2,7 @@
 project: project03-language-evolution
 arc: arc05-binding-semantics-and-hygienic-emission
 status: active
-version: "0.8"
+version: "0.9"
 planned-release: unassigned
 depends-on: []
 related: [arc04-qualified-adts, arc06-adt-modules-and-library-integration]
@@ -11,6 +11,16 @@ related: [arc04-qualified-adts, arc06-adt-modules-and-library-integration]
 # Binding semantics and hygienic emission
 
 ## Authority and outcome
+
+Current authority2026-11-14: the operator opens
+[S03 public/browser remaining discards](slice03-public-binding-discards/slice-plan.md),
+Luna6 High CC / separate Sol6.1 High CDC, usual Autonomous Mode through S03's
+independent close/report. Root owns design/planning/index and serial source/build
+handoffs. The draft is prepared from accepted9e6fb127 with source-specific public
+admission/legacy catch/raw API and signature decisions; independent readiness
+review passed before CC issue. BS-01/02 stay done, BS-03–09 open. S04 onward and
+release/remote actions remain unopened. Older S02/S03-unopened notes below are
+historical checkpoints, superseded only for this current opening authority.
 
 Current delivery2026-11-14: [S02 independently closes](slice02-native-binding-discards/cdc-verification.md#final-correction04-verdict--accept--2026-11-14)
 at9e6fb1270c3efcbaa0f6ddb9f0fbfd3b2c1c825a,
@@ -107,7 +117,7 @@ affected delivery, necessary immediate documentation and independent review.
 | --- | --- | --- |
 | [S01 public Source discard completion](slice01-public-source-discards/slice-plan.md) — closed49982409 | Restored nested catch-default validation and independently finished the existing public discard contract across canonical/browser/materialized paths | Native759, held publicdba, original21 scope and R01 witness; original failures preserved |
 | [S02 native remaining discard binding forms](slice02-native-binding-discards/slice-plan.md) — closed9e6fb127 | Completed canonical admitted native catch/loop/callable/method roles, grouped static-key admission and honest simple-multi diagnostics; actual Source/raw-IR entrances distinguished | Accepted49982409 baseline and final independent9-row/gate proof; original HOLDs/refinements retained |
-| S03 public remaining discard binding forms | Deliver corresponding public/browser behavior, preserve already-admitted non-atom discard groups, and explicitly resolve the public simple-multi default/rest boundary | S02's reviewed shared contract; public consumer census, data/schema and private finalization |
+| [S03 public remaining discard binding forms](slice03-public-binding-discards/slice-plan.md) — active | Deliver corresponding public/browser behavior, preserve already-admitted non-atom/empty-list discard groups and raw/schema roles, and enforce the honest simple-multi boundary | Accepted9e6fb127; source-grounded producer/catch/one-clause/projection design and independent readiness PASS before CC issue |
 | S04 discard-aware declarations | Keep parameters, schema fields and exported declarations consistent with actual discard behavior | S02/S03 semantics; actual TypeScript declaration consumer |
 | S05 native compiler-generated name hygiene | Protect remaining compiler temporaries from source, foreign and generated-name collisions | Native discard roles; complete producer/reservation census |
 | S06 public compiler-generated name hygiene | Protect corresponding public producers while preserving private object identities and macro transport limits | Public discard roles; complete producer/finalizer census |
@@ -186,6 +196,11 @@ substitute helper-language exception. Reader RDEO/RDCL, Arc01 I4 and diagnostic
 work, whole-work audits and the separate book/human gates keep their owners.
 
 ## Version history
+
+- 2026-11-14 v0.9: Prepare operator-opened S03 for remaining public/browser
+  discard roles from accepted9e6fb127; record public-specific admission and raw/
+  generated boundaries, signature parity and actual M6 delivery. No later
+  slice or release advancement; BS-03 stays open pending independent proof.
 
 - 2026-11-14 v0.8: S02 independently closes at9e6fb127 after full9-row proof,
   R01–04 repair, final gates and retrospective. Record accepted checkpoint and

@@ -1,7 +1,7 @@
 ---
 project: project03-language-evolution
 status: research
-version: "1.64"
+version: "1.65"
 planned-release: "0.7.0"
 depends-on: ["project02-language-toolchain-alignment"]
 blocks: []
@@ -11,6 +11,15 @@ related: ["project04-c-lang", "project07-core-library-research"]
 # Language evolution
 
 ## Current approved structure —2026-11-13
+
+Subsequent authority2026-11-14: the operator opens
+[Arc05 S03](arc05-binding-semantics-and-hygienic-emission/slice03-public-binding-discards/slice-plan.md)
+for remaining public/browser discard forms from independently accepted9e6fb127.
+Luna6 High implements, separate Sol6.1 High reviews, Autonomous Mode through
+S03's independent close/retrospective/bubble-up only. Source-ready public-specific
+design is prepared before CC issue. BS-01/02 stay done; BS-03–09, P-BIND/P-QADT
+and all later composition/qualified/library/book/human gates remain open.
+Release0829e892 is unchanged; older unopened-S03 statements are historical.
 
 Current delivery2026-11-14: [Arc05 S02 independently closes](arc05-binding-semantics-and-hygienic-emission/slice02-native-binding-discards/cdc-verification.md#final-correction04-verdict--accept--2026-11-14)
 at9e6fb127/tree6d64692f. BS-01/02 are done; remaining binding/public/declaration/
@@ -44,7 +53,7 @@ historical S03 assignment22 remains unexecuted.
 
 | Arc | Coherent outcome | Current planning state |
 | --- | --- | --- |
-| [Arc05 binding semantics and hygienic emission](arc05-binding-semantics-and-hygienic-emission/arc-plan.md) | Complete discard semantics/declarations and preserve source/compiler binding identities through emitted JS | S01/S02 independently closed, latest9e6fb127; BS-01/02 done, BS-03–09 open; later candidates remain roadmap only |
+| [Arc05 binding semantics and hygienic emission](arc05-binding-semantics-and-hygienic-emission/arc-plan.md) | Complete discard semantics/declarations and preserve source/compiler binding identities through emitted JS | S01/S02 independently closed, latest9e6fb127; S03 active after readiness PASS, BS-03–09 open; later candidates remain roadmap only |
 | [Arc04 qualified ADTs](arc04-qualified-adts/arc-plan.md) | Closed owner/case semantics, coherent local qualified values/matching/guards, declarations and trusted initialization | Existing identity retained; S01/S02 and bounded prerequisites accepted; remaining local candidates S08–S13 are roadmap only |
 | [Arc06 ADT modules and library integration](arc06-adt-modules-and-library-integration/arc-plan.md) | Imported ABI, selective emission, actual build/JSON composition and API/docs/book/human handoff | Planning stub receives former Arc04 S04–S07 responsibilities, preserving the existing experiment checkpoint |
 
@@ -1057,6 +1066,10 @@ with their source and status distinctions. A future
 implementation definition of done is not established by this migration.
 
 ## Version history
+
+- 2026-11-14 v1.65: Open operator-selected Arc05 S03 public/browser discards
+  for source-ready implementation and independent close, preserving S02 input
+  and all later/release boundaries. No acceptance row closes on opening.
 
 - 2026-11-14 v1.64: Arc05 S02 independently delivers remaining admitted native
   binding discards and grouped static-key/signature dispositions at9e6fb127.

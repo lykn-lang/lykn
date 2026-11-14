@@ -1,5 +1,11 @@
 # project03-language-evolution ledger
 
+2026-11-14 subsequent authority: [Arc05 S03](arc05-binding-semantics-and-hygienic-emission/slice03-public-binding-discards/slice-plan.md)
+is operator-opened for public/browser discard completion, Luna6 High CC and
+separate Sol6.1 High CDC, Autonomous Mode. BS-03/P-BIND/P-QADT and every other
+unfinished criterion remain open. Accepted source9e6fb127 and release0829e892
+are unchanged during preparation; no later implementation or integration follows.
+
 2026-11-14: [Arc05 S02](arc05-binding-semantics-and-hygienic-emission/slice02-native-binding-discards/cdc-verification.md#final-correction04-verdict--accept--2026-11-14)
 independently accepts all9ND rows at9e6fb127. BS-02 closes alongside BS-01;
 P-BIND/P-QADT/composition and every other unfinished criterion remain open.

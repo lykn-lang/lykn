@@ -1,5 +1,11 @@
 # Binding semantics and hygienic emission ledger
 
+2026-11-14 subsequent authority: operator opens
+[S03](slice03-public-binding-discards/slice-plan.md) for remaining public/browser
+forms under Luna6 High CC / separate Sol6.1 High CDC, Autonomous Mode. All nine
+PB rows and BS-03 remain open during source-ready preparation and execution;
+BS-01/02 acceptance is unchanged. No S04/release integration is opened.
+
 2026-11-14 current delivery: [S02](slice02-native-binding-discards/cdc-verification.md#final-correction04-verdict--accept--2026-11-14)
 independently closes at9e6fb127. BS-01/02 done, BS-03–09 open. Root completed
 retrospective/bubble-up; S03 and release integration remain unopened. Earlier
