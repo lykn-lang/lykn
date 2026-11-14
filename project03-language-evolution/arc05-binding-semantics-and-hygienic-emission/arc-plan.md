@@ -12,6 +12,15 @@ related: [arc04-qualified-adts, arc06-adt-modules-and-library-integration]
 
 ## Authority and outcome
 
+Current release checkpoint2026-11-14: [release82 integration](slice05-native-generated-name-hygiene/artifacts/release-integration-82f1b65b.md)
+is independently accepted, RI-01–03 done. Release and task are clean82f1b65b/
+tree4bb6bfc9; actual optimized CLI2+4/full/M670/all14/citations/size pass.
+The operator's S06 condition is met. Root now prepares the public generated-name
+open set against actual source; a fresh bounded Sol reviewer context checks
+public producers/lifecycles and later readiness, then a fresh Luna implements.
+Same approved role configurations; S06 task delivery/independent close is the
+endpoint. No S07 or further release integration/remote action is authorized.
+
 Subsequent authority2026-11-14: operator authorizes exact local release FF to
 82f1b65b, fresh validation/independent review, then S06 if green, same Luna6 High
 CC/Sol6.1 High CDC in Autonomous Mode. Root executed the authorized FF fromc60;

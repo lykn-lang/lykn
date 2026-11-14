@@ -1,0 +1,5 @@
+program="deno"
+args=["run", "--no-config", "--no-remote", "--cached-only", "--no-npm", "--deny-net", "--no-prompt", "/private/tmp/lykn-release-82f1b65b-cdc/tmp/.tmpiCvstF/runtime-stripped.js"]
+cwd=Some("/private/tmp/lykn-release-82f1b65b-cdc/tmp/.tmpiCvstF")
+env_overrides=
+

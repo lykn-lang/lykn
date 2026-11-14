@@ -9,6 +9,17 @@ establish comparative process/model effectiveness.
 
 ## Intended capability and inspected evidence
 
+Subsequent authorized release action: the operator requested c60→82 FF and
+validation/review before S06. All three release RI gates independently pass in
+artifacts/release-integration-82f1b65b.md, including actual optimized CLI2+4 and
+separate default/full/M6 routes. No new source failure or gate retry occurred.
+Root corrected a CC harness-label slip against the actual logs (1217 belongs
+to lykn-lang, not CLI); an inferred log filename was recovered from the receipt
+index. This is a bounded observed integration outcome, not a new effectiveness
+claim. Release is now clean82; earlier c60 statements retain their S05 cutoff.
+The green condition permits S06's own source-ready plan and independent task
+delivery; fresh public-path contexts retain the same approved role settings.
+
 S05 should make native compiler-generated storage disjoint from static source/
 foreign emitted names while retaining effects, checks, property/API identities
 and actual file/JSON/package delivery. Exact source-binding renaming remains

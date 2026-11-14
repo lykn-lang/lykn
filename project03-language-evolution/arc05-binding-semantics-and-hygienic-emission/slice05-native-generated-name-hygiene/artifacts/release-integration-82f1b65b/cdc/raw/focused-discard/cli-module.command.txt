@@ -1,0 +1,5 @@
+program="/Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/release/lykn"
+args=["compile", "/private/tmp/lykn-release-82f1b65b-cdc/tmp/.tmpiCvstF/input.lykn", "-o", "/private/tmp/lykn-release-82f1b65b-cdc/tmp/.tmpiCvstF/module.js"]
+cwd=Some("/private/tmp/lykn-release-82f1b65b-cdc/tmp/.tmpiCvstF")
+env_overrides=
+

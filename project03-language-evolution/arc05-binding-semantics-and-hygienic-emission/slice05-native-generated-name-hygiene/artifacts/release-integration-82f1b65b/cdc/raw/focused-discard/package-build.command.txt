@@ -1,0 +1,5 @@
+program="/Users/oubiwann/lab/lykn/lang/.worktrees/0.6.x/target/release/lykn"
+args=["build"]
+cwd=Some("/private/tmp/lykn-release-82f1b65b-cdc/tmp/.tmp5brH2q")
+env_overrides=
+

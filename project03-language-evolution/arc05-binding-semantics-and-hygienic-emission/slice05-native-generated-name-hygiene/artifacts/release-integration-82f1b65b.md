@@ -1,6 +1,7 @@
 # S04/S05 local release integration — 2026-11-14
 
-Current status: authorized FF complete, validation pending, RI-01–03 open. Operator explicitly requests local
+Current status: independently accepted FF and fresh release validation; all
+RI-01–03 done. Root reconciled the separate Sol verdict below. Operator explicitly requests local
 release/0.6.x fast-forward to82f1b65b, fresh validation and independent review,
 then S06 if green. Same OpenAI gpt-6-luna/high CC and separate
 gpt-6.1-sol/high CDC, Autonomous Mode. Reuse arc05_s05_cc/cdc for this bounded
@@ -31,9 +32,9 @@ remote/hosted-CI action occurred. Root retains release ownership until dispatch.
 
 | Gate | Status | Required evidence |
 | --- | --- | --- |
-| RI-01 | open | Exact authorized c60→82 FF/reflog/ancestry, clean equal task/release HEAD/tree and0/0 divergence |
-| RI-02 | open | Fresh release-worktree CC validation, full/default profile and explicit optimized CLI consumers, actual M6 seven paths/70/all14, source limits preserved |
-| RI-03 | open | Separate Sol release-worktree independent reproduction and exact clean green S06 baseline, final citations/fresh size |
+| RI-01 | done | Independent exact c60→82 FF/reflog/ancestry, five accepted commits/thirteen paths, clean equal task/release HEAD/tree and0/0 divergence |
+| RI-02 | done | Fresh CC plus independent Sol release checks, optimized CLI2+4/default full1798/1578+67/docs482, actual M6 seven paths/70/all14, profile/hash/skip limits preserved |
+| RI-03 | done | Separate Sol ACCEPT below: all fresh release gates/citations64+601/gzip48689<81920, clean82 S06 baseline; root may proceed within user authority |
 
 Source acceptance stays at its original scope: S04 discard declarations and
 S05 native generated-name hygiene, not public parity/exact source names,
@@ -245,3 +246,120 @@ lykn-lang (native language library), not the CLI library. Actual full stdout
 and stderr identify that harness; the total and pass/fail claims are unchanged.
 An initially inferred root log filename was absent; commands.md supplied the
 actual full.stdout.log/full.stderr.log paths, which were then inspected.
+
+## Independent release intake — before execution — 2026-11-14
+
+Separate Sol6.1 High reviewer read this complete assignment/CC return at clean
+planning bc2448ad. Read release AGENTS.md in full, the actual Makefile recipes
+214–261/354–370/581–583, both CLI tests' actual CARGO_BIN_EXE entrances and
+discard receipt setup, and complete M6 consumer1001–1167. Retain the previously
+accepted S04/S05 source/readiness/closing-metadata evidence with unchanged-pin
+applicability: this release is the identical82f1b65b/tree4bb6bfc9 accepted in
+the S05 record, including its accepted S04 ancestry. S04 final verdict/metadata
+pass and the S05 independent source/metadata record were consulted, not replaced
+by the CC release attestation. No source review finding requires a new repair.
+
+Live read-only Git establishes both task/release clean at exact
+82f1b65b92529979afd6c624183912ca31453927/tree
+4bb6bfc9e171bc6424548b0f740dd32f0cf98c75, zero/zero divergence, c60 ancestry,
+the exact release reflog FF and five-commit/thirteen-path c60→82 range. This
+fresh release run will reproduce the assigned optimized two+four CLI consumers,
+full default-profile/M6 route, final citations and size; historical source
+proof does not substitute for those commands. RI rows remain open pending it.
+
+Private cdc xdg/tmp/npm roots and absolute cdc/raw/m6-final were precreated
+before any build. DENO_DIR remains the explicit shared warm user cache. Raw
+direct-command logs go to sibling cdc/raw; existing product-test receipt hooks
+are used for focused/full discard and M6. No helper or alternate scripting
+logic is authored. All commands will be serial; no product/Git/index/row
+mutation or release repair is authorized. Root retains planning/index and
+read-only S06 preparation while this reviewer owns release builds/outputs.
+
+## Independent release verdict — ACCEPT RI-01–03 — 2026-11-14
+
+Separate selected Sol6.1 High reviewer independently accepts the local S04/S05
+release integration at clean82f1b65b92529979afd6c624183912ca31453927/tree
+4bb6bfc9e171bc6424548b0f740dd32f0cf98c75. Prior S04/S05 source acceptance is
+retained at its unchanged-pin scope; the following are fresh release-worktree
+executions, not relabelled task or CC receipts. No product/index/branch/commit
+or row mutation was made. Root may reconcile the three RI rows using this
+verdict and proceed to the expressly authorized S06 open set and task delivery.
+
+The complete direct-command logs and existing product-test nested receipts are
+under [cdc/raw](release-integration-82f1b65b/cdc/raw/README.md). That index gives
+exact command/profile/environment setup and full command-tool/session results
+remain in the review transcript. All five required invocations returned0:
+fresh-artifacts; optimized CLI focus; ONE make check with documentation ONCE;
+final-release-HEAD citations; fresh size. Focused session21395 and full
+session14695 both drained with numeric0. The full invocation used authorized
+network access for existing pinned dependencies. No retry, overlapping job,
+extra docs run or dependency change occurred.
+
+Actual optimized selection is hygiene2 and declarations4. Both call
+CARGO_BIN_EXE_lykn from the --release Cargo invocation, whose output explicitly
+identifies target/release/deps. Real checked/stripped .lykn/.lyk file and
+kernel-JSON consumers each print `7 7 ok`,8,12,8; built hygiene namespace is
+exactly pick and calls print7/ok. S04 strict TS positives pass; bad string input
+correctly returns1/TS2345, and invalid-export negatives return1. Reconstructed
+slot/default/rest values, caller lengths4/4 and3/3, grouped/inline/named/empty/
+reused export, raw/schema and actual package consumers pass. The expected
+unused-binding warnings and negative statuses remain retained, not counted as
+failed gates. Named runtime outputs and all focused status receipts were read.
+
+Fresh full output has42 Rust harness results totaling1798 passed with0 failed,
+ignored or filtered, including the actual lykn-lang1217-case library harness;
+zero-test harnesses remain visible. The Lykn corpus reports1578 passed across
+67 steps/0failed. Docs generated22 files/482 blocks with15 existing harness
+skips, then482 passed/0failed; nine inputs explicitly have no Lykn blocks.
+These exclusions are distinct from executed passes. Clippy, format and source
+syntax/lint188 also pass. Checked-in JSR/mycelium conditional self-skip branches
+remain; no explicit such skip message appears in this full log. Passing test
+labels do not establish registry publication. The outdated-dependency table is
+retained and its passing wrapper label does not establish every dependency is
+latest.
+
+The actual M6 standalone compile command, selected environment, status and
+warning stream were read. The default Cargo test-profile CLI was copied into
+its private standalone home; cold per-test XDG materializes the owned embedded
+package while DENO_DIR is explicitly shared warm. Compile exits0. The actual
+public command is Deno test -A --cached-only --no-prompt --config with these
+seven files: embedded-adt-pattern, surface-type-context, reserved-binding-output,
+icu-generated-names, lexical-regions, discard-bindings and
+remaining-discard-bindings. Its saved import map points lang/ to that
+materialization and browser/ to fresh release-worktree staged output. Public
+status is0/70passed/0failed with no skips and empty stderr. All14 comparison
+receipts were read: binding, classifier, compiler, compiler-private-atoms,
+expander-core, function-clauses, host-invocation-kernel, identifier,
+lexical-regions, protected-host, reserved-words, surface-helpers, surface and
+surface-type-context each have canonical=embedded and canonical=materialized
+true. Inner compile retains Option/InnerValue/ZeroForms/value unused warnings
+and one unreachable-match warning. Macro Deno resolves2.9.6; its argv remains
+explicitly untraced. Outer Cargo success alone is not the M6 evidence.
+
+Fresh optimized bin/lykn and target/release/lykn share SHA256
+feef6ddc0ed56a804a17b2a38a01a77a42016f72d85b4e78ecfd1f3464a63025;
+default target/debug/lykn is separately
+a62ecec7c02ea9a72a0cbf0b31b4ef902a69e827e4532d77debe85274f87cbff.
+The optimized focus and staged corpus/docs are distinct from default Rust/M6.
+Final cited paths pass64 documents/601 historical citations. Fresh size is
+raw379173/minified181014/gzip48689 below81920, baseline27630/delta21059.
+Its two esbuild registry Download lines and four existing astring condition
+warnings remain; no blanket offline/no-npm claim is made.
+
+| RI row | Independent disposition |
+| --- | --- |
+| RI-01 | ACCEPT: actual authorized release reflog FF, c60 ancestry, five accepted commits/thirteen paths, clean equal task/release HEAD/tree and0/0 divergence independently verified. |
+| RI-02 | ACCEPT: CC receipts remain attestation; fresh separate release execution also passes the required optimized2+4/full/default/M6 consumers with actual populations/profiles/limits above. |
+| RI-03 | ACCEPT: separate reviewer reproduced every required release gate, final citations/fresh size and clean unchanged final identity; green82 is an independently validated S06 baseline. |
+
+Final live Git checks leave release and task clean at the identical exact82
+pin/tree. Authorized read-only filtered process inventory returned1 with no
+matching build/test jobs; all owned sessions are drained. Release source/build/
+output ownership returns to root. Planning changes are only this intake/verdict
+and cdc/raw evidence; final planning commit/row reconciliation belongs to root.
+AWEX remains an unrepaired separately source-assessed Arc02 candidate; MPVR/
+NUMI, S07 escaped SOURCE/protected-root, Arc06 LI-04, qualified/library/research/
+reader/book/human/licence/bootstrap/home gates retain their owners. RI green
+admits only the user-authorized S06 planning/task implementation/independent
+close; it authorizes no S07/other unit, push/hosted CI/tag/publication,0.7/0.8
+propagation or library/book trial.

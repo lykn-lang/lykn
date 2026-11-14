@@ -1,0 +1,3 @@
+feef6ddc0ed56a804a17b2a38a01a77a42016f72d85b4e78ecfd1f3464a63025  bin/lykn
+feef6ddc0ed56a804a17b2a38a01a77a42016f72d85b4e78ecfd1f3464a63025  target/release/lykn
+a62ecec7c02ea9a72a0cbf0b31b4ef902a69e827e4532d77debe85274f87cbff  target/debug/lykn
