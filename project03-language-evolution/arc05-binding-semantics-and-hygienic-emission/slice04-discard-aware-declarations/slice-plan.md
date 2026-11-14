@@ -27,7 +27,7 @@ discard semantics remain the accepted S02/S03 input.
 - Planning: separate orphan `/Users/oubiwann/lab/lykn/lang/.worktrees/planning`.
   Root owns plans/index/status and serial task-source/build handoffs.
 - Root coordinator backend is not independently reported. Fresh S04 CC context
-  uses explicitly selected OpenAI gpt-6-luna/high; separate reviewer uses
+  `/root/arc05_s04_cc` uses explicitly selected OpenAI gpt-6-luna/high; separate reviewer uses
   gpt-6.1-sol/high, actual reviewer context `/root/arc05_s04_cdc`.
   Fresh contexts bound the declaration packet instead of
   carrying the long S03 correction context; prior evidence stays canonical.
