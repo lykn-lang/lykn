@@ -1,0 +1,5 @@
+error: Uncaught (in promise) ReferenceError: Cannot access '_v0' before initialization
+  const _v0 = _v0.child;
+              ^
+    at file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/lykn/arc05-s06-root/icu.mjs:5:15
+    at file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/lykn/arc05-s06-root/icu.mjs:8:3

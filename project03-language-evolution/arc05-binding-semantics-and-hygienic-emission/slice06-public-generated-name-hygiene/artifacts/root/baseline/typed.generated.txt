@@ -1,0 +1,14 @@
+const lyknIntrinsicNumberIsNaN0 = Number.isNaN;
+const lyknIntrinsicTypeError0 = TypeError;
+function collide(result__gensym0) {
+  if (typeof result__gensym0 !== "number" || lyknIntrinsicNumberIsNaN0(result__gensym0)) {
+    throw new lyknIntrinsicTypeError0("collide: arg 'result__gensym0' expected number, got " + typeof result__gensym0);
+  }
+  const result__gensym0 = 7;
+  if (typeof result__gensym0 !== "number" || lyknIntrinsicNumberIsNaN0(result__gensym0)) {
+    throw new lyknIntrinsicTypeError0("collide: return value expected number, got " + typeof result__gensym0);
+  }
+  return result__gensym0;
+}
+console.log(collide(99));
+

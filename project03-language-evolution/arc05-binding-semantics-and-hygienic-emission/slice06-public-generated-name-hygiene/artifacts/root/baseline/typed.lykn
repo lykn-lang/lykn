@@ -1,0 +1,2 @@
+(func collide :args (:number result__gensym0) :returns :number :body 7)
+(console:log (collide 99))

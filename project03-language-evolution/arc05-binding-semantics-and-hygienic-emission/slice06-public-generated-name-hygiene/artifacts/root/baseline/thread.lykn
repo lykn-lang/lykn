@@ -1,0 +1,2 @@
+(bind t__gensym0 99)
+(console:log (some-> 7 (+ t__gensym0)))

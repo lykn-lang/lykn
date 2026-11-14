@@ -1,0 +1,9 @@
+const t__gensym0 = 99;
+console.log((() => {
+  const t__gensym0 = 7;
+  if (t__gensym0 == null) {
+    return t__gensym0;
+  }
+  return t__gensym0 + t__gensym0;
+})());
+

@@ -1,0 +1,2 @@
+(bind _v0 (obj :child 5))
+(console:log (template "{n, plural, one {one} other {# items}}" :n _v0.child))

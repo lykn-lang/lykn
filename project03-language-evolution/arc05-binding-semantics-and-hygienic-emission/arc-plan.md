@@ -2,7 +2,7 @@
 project: project03-language-evolution
 arc: arc05-binding-semantics-and-hygienic-emission
 status: active
-version: "0.16"
+version: "0.17"
 planned-release: unassigned
 depends-on: []
 related: [arc04-qualified-adts, arc06-adt-modules-and-library-integration]
@@ -11,6 +11,16 @@ related: [arc04-qualified-adts, arc06-adt-modules-and-library-integration]
 # Binding semantics and hygienic emission
 
 ## Authority and outcome
+
+Current S06 issue2026-11-14: [public generated-name hygiene](slice06-public-generated-name-hygiene/slice-plan.md)
+opens from accepted release/task82. Root executed three actual public baseline
+consumers and completed the static-occupancy/global-counter design; separate
+[Sol readiness PASS](slice06-public-generated-name-hygiene/artifacts/cdc/readiness.md)
+precedes committed initial CC dispatch. Final exact scope is nine logical
+product files plus six existing tracked embedded mirrors, all8PN/BS-06 open,
+zero of five formal refinements spent. Fresh Luna6 High CC owns source/build
+after dispatch; root owns design/planning/index/rows, Sol6.1 High independent
+review follows. Release stays82, S07 and remote actions remain unopened.
 
 Current release checkpoint2026-11-14: [release82 integration](slice05-native-generated-name-hygiene/artifacts/release-integration-82f1b65b.md)
 is independently accepted, RI-01–03 done. Release and task are clean82f1b65b/

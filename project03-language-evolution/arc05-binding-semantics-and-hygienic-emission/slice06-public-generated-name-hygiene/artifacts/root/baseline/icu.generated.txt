@@ -1,0 +1,9 @@
+const _v0 = {
+  child: 5
+};
+console.log(`${(() => {
+  const _v0 = _v0.child;
+  if (_v0 === 1) return `one`;
+  return `${_v0} items`;
+})()}`);
+

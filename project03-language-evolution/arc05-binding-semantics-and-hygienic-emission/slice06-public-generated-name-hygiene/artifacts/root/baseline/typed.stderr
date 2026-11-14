@@ -1,0 +1,4 @@
+error: Uncaught SyntaxError: Identifier 'result__gensym0' has already been declared
+  const result__gensym0 = 7;
+        ^
+    at <anonymous> (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/lykn/arc05-s06-root/typed.mjs:7:9)

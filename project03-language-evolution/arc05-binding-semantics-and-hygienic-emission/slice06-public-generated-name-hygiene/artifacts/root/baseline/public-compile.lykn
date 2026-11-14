@@ -1,0 +1,8 @@
+(import "file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/reader.js" (read))
+(import "file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander-core.js" (resetGensym resetMacros))
+(import "file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/expander-browser.js" (expand))
+(import "file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/compiler.js" (compile))
+(resetGensym)
+(resetMacros)
+(bind source (await (Deno:readTextFile (get Deno:args 0))))
+(console:log (compile (expand (read source))))
