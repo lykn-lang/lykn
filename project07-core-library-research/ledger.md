@@ -1,5 +1,11 @@
 # Project07 ledger
 
+Current2026-11-14: native S10 a170 source/runtime independently accepted,
+TK-06 root metadata pending; occupancy watch is repaired. All Project07 rows
+and original JSON/YAML28+36/readers/guides/book/human/licence/home/bootstrap
+obligations stay open, optional lang/lib/@lykn/* selected, release82 unchanged.
+No research/library trial resumes.
+
 Current2026-11-14: Arc05 S10 owns actual native keyword capture/TDZ repair
 before S07, from a44. All Project07 rows/original obligations remain open;
 accepted compiler inputs and release82 unchanged, no trial resumes.

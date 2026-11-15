@@ -2,7 +2,7 @@
 project: project03-language-evolution
 arc: arc06-adt-modules-and-library-integration
 status: planned
-version: "0.7"
+version: "0.8"
 planned-release: unassigned
 depends-on: []
 related: [arc04-qualified-adts, arc05-binding-semantics-and-hygienic-emission, project07-core-library-research]
@@ -11,6 +11,20 @@ related: [arc04-qualified-adts, arc05-binding-semantics-and-hygienic-emission, p
 # ADT modules and library integration
 
 ## Authority and useful result
+
+Current S10 carry2026-11-14: independent source/fresh runtime PASS at native
+a170be58/tree818f0247 completes TK-01–05; root TK-06 metadata remains pending.
+LI-04 receives exact a44e16db→a170be58 THREE paths: borrowed role-aware native
+source_names census, actual CLI/census/fragment/JSON regression consumers and
+guide06 helper-name boundary. Include changed emitted private suffix behavior,
+enclosing-result timing, all four tagged Surface/raw thread roles, static
+physical Unicode identity versus preserved member spelling, data-role negatives
+and unit/fragment limits. These are behavioral/output/guide audit inputs; no
+public Rust/JS signature, AST/schema/DTS/reader/grammar/dependency/entrypoint map
+change is claimed. Earlier source-only watch language is historical: this native
+occupancy defect is now reproduced and repaired, pending root close. Exact
+source-binding identity/protected-root/keyword-reference resolution remain
+Arc05 S07/S08 design, and all six LI/QA/LC/book/human/library gates remain open.
 
 Current native prerequisite2026-11-14: S06's keyword watch is now reproduced
 by actual optimized native a44 CLI: null-safe keyword capture and enclosing
@@ -192,8 +206,8 @@ requires actual consumers and independent review, with a closing retrospective;
 human/book gates require actual dispositions.
 
 Use existing planning and assigned task homes; refresh pins before authoring.
-Current independently validated task source is clean a44e16db, with S06 root
-closing-metadata PASS; release is independently accepted82f1b65b. Earlier
+Current independently validated task source is clean a170be58, with S10 root
+closing-metadata review pending; release is independently accepted82f1b65b. Earlier
 c0ed/S04 and dba24d40/public-discard-held/release0829 are historical checkpoints.
 S04 root closing metadata is independently verified in its owning slice.
 Prospective source work uses the established Luna6 High implementer and separate
@@ -203,6 +217,11 @@ merge/push/release, dependency adoption or licence choice is authorized now.
 Repository Lykn-only helper rules apply; no Python exception.
 
 ## Version history
+
+- 2026-11-14 v0.8: Carry S10's exact a44→a170 three-path native role/output/
+  guide change after independent source/fresh runtime PASS; root metadata
+  remains pending. Dispose the occupancy watch without inferring exact binding
+  resolution or closing any LI/QA/LC/book/human/library gate.
 
 - 2026-11-14 v0.7: Route actual native reproduction of S06 watch into Operator-
   opened Arc05 S10 before S07, preserving LI-04 output/guide follow-through and

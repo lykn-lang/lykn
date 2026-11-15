@@ -1,5 +1,11 @@
 # ADT modules and library integration ledger
 
+Current2026-11-14: accepted S10 native source/runtime a170 provides exact
+a44→a170 three-path role/generated-output/physical-spelling/guide audit inputs
+to LI-04; root TK-06 metadata pending. Native keyword occupancy is repaired,
+while exact binding identity/resolution and all six LI rows, QA/LC and later
+book/human/library owners remain open. Source a170/release82 stay distinct.
+
 Current2026-11-14: Arc05 S10 now owns actual native threading-keyword capture
 reproduced at a44, ahead of S07. Exact accepted source/output/guide delta will
 feed LI-04; all six LI rows and later owners remain open. Earlier source-only

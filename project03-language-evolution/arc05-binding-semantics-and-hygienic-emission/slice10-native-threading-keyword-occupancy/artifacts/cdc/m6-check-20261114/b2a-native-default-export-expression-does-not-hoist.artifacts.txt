@@ -1,0 +1,4 @@
+js_path="/private/tmp/lykn-s10-cdc-a170-20261114/tmp/.tmp4doxWP/export-scope.mjs"
+js_exists=true
+dts_path="/private/tmp/lykn-s10-cdc-a170-20261114/tmp/.tmp4doxWP/export-scope.d.ts"
+dts_exists=false

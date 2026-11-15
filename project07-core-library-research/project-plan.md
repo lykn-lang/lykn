@@ -1,7 +1,7 @@
 ---
 project: project07-core-library-research
 status: active
-version: "1.35"
+version: "1.36"
 planned-release: null
 depends-on: []
 blocks: []
@@ -9,6 +9,18 @@ related: ["project02-language-toolchain-alignment", "project03-language-evolutio
 ---
 
 # Core library research
+
+Current compiler prerequisite2026-11-14: Project03 Arc05 S10 native keyword
+repair at a170be58 has independent source/fresh runtime acceptance, TK-01–05
+done; root closing metadata remains pending. The native occupancy watch is
+reproduced/repaired; exact binding identities, qualified ADTs/modules/selective
+builds and source re-pin remain separate compiler/integration work. All project
+rows stay open: final synthesis, original JSON decoder/control/composition,
+28 Y-14 document variants/36 unsupported Y-13 resource cells, reader RDEO/RDCL,
+LLM guides/book/human source-shape review, separate JSON/YAML handoffs and new-
+code licence/bootstrap/actual-home proof. Selected optional lang/lib/@lykn/*
+direction stays selected; AWEX/MPVR/NUMI retain Arc02 maintenance owners. No
+research/library trial resumes; release82 stays unchanged.
 
 Current compiler prerequisite2026-11-14: actual native a44 CLI reproduces the
 threading-keyword watch; Project03 Arc05 S10 is authorized ahead of S07 for a
@@ -443,8 +455,8 @@ Co-authored-by: Billo AI <ai-engineering@billo.systems>
 
 ## Current status
 
-Latest compiler prerequisite checkpoint is the S06 a44 source/runtime and root
-metadata PASS above, with release82 independently accepted. Research
+Latest compiler prerequisite checkpoint is S10 native a170 source/runtime PASS
+above, with root metadata pending and release82 independently accepted. Research
 status, historical trial results and original limits below are retained; this
 checkpoint does not resume the queued authoring trial or close project rows.
 
@@ -512,6 +524,10 @@ CDC records CC's Python aggregation deviation and supplies an independent Lykn a
 authoring evaluation remains Arc02.
 
 ## Version History
+
+- 2026-11-14 v1.36: Carry S10 a170 independently validated native keyword
+  prerequisite repair, root metadata pending; preserve actual research/JSON/
+  YAML/readers/guide/book/human/licence/home obligations and release82.
 
 - 2026-11-14 v1.35: Record actual native keyword reproduction and Arc05 S10
   prerequisite ownership before S07; preserve research/library gates and release82.

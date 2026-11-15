@@ -1,0 +1,5 @@
+error: Uncaught (in promise) TypeError: t__gensym0.child[t__gensym0] is not a function
+  return t__gensym0.child[t__gensym0]();
+                                     ^
+    at file:///Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/arc05-binding-semantics-and-hygienic-emission/slice10-native-threading-keyword-occupancy/artifacts/root/baseline/lykn-native-keyword-baseline.mjs:7:38
+    at file:///Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/arc05-binding-semantics-and-hygienic-emission/slice10-native-threading-keyword-occupancy/artifacts/root/baseline/lykn-native-keyword-baseline.mjs:8:3

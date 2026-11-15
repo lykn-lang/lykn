@@ -4,6 +4,17 @@
 This is the CC implementation close only. Root owns planning rows and the
 retrospective; this report does not accept the arc or authorize S07/release work.
 
+## Root closing handoff — 2026-11-14
+
+Separate Sol source and fresh runtime gates pass at unchanged a170; the
+[independent verification](cdc-verification.md) is authoritative for TK-01–05.
+Root's [retrospective](cdc-retrospective.md) accounts for the tagged-Bare draft
+mistake, development oracles, retained evidence and follow-through. Arc05,
+Project03, Arc06 LI-04 and Project07 now carry the exact source/API/guide and
+prerequisite disposition with later owners preserved. TK-06/BS-10 remain open
+until separate review of that closing metadata. No new source execution,
+S07 opening or release integration follows this handoff.
+
 ## Assignment and immutable result
 
 - Project03 / Arc05 / S10, issued prompt dispatch `542806f0`; source input

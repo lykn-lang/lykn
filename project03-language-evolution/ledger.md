@@ -1,5 +1,10 @@
 # project03-language-evolution ledger
 
+Current2026-11-14: S10 a170 source/runtime independently accepted, TK-01–05
+done and TK-06/BS-10 root metadata pending. Native keyword watch is repaired;
+S07–09/P-BIND/P-QADT and later owners remain open. Source a170/release82 stay
+distinct, with no later opening, integration or library trial authority.
+
 Current2026-11-14: Arc05 S10 native threading-keyword occupancy is authorized
 and open before S07 after actual a44 CLI capture/TDZ reproduction. Six TK/BS-10
 open; BS-01–06 done, BS-07–09/P-BIND/P-QADT open. Release82 unchanged; no

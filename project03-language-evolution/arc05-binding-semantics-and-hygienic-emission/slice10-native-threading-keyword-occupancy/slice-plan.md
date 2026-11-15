@@ -3,12 +3,20 @@ project: project03-language-evolution
 arc: arc05-binding-semantics-and-hygienic-emission
 slice: slice10-native-threading-keyword-occupancy
 status: active
-version: "1.0"
+version: "1.1"
 depends-on: [slice05-native-generated-name-hygiene, slice06-public-generated-name-hygiene]
 blocks: [slice07-native-exact-source-binding-emission]
 ---
 
 # Native threading keyword occupancy
+
+Current independent checkpoint2026-11-14: separate Sol freshly validates
+a170be58/tree818f0247, including archived before-failures, focused7/6/all32
+main cells, one full1809Rust/1586corpus/482docs, actual M678/eight paths/all15
+comparisons, final cites64/601 and50162gzip<81920. TK-01–05 done; TK-06/BS-10
+await independent review of root retrospective and parent routing. No formal
+review-correction pass was required. Earlier pending checkpoints below remain
+history. Source a170/release82 stay distinct; no S07 opens from this checkpoint.
 
 Current2026-11-14: CC candidate a170be580888198ec7da1a99c4731a1d177157a1 /
 tree818f02478bc1667254f48899aca3d230a4e3b697 changes exactly three paths and
@@ -150,6 +158,10 @@ assignment; six TK rows stay open. Root retains planning/index/status. No other
 context may execute/import the mutable source/build stage until clean handback.
 
 ## Version history
+
+- 2026-11-14 v1.1: Candidate a170 independently passes source and fresh runtime
+  gates; reconcile TK-01–05/root retrospective/API/research routing for separate
+  TK-06 metadata acceptance, retaining failed development attempts and later gates.
 
 - 2026-11-14 v1.0: Open Operator-authorized S10 ahead of existing S07 after
   actual native reproduction of S06's keyword watch; three paths/six rows,

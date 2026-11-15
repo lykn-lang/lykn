@@ -1,5 +1,11 @@
 # Binding semantics and hygienic emission ledger
 
+Current S10 checkpoint2026-11-14: independent source/fresh runtime acceptance
+at a170 closes TK-01–05, with TK-06/BS-10 pending root metadata. BS-01–06 done,
+BS-07–09 open. Native keyword prerequisite is repaired at this bounded source;
+exact source identity/composition and later owners remain open. Release82 stays
+unchanged; earlier watch-only/initial-open checkpoints below are historical.
+
 Current2026-11-14: Operator opens S10 before S07 for actual native keyword
 capture, reproduced through optimized a44 CLI (TypeError and enclosing result
 ReferenceError). BS-10/six TK rows open. BS-01–06 done; BS-07–09 remain open.
@@ -98,4 +104,4 @@ not retrospective completion of these new deliveries.
 | BS-07 | Native emission preserves distinct exact source binding identities | some-name/someName returns1 while later helper stays41; shadow/TDZ/hoisting, foreign names, property/API aliases, labels, private/host and canonical/JSON/raw boundaries | correctness-grade | Operator B2-ID-NAME; S03 LC-02 prerequisite | open | [Runtime-name draft](../arc04-qualified-adts/slice03-local-qualified-nominal-core/artifacts/b2-native-runtime-name-plan.md), not an issued algorithm |
 | BS-08 | Public emission preserves equivalent identities and lifetimes | Equivalent real public/browser/materialized/fragment/JSON proof and per-call failure recovery; no spelling-prefix authority | correctness-grade | Operator B2-ID-NAME; S03 LC-02 prerequisite | open | Final public storage/consumer recipe still required |
 | BS-09 | Accepted binding deliveries compose and hand off without losing scope | Final-source composition, original S03 row mapping, independent review and retrospective; Arc04/06 and unrelated owners retain their gates | correctness-grade | Operator three-arc restructuring | open | [Arc plan](arc-plan.md); no release or qualified-feature acceptance |
-| BS-10 | Native executable threading keyword references remain outside generated bindings | S10 actual four-head/two-role native consumers, owning-unit/fragment census timing, physical mapping/data-role controls, JSON/materialized/repository gates and independent close | correctness-grade | S06 native watch; Operator bounded repair authorization | open | [S10 open set](slice10-native-threading-keyword-occupancy/slice-plan.md); actual root native baseline at a44, no repair accepted yet |
+| BS-10 | Native executable threading keyword references remain outside generated bindings | S10 actual four-head/two-role native consumers, owning-unit/fragment census timing, physical mapping/data-role controls, JSON/materialized/repository gates and independent close | correctness-grade | S06 native watch; Operator bounded repair authorization | open | [S10 independent source/runtime acceptance](slice10-native-threading-keyword-occupancy/cdc-verification.md) at a170: TK-01–05/focused7+6/32cells/full1809/1586/482/M678/all15/cites/size; separate root TK-06 metadata remains pending |
