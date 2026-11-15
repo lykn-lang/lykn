@@ -1,5 +1,10 @@
 # project03-language-evolution ledger
 
+Current2026-11-14: Arc05 S10 native threading-keyword occupancy is authorized
+and open before S07 after actual a44 CLI capture/TDZ reproduction. Six TK/BS-10
+open; BS-01–06 done, BS-07–09/P-BIND/P-QADT open. Release82 unchanged; no
+source-binding identity, qualified/module/library or later execution follows.
+
 Final2026-11-14: S06 all8PN/BS-06 independently accepted at a44, including
 separate root closing-metadata review05 PASS. BS-01–06 done; BS-07–09,
 P-BIND/P-QADT and later owners remain open. Source a44/release82 stay distinct;

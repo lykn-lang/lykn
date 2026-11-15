@@ -1,7 +1,7 @@
 ---
 project: project03-language-evolution
 status: research
-version: "1.74"
+version: "1.75"
 planned-release: "0.7.0"
 depends-on: ["project02-language-toolchain-alignment"]
 blocks: []
@@ -11,6 +11,14 @@ related: ["project04-c-lang", "project07-core-library-research"]
 # Language evolution
 
 ## Current approved structure —2026-11-13
+
+Current2026-11-14: Operator authorizes Arc05 S10 native threading-keyword
+occupancy ahead of S07. Actual a44 CLI reproduces both null-safe helper capture
+and enclosing result TDZ; root prepares bounded three-path/six-row repair,
+Luna6 High CC/separate Sol6.1 High CDC, Autonomous Mode through independent
+close/retrospective/routing. BS-01–06 remain done; BS-07–10/P-BIND/P-QADT open.
+Release82 unchanged. Earlier watch-only/endpoint statements are historical;
+no S07, further integration or library trial is authorized by this repair.
 
 Final2026-11-14: separate S06 closing-metadata review05 PASS completes all
 eight PN/BS-06 at a44, with root retrospective and parent routing independently
@@ -142,7 +150,7 @@ historical S03 assignment22 remains unexecuted.
 
 | Arc | Coherent outcome | Current planning state |
 | --- | --- | --- |
-| [Arc05 binding semantics and hygienic emission](arc05-binding-semantics-and-hygienic-emission/arc-plan.md) | Complete discard semantics/declarations and preserve source/compiler binding identities through emitted JS | BS-01–06 done, latest a44 with independent source/runtime/root-metadata acceptance; BS-07–09 remain open with explicit native-watch readiness |
+| [Arc05 binding semantics and hygienic emission](arc05-binding-semantics-and-hygienic-emission/arc-plan.md) | Complete discard semantics/declarations and preserve source/compiler binding identities through emitted JS | BS-01–06 done, latest a44; S10 native threading-keyword occupancy active before S07, BS-07–10 remain open |
 | [Arc04 qualified ADTs](arc04-qualified-adts/arc-plan.md) | Closed owner/case semantics, coherent local qualified values/matching/guards, declarations and trusted initialization | Existing identity retained; S01/S02 and bounded prerequisites accepted; remaining local candidates S08–S13 are roadmap only |
 | [Arc06 ADT modules and library integration](arc06-adt-modules-and-library-integration/arc-plan.md) | Imported ABI, selective emission, actual build/JSON composition and API/docs/book/human handoff | Planning stub receives former Arc04 S04–S07 responsibilities, preserving the existing experiment checkpoint |
 
@@ -1155,6 +1163,10 @@ with their source and status distinctions. A future
 implementation definition of done is not established by this migration.
 
 ## Version history
+
+- 2026-11-14 v1.75: Arc05 S06 native watch reproduces at actual a44 CLI;
+  Operator opens bounded S10 repair/independent validation before S07. Retain
+  accepted S05/S06, source/release separation and later feature/research gates.
 
 - 2026-11-14 v1.74: Arc05 S06 a44 independently passes source/fresh runtime;
   reconcile current source/release and row checkpoint, root retrospective,

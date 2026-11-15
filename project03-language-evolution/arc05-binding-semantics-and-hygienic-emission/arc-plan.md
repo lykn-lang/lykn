@@ -2,7 +2,7 @@
 project: project03-language-evolution
 arc: arc05-binding-semantics-and-hygienic-emission
 status: active
-version: "0.21"
+version: "0.22"
 planned-release: unassigned
 depends-on: []
 related: [arc04-qualified-adts, arc06-adt-modules-and-library-integration]
@@ -11,6 +11,18 @@ related: [arc04-qualified-adts, arc06-adt-modules-and-library-integration]
 # Binding semantics and hygienic emission
 
 ## Authority and outcome
+
+Current S10 opening2026-11-14: Operator authorizes checking S06's native
+threading-keyword watch, repairing if needed and independently validating
+before S07; same Luna6 High CC/separate Sol6.1 High CDC, Autonomous Mode.
+Root's actual optimized a44 CLI reproduces both a keyword some-thread capture
+(TypeError) and an enclosing typed plain-thread result capture (ReferenceError).
+[S10 native threading-keyword occupancy](slice10-native-threading-keyword-occupancy/slice-plan.md)
+is the bounded three-path/six-row prerequisite before S07. Existing S07–09 IDs
+stay stable; BS-01–06 acceptance remains historical truth at its exact source.
+S10/BS-10 open, zero refinements; independent source/prompt readiness precedes
+dispatch. Task stays a44/release82; root owns source/build until handoff. No S07
+opening/implementation, later merge/push or library work follows this endpoint.
 
 Final S06 close2026-11-14: separate Sol [review05 metadata PASS](slice06-public-generated-name-hygiene/cdc-verification.md)
 completes all8PN/BS-06 at a44, including root retrospective/history/parent
@@ -297,7 +309,8 @@ affected delivery, necessary immediate documentation and independent review.
 | [S04 discard-aware declarations](slice04-discard-aware-declarations/slice-plan.md) — closedc0ed | Existing native Func/Bind/BindGroup/Type declarations now describe discard slots/defaults/rest, recursive data inputs and scalar/group/pattern exports; actual TS/CLI/package consumers | Independent all8DT source/gate/closing-metadata proof, root retrospective and later-owner routing |
 | [S05 native compiler-generated name hygiene](slice05-native-generated-name-hygiene/slice-plan.md) — closed82f1b65b | Protect remaining compiler temporaries from source, foreign and generated-name collisions | Independent all8NH/fresh full/M670/14/cites/size, root retrospective/routing and separate NH-08 metadata PASS |
 | [S06 public compiler-generated name hygiene](slice06-public-generated-name-hygiene/slice-plan.md) — closed a44 | Protect actual public producers/late consumers while preserving private identities and legacy gensym/macro/fragment limits | Independent42/full1798/1586/482/M678/all15/cites/size; root retrospective/parent routing and separate PN-08 metadata PASS complete all8PN/BS-06 |
-| S07 native exact source-binding emission | Resolve binding occurrences and allocate safe JS names while retaining hoisting, TDZ, data/API names, foreign targets and JSON behavior | S05; settled source-name policy; actual native writer scopes; dispose S06 native keyword occupancy watch before opening; explicitly assess escaped SOURCE binding identity/protected-root classification separately from private generated-name occupancy |
+| [S10 native threading-keyword occupancy](slice10-native-threading-keyword-occupancy/slice-plan.md) — active before S07 | Repair reproduced executable keyword-role census gap before enclosing native helpers, preserving ordinary keyword data and all current consumers | S06 native watch/root actual a44 CLI failures; three paths/six TK rows, separate source/runtime/metadata review. Numeric identity does not define execution order |
+| S07 native exact source-binding emission | Resolve binding occurrences and allocate safe JS names while retaining hoisting, TDZ, data/API names, foreign targets and JSON behavior | S05 plus accepted S10 disposition; settled source-name policy; actual native writer scopes; explicitly assess escaped SOURCE binding identity/protected-root classification separately from private generated-name occupancy |
 | S08 public exact source-binding emission | Deliver equivalent behavior through normal/fragment/browser/materialized entrances | S06; same language contract; public lifecycle/consumer census |
 
 The two backends can share a reviewed contract without pretending their
@@ -351,7 +364,8 @@ early source-owner queries from the later runtime binding/name plan.
 
 ## Verification, handoff and limits
 
-The [ledger](ledger.md) carries BS-01–06 done and BS-07–09 open. Independent acceptance must
+The [ledger](ledger.md) carries BS-01–06 done and BS-07–10 open, with S10
+active before S07. Independent acceptance must
 cover actual changed consumers, meaningful negative controls, repository checks
 and embedded parity. Preserve final-source citations, existing size policy,
 cache/network limits, original failures and exact commit scope. Test count
@@ -374,6 +388,11 @@ substitute helper-language exception. Reader RDEO/RDCL, Arc01 I4 and diagnostic
 work, whole-work audits and the separate book/human gates keep their owners.
 
 ## Version history
+
+- 2026-11-14 v0.22: Operator opens S10 after S06 source-watch's actual native
+  CLI reproduction. Add bounded role-aware keyword occupancy prerequisite
+  before unchanged S07–09 identities, six TK criteria/BS-10 and three paths.
+  Preserve original acceptances/release82; no exact binding/grammar expansion.
 
 - 2026-11-14 v0.21: S06 a44 source/fresh runtime independently pass; reconcile
   all8PN/BS-06 with separate closing-metadata PASS, source/release pins and retrospective.

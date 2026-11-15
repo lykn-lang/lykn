@@ -1,0 +1,5 @@
+error: Uncaught (in promise) ReferenceError: Cannot access 'result__gensym0' before initialization
+  const result__gensym0 = { child: [() => 7] }.child[result__gensym0]();
+                                                     ^
+    at pick (file:///private/tmp/lykn-native-keyword-enclosing.mjs:5:54)
+    at file:///private/tmp/lykn-native-keyword-enclosing.mjs:11:13

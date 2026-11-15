@@ -1,5 +1,11 @@
 # Binding semantics and hygienic emission ledger
 
+Current2026-11-14: Operator opens S10 before S07 for actual native keyword
+capture, reproduced through optimized a44 CLI (TypeError and enclosing result
+ReferenceError). BS-10/six TK rows open. BS-01–06 done; BS-07–09 remain open.
+Earlier no-later-scope/watch-only checkpoints are historical; accepted release82
+stays unchanged and no S07/source-binding identity work starts.
+
 Final2026-11-14: separate S06 metadata review05 PASS closes PN-08/BS-06,
 completing all8PN at a44. BS-01–06 done; BS-07–09 open. Root retrospective
 and parent routing accepted; source a44/release82 unchanged. Earlier pending
@@ -92,3 +98,4 @@ not retrospective completion of these new deliveries.
 | BS-07 | Native emission preserves distinct exact source binding identities | some-name/someName returns1 while later helper stays41; shadow/TDZ/hoisting, foreign names, property/API aliases, labels, private/host and canonical/JSON/raw boundaries | correctness-grade | Operator B2-ID-NAME; S03 LC-02 prerequisite | open | [Runtime-name draft](../arc04-qualified-adts/slice03-local-qualified-nominal-core/artifacts/b2-native-runtime-name-plan.md), not an issued algorithm |
 | BS-08 | Public emission preserves equivalent identities and lifetimes | Equivalent real public/browser/materialized/fragment/JSON proof and per-call failure recovery; no spelling-prefix authority | correctness-grade | Operator B2-ID-NAME; S03 LC-02 prerequisite | open | Final public storage/consumer recipe still required |
 | BS-09 | Accepted binding deliveries compose and hand off without losing scope | Final-source composition, original S03 row mapping, independent review and retrospective; Arc04/06 and unrelated owners retain their gates | correctness-grade | Operator three-arc restructuring | open | [Arc plan](arc-plan.md); no release or qualified-feature acceptance |
+| BS-10 | Native executable threading keyword references remain outside generated bindings | S10 actual four-head/two-role native consumers, owning-unit/fragment census timing, physical mapping/data-role controls, JSON/materialized/repository gates and independent close | correctness-grade | S06 native watch; Operator bounded repair authorization | open | [S10 open set](slice10-native-threading-keyword-occupancy/slice-plan.md); actual root native baseline at a44, no repair accepted yet |

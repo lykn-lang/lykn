@@ -1,0 +1,5 @@
+error: Uncaught (in promise) TypeError: t__gensym0.child[t__gensym0] is not a function
+  return t__gensym0.child[t__gensym0]();
+                                     ^
+    at file:///private/tmp/lykn-native-keyword-baseline.mjs:7:38
+    at file:///private/tmp/lykn-native-keyword-baseline.mjs:8:3

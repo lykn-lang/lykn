@@ -1,0 +1,11 @@
+const lyknIntrinsicNumberIsNaN0 = Number.isNaN;
+const lyknIntrinsicTypeError0 = TypeError;
+globalThis["result__gensym0"] = 0;
+function pick() {
+  const result__gensym0 = { child: [() => 7] }.child[result__gensym0]();
+  if (typeof result__gensym0 !== "number" || lyknIntrinsicNumberIsNaN0(result__gensym0)) {
+    throw new lyknIntrinsicTypeError0("pick: return value expected number, got " + typeof result__gensym0);
+  }
+  return result__gensym0;
+}
+console.log(pick());
