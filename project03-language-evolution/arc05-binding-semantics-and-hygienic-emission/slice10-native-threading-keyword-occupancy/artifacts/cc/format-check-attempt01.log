@@ -1,0 +1,31 @@
+Command: cargo fmt --all -- --check
+Exit: 1
+
+Rustfmt reported three hunks, all in the new Rust test additions:
+
+crates/lykn-cli/tests/generated_name_hygiene.rs:102
+Expected the compile command builder to be split across lines:
+    let compiled = output(
+        cli()
+            .current_dir(temp.path())
+            .arg("compile")
+            .arg(&file)
+            .arg("-o")
+            .arg(&js_path),
+    );
+
+crates/lykn-cli/tests/generated_name_hygiene.rs:422
+Expected the deno command builder to be formatted as:
+    let consumed = output(Command::new("deno").current_dir(root()).args([
+        "eval",
+        "--config",
+        "project.json",
+        "--ext=js",
+        &script,
+    ]));
+
+crates/lykn-lang/src/emitter/source_names.rs:499
+Expected the nested raw-thread fixture vector to occupy one line:
+    let nested_thread = list(vec![atom("some->"), number(7.0), keyword("t__gensym0")]);
+
+Correction: cargo fmt --all (exit 0). The final full make check subsequently passed its formatter/lint phase after correction.

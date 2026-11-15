@@ -1,0 +1,27 @@
+   Compiling lykn-lang v0.6.0 (/Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/crates/lykn-lang)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 9.69s
+     Running unittests src/lib.rs (target/debug/deps/lykn_lang-660f810f98f77866)
+
+running 7 tests
+test emitter::source_names::tests::tagged_bare_list_recurses_as_expression_without_inventing_call_role ... ok
+test emitter::source_names::tests::keyword_data_initials_arguments_and_strings_remain_unreserved ... ok
+test emitter::source_names::tests::escaped_keyword_member_uses_existing_physical_name_reservation ... ok
+test emitter::source_names::tests::ordinary_cons_recursion_still_reserves_atom_occurrences ... ok
+test emitter::source_names::tests::all_surface_thread_forms_reserve_bare_and_call_keyword_heads ... ok
+test emitter::source_names::tests::raw_thread_steps_are_scanned_inside_ordinary_containers ... ok
+
+thread 'emitter::source_names::tests::public_fragment_emission_reserves_the_supplied_surface_thread_before_lowering' (109879416) panicked at crates/lykn-lang/src/emitter/source_names.rs:553:9:
+assertion `left == right` failed
+  left: "t__gensym2"
+ right: "t__gensym1"
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test emitter::source_names::tests::public_fragment_emission_reserves_the_supplied_surface_thread_before_lowering ... FAILED
+
+failures:
+
+failures:
+    emitter::source_names::tests::public_fragment_emission_reserves_the_supplied_surface_thread_before_lowering
+
+test result: FAILED. 6 passed; 1 failed; 0 ignored; 0 measured; 1217 filtered out; finished in 0.00s
+
+error: test failed, to rerun pass `-p lykn-lang --lib`
