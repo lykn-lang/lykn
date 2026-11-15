@@ -9,6 +9,14 @@ depends-on: [slice03-public-binding-discards, slice05-native-generated-name-hygi
 
 # Public compiler-generated name hygiene
 
+Current2026-11-14: correction02 sourcea44e16db/tree4080ee3f has independent
+[SOURCE-PROOF PASS](cdc-verification.md#source-proof-review-03--correction02-ata44--pass).
+All P1–P9/array-leaf assertions and five retained algorithm repairs are now
+actually delivered in the immutable source. Root resumed CC full gates on the
+same frozen bytes; fresh independent execution and closing metadata still
+remain. All8PN/BS-06 stay open,2/5 formal refinements. Earlier177/89 HOLDs and
+failed/unknown/deviation histories are retained below. Release stays82.
+
 Current2026-11-14: correction01 source89ab9dcd/tree6305ea2e fixes F1–F5 on
 independent immutable source inspection. Acceptance remains [HELD for proof](cdc-verification.md#source-first-review-02--correction01-at89--hold-for-proof):
 nine specific P1–P9 cases/counter/error oracles and one array leaf remain.

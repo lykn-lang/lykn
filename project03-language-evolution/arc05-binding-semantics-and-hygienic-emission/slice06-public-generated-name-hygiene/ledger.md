@@ -3,6 +3,10 @@
 2026-11-14: all eight rows open at preparation. CC green is proposed-done;
 separate source/runtime verification and root close precede acceptance.
 
+Current source-proof checkpoint: separate Sol PASS ata44e16db/tree4080ee3f
+confirms F1–F5/P1–P9/array-leaf assertions. CC full/fresh independent runtime
+and root close are still pending; ALL eight statuses remain open. [Verdict](cdc-verification.md#source-proof-review-03--correction02-ata44--pass).
+
 | ID | Criterion | Verify | Significance | Origin | Status | Evidence |
 | --- | --- | --- | --- | --- | --- | --- |
 | PN-01 | Static physical name occupancy agrees with actual emitted identifiers | Shared actual per-segment mapping, Unicode/malformed boundaries, raw/already-emitted candidate comparison and insertion oppositions | correctness-grade | BS-06 and S05 physical-key finding | open | — |

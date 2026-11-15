@@ -285,3 +285,89 @@ No intent attribution is made. Code stays frozen89, release82 and S07 unopened.
 defect.** Root may author the bounded test-only correction; no helper/module/
 native/policy scope expansion is needed. This source-only review created no
 jobs and returns control without executing or importing the mutable stage.
+
+## Source-proof review 03 — correction02 ata44 — PASS
+
+2026-11-14. Same independent Sol6.1 High reviewer. **PASS for the committed
+source/proof contract**, allowing root to resume CC full validation at this
+same pin. This is not independent runtime acceptance, final PN disposition or
+BS-06 close; mandatory full/materialized/citation/size checks and later root
+metadata remain pending.
+
+Reviewed immutable commit `a44e16db96ca4ae76de124b555c34ffe2c2779ba`, tree
+`4080ee3f7be200610814b39b4118d2b5f3062ca8`, parent89. Root attested clean
+checkout/owner return and focused42/eight-path terminal0; this phase did not
+execute that command or infer coverage from its green result. Independently
+read all905 committed test lines in bounded chunks, the full issued iteration02,
+P1–P9/array-leaf map and retained canonical applicability from Source02.
+Only immutable Git text and stable planning inputs were read; no execution,
+build, mutable target load/import, product edit or Git mutation occurred.
+
+### Algorithm and delivery retention
+
+Both identifier diffs from89 contain exactly the single JSDoc sentence,
+accurately identifying Source text and directing emitted consumers to
+emittedIdentifierKeys. Thus the complete F1–F5 implementation assessment at89
+above remains applicable: functional code, interfaces and callers did not
+change. Both corrected helper files share blob
+`45cf70e6a9ec0b12b81ffbf3de3b9cdace8cf214`. The exact3-path correction and
+original15-path range from82, commit parent/tree and adjacent coauthor trailers
+were independently checked through Git. No algorithm or new API was added.
+
+### P1–P9 and original leaf proof disposition
+
+All locators below are in committed test/forms/public-generated-names.test.js
+ata44. They describe executable assertion source, not independently reproduced
+results from this review.
+
+| Obligation | Actual delivered source/assertion | Source-proof verdict |
+| --- | --- | --- |
+| P1 | 358–383 executes actual leading-hyphen Dissoc keep7, raw keyword-thread7, its ordinary-atom control7, nested enclosing-result7 and keyword-headed variant7, all via compileFresh/executeModule. 390–398 adds both raw ->/->> nested typed variants. | PASS: owning-input reservation and actual Source consumers are now delivered; the function-array entries are callable and the nested counter0 is genuinely opposed. |
+| Array leaf | 301–304 uses actual typed array parameter result0 with input99/result100, alongside existing object/default338–342 and nested345–352 coverage. | PASS: original leaf obligation is no longer inferred from a nested-function label. |
+| P2 | Resets606/614/620/632/636/653 immediately precede Single, sole-Multi, value Match, Genfunc, instrumentYields and statement Match construction. Their actual compiled consumers661–667 observe100/100/106/99/99; statement inputs use matched2 after target0 rejection. | PASS: each intended first candidate is controlled, and distinct generated scopes can safely reuse a suffix after separate explicit resets. The valid fragment570–575 remains. |
+| P3 | Source438–447 deliberately uses target0/matched2; separate fresh guarded statement450–456 uses only matched1 and records guard before body with exact [guard,88]. | PASS: matched storage is now actually opposed and guard ordering/count is observable. |
+| P4 | Separate fresh Source386–388 uses a foreign string-key rest1 child record and observes keep7. | PASS: alias0 is accepted first, so rest1 is the opposed candidate; it is separate from P1's alias0 rejection. |
+| P5 | Actual classified SomeThread581–590 receives injected atom callback t__custom0 then t__custom1; returned expression is compiled/run595–599 with outer99, exact106 and callback2. | PASS: real h.gensym wiring and skip/return composition are tested, beyond a factory-only assertion. |
+| P6 | 693–699 explicitly resets around identical early Source, asserts generated-code equality and executes8. Raw failure/probe707–719, interleave722–735 and reentry738–759 remain unwrapped in compileFresh. | PASS: reset determinism is distinguished from the monotonic lifecycle contract. |
+| P7 | 836–840 preserves an actual backslash escape in raw Source and executes late ICU5 items;842–847 separately executes actual computed `_v0[_v1]` raw Identifier text with5 items. | PASS: these are real compile/read late consumers, not only key or AST shape checks. |
+| P8 | Resets885/887/889 immediately precede actual staged-browser typed7/thread106/ICU5 calls. Completed Source JSON transport is compiled and imported892–902, checking literal data and visible-only namespace. | PASS: browser candidate0 oppositions are controlled and transport/namespace assertions execute. |
+| P9 | 98–103 extracts the controlled actual exception class token and compares equality;537–541 runs actual TypeError through the same helper, accepts TypeError and rejects expected Error. Real post/yield class/message controls remain505–535. | PASS: TypeError no longer satisfies expected Error by substring; SyntaxError remains explicitly excluded. |
+
+The general success helper47–70 requires exit0, empty stderr and exact stdout.
+The failure helper requires nonzero exit, exact extracted class, intended
+message and no SyntaxError. The negative control uses that same helper and a
+known actually generated TypeError source. Exactly eight top-level groups
+remain; no steps/skips or count padding were introduced.
+
+### Full eight-PN source map and preserved contracts
+
+| PN | Source/proof disposition ata44; remaining acceptance work |
+| --- | --- |
+| PN-01 | F1/F5 source assessment retained; exact Unicode/malformed/emitted-key/candidate/atom-identity assertions136–281 plus actual P1/P7 consumers are present. Fresh execution still required. |
+| PN-02 | Borrowed Surface traversal/keyword-role assessment retained. Actual typed scalar/normalized/array/default/self/sibling284–353; every early family356–464; direct/fragment568–667 now has controlled meaningful consumers. Fresh focused/full execution remains. |
+| PN-03 | F4 assessment retained. h custom/partial/early-rejection580–691, explicit reset693–705, failure/interleave707–735 and reentry738–759 observe the selected global stream/ownership behavior. No per-compilation reset API was added. Fresh execution remains. |
+| PN-04 | Actual private completion/discard/intrinsic765–789, raw/lazy anchors802–828, raw ICU830–847 and expanded receiver/effect849–868 compose with retained canonical rest/identity/negative tests. Closed async value/effect/presence543–565 remains honest. Fresh execution remains. |
+| PN-05 | Actual Source errors/values/effects and iterator timing466–565; direct/raw boundaries568–667; Deno/browser baselines872–890; completed JSON/data/API/namespace892–904 are delivered. No new raw Source-resolution, private transport, source renaming or strip claim. Fresh execution remains. |
+| PN-06 | Original8/78/15 membership/delivery is unchanged; immutable comment mirror equality checked. Actual successful fresh materialized command/config/status/output and all15 comparisons remain pending. |
+| PN-07 | Exact3 delta/original15 range and trailers checked. This source-proof PASS clears the internal full-validation hold only. CC full/docs/M6/final-HEAD citations/fresh81920 size and separate fresh independent checks are still required. |
+| PN-08 | Historical177/89 HOLDs and failed/unknown/discarded attempts remain. Accurate CC current close, independent final disposition and root retrospective/BS-06/API/research routing remain pending. No row closure here. |
+
+Retain the explicit Source02 applicability map: unchanged canonical discard
+tests133–178 prove closed rest values/checks/labels; their97–120 and
+host-reference-lowering49–76 preserve private/shared identity and one-alias
+composition. Existing ICU69–128/152–180 preserve repeated kwargs, once-only,
+selector/hoist and recovery; its183–208 and full lazy55–142 preserve exact
+anchors, both Reflect branches, rejection and cleanup. No identity/host-policy/
+rest-layout code changed after that assessment; fresh focused/full runs must
+still execute these cases. They supplement the new P7 composition rather than
+substitute for it. No duplicate optional protocol matrix is required.
+
+Read root's native-keyword-follow-up.md only as a source-assessed later-lane
+WATCH/routing input. No native source investigation, build or probe was run,
+and no native defect/parity or retrospective S05/82 acceptance claim is made.
+S07/Arc06 LI-04 disposition remains root's future routing responsibility.
+
+No remaining mandatory source/proof blocker was found. Root may resume CC full
+validation at exacta44; any further product change requires an explicit new
+candidate/review. Release remains82, S07 unopened, and this review returns with
+no jobs and no runtime/full-gate acceptance claim.

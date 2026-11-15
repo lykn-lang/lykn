@@ -2,7 +2,7 @@
 project: project03-language-evolution
 arc: arc05-binding-semantics-and-hygienic-emission
 status: active
-version: "0.19"
+version: "0.20"
 planned-release: unassigned
 depends-on: []
 related: [arc04-qualified-adts, arc06-adt-modules-and-library-integration]
@@ -11,6 +11,16 @@ related: [arc04-qualified-adts, arc06-adt-modules-and-library-integration]
 # Binding semantics and hygienic emission
 
 ## Authority and outcome
+
+Current S06 source-proof2026-11-14: correction02 ata44e16db/tree4080ee3f
+has independent [source-proof PASS](slice06-public-generated-name-hygiene/cdc-verification.md#source-proof-review-03--correction02-ata44--pass)
+for all P1–P9/array leaf and unchanged F1–F5 algorithms. CC full validation now
+runs at the same frozen pin. Fresh independent execution/root metadata remain;
+all8PN/BS-06 open,2/5 formal refinements. Release remains82; no later slice opens.
+The [native keyword counterpart watch](slice06-public-generated-name-hygiene/artifacts/root/native-keyword-follow-up.md)
+is source-assessed only: S07 readiness must evaluate its native role/candidate
+consumer and binding-design implications before claiming parity. No native
+runtime finding, new implementation or reclassification of S05 acceptance follows.
 
 Current S06 proof correction2026-11-14: immutable89ab9dcd source fixes F1–F5
 on separate Sol inspection, but nine P1–P9 consumer/counter/class proofs remain
