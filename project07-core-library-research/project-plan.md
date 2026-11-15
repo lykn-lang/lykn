@@ -1,7 +1,7 @@
 ---
 project: project07-core-library-research
 status: active
-version: "1.34"
+version: "1.35"
 planned-release: null
 depends-on: []
 blocks: []
@@ -9,6 +9,13 @@ related: ["project02-language-toolchain-alignment", "project03-language-evolutio
 ---
 
 # Core library research
+
+Current compiler prerequisite2026-11-14: actual native a44 CLI reproduces the
+threading-keyword watch; Project03 Arc05 S10 is authorized ahead of S07 for a
+bounded repair and independent validation. Original accepted compiler inputs
+remain intact. No research/library trial resumes; all project rows and original
+JSON/YAML/reader/guide/book/human/licence/home/bootstrap gates stay open.
+Release82 unchanged; earlier source-only watch checkpoints retain their dates.
 
 Final compiler prerequisite checkpoint2026-11-14: Arc05 S06 all8PN/BS-06
 independently accepted at a44, including separate root closing-metadata PASS.
@@ -505,6 +512,9 @@ CDC records CC's Python aggregation deviation and supplies an independent Lykn a
 authoring evaluation remains Arc02.
 
 ## Version History
+
+- 2026-11-14 v1.35: Record actual native keyword reproduction and Arc05 S10
+  prerequisite ownership before S07; preserve research/library gates and release82.
 
 - 2026-11-14 v1.34: Carry Arc05 S06 a44 public source/runtime/materialized
   prerequisite and release82 integration checkpoint, with separate closing-metadata

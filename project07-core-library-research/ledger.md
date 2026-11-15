@@ -1,5 +1,9 @@
 # Project07 ledger
 
+Current2026-11-14: Arc05 S10 owns actual native keyword capture/TDZ repair
+before S07, from a44. All Project07 rows/original obligations remain open;
+accepted compiler inputs and release82 unchanged, no trial resumes.
+
 Final2026-11-14: separate S06 root-metadata PASS closes all8PN/BS-06 at a44;
 this compiler input leaves all Project07 rows/owners open and release82 unchanged.
 Earlier metadata-pending checkpoints below remain history; no trial resumes.

@@ -1,5 +1,10 @@
 # ADT modules and library integration ledger
 
+Current2026-11-14: Arc05 S10 now owns actual native threading-keyword capture
+reproduced at a44, ahead of S07. Exact accepted source/output/guide delta will
+feed LI-04; all six LI rows and later owners remain open. Earlier source-only
+watch language preserves its historical cutoff, not the current evidence level.
+
 Final2026-11-14: S06 separate root-metadata review05 PASS completes all8PN/
 BS-06 at a44 and verifies this routing. All six LI rows/later owners remain
 open, release82 unchanged. Earlier pending metadata checkpoints are history.

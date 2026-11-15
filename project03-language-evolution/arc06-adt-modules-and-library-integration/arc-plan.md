@@ -2,7 +2,7 @@
 project: project03-language-evolution
 arc: arc06-adt-modules-and-library-integration
 status: planned
-version: "0.6"
+version: "0.7"
 planned-release: unassigned
 depends-on: []
 related: [arc04-qualified-adts, arc05-binding-semantics-and-hygienic-emission, project07-core-library-research]
@@ -11,6 +11,17 @@ related: [arc04-qualified-adts, arc05-binding-semantics-and-hygienic-emission, p
 # ADT modules and library integration
 
 ## Authority and useful result
+
+Current native prerequisite2026-11-14: S06's keyword watch is now reproduced
+by actual optimized native a44 CLI: null-safe keyword capture and enclosing
+typed result TDZ. Operator opens Arc05 S10 before S07, three native/test/guide
+paths with role-aware owning-input reservation and separate Sol validation.
+Its [open set](../arc05-binding-semantics-and-hygienic-emission/slice10-native-threading-keyword-occupancy/slice-plan.md)
+owns this bounded repair; no S10 delivery is yet accepted. Earlier watch-only
+language below retains its original evidence cutoff. LI-04 will consume its
+exact source range, generated-output behavior and guide impact at acceptance.
+No new public API/grammar policy is selected; all six LI rows and later
+qualified/module/book/human/library gates remain open. Release82 unchanged.
 
 Final S06 carry2026-11-14: separate PN-08 metadata review05 PASS verifies
 root retrospective and parent routing, completing all8PN/BS-06 at a44.
@@ -192,6 +203,10 @@ merge/push/release, dependency adoption or licence choice is authorized now.
 Repository Lykn-only helper rules apply; no Python exception.
 
 ## Version history
+
+- 2026-11-14 v0.7: Route actual native reproduction of S06 watch into Operator-
+  opened Arc05 S10 before S07, preserving LI-04 output/guide follow-through and
+  all later gates. Do not rewrite historical source-only evidence as executed.
 
 - 2026-11-14 v0.6: Carry S06's exact82→a44 fifteen-path public helper/options,
   physical-key/lifecycle/generated-output/guide audit input and actual package
