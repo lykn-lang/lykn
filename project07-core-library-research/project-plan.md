@@ -1,6 +1,7 @@
 ---
 project: project07-core-library-research
 status: active
+version: "1.34"
 planned-release: null
 depends-on: []
 blocks: []
@@ -8,6 +9,11 @@ related: ["project02-language-toolchain-alignment", "project03-language-evolutio
 ---
 
 # Core library research
+
+Final compiler prerequisite checkpoint2026-11-14: Arc05 S06 all8PN/BS-06
+independently accepted at a44, including separate root closing-metadata PASS.
+All Project07 gates/rows remain open, release82 unchanged. Earlier pending
+metadata/current checkpoints are historical; no research/library trial resumes.
 
 2026-11-14 compiler prerequisite update: Project03 Arc05 S06 public generated-
 name source/runtime independently passes at a44e16db/tree4080ee3f, including
@@ -430,8 +436,8 @@ Co-authored-by: Billo AI <ai-engineering@billo.systems>
 
 ## Current status
 
-Latest compiler prerequisite checkpoint is the S06 a44 source/runtime PASS
-above, with root metadata pending and release82 independently accepted. Research
+Latest compiler prerequisite checkpoint is the S06 a44 source/runtime and root
+metadata PASS above, with release82 independently accepted. Research
 status, historical trial results and original limits below are retained; this
 checkpoint does not resume the queued authoring trial or close project rows.
 
@@ -501,8 +507,8 @@ authoring evaluation remains Arc02.
 ## Version History
 
 - 2026-11-14 v1.34: Carry Arc05 S06 a44 public source/runtime/materialized
-  prerequisite and release82 integration checkpoint, with closing metadata
-  pending. Preserve selected optional lib/JSR direction and original JSON,
+  prerequisite and release82 integration checkpoint, with separate closing-metadata
+  PASS completing all8PN/BS-06. Preserve selected optional lib/JSR direction and original JSON,
   synthesis/YAML/document/resource/reader/guide/book/human/licence/home gates;
   no research/library trial resumes.
 

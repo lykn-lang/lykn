@@ -322,3 +322,12 @@ policy. No roadmap restructuring is required; no source identity, qualified
 ADT/module/build, book/human, research/library/licence or bootstrap gate closes
 through these pointers. Task source a44 and accepted release82 stay distinct;
 no further merge, push or later slice is authorized here.
+
+## Final root disposition — 2026-11-14
+
+Separate Sol [review05 closing-metadata PASS](cdc-verification.md) completes
+all eight PN rows and BS-06; root applies the authorized mechanical status
+updates only. Source/runtime and closing duties are independently accepted at
+a44e16db/tree4080ee3f. Release remains accepted82f1b65b. All later source-
+identity/qualified/module/API/docs/book/human/research/library gates and the
+native-watch readiness disposition remain open. No jobs or source changes.

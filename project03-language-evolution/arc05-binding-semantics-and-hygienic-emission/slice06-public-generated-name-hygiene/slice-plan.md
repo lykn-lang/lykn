@@ -2,12 +2,19 @@
 project: project03-language-evolution
 arc: arc05-binding-semantics-and-hygienic-emission
 slice: slice06-public-generated-name-hygiene
-status: active
+status: closed
 version: "1.3"
 depends-on: [slice03-public-binding-discards, slice05-native-generated-name-hygiene]
 ---
 
 # Public compiler-generated name hygiene
+
+Final2026-11-14: separate Sol closing-metadata review05 PASS completes all
+eight PN rows and BS-06 at unchanged a44e16db/tree4080ee3f. Root retrospective,
+history and all-parent routing are independently verified. Earlier pending
+checkpoints below are preserved history. Source/build ownership has returned,
+no jobs remain, release stays independently accepted82. Authorized S06 endpoint
+is complete; no S07 or further integration opens.
 
 Current closing checkpoint2026-11-14: separate Sol freshly validates frozen
 a44e16db96ca4ae76de124b555c34ffe2c2779ba/tree4080ee3f7be200610814b39b4118d2b5f3062ca8:
@@ -327,8 +334,9 @@ runtime clients are allowed; this is not permission for JS evidence tools.
 ## Version history
 
 - 2026-11-14 v1.3: Final a44 independent source and fresh runtime gates pass;
-  reconcile eight-row status and root retrospective/API/research routing for
-  separate closing-metadata review. Preserve two refinements and later gates.
+  reconcile eight-row status and root retrospective/API/research routing.
+  Separate closing-metadata PASS completes all8PN/BS-06 and canonical close.
+  Preserve two refinements and later gates.
 
 - 2026-11-14 v1.2: retain F1–F5 source fixes at89, source02 proof HOLD and
   P1–P9/array-leaf completion, correct one helper comment, verify stopped jobs

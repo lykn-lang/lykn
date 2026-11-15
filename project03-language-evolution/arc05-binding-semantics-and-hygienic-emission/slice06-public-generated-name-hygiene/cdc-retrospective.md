@@ -7,6 +7,10 @@ runtime and closing-metadata dispositions must be read there. Source cutoff is
 a44e16db96ca4ae76de124b555c34ffe2c2779ba/tree4080ee3f7be200610814b39b4118d2b5f3062ca8.
 Release stays independently accepted82f1b65b/tree4bb6bfc9; no further integration.
 
+Final disposition: independent runtime review04 and closing-metadata review05
+PASS complete all eight PN rows/BS-06. The pending duties described below are
+the recorded closing sequence and have been verified; later owners stay open.
+
 ## Delivery and limits
 
 The useful increment is conservative static protection for public compiler

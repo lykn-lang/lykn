@@ -12,6 +12,12 @@ related: [arc04-qualified-adts, arc06-adt-modules-and-library-integration]
 
 ## Authority and outcome
 
+Final S06 close2026-11-14: separate Sol [review05 metadata PASS](slice06-public-generated-name-hygiene/cdc-verification.md)
+completes all8PN/BS-06 at a44, including root retrospective/history/parent
+routing. BS-01–06 are done; BS-07–09 remain open. Earlier pending checkpoints
+below are history. Task source a44/release82 remain clean/distinct; no jobs,
+further integration or later slice opening follows this authorized endpoint.
+
 Current S06 closing checkpoint2026-11-14: separate Sol independently validates
 a44e16db/tree4080ee3f: all source-proof obligations and fresh42 focused,
 1798Rust/1586corpus/482docs, actual M678/eight paths/all15 comparisons,
@@ -290,7 +296,7 @@ affected delivery, necessary immediate documentation and independent review.
 | [S03 public remaining discard binding forms](slice03-public-binding-discards/slice-plan.md) — closedc60dea62 | Delivered corresponding public/browser behavior, preserved already-admitted non-atom/empty-list discard groups and raw/schema roles, and enforced the honest simple-multi boundary | Independent final9-row proof, focused66/full1578/docs482/M670/14/cites/size; original HOLDs and three refinements retained |
 | [S04 discard-aware declarations](slice04-discard-aware-declarations/slice-plan.md) — closedc0ed | Existing native Func/Bind/BindGroup/Type declarations now describe discard slots/defaults/rest, recursive data inputs and scalar/group/pattern exports; actual TS/CLI/package consumers | Independent all8DT source/gate/closing-metadata proof, root retrospective and later-owner routing |
 | [S05 native compiler-generated name hygiene](slice05-native-generated-name-hygiene/slice-plan.md) — closed82f1b65b | Protect remaining compiler temporaries from source, foreign and generated-name collisions | Independent all8NH/fresh full/M670/14/cites/size, root retrospective/routing and separate NH-08 metadata PASS |
-| [S06 public compiler-generated name hygiene](slice06-public-generated-name-hygiene/slice-plan.md) — source/runtime accepted a44; closing metadata pending | Protect actual public producers/late consumers while preserving private identities and legacy gensym/macro/fragment limits | Independent42/full1798/1586/482/M678/all15/cites/size; root retrospective and PN-08 closing-metadata gate remain |
+| [S06 public compiler-generated name hygiene](slice06-public-generated-name-hygiene/slice-plan.md) — closed a44 | Protect actual public producers/late consumers while preserving private identities and legacy gensym/macro/fragment limits | Independent42/full1798/1586/482/M678/all15/cites/size; root retrospective/parent routing and separate PN-08 metadata PASS complete all8PN/BS-06 |
 | S07 native exact source-binding emission | Resolve binding occurrences and allocate safe JS names while retaining hoisting, TDZ, data/API names, foreign targets and JSON behavior | S05; settled source-name policy; actual native writer scopes; dispose S06 native keyword occupancy watch before opening; explicitly assess escaped SOURCE binding identity/protected-root classification separately from private generated-name occupancy |
 | S08 public exact source-binding emission | Deliver equivalent behavior through normal/fragment/browser/materialized entrances | S06; same language contract; public lifecycle/consumer census |
 
@@ -345,8 +351,7 @@ early source-owner queries from the later runtime binding/name plan.
 
 ## Verification, handoff and limits
 
-The [ledger](ledger.md) carries BS-01–05 done, S06 source/runtime accepted
-with BS-06 pending closing metadata, and BS-07–09 open. Independent acceptance must
+The [ledger](ledger.md) carries BS-01–06 done and BS-07–09 open. Independent acceptance must
 cover actual changed consumers, meaningful negative controls, repository checks
 and embedded parity. Preserve final-source citations, existing size policy,
 cache/network limits, original failures and exact commit scope. Test count
@@ -360,7 +365,7 @@ history; new filenames do not reset exhausted allowances. An iteration refines
 one delivery; a new capability receives its own slice.
 
 S06 source/build returns clean at a44 after independent source/delivery acceptance.
-Its final close requires root duties and separate PN-08 metadata PASS.
+Its final close includes independently verified root duties and PN-08 metadata PASS.
 Subsequent source
 work needs its own authorized source-ready assignment. No separate
 probe/experiment/merge/push/publication/licence/dependency action follows from
@@ -371,7 +376,7 @@ work, whole-work audits and the separate book/human gates keep their owners.
 ## Version history
 
 - 2026-11-14 v0.21: S06 a44 source/fresh runtime independently pass; reconcile
-  PN-01–07 and closing-metadata gate, source/release pins and retrospective.
+  all8PN/BS-06 with separate closing-metadata PASS, source/release pins and retrospective.
   S06's executable keyword/member finding adds an explicit native occupancy
   readiness disposition before S07, without changing roadmap or claiming a
   native runtime defect. API/research owners and all later gates remain open.

@@ -516,3 +516,85 @@ No release integration, S07 opening, publication or root-ledger mutation was
 performed. **Source/build validation ownership returns to root, clean a44,
 with no running jobs.** No further aggregate gate is needed solely for later
 metadata-only changes; any product change needs a new explicit candidate.
+
+## Separate PN-08 closing-metadata review 05 — PASS
+
+2026-11-14. Same independent OpenAI gpt-6.1-sol/high reviewer. **PN-08 PASS.**
+Reviewed immutable planning commit
+`4c4f56529c4034f7aed7a6ba38c6afac8bc511f5` against parent `eeff38c3`,
+including the actual ten parent/slice metadata diffs, new complete
+cdc-retrospective.md and appended root closing handoff. The prior independent
+runtime verdict and final-a44 packet are preserved in this commit. No product,
+test, build, execution, external action or Git/index mutation was performed
+for this review; the only new write is this verdict append.
+
+The ten reviewed metadata files are Arc05 arc-plan/ledger, S06 slice-plan/
+ledger, Arc06 arc-plan/ledger, Project03 project-plan/ledger and Project07
+project-plan/ledger. Their current checkpoints accurately carry PN-01–07's
+independent acceptance and deliberately hold PN-08/BS-06 until this review.
+All eight original PN criteria, significance, verification and provenance
+columns survive unchanged. Original prompts/iterations,15-path inventory,
+eight groups/78 materialized cases/15 comparisons and the two-of-five formal
+refinement count are conserved. The immutable source diff82→a44 still contains
+exactly the nine logical paths and six tracked embedded mirrors. The complete
+P1–P9/array-leaf source proof and independent runtime dispositions above remain
+the authority; no parent count or CC attestation substitutes for them.
+
+The retrospective accounts for root's incomplete keyword-role/initial delivery
+scope assumptions, initial implementation defects, missing causal proof after
+the first correction, invalid fixtures, stale staging, the discarded JavaScript
+helper deviation, uncreated TMPDIR, network/cache-profile failures, absent raw
+streams/snapshots and the interrupted unknown terminal outcome. It preserves
+the initial77/78 M6 chronology and the erroneous514/two-entrypoint reporting
+history with appended corrections. It identifies useful controls and bounded
+follow-through without claiming comparative model performance or turning the
+local source-before-full ordering improvement into a general efficiency result.
+Unknown exits remain unknown. The successful fresh independent gate receipt
+is separate from all these attempts, with actual profile/cache/skip limits.
+
+Parent routing is concrete and remains open where required:
+
+- Arc05 BS-06 receives this accepted public increment; BS-07–09 and Project03
+  P-BIND/P-QADT remain open. Accepted release82 and task-only a44 are accurately
+  distinguished; neither this close nor the parent pointers authorize a later
+  integration, push, S07 opening or source-binding policy change.
+- Arc06 LI-04 receives exact82f1b65b→a44e16db/15-path helper/options,
+  normalization/physical-key/global-stream/generated-output/diagnostic/guide06
+  audit inputs. Actual final source confirms mod.js exports read, expand,
+  expandExpr, compile, compileExpr and lykn; surface.js does not reexport the
+  classifier builders. Five identifier module exports and optional
+  generatedNames/helper inputs are distinguished from six unchanged package
+  entries (`.`, `./mod.js`, `./reader.js`, `./compiler.js`, `./expander.js`,
+  `./surface.js`). Reachability/stability remains an audit question, not a new
+  stable package API claim. All six LI rows and Arc04 QA/LC/module/ADT/build/
+  book/human gates remain open.
+- Project07 keeps all its project rows open: final synthesis, original JSON
+  re-pin/control/composition and separate JSON/YAML handoffs;28 Y-14 document
+  variants and36 unsupported Y-13 resource cells; reader RDEO/RDCL; guides,
+  book and explicit human source-shape acceptance; new-code licence, bootstrap
+  and actual-home proof. Selected optional lang/lib/ and opt-in @lykn/* remain
+  selected. No research/library trial resumes. AWEX/MPVR/NUMI retain their
+  separate unopened Project03 Arc02 maintenance ownership.
+- The native keyword/member note is explicitly source-assessed WATCH, with
+  an actual native consumer disposition required before S07 opening. It is
+  neither a demonstrated native runtime defect nor a reversal of S05/82.
+  Exact binding identity, diagnostics, protected-root and guide/book treatment
+  retain S07/S08/LI-04 owners. No native probe or new grammar decision occurred.
+
+No material factual omission or closure blocker was found. The PN-07 ledger's
+short DD53-skip wording refers to the retained CC explicit skip; the precise
+independent limit above remains controlling: fresh outer ok, branch marker
+unobserved, no external-registry proof. Qualifying that attribution in the
+mechanical close is appropriate. Adding Project07 frontmatter version1.34 to
+match its already-current version history is also a mechanical consistency edit.
+
+**Root may now mechanically mark PN-08 and BS-06 done, set canonical S06
+status closed, and update corresponding current parent checkpoints to final
+accepted, citing this verdict and preserving earlier pending/HOLD sections as
+history. All eight PN criteria are independently accepted.** Retain release82,
+source a44, later open rows/owners and all evidence limits. No new aggregate
+gate rerun is required solely for these metadata-only conversions. Product or
+scope changes would require their own explicit candidate and review.
+
+This review returns no jobs and does not reacquire source/build ownership from
+root. It changes no ledger/index itself and authorizes no external action.

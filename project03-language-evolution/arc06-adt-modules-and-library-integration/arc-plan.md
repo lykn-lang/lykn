@@ -12,6 +12,11 @@ related: [arc04-qualified-adts, arc05-binding-semantics-and-hygienic-emission, p
 
 ## Authority and useful result
 
+Final S06 carry2026-11-14: separate PN-08 metadata review05 PASS verifies
+root retrospective and parent routing, completing all8PN/BS-06 at a44.
+Earlier metadata-pending checkpoints below are history. All six LI rows and
+original QA/LC/module/library/book/human gates remain open; release stays82.
+
 2026-11-14 carry-forward: Arc05 S06 public source/delivery independently passes
 at a44e16db96ca4ae76de124b555c34ffe2c2779ba/tree4080ee3f; its PN-08 root
 closing-metadata review remains pending. LI-04 receives exact82f1b65b→a44e16db,
@@ -177,7 +182,7 @@ human/book gates require actual dispositions.
 
 Use existing planning and assigned task homes; refresh pins before authoring.
 Current independently validated task source is clean a44e16db, with S06 root
-closing-metadata review pending; release is independently accepted82f1b65b. Earlier
+closing-metadata PASS; release is independently accepted82f1b65b. Earlier
 c0ed/S04 and dba24d40/public-discard-held/release0829 are historical checkpoints.
 S04 root closing metadata is independently verified in its owning slice.
 Prospective source work uses the established Luna6 High implementer and separate
@@ -192,7 +197,7 @@ Repository Lykn-only helper rules apply; no Python exception.
   physical-key/lifecycle/generated-output/guide audit input and actual package
   reachability boundary to LI-04. Refresh source/release pins, preserve native
   watch/source identity and all six open LI/human/research gates. S06 root
-  closing metadata remains separately gated; no new work opens.
+  closing metadata separately passes review05; no new work opens.
 
 - 2026-11-14 v0.5: Carry S05's exact c0ed→82 native census/generator/physical-
   key/late-composition/API-output/guide input to LI-04, keeping all six rows and

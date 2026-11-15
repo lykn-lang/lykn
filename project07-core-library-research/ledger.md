@@ -1,5 +1,9 @@
 # Project07 ledger
 
+Final2026-11-14: separate S06 root-metadata PASS closes all8PN/BS-06 at a44;
+this compiler input leaves all Project07 rows/owners open and release82 unchanged.
+Earlier metadata-pending checkpoints below remain history; no trial resumes.
+
 2026-11-14: Arc05 S06 public generated-name source/runtime independently passes
 at a44; PN-08 root closing metadata pending. This is a bounded compiler input,
 not library or research composition. Independently accepted release82 stays

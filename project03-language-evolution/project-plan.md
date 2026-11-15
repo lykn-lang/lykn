@@ -12,6 +12,12 @@ related: ["project04-c-lang", "project07-core-library-research"]
 
 ## Current approved structure —2026-11-13
 
+Final2026-11-14: separate S06 closing-metadata review05 PASS completes all
+eight PN/BS-06 at a44, with root retrospective and parent routing independently
+accepted. BS-01–06 done; BS-07–09 and P-BIND/P-QADT remain open. Source a44
+and independently accepted release82 stay distinct. Earlier pending checkpoints
+are historical; the authorized S06 endpoint is complete without later execution.
+
 Current2026-11-14: Arc05 S06 a44e16db/tree4080ee3f independently passes source
 and fresh runtime gates:42 focused, full1798Rust/1586corpus/482docs,
 M678/eight paths/all15 byte comparisons, cites64/601 and50162 gzip<81920.
@@ -136,7 +142,7 @@ historical S03 assignment22 remains unexecuted.
 
 | Arc | Coherent outcome | Current planning state |
 | --- | --- | --- |
-| [Arc05 binding semantics and hygienic emission](arc05-binding-semantics-and-hygienic-emission/arc-plan.md) | Complete discard semantics/declarations and preserve source/compiler binding identities through emitted JS | BS-01–05 done; S06 a44 source/runtime independently passed, BS-06 closing-metadata pending; BS-07–09 remain open with explicit native-watch readiness |
+| [Arc05 binding semantics and hygienic emission](arc05-binding-semantics-and-hygienic-emission/arc-plan.md) | Complete discard semantics/declarations and preserve source/compiler binding identities through emitted JS | BS-01–06 done, latest a44 with independent source/runtime/root-metadata acceptance; BS-07–09 remain open with explicit native-watch readiness |
 | [Arc04 qualified ADTs](arc04-qualified-adts/arc-plan.md) | Closed owner/case semantics, coherent local qualified values/matching/guards, declarations and trusted initialization | Existing identity retained; S01/S02 and bounded prerequisites accepted; remaining local candidates S08–S13 are roadmap only |
 | [Arc06 ADT modules and library integration](arc06-adt-modules-and-library-integration/arc-plan.md) | Imported ABI, selective emission, actual build/JSON composition and API/docs/book/human handoff | Planning stub receives former Arc04 S04–S07 responsibilities, preserving the existing experiment checkpoint |
 
@@ -1153,7 +1159,8 @@ implementation definition of done is not established by this migration.
 - 2026-11-14 v1.74: Arc05 S06 a44 independently passes source/fresh runtime;
   reconcile current source/release and row checkpoint, root retrospective,
   exact-range Arc06 API input and Project07 prerequisite routing. Preserve
-  native-watch readiness, closing-metadata and all later feature/human gates.
+  native-watch readiness and all later feature/human gates; separate metadata
+  PASS completes all8PN/BS-06 without advancing later work.
 
 - 2026-11-14 v1.73: Retain source89 F1–F5 repairs and proof HOLD; issue exact
   correction02 after readiness, preserve execution/deviation history and gate

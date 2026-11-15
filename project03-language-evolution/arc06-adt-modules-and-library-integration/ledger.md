@@ -1,5 +1,9 @@
 # ADT modules and library integration ledger
 
+Final2026-11-14: S06 separate root-metadata review05 PASS completes all8PN/
+BS-06 at a44 and verifies this routing. All six LI rows/later owners remain
+open, release82 unchanged. Earlier pending metadata checkpoints are history.
+
 2026-11-14: independent S06 source/runtime PASS at a44 supplies LI-04 exact
 82→a44/fifteen-path helper exports/generatedNames options/physical-key/global
 stream/generated-output/guide audit inputs, with actual six unchanged package

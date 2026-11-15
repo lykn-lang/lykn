@@ -1,5 +1,10 @@
 # project03-language-evolution ledger
 
+Final2026-11-14: S06 all8PN/BS-06 independently accepted at a44, including
+separate root closing-metadata review05 PASS. BS-01–06 done; BS-07–09,
+P-BIND/P-QADT and later owners remain open. Source a44/release82 stay distinct;
+earlier pending checkpoints are history. No later execution or merge follows.
+
 Current2026-11-14: Arc05 S06 a44/tree4080 independently passes source/fresh
 runtime gates; PN-01–07 done, PN-08/BS-06 pending closing metadata. Release82
 remains independently accepted. Exact82→a44 module/API/guide audit inputs
