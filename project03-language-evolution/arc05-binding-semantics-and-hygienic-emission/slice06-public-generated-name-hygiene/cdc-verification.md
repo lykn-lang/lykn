@@ -371,3 +371,148 @@ No remaining mandatory source/proof blocker was found. Root may resume CC full
 validation at exacta44; any further product change requires an explicit new
 candidate/review. Release remains82, S07 unopened, and this review returns with
 no jobs and no runtime/full-gate acceptance claim.
+
+## Independent fresh validation 04 — a44 — PN-01–07 ACCEPT; PN-08 pending
+
+2026-11-14. Independent OpenAI gpt-6.1-sol/high reviewer, after root's exclusive
+source/build validation handoff. **ACCEPT the reviewed implementation and
+runtime/gate proof for PN-01 through PN-07. PN-08 remains pending the separate
+root closing-metadata/retrospective/parent-row review.** This is not release
+integration or BS-06/ledger closure. Release82 and unopened S07 remain intact.
+
+Direct Git checks before and after gates show clean task source at
+`a44e16db96ca4ae76de124b555c34ffe2c2779ba`, tree
+`4080ee3f7be200610814b39b4118d2b5f3062ca8`, branch
+`codex/qualified-adt-core`. Source-proof03's complete a44 test/source review
+and F1–F5 correction assessment remain applicable to these exact bytes.
+No source/Git mutation occurred. All commands ran after precreating and
+verifying the owned `/private/tmp/lykn-arc05-s06-cdc/{tmp,xdg,npm}` directories,
+with explicit warm `DENO_DIR=/Users/oubiwann/Library/Caches/deno`.
+The fresh independent evidence is [final-a44](artifacts/cdc/final-a44/);
+[execution.md](artifacts/cdc/final-a44/execution.md) records exact commands,
+environment, initial sessions and terminal tool exits. These are independent
+receipts, not relabelled CC results. All sessions ended, with no jobs returned.
+
+### Independently reproduced gates
+
+| Actual command | Terminal result and inspected evidence |
+| --- | --- |
+| make fresh-artifacts | exit0; optimized release binary and freshly staged lang/browser/testing. Ran before focused tests. |
+| Prescribed focused Deno command | exit0;42 passed/0 failed across eight paths, including all eight S06 groups. Focused stdout/stderr retained separately. |
+| ONE make check | exit0; required dependency/citation/build/Clippy/Rust-format/Lykn-syntax-lint checks, Rust/full corpus/docs complete.42 Rust result records sum1798 passed/0 failed/0 ignored, including Lang1217; JS/Lykn1586 passed/67 steps/0 failed; compiled99 Lykn files; docs482 passed/0 failed from22 files. Docs ran once. |
+| Separate final-HEAD make check-cited-paths | exit0;64 documents,601 historical citations. |
+| Fresh make bundle-size-check | exit0; raw388047, minified184990, gzip50162 bytes; same-tool baseline27630 at4b9546cdba6bdcd4e5dd82d7cdf6cf58da9edde0; delta22532;50162<81920. |
+
+Full stdout/stderr are retained for each command, not just extracted result
+lines. The full-check initial session48535 terminated exit0 with no continuing
+session (terminal chunke98139); focus session44107 likewise terminated exit0.
+Citations and size returned immediate terminal0. The independent run required
+no gate retry. Pinned dependency access used the already authorized escalation;
+no test, dependency, cache requirement or gate was weakened.
+
+The42 Rust counts, in stream order, are
+`0,99,194,2,1,4,3,1,4,1,4,2,2,14,5,2,4,6,2,5,3,2,16,1,59,4,1,2,1217,1,22,23,18,9,4,28,5,24,0,0,2,2`.
+Their sum is1798; the historical514 is erroneous. Cargo's optimized release
+build and unoptimized dev/test profiles are separately visible in stderr.
+M6's standalone CLI is copied from Cargo's CARGO_BIN_EXE_lykn in its test/dev
+profile; it is not claimed to be the optimized release binary.
+
+Docs preserve the existing15 skipped blocks and nine no-block files: the
+three Deno testing/task-runner/publishing guides and six surface/kernel browser
+HTML examples. These are exclusions, not executed examples. DD-53 R-5's fresh
+outer test reports ok; its console branch marker is absent from this stream.
+Actual source128–151 allows a permission/reachability early return. Thus this
+run does not establish external JSR registry-path execution or cold networking.
+CC's separately retained explicit unreachable-JSR skip stays CC evidence.
+No extra probe/rerun was used to strengthen that claim.
+
+### Actual fresh M6, not outer-result inference
+
+Fresh DISTINCT evidence root is
+`artifacts/cdc/final-a44/m6-evidence/`. Read the actual delivery and strict
+commands, config, both status files, full output streams, and every comparison
+value. Delivery compile and strict consumer each report success=true/code0.
+The actual strict child runs `deno test -A --cached-only --no-prompt --config`
+with the following eight paths: embedded-adt-pattern, surface-type-context,
+reserved-binding-output, icu-generated-names, public-generated-names,
+expander/lexical-regions, discard-bindings and remaining-discard-bindings.
+Its own stdout reports **78 passed/0 failed**, and its stderr is **0 bytes**.
+This includes the eight new public groups and retained discard7.
+
+The actual import config maps lang/ into fresh fixture-owned
+`.tmpn39Ygy/xdg-cache/lykn/embedded/0.6.0-compiler-split/packages/lang/`
+under the owned TMPDIR; browser/ maps the freshly staged
+`target/lykn/build/browser/`. Delivery's copied CLI runs from standalone/ and
+uses that fixture XDG; strict execution inherits the owned parent XDG and uses
+the explicit materialized lang/ map. Child Deno resolves to
+`/opt/homebrew/Cellar/deno/2.9.6/bin/deno`. Command receipts retain actual
+arguments and inherited/overridden environment; macro child argv is not
+separately traced. Shared DENO_DIR remains warm. Fresh XDG materialization is
+not cold external-dependency resolution. Delivery stderr retains five fixture
+warnings (unreachable match clause and four unused bindings); only the strict
+consumer stderr is claimed empty.
+
+Both recorded booleans (canonical_equals_embedded and
+canonical_equals_materialized) are **true for every row below**. These are
+the read actual comparison-file values, not a count inferred from filenames.
+
+| File | Bytes | canonical=embedded | canonical=materialized |
+| --- | ---: | --- | --- |
+| binding.js |35636|true|true|
+| classifier.js |58364|true|true|
+| compiler-private-atoms.js |1541|true|true|
+| compiler.js |74629|true|true|
+| expander-core.js |99445|true|true|
+| function-clauses.js |1890|true|true|
+| host-invocation-kernel.js |3747|true|true|
+| host-invocation.js |8780|true|true|
+| identifier.js |9489|true|true|
+| lexical-regions.js |8064|true|true|
+| protected-host.js |22819|true|true|
+| reserved-words.js |1445|true|true|
+| surface-helpers.js |27004|true|true|
+| surface-type-context.js |423|true|true|
+| surface.js |12158|true|true|
+
+### Eight-row independent disposition
+
+| Row | Independent disposition and actual proof |
+| --- | --- |
+| PN-01 | **ACCEPT.** Reviewed corrected physical-key/decoder algorithms, exact source/emitted Unicode and malformed-boundary assertions, allocator candidate/insertion/identity assertions in group1; real Source leading-hyphen and escaped/computed ICU consumers in groups3/7 now execute in focused/full and materialized delivery. No full lexical identity claim. |
+| PN-02 | **ACCEPT.** Source-proof03's complete-input/role-aware traversal and producer/caller inventory, actual typed scalar/array/object/default/self/sibling and all-family Source consumers, controlled direct builders and fragment all execute. The nested keyword consumer opposes the earlier enclosing producer. Ordinary direct builders own only supplied input; no new standalone private lifecycle is claimed. |
+| PN-03 | **ACCEPT.** Actual custom h callback106/count2, factory rejection/cycling, explicit reset determinism, monotonic failure/probe, independent interleave and reentry inner8/outer106/recovery10/probe4 execute. Exported gensym/reset legacy stream remains; no macro replay/new global active unit or automatic public per-call reset is introduced. |
+| PN-04 | **ACCEPT.** New actual late private completion/discard/intrinsic, raw escaped/computed ICU, expanded receiver/effect, lazy anchor and closed async value/effect/presence consumers execute. Retained canonical discard133–178 supplies rest values/checks/labels; discard97–120 and host49–76 supply private/shared identity/one alias; ICU69–128/152–208 and lazy55–142 retain repetition, once-only, selector/recovery, exact anchors/Reflect branches/rejection/finally cleanup. These relevant unchanged tests ran fresh focused/full and the applicable materialized subset. |
+| PN-05 | **ACCEPT.** Actual Source values/effects, exact class+message failure controls including TypeError-as-Error rejection, overload/yield timing, direct/fragment consumers, reset-controlled staged browser typed7/thread106/ICU5 and completed JSON/data/visible-namespace execution passed. Existing raw/private transport and checked-only/protected-root boundaries remain scoped; no public strip API or source-binding renaming is claimed. |
+| PN-06 | **ACCEPT.** Actual inner M6 command/config/status/78-of-eight/empty stderr and all15 read true comparison values above establish changed materialized delivery, including lazy module. Cache/profile limits are explicit. |
+| PN-07 | **ACCEPT.** Prior immutable exact15-range/three-path correction/trailer checks apply to unchanged clean a44. Independent fresh artifacts, focused42, one full check/docs once, actual M6, final-HEAD64/601 citations and fresh50162<81920 size all terminate0. No dependency/lock/gate/snapshot weakening. |
+| PN-08 | **PENDING ROOT METADATA REVIEW.** This independent runtime disposition and artifact inventory are complete. Root's retrospective, closing diff and parent/BS-06/API/research routing require their separate review; no ledger/parent row is changed here. |
+
+### API inventory, history and handback
+
+Independently read final a44 `packages/lang/deno.json`: **six unchanged package
+entrypoints** `.`, `./mod.js`, `./reader.js`, `./compiler.js`, `./expander.js`,
+`./surface.js`. No new package entrypoint is correct; “only two” is false.
+Five new identifier module exports remain actual API audit inputs:
+toJsIdentifierParts, decodeIdentifierEscapes, physicalIdentifierKeys,
+emittedIdentifierKeys and createGeneratedNameAllocator. Optional allocator
+threading on supported builders/helper adapters is also an API input;
+unchanged mod.js does not erase module-level exports/options. The separate
+Arc06 LI-04 audit must use these concrete interfaces and the legacy stream/
+owned-input/private transport limits. Read CC's report-only append correcting
+all six entrypoints, withdrawing the unsupported514 derivation and correcting
+77/78 chronology; historical wrong text stays preserved.
+
+Earlier initial raw-stream-unavailable failures,77/78 initial M6 failure,
+stale-stage37/5, discarded ad-hoc-eval violation, TMPDIR86/13 and interrupted
+unknown-session attempts remain historical evidence with their original limits.
+They are neither rewritten nor counted as successful independent gates. Fresh
+final-a44 streams/command/session receipts are separately owned and complete.
+Inspection-only path/glob mistakes during this final read did not execute gates
+or change source; no validation failure/retry is hidden by them.
+
+No native-keyword follow-up probe ran. Its source-assessed WATCH remains a
+later-lane input, not a native parity/defect finding or revision of accepted82.
+No release integration, S07 opening, publication or root-ledger mutation was
+performed. **Source/build validation ownership returns to root, clean a44,
+with no running jobs.** No further aggregate gate is needed solely for later
+metadata-only changes; any product change needs a new explicit candidate.

@@ -9,6 +9,22 @@ related: ["project02-language-toolchain-alignment", "project03-language-evolutio
 
 # Core library research
 
+2026-11-14 compiler prerequisite update: Project03 Arc05 S06 public generated-
+name source/runtime independently passes at a44e16db/tree4080ee3f, including
+actual Source/fragment/raw/browser/materialized proof and fresh full/M678/all15
+delivery checks. Its PN-08 root closing-metadata review is pending. Release
+is independently accepted82f1b65b and stays there; source a44 is task-only.
+Earlier releasec60/active-S05 checkpoints below are historical. Native keyword
+occupancy follow-up, exact source-binding identity, qualified ADT/module/build
+composition and Arc06 API/docs audit remain compiler work. No research or
+library trial resumes. The selected lang/lib/ and opt-in @lykn/* direction
+remains selected, with actual bootstrap/home proof and new-code licence separate.
+Final research synthesis, original JSON decoder re-pin/control/composition,
+28 Y-14 document variants,36 unsupported Y-13 resource cells, reader RDEO/RDCL,
+LLM guides, book and explicit human source-shape acceptance retain their owners.
+AWEX/MPVR/NUMI remain separate unopened Project03 Arc02 maintenance inputs.
+All Project07 rows stay open; prerequisite acceptance is not a library delivery.
+
 2026-11-14 compiler prerequisite update: Project03 Arc05 S05 native generated-
 name source/delivery is independently validated at82f1b65b; final closing-
 metadata PASS completes all8NH/BS-05. Actual canonical/fragment/CLI/kernel-JSON/package
@@ -414,6 +430,11 @@ Co-authored-by: Billo AI <ai-engineering@billo.systems>
 
 ## Current status
 
+Latest compiler prerequisite checkpoint is the S06 a44 source/runtime PASS
+above, with root metadata pending and release82 independently accepted. Research
+status, historical trial results and original limits below are retained; this
+checkpoint does not resume the queued authoring trial or close project rows.
+
 At opening, Arc01/Slice01 had its full open set and no execution or close set.
 Slice01 is now CDC closed with seven independently verified criteria; see its
 [CDC verification](arc01-format-runtime-evidence/slice01-baseline-and-protocol/cdc-verification.md).
@@ -478,6 +499,12 @@ CDC records CC's Python aggregation deviation and supplies an independent Lykn a
 authoring evaluation remains Arc02.
 
 ## Version History
+
+- 2026-11-14 v1.34: Carry Arc05 S06 a44 public source/runtime/materialized
+  prerequisite and release82 integration checkpoint, with closing metadata
+  pending. Preserve selected optional lib/JSR direction and original JSON,
+  synthesis/YAML/document/resource/reader/guide/book/human/licence/home gates;
+  no research/library trial resumes.
 
 - 2026-11-14 v1.33: Carry independently validated S05 native generated-name
   source/delivery at82, including root closing-metadata PASS, as a compiler prerequisite.

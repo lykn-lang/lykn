@@ -304,3 +304,21 @@ source89 source-proof hold, its attempted full run failed before M6 on the
 TMPDIR setup; a later resumed attempt was interrupted/unknown. Those outcomes
 remain distinct. No planning ledger or product source was changed for these
 report corrections.
+
+## Root closing handoff — 2026-11-14
+
+Root's [CDC retrospective](cdc-retrospective.md) accounts for design/readiness,
+implementation/proof and reporting failures, retained unknowns, useful controls
+and follow-through. Separate Sol reports final fresh source/runtime gates green
+at unchanged a44; the authoritative [independent verification](cdc-verification.md)
+records its exact eight-row disposition. Root reconciled the slice ledger,
+Arc05 BS-06, Project03 and Arc06 LI-04's exact82→a44 API/guide input, and
+Project07's compiler prerequisite without closing later gates. PN-08/BS-06
+remain pending separate closing-metadata review at this handoff.
+
+The source-only native keyword/member watch is an explicit prerequisite
+disposition before S07 opening, not an executed native defect or new grammar
+policy. No roadmap restructuring is required; no source identity, qualified
+ADT/module/build, book/human, research/library/licence or bootstrap gate closes
+through these pointers. Task source a44 and accepted release82 stay distinct;
+no further merge, push or later slice is authorized here.

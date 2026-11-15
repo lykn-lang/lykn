@@ -1,5 +1,13 @@
 # ADT modules and library integration ledger
 
+2026-11-14: independent S06 source/runtime PASS at a44 supplies LI-04 exact
+82→a44/fifteen-path helper exports/generatedNames options/physical-key/global
+stream/generated-output/guide audit inputs, with actual six unchanged package
+entries and module reachability distinguished in arc-plan.md. S06 root PN-08
+metadata review remains pending. Native keyword watch and exact source identity
+retain Arc05 owners; all six LI rows, Arc04 QA/LC, book/human/library gates
+stay open. Task source a44; independently accepted release82 unchanged.
+
 2026-11-14: independently validated Arc05 S05 source/delivery at82f1b65b
 adds LI-04's exact c0ed→82 ten-path native census/generator/physical-key/late-
 composition/generated-output/guide/API-behavior audit input, detailed in the

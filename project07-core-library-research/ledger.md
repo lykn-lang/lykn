@@ -1,5 +1,14 @@
 # Project07 ledger
 
+2026-11-14: Arc05 S06 public generated-name source/runtime independently passes
+at a44; PN-08 root closing metadata pending. This is a bounded compiler input,
+not library or research composition. Independently accepted release82 stays
+unchanged. All Project07 rows remain open: final synthesis/original JSON re-pin,
+28 Y-14 variants/36 unsupported Y-13 cells, reader RDEO/RDCL, guide/book/human,
+licence/bootstrap/home proof and separate JSON/YAML project handoffs. Selected
+optional lang/lib/ and @lykn/* remain selected. Earlier c60/S05 checkpoints
+below are historical; no research trial resumes.
+
 2026-11-14: Arc05 S05 source/delivery at82f1b65b is independently validated
 as a bounded native generated-name prerequisite; final metadata PASS closes
 S05/BS-05. All Project07 rows remain open, including final research synthesis,

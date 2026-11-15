@@ -2,7 +2,7 @@
 project: project03-language-evolution
 arc: arc06-adt-modules-and-library-integration
 status: planned
-version: "0.5"
+version: "0.6"
 planned-release: unassigned
 depends-on: []
 related: [arc04-qualified-adts, arc05-binding-semantics-and-hygienic-emission, project07-core-library-research]
@@ -11,6 +11,35 @@ related: [arc04-qualified-adts, arc05-binding-semantics-and-hygienic-emission, p
 # ADT modules and library integration
 
 ## Authority and useful result
+
+2026-11-14 carry-forward: Arc05 S06 public source/delivery independently passes
+at a44e16db96ca4ae76de124b555c34ffe2c2779ba/tree4080ee3f; its PN-08 root
+closing-metadata review remains pending. LI-04 receives exact82f1b65b→a44e16db,
+fifteen product paths (nine logical plus six tracked embedded mirrors). Audit:
+
+- Five new identifier.js named exports: toJsIdentifierParts,
+  decodeIdentifierEscapes, physicalIdentifierKeys, emittedIdentifierKeys,
+  createGeneratedNameAllocator; optional generatedNames on existing classifier
+  builders/Match options/instrumentation and emitSurfaceForm helper input.
+- Legacy global gensym/reset stream, failure/reentry/callback behavior,
+  normalize-first Source versus decode-only emitted physical keys, changed
+  generated layout and diagnostic consumers, raw/fragment/macro/private limits,
+  actual Deno/browser/materialized consumers and immediate guide06.
+- Actual export reachability. packages/lang/deno.json's SIX unchanged entries
+  are ., ./mod.js, ./reader.js, ./compiler.js, ./expander.js and ./surface.js.
+  New internal module helpers do not by themselves establish a stable package
+  API extension. mod.js exports read/expand/expandExpr/compile/compileExpr/lykn;
+  surface.js does not reexport classifier builders. Check the actual imports,
+  not presumed reachability from helper names. No source grammar/AST/reader/DTS,
+  native compiler logic, dependency or package entrypoint-map change is claimed.
+
+S06's source-only native keyword/member occupancy watch must be disposed before
+Arc05 S07 opening. More broadly, executable computed references in reconstructed
+member/keyword spellings affect exact binding resolution, diagnostics, protected
+root and guide/book treatment; public static occupancy does not settle those
+contracts. This is not a new native runtime defect or grammar policy decision.
+All six LI rows, qualified/module/library/book/human gates and original Arc04
+QA/LC rows remain open. No experiment or implementation opens here.
 
 2026-11-14 carry-forward: Arc05 S05 source/delivery is independently validated
 at82f1b65b92529979afd6c624183912ca31453927/tree4bb6bfc9; separate metadata
@@ -147,8 +176,8 @@ requires actual consumers and independent review, with a closing retrospective;
 human/book gates require actual dispositions.
 
 Use existing planning and assigned task homes; refresh pins before authoring.
-Current independently validated task source is clean82f1b65b, with S05 root
-closing-metadata PASS; release is independently acceptedc60dea62. Earlier
+Current independently validated task source is clean a44e16db, with S06 root
+closing-metadata review pending; release is independently accepted82f1b65b. Earlier
 c0ed/S04 and dba24d40/public-discard-held/release0829 are historical checkpoints.
 S04 root closing metadata is independently verified in its owning slice.
 Prospective source work uses the established Luna6 High implementer and separate
@@ -158,6 +187,12 @@ merge/push/release, dependency adoption or licence choice is authorized now.
 Repository Lykn-only helper rules apply; no Python exception.
 
 ## Version history
+
+- 2026-11-14 v0.6: Carry S06's exact82→a44 fifteen-path public helper/options,
+  physical-key/lifecycle/generated-output/guide audit input and actual package
+  reachability boundary to LI-04. Refresh source/release pins, preserve native
+  watch/source identity and all six open LI/human/research gates. S06 root
+  closing metadata remains separately gated; no new work opens.
 
 - 2026-11-14 v0.5: Carry S05's exact c0ed→82 native census/generator/physical-
   key/late-composition/API-output/guide input to LI-04, keeping all six rows and

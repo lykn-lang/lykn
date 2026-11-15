@@ -1,5 +1,13 @@
 # project03-language-evolution ledger
 
+Current2026-11-14: Arc05 S06 a44/tree4080 independently passes source/fresh
+runtime gates; PN-01–07 done, PN-08/BS-06 pending closing metadata. Release82
+remains independently accepted. Exact82→a44 module/API/guide audit inputs
+are carried to Arc06 LI-04; source-only native keyword occupancy watch is an
+explicit S07 readiness disposition. P-BIND/P-QADT stay open, as do original
+Arc04/06/research/book/human gates. No later execution or integration follows.
+Earlier source89/177 and releasec60 checkpoints below remain historical.
+
 Current2026-11-14: Arc05 S06 source89 fixes F1–F5 on independent static review,
 but P1–P9 proofs remain held. Ready correction02 (2/5) adds exact consumers/
 counter/error controls and truthful comment; all8PN/BS-06/P-BIND/P-QADT stay

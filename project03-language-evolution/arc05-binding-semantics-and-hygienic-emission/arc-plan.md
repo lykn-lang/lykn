@@ -2,7 +2,7 @@
 project: project03-language-evolution
 arc: arc05-binding-semantics-and-hygienic-emission
 status: active
-version: "0.20"
+version: "0.21"
 planned-release: unassigned
 depends-on: []
 related: [arc04-qualified-adts, arc06-adt-modules-and-library-integration]
@@ -11,6 +11,26 @@ related: [arc04-qualified-adts, arc06-adt-modules-and-library-integration]
 # Binding semantics and hygienic emission
 
 ## Authority and outcome
+
+Current S06 closing checkpoint2026-11-14: separate Sol independently validates
+a44e16db/tree4080ee3f: all source-proof obligations and fresh42 focused,
+1798Rust/1586corpus/482docs, actual M678/eight paths/all15 comparisons,
+cites64/601 and50162 gzip<81920. PN-01–07 done; PN-08/BS-06 await separate
+closing-metadata review of root retrospective and parent routing. Earlier
+HOLD/current/active-S05 statements below are preserved historical checkpoints.
+Task source is clean a44; release remains independently accepted82f1b65b.
+Two of five formal refinements were used; source/doer/reporting failures and
+unknown receipts remain explicit in the [retrospective](slice06-public-generated-name-hygiene/cdc-retrospective.md).
+
+S06 surfaced no need to restructure the roadmap. Its actual reconstructed
+keyword/member role changes S07 readiness: assess the source-only
+[native counterpart watch](slice06-public-generated-name-hygiene/artifacts/root/native-keyword-follow-up.md)
+against the actual native suffix and CLI consumer before opening S07; repair a
+reproduced occupancy prerequisite in a bounded increment or record a verified
+backend difference. This is not a demonstrated native runtime defect or a
+reversal of accepted S05. Exact source identity, diagnostics, protected roots
+and guide/book treatment retain S07/S08/Arc06 owners. No S07, new experiment,
+later merge/push or library work is authorized by S06 close.
 
 Current S06 source-proof2026-11-14: correction02 ata44e16db/tree4080ee3f
 has independent [source-proof PASS](slice06-public-generated-name-hygiene/cdc-verification.md#source-proof-review-03--correction02-ata44--pass)
@@ -270,8 +290,8 @@ affected delivery, necessary immediate documentation and independent review.
 | [S03 public remaining discard binding forms](slice03-public-binding-discards/slice-plan.md) — closedc60dea62 | Delivered corresponding public/browser behavior, preserved already-admitted non-atom/empty-list discard groups and raw/schema roles, and enforced the honest simple-multi boundary | Independent final9-row proof, focused66/full1578/docs482/M670/14/cites/size; original HOLDs and three refinements retained |
 | [S04 discard-aware declarations](slice04-discard-aware-declarations/slice-plan.md) — closedc0ed | Existing native Func/Bind/BindGroup/Type declarations now describe discard slots/defaults/rest, recursive data inputs and scalar/group/pattern exports; actual TS/CLI/package consumers | Independent all8DT source/gate/closing-metadata proof, root retrospective and later-owner routing |
 | [S05 native compiler-generated name hygiene](slice05-native-generated-name-hygiene/slice-plan.md) — closed82f1b65b | Protect remaining compiler temporaries from source, foreign and generated-name collisions | Independent all8NH/fresh full/M670/14/cites/size, root retrospective/routing and separate NH-08 metadata PASS |
-| S06 public compiler-generated name hygiene | Protect corresponding public producers while preserving private object identities and macro transport limits | Public discard roles; complete producer/finalizer census, actual physical atom names and candidate keys including member/computed/static-escape cases; native S05 protection alone does not prove public parity |
-| S07 native exact source-binding emission | Resolve binding occurrences and allocate safe JS names while retaining hoisting, TDZ, data/API names, foreign targets and JSON behavior | S05; settled source-name policy; actual native writer scopes; explicitly assess escaped SOURCE binding identity/protected-root classification separately from private generated-name occupancy |
+| [S06 public compiler-generated name hygiene](slice06-public-generated-name-hygiene/slice-plan.md) — source/runtime accepted a44; closing metadata pending | Protect actual public producers/late consumers while preserving private identities and legacy gensym/macro/fragment limits | Independent42/full1798/1586/482/M678/all15/cites/size; root retrospective and PN-08 closing-metadata gate remain |
+| S07 native exact source-binding emission | Resolve binding occurrences and allocate safe JS names while retaining hoisting, TDZ, data/API names, foreign targets and JSON behavior | S05; settled source-name policy; actual native writer scopes; dispose S06 native keyword occupancy watch before opening; explicitly assess escaped SOURCE binding identity/protected-root classification separately from private generated-name occupancy |
 | S08 public exact source-binding emission | Deliver equivalent behavior through normal/fragment/browser/materialized entrances | S06; same language contract; public lifecycle/consumer census |
 
 The two backends can share a reviewed contract without pretending their
@@ -325,8 +345,8 @@ early source-owner queries from the later runtime binding/name plan.
 
 ## Verification, handoff and limits
 
-The [ledger](ledger.md) carries BS-01–04 done, active S05/BS-05 open and
-BS-06–09 open. Independent acceptance must
+The [ledger](ledger.md) carries BS-01–05 done, S06 source/runtime accepted
+with BS-06 pending closing metadata, and BS-07–09 open. Independent acceptance must
 cover actual changed consumers, meaningful negative controls, repository checks
 and embedded parity. Preserve final-source citations, existing size policy,
 cache/network limits, original failures and exact commit scope. Test count
@@ -334,13 +354,13 @@ alone is not scope coverage. Arc close verifies composition, not just child
 pointers; accepted outputs feed Arc04 activation and Arc06 integration.
 
 Use the existing planning/source homes. Root owns design and planning Git/index;
-S01–03 implementation used Luna6 High with separate Sol6.1 High review under
+S01–06 implementation used Luna6 High with separate Sol6.1 High review under
 their explicit operator openings; later slices need their own opening. Preserve prior refinement
 history; new filenames do not reset exhausted allowances. An iteration refines
 one delivery; a new capability receives its own slice.
 
-S04 source/build returned clean after independent source/delivery acceptance.
-Its final close includes the root duties and compact metadata PASS above.
+S06 source/build returns clean at a44 after independent source/delivery acceptance.
+Its final close requires root duties and separate PN-08 metadata PASS.
 Subsequent source
 work needs its own authorized source-ready assignment. No separate
 probe/experiment/merge/push/publication/licence/dependency action follows from
@@ -349,6 +369,12 @@ substitute helper-language exception. Reader RDEO/RDCL, Arc01 I4 and diagnostic
 work, whole-work audits and the separate book/human gates keep their owners.
 
 ## Version history
+
+- 2026-11-14 v0.21: S06 a44 source/fresh runtime independently pass; reconcile
+  PN-01–07 and closing-metadata gate, source/release pins and retrospective.
+  S06's executable keyword/member finding adds an explicit native occupancy
+  readiness disposition before S07, without changing roadmap or claiming a
+  native runtime defect. API/research owners and all later gates remain open.
 
 - 2026-11-14 v0.16: S05 native source/delivery independently accepted at82,
   after physical-key correction and test-only proof completion. Preserve eight

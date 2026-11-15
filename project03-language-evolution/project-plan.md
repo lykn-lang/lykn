@@ -1,7 +1,7 @@
 ---
 project: project03-language-evolution
 status: research
-version: "1.73"
+version: "1.74"
 planned-release: "0.7.0"
 depends-on: ["project02-language-toolchain-alignment"]
 blocks: []
@@ -11,6 +11,18 @@ related: ["project04-c-lang", "project07-core-library-research"]
 # Language evolution
 
 ## Current approved structure —2026-11-13
+
+Current2026-11-14: Arc05 S06 a44e16db/tree4080ee3f independently passes source
+and fresh runtime gates:42 focused, full1798Rust/1586corpus/482docs,
+M678/eight paths/all15 byte comparisons, cites64/601 and50162 gzip<81920.
+PN-01–07 done; PN-08/BS-06 pending separate closing-metadata review of root
+retrospective/parent routing. Release/0.6.x remains independently accepted82.
+Earlier source89/177 HOLD and active-S03/S05 statements are historical.
+Arc05 S07 must dispose S06's source-only native keyword occupancy watch before
+opening; no native runtime finding is inferred. Exact source binding identity,
+qualified ADTs/modules/builds/API/docs/book/human and Project07 synthesis/JSON/
+YAML gates remain open. P-BIND/P-QADT stay open; no S07, further integration,
+library trial or external action follows this authorized S06 endpoint.
 
 Current2026-11-14: Arc05 S06 code89 fixes the five implementation findings on
 independent source inspection; required proof remains held. Independently ready
@@ -124,7 +136,7 @@ historical S03 assignment22 remains unexecuted.
 
 | Arc | Coherent outcome | Current planning state |
 | --- | --- | --- |
-| [Arc05 binding semantics and hygienic emission](arc05-binding-semantics-and-hygienic-emission/arc-plan.md) | Complete discard semantics/declarations and preserve source/compiler binding identities through emitted JS | S01/S02 independently closed, latest9e6fb127; S03 active after readiness PASS, BS-03–09 open; later candidates remain roadmap only |
+| [Arc05 binding semantics and hygienic emission](arc05-binding-semantics-and-hygienic-emission/arc-plan.md) | Complete discard semantics/declarations and preserve source/compiler binding identities through emitted JS | BS-01–05 done; S06 a44 source/runtime independently passed, BS-06 closing-metadata pending; BS-07–09 remain open with explicit native-watch readiness |
 | [Arc04 qualified ADTs](arc04-qualified-adts/arc-plan.md) | Closed owner/case semantics, coherent local qualified values/matching/guards, declarations and trusted initialization | Existing identity retained; S01/S02 and bounded prerequisites accepted; remaining local candidates S08–S13 are roadmap only |
 | [Arc06 ADT modules and library integration](arc06-adt-modules-and-library-integration/arc-plan.md) | Imported ABI, selective emission, actual build/JSON composition and API/docs/book/human handoff | Planning stub receives former Arc04 S04–S07 responsibilities, preserving the existing experiment checkpoint |
 
@@ -1137,6 +1149,11 @@ with their source and status distinctions. A future
 implementation definition of done is not established by this migration.
 
 ## Version history
+
+- 2026-11-14 v1.74: Arc05 S06 a44 independently passes source/fresh runtime;
+  reconcile current source/release and row checkpoint, root retrospective,
+  exact-range Arc06 API input and Project07 prerequisite routing. Preserve
+  native-watch readiness, closing-metadata and all later feature/human gates.
 
 - 2026-11-14 v1.73: Retain source89 F1–F5 repairs and proof HOLD; issue exact
   correction02 after readiness, preserve execution/deviation history and gate

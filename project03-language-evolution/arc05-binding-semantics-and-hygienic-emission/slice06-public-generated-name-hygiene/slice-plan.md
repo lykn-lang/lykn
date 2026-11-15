@@ -3,11 +3,22 @@ project: project03-language-evolution
 arc: arc05-binding-semantics-and-hygienic-emission
 slice: slice06-public-generated-name-hygiene
 status: active
-version: "1.2"
+version: "1.3"
 depends-on: [slice03-public-binding-discards, slice05-native-generated-name-hygiene]
 ---
 
 # Public compiler-generated name hygiene
+
+Current closing checkpoint2026-11-14: separate Sol freshly validates frozen
+a44e16db96ca4ae76de124b555c34ffe2c2779ba/tree4080ee3f7be200610814b39b4118d2b5f3062ca8:
+focused42/eight paths, full1798Rust/42 records,1586corpus/67steps,482docs,
+actual M678/eight paths/all15 byte comparisons, cites64/601 and fresh50162
+gzip<81920. See [independent verdict](cdc-verification.md). PN-01–07 have
+runtime/source proof; PN-08 and BS-06 await separate closing-metadata review
+of the [root retrospective](cdc-retrospective.md), ledger and parent routing.
+Two formal refinements were used. Earlier current/HOLD/pending statements below
+are dated history, superseded by this checkpoint. Release stays independently
+accepted82; source is clean a44. No S07 or further integration follows.
 
 Current2026-11-14: CC final frozena44 full/citations/size pass is preserved in
 the appended closing report:1798Rust/42 harness records,1586corpus/67steps,
@@ -314,6 +325,10 @@ exception. The named JS/Rust PRODUCT compiler/test deliverables, delivery mirror
 runtime clients are allowed; this is not permission for JS evidence tools.
 
 ## Version history
+
+- 2026-11-14 v1.3: Final a44 independent source and fresh runtime gates pass;
+  reconcile eight-row status and root retrospective/API/research routing for
+  separate closing-metadata review. Preserve two refinements and later gates.
 
 - 2026-11-14 v1.2: retain F1–F5 source fixes at89, source02 proof HOLD and
   P1–P9/array-leaf completion, correct one helper comment, verify stopped jobs
