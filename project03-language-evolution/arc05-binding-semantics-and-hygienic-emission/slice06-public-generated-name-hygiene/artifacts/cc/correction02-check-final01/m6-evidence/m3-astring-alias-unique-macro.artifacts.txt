@@ -1,0 +1,4 @@
+js_path="/private/tmp/arc05-s06-correction02-cc/tmp/.tmpwH6H4i/m3.js"
+js_exists=true
+dts_path="/private/tmp/arc05-s06-correction02-cc/tmp/.tmpwH6H4i/m3.d.ts"
+dts_exists=false

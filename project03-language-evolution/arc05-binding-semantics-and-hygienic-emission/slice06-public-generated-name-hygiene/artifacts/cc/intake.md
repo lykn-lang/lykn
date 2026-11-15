@@ -115,3 +115,77 @@ No scope/design contradiction was found. Exact three-file limit and sequential s
 ### Intake recovery and denominator correction
 
 A review of the correction append found two coverage descriptions that needed more precision. The complete applicable test was freshly read at `test/forms/public-generated-names.test.js:141–EOF` after the initial intake append; the opening `1–140` was already visibly read in that append. The later range inspection occurred after first product-test edits, so it is recorded as a current-source recovery rather than claimed as a pre-edit read. The normalizer/API source extent `packages/lang/identifier.js:1–131` was separately read visibly before edits (and the baseline remainder through line289 in the same source pass). The installed JavaScript/Deno skill's own `guides/09-anti-patterns.md:1–220` was read; this is distinct from the similarly named Lykn project guide `docs/guides/09-anti-patterns.md`, which was also read. Current anti-pattern relevance is ES modules/no Node, strict equality/type handling, guarded iteration and avoiding unsupported complexity/performance assertions; no additional product surface follows from it. The prior correction append's final reference to “all five PNs” was a typo: all **eight** PN rows remain open pending independent disposition. The full public test's initial functions and exact eight-group structure were read before changing that test; later actual groups were recovered as stated, not inferred from filenames.
+
+## Correction02 intake — proof repair source recovered before edits
+
+Correction02 starts from source `codex/qualified-adt-core` commit
+`89ab9dcd90f0c8498685dba0f267a986d07ee462`, tree
+`6305ea2ee0b2b29b0a754b4641b46ea54ae247f7`, which I rechecked clean. No
+correction02 product edit had been made at this intake point. I read the full
+184-line `cc-prompt-iteration02.md`, plan v1.2, ledger, source `AGENTS.md`,
+complete CDC Source02 review P1–P9/array-leaf/applicability and readiness PASS,
+and the 30-line root correction02 preflight. Formal refinement count is 2/5;
+all eight PN rows remain open.
+
+The current 785-line `public-generated-names.test.js` was read in bounded
+overlapping ranges 1–170, 171–340, 341–510, 360–470, 471–590, 585–625,
+611–800. The first command accidentally addressed this source file from the
+planning worktree and returned “No such file”; no source-read claim is based on
+that attempt. The later ranges cover the complete current file and show the
+existing eight top-level Deno groups, direct-builder assertion with missing
+counter resets, unchecked-class substring helper, and browser calls without
+immediate per-call resets. Required new cases will be placed inside these
+groups, not in a separately-run fixture.
+
+The four supplied CDC fixtures were read completely: `leading-hyphen-review`
+Source/generated/stdout/stderr shows the actual TDZ failure for the accepted
+`___gensym0` alias; `keyword-thread-review02` Source/generated/stdout/stderr
+shows the actual non-callable computed member failure (its array entry is a
+function); `keyword-thread-control` Source/generated/stdout/stderr confirms
+preserving source spelling `t__gensym0` yields 7; `keyword-enclosing-result-review`
+Source/generated/stdout/stderr shows result-local TDZ for the authored
+`result__gensym0` selector. New same-source test cases will retain their
+original opposing behavior and use the supplied Source roles.
+
+Current identifier API/source was read at `packages/lang/identifier.js:1–317`.
+The helper comment at ~190 currently misstates `physicalIdentifierKeys` as
+accepting emitted text; the adjacent `emittedIdentifierKeys` API is the actual
+decode-only emitted-text path. The only identifier production change here is
+that comment plus exact mirror; algorithm/signatures/exports remain fixed.
+Actual allocator and producer source was read: classifier `60–210` dispatch
+and `allocatorFor`, `480–640` emit helpers and SomeThread call shape,
+`820–1045` direct single/multi builders and argument candidate allocation,
+`1280–1370` Genfunc allocation, `1380–1555` value/statement Match and complete
+`reserveNodeNames`, and `1670–1725` recursive yield instrumentation. The
+expander Match adapters at `expander-core.js:1280–1395` pass the shared
+`env.generatedNames` into statement/direct/result Match; the existing macro
+environment captures the legacy `gensym` callback in `expander-core.js:220–260`
+and public macro allocation is visible around `486–510`. Rust embedding is
+`crates/lykn-lang/src/expander/embedded.rs:1–25`, with the included package
+directory declared at line13.
+
+Installed JavaScript/Deno anti-patterns were read from the installed skill root
+at `guides/09-anti-patterns.md:1–240`; project Lykn guide is separate. Source
+`skills/lykn/SKILL.md` was read through its language and workflow guidance.
+Relevant retained-product extents were read, not inferred from titles:
+`discard-bindings.test.js:90–180` preserves scalar/object/array/nested/simple
+rest/default/contract/Multi and actual error cases; `host-reference-lowering`
+tests at `40–120` preserve shared identity, exported actual namespace and exact
+exception classes; `icu-generated-names.test.js:65–210` preserves real source
+identifier capture, selector/hoist sharing, once-only effects, exception,
+branch laziness, fragment/recovery, browser and host-invocation anchors;
+`lazy-protected-invocation.test.js:50–145` preserves no-request equality,
+actual helper collision, rejected plans, cleanup and exact invocation ordering.
+These tests supplement, rather than replace, the new same-source P1–P9 and
+array-leaf assertions.
+
+Correction02 changes exactly three product paths (the existing eight-group
+test plus the two JSDoc mirrors), and keeps the original 15-path M6 delivery,
+eight groups, and 78-case/eight-path/15-comparison M6 contract. The comment-only
+mirror is synchronized before `make fresh-artifacts`; owned temp/XDG/npm and
+evidence directories must exist before focused checks. Focused proof is 42
+cases/eight paths. After focused green and exact three-path commit, source and
+build return to root and CC stops for independent source-proof disposition;
+no full-gate retry is in this phase. Earlier failures, stale-stage work,
+ad-hoc eval, TMPDIR failure, and interrupted/unknown attempts remain separate
+historical evidence and will not be reconstructed or relabeled.

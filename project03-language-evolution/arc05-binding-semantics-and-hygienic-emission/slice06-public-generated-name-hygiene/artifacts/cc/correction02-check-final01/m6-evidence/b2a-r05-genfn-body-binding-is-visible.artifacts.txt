@@ -1,0 +1,4 @@
+js_path="/private/tmp/arc05-s06-correction02-cc/tmp/.tmpk73AX8/genfn-body.mjs"
+js_exists=false
+dts_path="/private/tmp/arc05-s06-correction02-cc/tmp/.tmpk73AX8/genfn-body.d.ts"
+dts_exists=false

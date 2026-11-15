@@ -1,0 +1,6 @@
+DENO_DIR=/Users/oubiwann/Library/Caches/deno
+TMPDIR=/private/tmp/arc05-s06-correction02-cc/tmp
+XDG_CACHE_HOME=/private/tmp/arc05-s06-correction02-cc/xdg
+NPM_CONFIG_CACHE=/private/tmp/arc05-s06-correction02-cc/npm
+LYKN_MACRO_DEPENDENCIES_EVIDENCE_DIR=/Users/oubiwann/lab/lykn/lang/.worktrees/planning/project03-language-evolution/arc05-binding-semantics-and-hygienic-emission/slice06-public-generated-name-hygiene/artifacts/cc/correction02-check-final01/m6-evidence
+make check

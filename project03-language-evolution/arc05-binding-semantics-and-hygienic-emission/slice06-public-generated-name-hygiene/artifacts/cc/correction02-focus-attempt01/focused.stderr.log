@@ -1,0 +1,8 @@
+Download https://jsr.io/@std/assert/meta.json
+Download https://registry.npmjs.org/astring
+Download https://registry.npmjs.org/acorn/-/acorn-8.17.0.tgz
+Download https://registry.npmjs.org/astring/-/astring-1.9.0.tgz
+Download https://registry.npmjs.org/esbuild/-/esbuild-0.27.4.tgz
+Download https://registry.npmjs.org/@esbuild/darwin-arm64/-/darwin-arm64-0.27.4.tgz
+error: JSR package manifest for '@std/assert' failed to load. Import 'https://jsr.io/@std/assert/meta.json' failed.
+    at file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/discard-bindings.test.js:6:8

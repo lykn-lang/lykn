@@ -1,0 +1,80 @@
+running 8 tests from ./test/forms/public-generated-names.test.js
+physical identifier keys and allocator handle normalization and Unicode boundaries ... ok (6ms)
+whole-source typed and recursive result storage preserves actual values ... ok (187ms)
+threading, discard, conditional and both Match producers avoid capture ... FAILED (131ms)
+overloads contracts and typed yields retain arguments values and timing ... ok (209ms)
+fragment and standalone ordinary-name builders own their inputs ... ok (117ms)
+macro results reserve at barriers and nested public entries recover ... ok (50ms)
+late completion ICU and lazy invocation preserve private identities ... ok (205ms)
+public browser and post-expansion transport keep output and namespace boundaries ... ok (109ms)
+running 6 tests from ./test/forms/icu-generated-names.test.js
+public ICU hoists reserve compiled source identifiers ... ok (98ms)
+public ICU selectors and hoists share one generated-name set ... ok (50ms)
+public ICU keeps once-only effects and original exceptions ... ok (37ms)
+public ICU preserves lazy and eager branch evaluation ... ok (16ms)
+public ICU fragments and repeated calls keep independent state ... ok (49ms)
+browser ICU ESM and private Reflect calls preserve capture anchors ... ok (51ms)
+running 4 tests from ./test/forms/lazy-protected-invocation.test.js
+lazy protected invocation preserves the no-request compiler path ... ok (6ms)
+lazy protected invocation validates plans and recovers after rejection ... ok (1ms)
+lazy protected invocation checks source module binding roles ... ok (3ms)
+lazy protected invocation materializes all four public proof inputs ... ok (11ms)
+running 8 tests from ./test/forms/remaining-discard-bindings.test.js
+S03 public declarations and loop binders discard without losing effects ... ok (90ms)
+S03 public callable and class parameter slots preserve arity and laziness ... ok (166ms)
+S03 public catch keeps the writer's expression-binding grammar ... ok (35ms)
+S03 spread parameters project source names and preserve fallback lookup ... ok (36ms)
+S03 public zero-name grouped patterns keep static alias keys ... ok (35ms)
+S03 multi-clause signature guard is early and one-clause builders delegate ... ok (38ms)
+S03 raw compiler IR stays literal while source expansion prepares discards ... ok (147ms)
+S03 browser compilation and staged source facade share public behavior ... ok (185ms)
+running 1 test from ./test/forms/dd-37-classifier-pilot.test.js
+DD-37 pilot: new classifier path produces same kernel as old macro path for (not x) ... ok (4ms)
+running 7 tests from ./test/forms/host-reference-lowering.test.js
+owned host references are lowered hygienically in complete units ... ok (8ms)
+no-request output and source-shaped names do not select private references ... ok (452µs)
+normalized source identifiers reserve generated reference aliases ... ok (1ms)
+unfinished private host references fail on the fragment compiler path ... ok (498µs)
+one owned value reference can head multiple calls and shares one alias ... ok (5ms)
+expandExpr materializes owned references as complete multi-form output ... ok (2ms)
+public emitted ESM uses real guard and no-match intrinsics under module shadowing ... ok (7ms)
+running 1 test from ./test/forms/browser-host-reference-compile.test.js
+browser compiler emits ESM with owned host references that an ESM consumer can run ... ok (18ms)
+running 7 tests from ./test/forms/discard-bindings.test.js
+public callable and Bind discards keep private identity ... ok (56ms)
+public discard guards, defaults, rests, and schema fields ... ok (152ms)
+public typed Bind checks stay visible and preserve effects ... ok (70ms)
+public source inline exports expose only source bindings ... ok (86ms)
+public binding patterns preserve spread, keys, assignment, and legacy catch ... ok (101ms)
+public finalized JSON and fragments retain independent private state ... ok (34ms)
+public browser delivery executes discard and nested rest behavior ... ok (35ms)
+
+ ERRORS 
+
+threading, discard, conditional and both Match producers avoid capture => ./test/forms/public-generated-names.test.js:356:6
+error: AssertionError: Values are not equal: error: Uncaught (in promise) TypeError: {(intermediate value)}.child[result__gensym0](...) is not a function
+  }).child[result__gensym0]()();
+                             ^
+    at pick (file:///private/tmp/arc05-s06-correction02-cc/tmp/lykn-public-generated-names-cd5f22372a7464c9/output.mjs:7:30)
+    at file:///private/tmp/arc05-s06-correction02-cc/tmp/lykn-public-generated-names-cd5f22372a7464c9/output.mjs:13:13
+
+
+
+    [Diff] Actual / Expected
+
+
+-   1
++   0
+
+  throw new AssertionError(message);
+        ^
+    at assertEquals (https://jsr.io/@std/assert/1.0.19/equals.ts:67:9)
+    at executeModule (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/public-generated-names.test.js:68:5)
+    at async file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/public-generated-names.test.js:391:5
+
+ FAILURES 
+
+threading, discard, conditional and both Match producers avoid capture => ./test/forms/public-generated-names.test.js:356:6
+
+FAILED | 41 passed | 1 failed (2s)
+

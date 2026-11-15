@@ -1,0 +1,4 @@
+js_path="/private/tmp/arc05-s06-correction02-cc/tmp/.tmprqm5oJ/scope.mjs"
+js_exists=true
+dts_path="/private/tmp/arc05-s06-correction02-cc/tmp/.tmprqm5oJ/scope.d.ts"
+dts_exists=false

@@ -1,0 +1,1 @@
+(set-symbol! globalThis :macro 100) (bind bind (fn (:any left :any right) left)) (bind macro 1) (macro answer () `41) (console:log (answer))

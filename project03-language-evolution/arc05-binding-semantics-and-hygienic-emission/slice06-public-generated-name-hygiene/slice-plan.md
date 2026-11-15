@@ -9,6 +9,14 @@ depends-on: [slice03-public-binding-discards, slice05-native-generated-name-hygi
 
 # Public compiler-generated name hygiene
 
+Current2026-11-14: CC final frozena44 full/citations/size pass is preserved in
+the appended closing report:1798Rust/42 harness records,1586corpus/67steps,
+482docs, actual M678/eight paths/all15 comparisons and50162 gzip<81920.
+Separate Sol now owns fresh validation only. All8PN/BS-06 remain open until
+its disposition and root closing duties. CC metadata corrections preserve the
+wrong514/two-entrypoint/77-of78 chronology claims and correct them against
+actual source/logs. Source/release boundaries remain unchanged.
+
 Current2026-11-14: correction02 sourcea44e16db/tree4080ee3f has independent
 [SOURCE-PROOF PASS](cdc-verification.md#source-proof-review-03--correction02-ata44--pass).
 All P1–P9/array-leaf assertions and five retained algorithm repairs are now
