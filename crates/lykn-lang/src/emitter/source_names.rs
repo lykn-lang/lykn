@@ -108,8 +108,8 @@ pub(super) fn reserve_form_names(form: &SurfaceForm, names: &mut EmitterGensym) 
             expr(initial, names);
             for step in steps {
                 match step {
-                    ThreadingStep::Bare(e) => expr(e, names),
-                    ThreadingStep::Call(es) => exprs(es, names),
+                    ThreadingStep::Bare(e) => bare_step(e, names),
+                    ThreadingStep::Call(es) => thread_call(es, names),
                 }
             }
         }
@@ -327,7 +327,23 @@ fn expr(e: &SExpr, names: &mut EmitterGensym) {
                 text(value, names);
             }
         }
-        SExpr::List { values, .. } => exprs(values, names),
+        SExpr::List { values, .. } => {
+            if values
+                .first()
+                .and_then(SExpr::as_atom)
+                .is_some_and(is_threading_head)
+            {
+                expr(&values[0], names);
+                if let Some(initial) = values.get(1) {
+                    expr(initial, names);
+                }
+                for step in values.iter().skip(2) {
+                    raw_step(step, names);
+                }
+            } else {
+                exprs(values, names);
+            }
+        }
         SExpr::Cons { car, cdr, .. } => {
             expr(car, names);
             expr(cdr, names);
@@ -339,6 +355,220 @@ fn expr(e: &SExpr, names: &mut EmitterGensym) {
         | SExpr::Null { .. } => {}
     }
 }
+
+fn is_threading_head(value: &str) -> bool {
+    matches!(value, "->" | "->>" | "some->" | "some->>")
+}
+
+fn bare_step(step: &SExpr, names: &mut EmitterGensym) {
+    if let SExpr::Keyword { value, .. } = step {
+        text(value, names);
+    } else {
+        expr(step, names);
+    }
+}
+
+fn raw_step(step: &SExpr, names: &mut EmitterGensym) {
+    if let SExpr::List { values, .. } = step {
+        thread_call(values, names);
+    } else {
+        bare_step(step, names);
+    }
+}
+
+fn thread_call(values: &[SExpr], names: &mut EmitterGensym) {
+    let Some(head) = values.first() else {
+        return;
+    };
+    if let SExpr::Keyword { value, .. } = head {
+        text(value, names);
+    } else {
+        expr(head, names);
+    }
+    exprs(&values[1..], names);
+}
+
 fn text(value: &str, names: &mut EmitterGensym) {
     names.reserve(value);
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::analysis::type_registry::TypeRegistry;
+    use crate::ast::surface::SurfaceForm;
+    use crate::emitter::context::EmitterContext;
+    use crate::emitter::forms::emit_form;
+    use crate::reader::source_loc::Span;
+
+    fn atom(value: &str) -> SExpr {
+        SExpr::atom(value, Span::default())
+    }
+
+    fn keyword(value: &str) -> SExpr {
+        SExpr::Keyword {
+            value: value.to_string(),
+            span: Span::default(),
+        }
+    }
+
+    fn string(value: &str) -> SExpr {
+        SExpr::String {
+            value: value.to_string(),
+            span: Span::default(),
+        }
+    }
+
+    fn number(value: f64) -> SExpr {
+        SExpr::Number {
+            value,
+            span: Span::default(),
+        }
+    }
+
+    fn list(values: Vec<SExpr>) -> SExpr {
+        SExpr::List {
+            values,
+            span: Span::default(),
+        }
+    }
+
+    fn thread_form(head: &str, step: ThreadingStep) -> SurfaceForm {
+        let span = Span::default();
+        let initial = number(7.0);
+        let steps = vec![step];
+        match head {
+            "->" => SurfaceForm::ThreadFirst {
+                initial,
+                steps,
+                span,
+            },
+            "->>" => SurfaceForm::ThreadLast {
+                initial,
+                steps,
+                span,
+            },
+            "some->" => SurfaceForm::SomeThreadFirst {
+                initial,
+                steps,
+                span,
+            },
+            "some->>" => SurfaceForm::SomeThreadLast {
+                initial,
+                steps,
+                span,
+            },
+            _ => unreachable!("test uses a native threading head"),
+        }
+    }
+
+    fn next_t(form: &SurfaceForm) -> String {
+        let mut names = EmitterGensym::new();
+        reserve_form_names(form, &mut names);
+        names.next("t")
+    }
+
+    #[test]
+    fn all_surface_thread_forms_reserve_bare_and_call_keyword_heads() {
+        for head in ["->", "->>", "some->", "some->>"] {
+            let bare = thread_form(head, ThreadingStep::Bare(keyword("t__gensym0")));
+            assert_eq!(next_t(&bare), "t__gensym1", "bare keyword in {head}");
+
+            let call = thread_form(
+                head,
+                ThreadingStep::Call(vec![keyword("t__gensym0"), number(9.0)]),
+            );
+            assert_eq!(next_t(&call), "t__gensym1", "call head in {head}");
+        }
+    }
+
+    #[test]
+    fn raw_thread_steps_are_scanned_inside_ordinary_containers() {
+        for head in ["->", "->>", "some->", "some->>"] {
+            let raw = list(vec![atom(head), number(7.0), keyword("t__gensym0")]);
+            let container = list(vec![atom("vector"), raw]);
+            let form = SurfaceForm::Bind {
+                name: atom("value"),
+                type_ann: None,
+                value: container,
+                span: Span::default(),
+            };
+            assert_eq!(next_t(&form), "t__gensym1", "raw nested {head}");
+        }
+    }
+
+    #[test]
+    fn tagged_bare_list_recurses_as_expression_without_inventing_call_role() {
+        let nested_thread = list(vec![atom("some->"), number(7.0), keyword("t__gensym0")]);
+        let nested = thread_form("->", ThreadingStep::Bare(nested_thread));
+        assert_eq!(next_t(&nested), "t__gensym1");
+
+        let keyword_data = list(vec![keyword("t__gensym0"), number(1.0)]);
+        let data = thread_form("->", ThreadingStep::Bare(keyword_data));
+        assert_eq!(next_t(&data), "t__gensym0");
+    }
+
+    #[test]
+    fn keyword_data_initials_arguments_and_strings_remain_unreserved() {
+        let ordinary_data = SurfaceForm::Bind {
+            name: atom("value"),
+            type_ann: None,
+            value: list(vec![keyword("t__gensym0"), string("t__gensym0")]),
+            span: Span::default(),
+        };
+        assert_eq!(next_t(&ordinary_data), "t__gensym0");
+
+        let initial_keyword = SurfaceForm::ThreadFirst {
+            initial: keyword("t__gensym0"),
+            steps: vec![],
+            span: Span::default(),
+        };
+        assert_eq!(next_t(&initial_keyword), "t__gensym0");
+
+        let call_argument = thread_form(
+            "some->",
+            ThreadingStep::Call(vec![keyword("child"), keyword("t__gensym0")]),
+        );
+        assert_eq!(next_t(&call_argument), "t__gensym0");
+    }
+
+    #[test]
+    fn escaped_keyword_member_uses_existing_physical_name_reservation() {
+        let form = thread_form(
+            "some->",
+            ThreadingStep::Bare(keyword(r"child[t\u005f\u005fgensym0]")),
+        );
+        assert_eq!(next_t(&form), "t__gensym1");
+    }
+
+    #[test]
+    fn public_fragment_emission_reserves_the_supplied_surface_thread_before_lowering() {
+        let form = thread_form("some->", ThreadingStep::Bare(keyword("child[t__gensym0]")));
+        let mut context = EmitterContext::new(false);
+        let emitted = emit_form(&form, &mut context, &TypeRegistry::default()).unwrap();
+        let emitted = emitted
+            .iter()
+            .map(ToString::to_string)
+            .collect::<Vec<_>>()
+            .join("\n");
+        assert!(emitted.contains("const t__gensym1"), "{emitted}");
+        assert!(emitted.contains("child[t__gensym0]"), "{emitted}");
+        assert!(!emitted.contains("const t__gensym0"), "{emitted}");
+        assert_eq!(context.gensym.next("t"), "t__gensym2");
+    }
+
+    #[test]
+    fn ordinary_cons_recursion_still_reserves_atom_occurrences() {
+        let form = SurfaceForm::Bind {
+            name: atom("value"),
+            type_ann: None,
+            value: SExpr::Cons {
+                car: Box::new(atom("left")),
+                cdr: Box::new(atom("t__gensym0")),
+                span: Span::default(),
+            },
+            span: Span::default(),
+        };
+        assert_eq!(next_t(&form), "t__gensym1");
+    }
 }

@@ -63,6 +63,17 @@ analyzed unit before choosing those locals, including typed and destructured
 parameter names. Generated locals therefore stay out of source bindings and
 public parameter labels.
 
+Native threading also treats a keyword used as an executable step head as a
+computed member name. The name census reserves that keyword before allocating
+threading temporaries, whether the step uses bare form (`:child[index]`) or
+call form (`(:child[index])`). For raw threading lists, this applies only to
+the recognized `->`, `->>`, `some->`, and `some->>` forms. Tagged bare steps
+remain ordinary expressions when they contain a list; a genuine raw thread
+nested inside that expression is still visited. Keywords and strings used as
+ordinary data, as an initial value, or as a call argument do not reserve a
+member name. This occupancy check preserves the existing emitted member
+spelling; it does not resolve source bindings or provide general macro hygiene.
+
 The Rust `emitter::emit` API owns a complete analyzed unit and protects names
 from every form in it. `emitter::forms::emit_form` protects the one supplied
 form; it cannot account for later sibling forms. Callers lowering related
