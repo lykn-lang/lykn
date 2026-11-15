@@ -186,7 +186,7 @@ function sourceAtomText(text) {
   ).join(".");
 }
 
-/** Map source or already-emitted identifier text to conservative JS name keys. */
+/** Map Source identifier text to conservative JS name keys; use emittedIdentifierKeys for emitted text. */
 export function physicalIdentifierKeys(text) {
   const keys = new Set(emittedIdentifierKeys(sourceAtomText(text)));
   for (const legacy of [

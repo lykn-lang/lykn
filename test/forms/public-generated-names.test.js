@@ -1,6 +1,7 @@
 import {
   assertEquals,
   assertNotEquals,
+  assertRejects,
   assertStringIncludes,
   assertThrows,
 } from "jsr:@std/assert";
@@ -94,7 +95,10 @@ async function executeFailure(source, expectedClass, expectedMessage) {
     }).output();
     const stderr = new TextDecoder().decode(result.stderr);
     assertNotEquals(result.code, 0, stderr);
-    assertStringIncludes(stderr, `${expectedClass}:`);
+    const actualClass = stderr.match(
+      /Uncaught (?:\(in promise\) )?([A-Za-z_$][\w$]*):/,
+    )?.[1];
+    assertEquals(actualClass, expectedClass, stderr);
     assertStringIncludes(stderr, expectedMessage);
     assertEquals(stderr.includes("SyntaxError"), false, stderr);
   } finally {
@@ -294,6 +298,12 @@ Deno.test("whole-source typed and recursive result storage preserves actual valu
     "99\n",
   );
   await executeModule(
+    compileFresh(`(func leaf :args ((array :number result__gensym0)) :returns :number
+      :body (+ result__gensym0 1))
+    (console:log (leaf (array 99)))`),
+    "100\n",
+  );
+  await executeModule(
     compileFresh(`(bind result__gensym0 99)
     (func checked :args (:number value) :returns :number :body (+ value result__gensym0))
     (console:log (checked 1))`),
@@ -345,6 +355,48 @@ Deno.test("whole-source typed and recursive result storage preserves actual valu
 
 Deno.test("threading, discard, conditional and both Match producers avoid capture", async () => {
   await executeModule(
+    compileFresh(`(set-symbol! globalThis "___gensym0" (obj :child (obj :drop 99 :keep 7)))
+    (console:log (JSON:stringify (dissoc ---gensym0.child :drop)))`),
+    '{"keep":7}\n',
+  );
+  await executeModule(
+    compileFresh(`(set-symbol! globalThis "t__gensym0" 0)
+    (console:log (some-> (obj :child (array (fn () 7))) :child[t__gensym0]))`),
+    "7\n",
+  );
+  await executeModule(
+    compileFresh(`(set-symbol! globalThis "t__gensym0" 0)
+    (bind observed-index t__gensym0)
+    (console:log (some-> (obj :child (array (fn () 7))) :child[t__gensym0]))`),
+    "7\n",
+  );
+  await executeModule(
+    compileFresh(`(set-symbol! globalThis "result__gensym0" 0)
+    (func pick :args () :returns :number :body
+      (some-> (obj :child (array (fn () 7))) :child[result__gensym0]))
+    (console:log (pick))`),
+    "7\n",
+  );
+  await executeModule(
+    compileFresh(`(set-symbol! globalThis "t__gensym0" 0)
+    (console:log (some-> (obj :child (array (fn () 7))) (:child[t__gensym0])))`),
+    "7\n",
+  );
+  await executeModule(
+    compileFresh(`(set-symbol! globalThis "rest__gensym1" (obj :child (obj :keep 7 :drop 99)))
+    (console:log (JSON:stringify (dissoc rest__gensym1.child :drop)))`),
+    '{"keep":7}\n',
+  );
+  for (const head of ["->", "->>"]) {
+    await executeModule(
+      compileFresh(`(set-symbol! globalThis "result__gensym0" 0)
+      (func pick :args () :returns :number :body
+        (${head} (obj :child (array (fn () 7))) :child[result__gensym0]))
+      (console:log (pick))`),
+      "7\n",
+    );
+  }
+  await executeModule(
     compileFresh(`(bind t__gensym0 99)
     (console:log (some-> 7 (+ t__gensym0)))`),
     "106\n",
@@ -385,14 +437,23 @@ Deno.test("threading, discard, conditional and both Match producers avoid captur
     compileFresh(`
     (set-symbol! globalThis "statementResult" 0)
     (bind target__gensym0 99)
-    (bind matched__gensym1 88)
+    (bind matched__gensym2 88)
     (func run :args () :body
-      (match 1 (1 (set-symbol! globalThis "statementResult" (+ target__gensym0 matched__gensym1))))
+      (match 1 (1 (set-symbol! globalThis "statementResult" (+ target__gensym0 matched__gensym2))))
       7)
     (run)
     (console:log (get globalThis "statementResult"))
   `),
     "187\n",
+  );
+  await executeModule(
+    compileFresh(`(bind matched__gensym1 88)
+    (bind trace (array))
+    (match 1
+      (value :when (do (trace:push "guard") true)
+        (trace:push matched__gensym1)))
+    (console:log (JSON:stringify trace))`),
+    '["guard",88]\n',
   );
   await executeModule(
     compileFresh(`(bind record (obj :keep 7 :drop 99))
@@ -473,6 +534,12 @@ Deno.test("overloads contracts and typed yields retain arguments values and timi
     "TypeError",
     "expected number, got string",
   );
+  const typeFailure = compileFresh('(throw (new TypeError "expected type"))');
+  await executeFailure(typeFailure, "TypeError", "expected type");
+  await assertRejects(
+    () => executeFailure(typeFailure, "Error", "expected type"),
+    Error,
+  );
   const asyncFixture = await Deno.readTextFile(
     `${Deno.cwd()}/test/fixtures/async-expression-values/E3-promise-value.lykn`,
   );
@@ -510,11 +577,33 @@ Deno.test("fragment and standalone ordinary-name builders own their inputs", asy
     sym: (value) => ({ type: "atom", value }),
     array: (...values) => ({ type: "list", values }),
   };
+  let injectedCalls = 0;
+  const injectedNode = classifySurfaceForm(
+    "some->",
+    read("(some-> 7 (+ t__custom0))")[0].values.slice(1),
+  );
+  const injectedExpression = emitSurfaceForm(injectedNode, {
+    ...helpers,
+    gensym: (prefix) => {
+      const name = `${prefix}__custom${injectedCalls}`;
+      injectedCalls++;
+      return helpers.sym(name);
+    },
+  });
+  const injectedCall = read("(console:log nil)")[0];
+  injectedCall.values[1] = injectedExpression;
+  await executeModule(
+    `const t__custom0 = 99;\n${compile([injectedCall])}`,
+    "106\n",
+  );
+  assertEquals(injectedCalls, 2);
+
   assertEquals(
     emitSurfaceForm({ type: "Not", operand: read("ready")[0] }, helpers)
       .values[0].value,
     "!",
   );
+  resetGensym();
   const single = buildSingleClauseFunc(
     "directSingle",
     read("directSingle")[0],
@@ -522,24 +611,29 @@ Deno.test("fragment and standalone ordinary-name builders own their inputs", asy
       ":args (:number result__gensym0) :returns :number :body (+ result__gensym0 1)",
     ),
   );
+  resetGensym();
   const multi = buildMultiClauseFunc("one", read("one")[0], [
     read(
       "(:args (:number result__gensym0) :returns :number :body (+ result__gensym0 1))",
     )[0],
   ]);
+  resetGensym();
   const match = emitMatchMacro(read("7 (name (+ name target__gensym0))"));
   const matchCall = {
     type: "list",
     values: [read("console:log")[0], match],
   };
+  resetGensym();
   const yielded = instrumentYields(read("(yield 7)")[0], {
     type: "keyword",
     value: "number",
   }, "direct");
   assertEquals(yielded.values[0].value, "yield");
+  resetGensym();
   const directGenfunc = emitGenfuncMacro(
     read("directGen :args () :yields :number :body (yield yv__gensym0)"),
   );
+  resetGensym();
   const directInstrumented = instrumentYields(read("(yield yv__gensym0)")[0], {
     type: "keyword",
     value: "number",
@@ -554,8 +648,9 @@ Deno.test("fragment and standalone ordinary-name builders own their inputs", asy
     ],
   };
   const statementArgs = read(
-    "1 (1 (console:log target__gensym0 matched__gensym1))",
+    "1 (1 (console:log target__gensym0 matched__gensym2))",
   );
+  resetGensym();
   const statementMatch = emitMatchStatementMacro(statementArgs, {
     expandValue: (form) => form,
     expandBody: (forms) => forms,
@@ -564,7 +659,7 @@ Deno.test("fragment and standalone ordinary-name builders own their inputs", asy
     typeContext: {},
   });
   await executeModule(
-    `const yv__gensym0 = 99; const target__gensym0 = 99; const matched__gensym1 = 88;\n${
+    `const yv__gensym0 = 99; const target__gensym0 = 99; const matched__gensym2 = 88;\n${
       compile([single, multi, directGenfunc, directGen, statementMatch])
     }\nconsole.log(directSingle(99), one(99));\n${
       compile([matchCall])
@@ -594,6 +689,15 @@ Deno.test("fragment and standalone ordinary-name builders own their inputs", asy
     "top-level default or rest",
   );
   assertEquals(callbacks, 0);
+
+  const earlySource = "(console:log (some-> 7 (+ 1)))";
+  resetGensym();
+  const earlyFirst = lykn(earlySource);
+  resetGensym();
+  const earlySecond = lykn(earlySource);
+  assertEquals(earlySecond, earlyFirst);
+  await executeModule(earlySecond, "8\n");
+
   resetGensym();
   assertEquals(gensym("probe").value, "probe__gensym0");
   assertEquals(gensym("probe").value, "probe__gensym1");
@@ -729,6 +833,19 @@ Deno.test("late completion ICU and lazy invocation preserve private identities",
   `));
   await executeModule(rawIcu, "5 items\n");
 
+  const escapedRoot = "\\u005fv0.child";
+  const escapedRawSource = `(const _v0 (object (child 5)))
+    (console:log (template "{n, plural, one {one} other {# items}}" :n ${escapedRoot}))`;
+  assertEquals(escapedRawSource.includes("\\u005f"), true);
+  await executeModule(compile(read(escapedRawSource)), "5 items\n");
+
+  const computedRaw = compile(read(`
+    (const _v0 (array 5))
+    (const _v1 0)
+    (console:log (template "{n, plural, one {one} other {# items}}" :n _v0[_v1]))
+  `));
+  await executeModule(computedRaw, "5 items\n");
+
   const expanded = lykn(`
     (bind lyknHostReflectApply0 88)
     (bind order (array))
@@ -765,8 +882,11 @@ Deno.test("public browser and post-expansion transport keep output and namespace
   await executeModule(compileFresh(typedSource), "7\n");
   await executeModule(compileFresh(threadSource), "106\n");
   await executeModule(compile(read(rawIcuSource)), "5 items\n");
+  resetGensym();
   await executeModule(browserCompileLykn(typedSource), "7\n");
+  resetGensym();
   await executeModule(browserCompileLykn(threadSource), "106\n");
+  resetGensym();
   await executeModule(browserCompileLykn(icuSource), "5 items\n");
 
   const forms = read(`(export (bind visible (obj :_ 7 :_value 8)))`);
