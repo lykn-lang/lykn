@@ -10,6 +10,11 @@ related: ["project02-language-toolchain-alignment", "project03-language-evolutio
 
 # Core library research
 
+Final compiler prerequisite checkpoint2026-11-14: Arc05 S10 all six TK/BS-10
+independently accepted at a170, including separate root metadata PASS. All
+Project07 rows/original obligations remain open; release82 unchanged. Earlier
+pending records below are history; no research/library trial resumes.
+
 Current compiler prerequisite2026-11-14: Project03 Arc05 S10 native keyword
 repair at a170be58 has independent source/fresh runtime acceptance, TK-01–05
 done; root closing metadata remains pending. The native occupancy watch is
@@ -456,7 +461,7 @@ Co-authored-by: Billo AI <ai-engineering@billo.systems>
 ## Current status
 
 Latest compiler prerequisite checkpoint is S10 native a170 source/runtime PASS
-above, with root metadata pending and release82 independently accepted. Research
+and separate root metadata PASS above, release82 independently accepted. Research
 status, historical trial results and original limits below are retained; this
 checkpoint does not resume the queued authoring trial or close project rows.
 
@@ -526,7 +531,7 @@ authoring evaluation remains Arc02.
 ## Version History
 
 - 2026-11-14 v1.36: Carry S10 a170 independently validated native keyword
-  prerequisite repair, root metadata pending; preserve actual research/JSON/
+  prerequisite repair and separate root metadata PASS; preserve actual research/JSON/
   YAML/readers/guide/book/human/licence/home obligations and release82.
 
 - 2026-11-14 v1.35: Record actual native keyword reproduction and Arc05 S10

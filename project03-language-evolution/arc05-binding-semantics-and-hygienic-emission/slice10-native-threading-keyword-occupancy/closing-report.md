@@ -15,6 +15,12 @@ prerequisite disposition with later owners preserved. TK-06/BS-10 remain open
 until separate review of that closing metadata. No new source execution,
 S07 opening or release integration follows this handoff.
 
+Final root disposition2026-11-14: separate [TK-06 metadata PASS](cdc-verification.md)
+completes all six TK criteria and BS-10 at unchanged a170. Root applies the
+authorized mechanical status/parent conversions. Retrospective and residual
+ownership are verified; source a170 and release82 stay distinct and clean,
+all owned gate sessions terminal. S07 and further integration remain unopened.
+
 ## Assignment and immutable result
 
 - Project03 / Arc05 / S10, issued prompt dispatch `542806f0`; source input

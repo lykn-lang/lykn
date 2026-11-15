@@ -2,13 +2,20 @@
 project: project03-language-evolution
 arc: arc05-binding-semantics-and-hygienic-emission
 slice: slice10-native-threading-keyword-occupancy
-status: active
+status: closed
 version: "1.1"
 depends-on: [slice05-native-generated-name-hygiene, slice06-public-generated-name-hygiene]
 blocks: [slice07-native-exact-source-binding-emission]
 ---
 
 # Native threading keyword occupancy
+
+Final2026-11-14: separate TK-06 closing-metadata PASS completes all six TK
+rows and BS-10 at a170be58/tree818f0247, including root retrospective/history
+and parent routing. Source/build ownership returned with all owned gate sessions
+terminal; source a170/release82 remain clean/distinct. Earlier pending/open
+checkpoints below are preserved history. The authorized native prerequisite
+endpoint is complete; no S07 opening or further integration follows.
 
 Current independent checkpoint2026-11-14: separate Sol freshly validates
 a170be58/tree818f0247, including archived before-failures, focused7/6/all32
@@ -160,8 +167,8 @@ context may execute/import the mutable source/build stage until clean handback.
 ## Version history
 
 - 2026-11-14 v1.1: Candidate a170 independently passes source and fresh runtime
-  gates; reconcile TK-01–05/root retrospective/API/research routing for separate
-  TK-06 metadata acceptance, retaining failed development attempts and later gates.
+  gates and separate TK-06 metadata acceptance; all six rows/BS-10 closed with
+  root retrospective/API/research routing, failed attempts and later gates retained.
 
 - 2026-11-14 v1.0: Open Operator-authorized S10 ahead of existing S07 after
   actual native reproduction of S06's keyword watch; three paths/six rows,

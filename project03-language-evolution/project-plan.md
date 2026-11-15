@@ -12,6 +12,11 @@ related: ["project04-c-lang", "project07-core-library-research"]
 
 ## Current approved structure —2026-11-13
 
+Final S10 checkpoint2026-11-14: all six TK/BS-10 independently accepted at
+a170, including separate root-metadata PASS. BS-01–06/10 done; BS-07–09,
+P-BIND/P-QADT and all later owners stay open. Source a170/release82 remain
+clean/distinct; earlier pending records are history, no later opening or merge.
+
 Current2026-11-14: Arc05 S10 native threading-keyword repair a170be58/tree818f
 independently passes source and fresh runtime gates, TK-01–05 done; TK-06/BS-10
 pending separate root closing-metadata review. Actual native watch disposition
@@ -159,7 +164,7 @@ historical S03 assignment22 remains unexecuted.
 
 | Arc | Coherent outcome | Current planning state |
 | --- | --- | --- |
-| [Arc05 binding semantics and hygienic emission](arc05-binding-semantics-and-hygienic-emission/arc-plan.md) | Complete discard semantics/declarations and preserve source/compiler binding identities through emitted JS | BS-01–06 done; S10 a170 source/runtime accepted, BS-10 root-metadata pending; BS-07–09 remain open |
+| [Arc05 binding semantics and hygienic emission](arc05-binding-semantics-and-hygienic-emission/arc-plan.md) | Complete discard semantics/declarations and preserve source/compiler binding identities through emitted JS | BS-01–06/10 done, latest a170 with separate source/runtime/root-metadata acceptance; BS-07–09 remain open |
 | [Arc04 qualified ADTs](arc04-qualified-adts/arc-plan.md) | Closed owner/case semantics, coherent local qualified values/matching/guards, declarations and trusted initialization | Existing identity retained; S01/S02 and bounded prerequisites accepted; remaining local candidates S08–S13 are roadmap only |
 | [Arc06 ADT modules and library integration](arc06-adt-modules-and-library-integration/arc-plan.md) | Imported ABI, selective emission, actual build/JSON composition and API/docs/book/human handoff | Planning stub receives former Arc04 S04–S07 responsibilities, preserving the existing experiment checkpoint |
 
@@ -1174,8 +1179,8 @@ implementation definition of done is not established by this migration.
 ## Version history
 
 - 2026-11-14 v1.76: Arc05 S10 a170 independently validates native keyword
-  prerequisite repair; carry exact-range API/guide/research impacts and root
-  metadata gate. Preserve earlier accepted inputs, release82 and later owners.
+  prerequisite repair; separate root metadata PASS completes all six TK/BS-10
+  and exact-range API/guide/research routing. Preserve release82/later owners.
 
 - 2026-11-14 v1.75: Arc05 S06 native watch reproduces at actual a44 CLI;
   Operator opens bounded S10 repair/independent validation before S07. Retain

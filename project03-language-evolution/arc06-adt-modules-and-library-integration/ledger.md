@@ -1,5 +1,9 @@
 # ADT modules and library integration ledger
 
+Final2026-11-14: S10 separate TK-06 metadata PASS completes all six TK/BS-10
+at a170 and verifies this exact-range routing. All LI/QA/LC/later owners remain
+open; source a170/release82 distinct, earlier pending records historical.
+
 Current2026-11-14: accepted S10 native source/runtime a170 provides exact
 a44→a170 three-path role/generated-output/physical-spelling/guide audit inputs
 to LI-04; root TK-06 metadata pending. Native keyword occupancy is repaired,

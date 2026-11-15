@@ -12,6 +12,13 @@ related: [arc04-qualified-adts, arc06-adt-modules-and-library-integration]
 
 ## Authority and outcome
 
+Final S10 close2026-11-14: separate TK-06 metadata PASS completes all six
+criteria/BS-10 at a170. Root retrospective/history/parent routing independently
+accepted. BS-01–06 and BS-10 done; BS-07–09 remain open. Source a170/release82
+stay clean/distinct, all owned gate sessions terminal. Earlier pending/watch-
+only checkpoints below are history. S07's native occupancy prerequisite is
+settled at this accepted source; no S07 opening or later integration follows.
+
 Current S10 closing checkpoint2026-11-14: source a170be58/tree818f0247 has
 independent source and fresh runtime acceptance, TK-01–05 done. Focused7/6
 includes all32 main cells; full1809Rust/1586corpus/482docs, actual M678/all15,
@@ -321,8 +328,8 @@ affected delivery, necessary immediate documentation and independent review.
 | [S04 discard-aware declarations](slice04-discard-aware-declarations/slice-plan.md) — closedc0ed | Existing native Func/Bind/BindGroup/Type declarations now describe discard slots/defaults/rest, recursive data inputs and scalar/group/pattern exports; actual TS/CLI/package consumers | Independent all8DT source/gate/closing-metadata proof, root retrospective and later-owner routing |
 | [S05 native compiler-generated name hygiene](slice05-native-generated-name-hygiene/slice-plan.md) — closed82f1b65b | Protect remaining compiler temporaries from source, foreign and generated-name collisions | Independent all8NH/fresh full/M670/14/cites/size, root retrospective/routing and separate NH-08 metadata PASS |
 | [S06 public compiler-generated name hygiene](slice06-public-generated-name-hygiene/slice-plan.md) — closed a44 | Protect actual public producers/late consumers while preserving private identities and legacy gensym/macro/fragment limits | Independent42/full1798/1586/482/M678/all15/cites/size; root retrospective/parent routing and separate PN-08 metadata PASS complete all8PN/BS-06 |
-| [S10 native threading-keyword occupancy](slice10-native-threading-keyword-occupancy/slice-plan.md) — a170 source/runtime accepted, closing metadata pending | Repair reproduced executable keyword-role census gap before enclosing native helpers, preserving ordinary keyword data and all current consumers | Independent7+6/32cells/full1809/1586/482/M678/all15/cites/size; root TK-06 metadata gate remains. Numeric identity does not define execution order |
-| S07 native exact source-binding emission | Resolve binding occurrences and allocate safe JS names while retaining hoisting, TDZ, data/API names, foreign targets and JSON behavior | S05 plus accepted S10 disposition; settled source-name policy; actual native writer scopes; explicitly assess escaped SOURCE binding identity/protected-root classification separately from private generated-name occupancy |
+| [S10 native threading-keyword occupancy](slice10-native-threading-keyword-occupancy/slice-plan.md) — closed a170 | Repair reproduced executable keyword-role census gap before enclosing native helpers, preserving ordinary keyword data and all current consumers | Independent7+6/32cells/full1809/1586/482/M678/all15/cites/size; root retrospective/parent routing and separate TK-06 metadata PASS complete all six rows. Numeric identity does not define execution order |
+| S07 native exact source-binding emission | Resolve binding occurrences and allocate safe JS names while retaining hoisting, TDZ, data/API names, foreign targets and JSON behavior | S05 plus independently accepted S10 at a170; settled source-name policy; actual native writer scopes; explicitly assess escaped SOURCE binding identity/protected-root classification separately from private generated-name occupancy |
 | S08 public exact source-binding emission | Deliver equivalent behavior through normal/fragment/browser/materialized entrances | S06; same language contract; public lifecycle/consumer census |
 
 The two backends can share a reviewed contract without pretending their
@@ -376,8 +383,8 @@ early source-owner queries from the later runtime binding/name plan.
 
 ## Verification, handoff and limits
 
-The [ledger](ledger.md) carries BS-01–06 done and BS-07–10 open, with S10
-active before S07. Independent acceptance must
+The [ledger](ledger.md) carries BS-01–06 and BS-10 done, BS-07–09 open.
+Independent acceptance must
 cover actual changed consumers, meaningful negative controls, repository checks
 and embedded parity. Preserve final-source citations, existing size policy,
 cache/network limits, original failures and exact commit scope. Test count
@@ -390,8 +397,8 @@ their explicit operator openings; later slices need their own opening. Preserve 
 history; new filenames do not reset exhausted allowances. An iteration refines
 one delivery; a new capability receives its own slice.
 
-S06 source/build returns clean at a44 after independent source/delivery acceptance.
-Its final close includes independently verified root duties and PN-08 metadata PASS.
+S10 source/build returns clean at a170 after independent source/delivery acceptance.
+Its final close includes independently verified root duties and TK-06 metadata PASS.
 Subsequent source
 work needs its own authorized source-ready assignment. No separate
 probe/experiment/merge/push/publication/licence/dependency action follows from
@@ -402,8 +409,8 @@ work, whole-work audits and the separate book/human gates keep their owners.
 ## Version history
 
 - 2026-11-14 v0.23: S10 a170 independently passes source and fresh runtime;
-  reconcile actual native watch repair/pin and TK-01–05, root retrospective and
-  later API/research owners for separate TK-06 metadata review. No new slice
+  separate TK-06 metadata PASS completes all six criteria/BS-10, root retrospective
+  and API/research routing. No new slice
   or structural change beyond the approved prerequisite; release82 stays put.
 
 - 2026-11-14 v0.22: Operator opens S10 after S06 source-watch's actual native

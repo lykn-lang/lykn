@@ -1,5 +1,9 @@
 # Project07 ledger
 
+Final2026-11-14: S10 all six TK/BS-10 independently accepted at a170 including
+separate root-metadata PASS; all Project07 rows/owners and release82 unchanged.
+Earlier pending records are history, no research/library trial resumes.
+
 Current2026-11-14: native S10 a170 source/runtime independently accepted,
 TK-06 root metadata pending; occupancy watch is repaired. All Project07 rows
 and original JSON/YAML28+36/readers/guides/book/human/licence/home/bootstrap

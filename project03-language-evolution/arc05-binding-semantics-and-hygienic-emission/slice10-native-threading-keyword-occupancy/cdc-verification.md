@@ -174,3 +174,61 @@ all owned tool sessions are terminal (no system-wide process-list assertion).
 Source/build ownership returns to root. S10 is not fully closed until TK-06
 is independently disposed; no S07 opening, release integration or remote action
 is authorized by this verdict.
+
+## Final TK-06 closing-metadata verdict
+
+2026-11-14, separate Sol CDC: **TK-06 METADATA PASS** on immutable planning
+`bae510d0c2ab1d8b0e285cfdb15439cd91023dd3`, reviewed against parent
+`784bea28`. All six TK criteria are independently satisfied at unchanged
+source `a170be580888198ec7da1a99c4731a1d177157a1` /
+tree `818f02478bc1667254f48899aca3d230a4e3b697`. No blocking metadata finding
+or formal correction is requested.
+
+I inspected the actual metadata delta, complete canonical cdc-retrospective,
+root closing-handoff section in closing-report.md, slice plan/ledger and the
+Arc05, Project03, Arc06 and Project07 routing changes. The six original
+criterion/verification/origin/significance contracts remain intact. TK-01–05
+done evidence faithfully maps the independent source/fresh-runtime verdict;
+TK-06 and BS-10 were correctly left open for this separate check. The issued
+initial prompt, root baseline and CC evidence bytes are unchanged by this
+metadata commit. The newly committed independent packet preserves the earlier
+readiness finding/resolution, source-proof checkpoint and fresh validation
+history rather than relabeling them as one undifferentiated acceptance.
+
+The retrospective accounts for root's tagged-Bare draft mistake and preissue
+repair, both incorrect development oracles, formatting diagnostics, appended
+Lang1224/workspace1809 report correction, actual retained ordinary-atom
+opposition, bounded static-member null proof, brief focused-command overlap
+and Cargo locking, and the OS-process-census limitation. It records useful
+follow-through without claiming an unrun selector matrix or comparative
+methodology result. Failed attempts and original scope/revision evidence stay
+preserved. The independently executed archived baseline modules are correctly
+identified as root-generated old bytes, with original compile receipts, not
+an independent old-CLI rebuild.
+
+Arc05/Project03 explicitly dispose the native watch as a reproduced/repaired
+bounded prerequisite and require S07 to consume the accepted native pin.
+Stable S07–09 identities, exact binding/protected-root/keyword-role design and
+composition gates remain open; no new structural roadmap change is needed.
+Arc06 LI-04 receives the exact a44→a170 three-path role/generated-output/guide
+impact, including emitted suffix behavior and physical identity versus
+preserved spelling, while claiming no new public signature, schema, AST,
+reader, grammar, dependency, DTS or entrypoint map. All LI/QA/LC/book/human
+gates remain open. Project07 explicitly retains original JSON controls/re-pin,
+28 Y-14 variants/36 Y-13 resource cells, readers, guide/book/human, separate
+handoffs, licence/bootstrap/actual-home and maintenance ownership. No library
+trial or unrelated work is resumed.
+
+Live read-only Git checks confirm task source clean at a170/tree818f and the
+separate release/0.6.x worktree clean at
+`82f1b65b92529979afd6c624183912ca31453927`. This metadata-only delta cannot
+change the previously reproduced compiler/gate claims; their exact immutable
+source, execution records and dependencies remain applicable. No aggregate
+gate was rerun or reclassified as fresh during this metadata review.
+
+Root may now mechanically mark TK-06 and BS-10 done, set S10 closed and update
+the corresponding current parent checkpoints to final accepted, citing this
+verdict while preserving earlier pending/history text. This authorizes no
+additional implementation, S07 opening, release merge/push, publication or
+external action. I appended only this canonical verdict: no source/build job,
+Git/index mutation, ledger/parent edit or new execution session was created.

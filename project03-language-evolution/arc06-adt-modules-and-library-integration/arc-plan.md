@@ -12,6 +12,11 @@ related: [arc04-qualified-adts, arc05-binding-semantics-and-hygienic-emission, p
 
 ## Authority and useful result
 
+Final S10 carry2026-11-14: separate TK-06 metadata PASS verifies root
+retrospective/parent routing and completes all six TK/BS-10 at a170. Earlier
+metadata-pending checkpoints below are history. All six LI and original QA/LC,
+source identity/module/library/book/human gates remain open; release82 unchanged.
+
 Current S10 carry2026-11-14: independent source/fresh runtime PASS at native
 a170be58/tree818f0247 completes TK-01–05; root TK-06 metadata remains pending.
 LI-04 receives exact a44e16db→a170be58 THREE paths: borrowed role-aware native
@@ -207,7 +212,7 @@ human/book gates require actual dispositions.
 
 Use existing planning and assigned task homes; refresh pins before authoring.
 Current independently validated task source is clean a170be58, with S10 root
-closing-metadata review pending; release is independently accepted82f1b65b. Earlier
+closing-metadata PASS; release is independently accepted82f1b65b. Earlier
 c0ed/S04 and dba24d40/public-discard-held/release0829 are historical checkpoints.
 S04 root closing metadata is independently verified in its owning slice.
 Prospective source work uses the established Luna6 High implementer and separate
@@ -219,8 +224,8 @@ Repository Lykn-only helper rules apply; no Python exception.
 ## Version history
 
 - 2026-11-14 v0.8: Carry S10's exact a44→a170 three-path native role/output/
-  guide change after independent source/fresh runtime PASS; root metadata
-  remains pending. Dispose the occupancy watch without inferring exact binding
+  guide change after independent source/fresh runtime and separate root metadata
+  PASS. Dispose the occupancy watch without inferring exact binding
   resolution or closing any LI/QA/LC/book/human/library gate.
 
 - 2026-11-14 v0.7: Route actual native reproduction of S06 watch into Operator-

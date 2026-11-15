@@ -7,6 +7,11 @@ this analysis cannot replace its fresh execution or closing-metadata verdict.
 Release stays82f1b65b. The authorized result is a bounded native prerequisite
 disposition/repair before S07, not S07 implementation or release integration.
 
+Final disposition: separate source/runtime and TK-06 metadata PASS complete
+all six TK rows/BS-10 at the stated source. The pending duties below record
+the closing sequence; they have now been independently verified. All later
+source identity/qualified/library/research/human gates remain open.
+
 Fresh independent runtime gates now pass at the same source. TK-01–05 have
 independent acceptance; root closing metadata/TK-06 remains separately pending.
 Independent focused Cargo invocations briefly overlapped while Cargo's build

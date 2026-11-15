@@ -1,5 +1,9 @@
 # project03-language-evolution ledger
 
+Final2026-11-14: S10 all six TK/BS-10 independently accepted at a170, including
+separate root-metadata PASS. BS-01–06/10 done; BS-07–09/P-BIND/P-QADT and later
+owners open. Source a170/release82 stay distinct, earlier pending rows history.
+
 Current2026-11-14: S10 a170 source/runtime independently accepted, TK-01–05
 done and TK-06/BS-10 root metadata pending. Native keyword watch is repaired;
 S07–09/P-BIND/P-QADT and later owners remain open. Source a170/release82 stay
