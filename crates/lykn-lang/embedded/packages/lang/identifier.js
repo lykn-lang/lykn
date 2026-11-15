@@ -145,18 +145,19 @@ export function decodeIdentifierEscapes(text) {
       continue;
     }
     if (text[index + 2] === "{") {
-      const close = text.indexOf("}", index + 3);
-      if (close < 0) {
-        output += text[index++];
-        continue;
+      let cursor = index + 3;
+      let digitCount = 0;
+      let codePoint = 0;
+      while (digitCount < 6) {
+        const digit = text[cursor];
+        if (digit === undefined || !/[\da-fA-F]/.test(digit)) break;
+        codePoint = codePoint * 16 + Number.parseInt(digit, 16);
+        cursor++;
+        digitCount++;
       }
-      const digits = text.slice(index + 3, close);
-      const codePoint = /^[\da-fA-F]{1,6}$/.test(digits)
-        ? Number.parseInt(digits, 16)
-        : -1;
-      if (codePoint >= 0 && codePoint <= 0x10ffff) {
+      if (digitCount > 0 && text[cursor] === "}" && codePoint <= 0x10ffff) {
         output += String.fromCodePoint(codePoint);
-        index = close + 1;
+        index = cursor + 1;
       } else {
         output += text[index++];
       }
@@ -179,27 +180,51 @@ function isPhysicalIdentifierChar(char) {
     (codePoint > 0x7f && !/\s/u.test(char) && char !== "\uFEFF");
 }
 
+function sourceAtomText(text) {
+  return toJsIdentifierParts(text).map(({ name, private: isPrivate }) =>
+    `${isPrivate ? "#" : ""}${name}`
+  ).join(".");
+}
+
 /** Map source or already-emitted identifier text to conservative JS name keys. */
 export function physicalIdentifierKeys(text) {
-  const decoded = decodeIdentifierEscapes(text);
-  const keys = new Set([toJsIdentifier(decoded)]);
-  for (const part of decoded.split(":")) {
-    if (part !== "") keys.add(toJsIdentifier(part));
+  const keys = new Set(emittedIdentifierKeys(sourceAtomText(text)));
+  for (const legacy of [
+    toJsIdentifier(text),
+    ...text.split(":").filter((part) => part !== "").map(toJsIdentifier),
+  ]) {
+    for (const key of emittedIdentifierKeys(legacy)) keys.add(key);
   }
-  let run = "";
-  const flush = () => {
-    if (run !== "") keys.add(toJsIdentifier(run));
-    run = "";
-  };
-  for (const char of decoded) {
-    if (isPhysicalIdentifierChar(char)) run += char;
-    else flush();
-  }
-  flush();
   return keys;
 }
 
-/** Decode an ESTree Identifier spelling without applying Lykn normalization. */
+function addPhysicalName(occupied, text) {
+  for (const key of physicalIdentifierKeys(text)) occupied.add(key);
+}
+
+function reserveThreadStep(step, occupied) {
+  const keyword = step?.type === "keyword"
+    ? step
+    : step?.type === "list" && step.values[0]?.type === "keyword"
+    ? step.values[0]
+    : null;
+  if (keyword) addPhysicalName(occupied, keyword.value);
+}
+
+function rawThreadSteps(node) {
+  const head = node?.type === "list" ? node.values[0]?.value : null;
+  return ["->", "->>", "some->", "some->>"].includes(head)
+    ? node.values.slice(2)
+    : null;
+}
+
+function surfaceThreadSteps(node) {
+  return ["Thread", "SomeThread"].includes(node?.type) && Array.isArray(node.steps)
+    ? node.steps
+    : null;
+}
+
+/** Map already-emitted identifier text without applying Source normalization. */
 export function emittedIdentifierKeys(text) {
   const decoded = decodeIdentifierEscapes(text);
   const keys = new Set([decoded]);
@@ -237,22 +262,25 @@ export function createGeneratedNameAllocator(nextRawName) {
         return;
       }
       if (node.type === "atom" && typeof node.value === "string") {
-        for (const key of physicalIdentifierKeys(node.value)) occupied.add(key);
+        addPhysicalName(occupied, node.value);
         return;
       }
       if (["string", "keyword", "number", "boolean", "null"].includes(node.type)) return;
+      const threadSteps = rawThreadSteps(node) ?? surfaceThreadSteps(node);
+      if (threadSteps) {
+        for (const step of threadSteps) reserveThreadStep(step, occupied);
+      }
       for (const [key, value] of Object.entries(node)) {
-        if (["type", "value", "binding", "loc", "start", "end", "sourceText"].includes(key)) continue;
+        if (["type", "binding", "loc", "start", "end", "sourceText"].includes(key)) continue;
         if (["keys", "names", "fieldNames"].includes(key) && Array.isArray(value)) {
           for (const item of value) {
-            if (typeof item === "string") {
-              for (const physical of physicalIdentifierKeys(item)) occupied.add(physical);
-            }
+            if (typeof item === "string") addPhysicalName(occupied, item);
+            else visit(item);
           }
           continue;
         }
         if (typeof value === "string" && ["key", "name", "funcName", "typeName", "fieldName"].includes(key)) {
-          for (const physical of physicalIdentifierKeys(value)) occupied.add(physical);
+          addPhysicalName(occupied, value);
         } else {
           visit(value);
         }
@@ -263,7 +291,7 @@ export function createGeneratedNameAllocator(nextRawName) {
   }
 
   function next(prefix) {
-    let lastRejectedCandidate = null;
+    const rejectedCandidates = new Set();
     while (true) {
       const candidate = nextRawName(prefix);
       if (typeof candidate !== "string" &&
@@ -274,10 +302,10 @@ export function createGeneratedNameAllocator(nextRawName) {
       const keys = physicalIdentifierKeys(rawText);
       const collisionKey = [...keys].find((key) => occupied.has(key));
       if (collisionKey !== undefined) {
-        if (rawText === lastRejectedCandidate) {
+        if (rejectedCandidates.has(rawText)) {
           throw new Error("generated-name callback repeated a rejected candidate");
         }
-        lastRejectedCandidate = rawText;
+        rejectedCandidates.add(rawText);
         continue;
       }
       for (const key of keys) occupied.add(key);
