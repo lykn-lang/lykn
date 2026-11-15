@@ -2,7 +2,7 @@
 project: project03-language-evolution
 arc: arc05-binding-semantics-and-hygienic-emission
 status: active
-version: "0.18"
+version: "0.19"
 planned-release: unassigned
 depends-on: []
 related: [arc04-qualified-adts, arc06-adt-modules-and-library-integration]
@@ -11,6 +11,17 @@ related: [arc04-qualified-adts, arc06-adt-modules-and-library-integration]
 # Binding semantics and hygienic emission
 
 ## Authority and outcome
+
+Current S06 proof correction2026-11-14: immutable89ab9dcd source fixes F1–F5
+on separate Sol inspection, but nine P1–P9 consumer/counter/class proofs remain
+[HELD](slice06-public-generated-name-hygiene/cdc-verification.md#source-first-review-02--correction01-at89--hold-for-proof).
+Root's exact [correction02](slice06-public-generated-name-hygiene/cc-prompt-iteration02.md)
+is independently ready: one PRODUCT test plus Source-only helper-comment and
+mirror, algorithms unchanged. Formal2/5 on dispatch, original15/eight rows/
+eight groups/M678/15 retained. All8PN/BS-06 remain open. CC focused→commit→
+handback, independent proof PASS, then CC full and fresh independent full;
+no gate waived. Stale-stage/JS-eval/TMPDIR/interrupted unknown history retained.
+Root verified no remaining owned processes; release stays82 and later work open.
 
 Current S06 correction2026-11-14: initial17791f24 is independently
 [HELD](slice06-public-generated-name-hygiene/cdc-verification.md) for five

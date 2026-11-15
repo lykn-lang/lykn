@@ -1,7 +1,7 @@
 ---
 project: project03-language-evolution
 status: research
-version: "1.72"
+version: "1.73"
 planned-release: "0.7.0"
 depends-on: ["project02-language-toolchain-alignment"]
 blocks: []
@@ -11,6 +11,14 @@ related: ["project04-c-lang", "project07-core-library-research"]
 # Language evolution
 
 ## Current approved structure —2026-11-13
+
+Current2026-11-14: Arc05 S06 code89 fixes the five implementation findings on
+independent source inspection; required proof remains held. Independently ready
+[correction02](arc05-binding-semantics-and-hygienic-emission/slice06-public-generated-name-hygiene/cc-prompt-iteration02.md)
+supplies exact missing consumers/counter/class controls and truthful helper
+comment,2/5 formal refinements, same15/eight-row delivery. Full gates await
+immutable proof PASS; all8PN/BS-06/P-BIND/P-QADT remain open. Release82 and later
+qualified/library/book/human/remote boundaries remain unchanged.
 
 Current2026-11-14: Arc05 S06 candidate17791f24 is independently held for
 five shared occupancy/lifecycle defects and concrete proof gaps. Source-grounded
@@ -1129,6 +1137,10 @@ with their source and status distinctions. A future
 implementation definition of done is not established by this migration.
 
 ## Version history
+
+- 2026-11-14 v1.73: Retain source89 F1–F5 repairs and proof HOLD; issue exact
+  correction02 after readiness, preserve execution/deviation history and gate
+  full retries on actual committed proof rather than green case counts.
 
 - 2026-11-14 v1.72: Preserve S06 initial177 source-first HOLD, concrete witness
   evidence and separately ready consolidated correction01 without accepting

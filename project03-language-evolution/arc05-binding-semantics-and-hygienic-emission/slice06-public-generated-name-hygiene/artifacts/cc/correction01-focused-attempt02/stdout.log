@@ -1,0 +1,99 @@
+running 8 tests from ./test/forms/public-generated-names.test.js
+physical identifier keys and allocator handle normalization and Unicode boundaries ... FAILED (3ms)
+whole-source typed and recursive result storage preserves actual values ... ok (138ms)
+threading, discard, conditional and both Match producers avoid capture ... ok (122ms)
+overloads contracts and typed yields retain arguments values and timing ... FAILED (121ms)
+fragment and standalone ordinary-name builders own their inputs ... ok (72ms)
+macro results reserve at barriers and nested public entries recover ... ok (40ms)
+late completion ICU and lazy invocation preserve private identities ... ok (128ms)
+public browser and post-expansion transport keep output and namespace boundaries ... ok (85ms)
+running 6 tests from ./test/forms/icu-generated-names.test.js
+public ICU hoists reserve compiled source identifiers ... ok (82ms)
+public ICU selectors and hoists share one generated-name set ... ok (43ms)
+public ICU keeps once-only effects and original exceptions ... ok (31ms)
+public ICU preserves lazy and eager branch evaluation ... ok (15ms)
+public ICU fragments and repeated calls keep independent state ... ok (42ms)
+browser ICU ESM and private Reflect calls preserve capture anchors ... ok (42ms)
+running 4 tests from ./test/forms/lazy-protected-invocation.test.js
+lazy protected invocation preserves the no-request compiler path ... ok (5ms)
+lazy protected invocation validates plans and recovers after rejection ... ok (1ms)
+lazy protected invocation checks source module binding roles ... ok (2ms)
+lazy protected invocation materializes all four public proof inputs ... ok (10ms)
+running 8 tests from ./test/forms/remaining-discard-bindings.test.js
+S03 public declarations and loop binders discard without losing effects ... ok (78ms)
+S03 public callable and class parameter slots preserve arity and laziness ... ok (146ms)
+S03 public catch keeps the writer's expression-binding grammar ... ok (35ms)
+S03 spread parameters project source names and preserve fallback lookup ... ok (32ms)
+S03 public zero-name grouped patterns keep static alias keys ... ok (34ms)
+S03 multi-clause signature guard is early and one-clause builders delegate ... ok (38ms)
+S03 raw compiler IR stays literal while source expansion prepares discards ... ok (142ms)
+S03 browser compilation and staged source facade share public behavior ... ok (161ms)
+running 1 test from ./test/forms/dd-37-classifier-pilot.test.js
+DD-37 pilot: new classifier path produces same kernel as old macro path for (not x) ... ok (3ms)
+running 7 tests from ./test/forms/host-reference-lowering.test.js
+owned host references are lowered hygienically in complete units ... ok (7ms)
+no-request output and source-shaped names do not select private references ... ok (351µs)
+normalized source identifiers reserve generated reference aliases ... ok (1ms)
+unfinished private host references fail on the fragment compiler path ... ok (416µs)
+one owned value reference can head multiple calls and shares one alias ... ok (5ms)
+expandExpr materializes owned references as complete multi-form output ... ok (914µs)
+public emitted ESM uses real guard and no-match intrinsics under module shadowing ... ok (5ms)
+running 1 test from ./test/forms/browser-host-reference-compile.test.js
+browser compiler emits ESM with owned host references that an ESM consumer can run ... ok (16ms)
+running 7 tests from ./test/forms/discard-bindings.test.js
+public callable and Bind discards keep private identity ... ok (46ms)
+public discard guards, defaults, rests, and schema fields ... ok (129ms)
+public typed Bind checks stay visible and preserve effects ... ok (57ms)
+public source inline exports expose only source bindings ... ok (70ms)
+public binding patterns preserve spread, keys, assignment, and legacy catch ... ok (83ms)
+public finalized JSON and fragments retain independent private state ... ok (30ms)
+public browser delivery executes discard and nested rest behavior ... ok (29ms)
+
+ ERRORS 
+
+physical identifier keys and allocator handle normalization and Unicode boundaries => ./test/forms/public-generated-names.test.js:121:6
+error: TypeError: Cannot read properties of undefined (reading 'name')
+  assertEquals(leading.object.name, "___gensym0");
+                              ^
+    at file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/public-generated-names.test.js:154:31
+
+overloads contracts and typed yields retain arguments values and timing => ./test/forms/public-generated-names.test.js:344:6
+error: AssertionError: Expected actual: "const order = [];
+const __lykn_value_box = {
+  marker: (() => {
+    order.push("outer");
+    return 42;
+  })()
+};
+async function observePromiseValue() {
+  const original = Promise.resolve(9);
+  let completionValue__gensym0;
+  {
+    {
+      await Promise.resolve(0);
+      completionValue__gensym0 = original;
+    }
+  }
+  const result = completionValue__gensym0;
+  return {
+    same: result === original,
+    thenType: typeof result.then,
+    resolved: await result
+  };
+}
+const observation = await observePromiseValue();
+console.log(JSON.stringify(observation));
+console.log(__lykn_value_box.marker, JSON.stringify(order));
+" to contain: "__lykn_value_box[0]".
+  throw new AssertionError(msg);
+        ^
+    at assertStringIncludes (https://jsr.io/@std/assert/1.0.19/string_includes.ts:29:9)
+    at file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/test/forms/public-generated-names.test.js:408:3
+
+ FAILURES 
+
+physical identifier keys and allocator handle normalization and Unicode boundaries => ./test/forms/public-generated-names.test.js:121:6
+overloads contracts and typed yields retain arguments values and timing => ./test/forms/public-generated-names.test.js:344:6
+
+FAILED | 40 passed | 2 failed (2s)
+

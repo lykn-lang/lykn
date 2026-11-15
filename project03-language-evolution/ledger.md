@@ -1,5 +1,10 @@
 # project03-language-evolution ledger
 
+Current2026-11-14: Arc05 S06 source89 fixes F1–F5 on independent static review,
+but P1–P9 proofs remain held. Ready correction02 (2/5) adds exact consumers/
+counter/error controls and truthful comment; all8PN/BS-06/P-BIND/P-QADT stay
+open. No full retry precedes immutable proof PASS; release82 and later gates stay.
+
 Current2026-11-14: Arc05 S06 initial177 source is independently HELD despite
 green CC gates. [Correction01](arc05-binding-semantics-and-hygienic-emission/slice06-public-generated-name-hygiene/cc-prompt-iteration01.md)
 consolidates five defects and missing original proof after source readiness

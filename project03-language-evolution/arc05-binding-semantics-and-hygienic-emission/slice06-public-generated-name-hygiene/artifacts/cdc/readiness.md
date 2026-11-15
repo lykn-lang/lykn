@@ -121,3 +121,54 @@ No remaining concrete recipe, Source semantic, private-boundary or oracle
 blocker was found. No runtime/build/product/Git mutation occurred in this
 readiness pass; only this authorized append was written. Root owns final
 design/issue and later ledger/metadata/owner routing; release remains82.
+
+## Correction02 source readiness — PASS
+
+2026-11-14. Same independent Sol6.1 High reviewer. **PASS for committed
+iteration02 issue**, with candidate89 still held for proof and all PN rows open.
+Read the complete unissued iteration02, updated plan v1.2 and preflight/history
+note; compared all P1–P9 and the original array-leaf obligation against the
+immutable89 interfaces and the prior full proof table. No execution or build.
+
+The supplied A/B/C Source blocks, opposing control and keyword-headed/raw
+threading variants preserve admitted method semantics: their array elements
+are functions. The self-contained typed array leaf uses the existing grammar.
+The separate guarded statement fixture accepts target0 before rejecting
+matched1, so its guard/body trace is a real opposition. The separate rest1
+fixture accepts alias0 first; it does not reuse the shifted stream from A.
+Immediate resets before each ordinary direct builder and browser baseline now
+make the intended candidate suffixes concrete. The injected h.gensym example
+checks actual classifier/helper wiring and execution, not only a factory.
+
+Raw escaped/computed ICU operands use actual kernel/read/compile boundaries;
+the test literal must preserve the backslash before Unicode decoding. The
+exact-class assertion plus a TypeError-versus-Error negative through the same
+failure helper closes the substring false positive. Explicit same-input reset
+equality is distinct from the already meaningful raw lifecycle/reentry tests.
+Retained rest/shared-identity/negative protocol applicability remains specific;
+no optional duplicate matrix or private closed-loop capture is introduced.
+
+Static source inspection confirms the staged browser compiler imports bare
+lang modules and build_project copies that ESM source; under project/M6 import
+maps its expansion core is the same one reached by the imported resetGensym.
+The proposed per-browser-call reset therefore controls the actual selected
+entrypoint, without inventing a new browser API or touching a bundled artifact.
+
+The exact three-path scope is appropriate: the existing test plus only the
+misleading Source/already-emitted JSDoc sentence and its identical mirror.
+F1–F5 algorithms, signatures, five exports and package boundaries stay89.
+All original fifteen delivered paths/eight groups/M6 78 and15 comparisons
+remain. No original obligation or mandatory validation is dropped.
+
+The new sequence explicitly returns source/build after focused42 and the
+immutable commit/P-map, before any full retry. Root's source-proof PASS then
+resumes CC full validation at that same candidate; independent fresh full
+verification remains later. This is a feasible internal autonomous handoff,
+with no Operator pause and no concurrent mutable-stage reviewer. Preflight
+correctly distinguishes unknown interrupted-session exit from no live process
+and retains the discarded eval/stale-stage/TMPDIR/milestone discrepancies.
+
+No remaining concrete Source, counter, private-boundary or entrypoint recipe
+blocker was found. Only this authorized readiness append was written; no other
+planning/product/Git change or gate was performed. Root owns issue and final
+design; formal2/5 is spent only on committed dispatch, release stays82.

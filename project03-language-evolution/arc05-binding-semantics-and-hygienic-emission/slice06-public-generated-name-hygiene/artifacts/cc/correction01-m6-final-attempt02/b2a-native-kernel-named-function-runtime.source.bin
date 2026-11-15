@@ -1,0 +1,1 @@
+(bind apply (kernel:function apply (array) (return (array 7)))) (console:log (apply (kernel:function identity (value) (return value))))

@@ -170,3 +170,118 @@ returns, source-first review must clear the corrected candidate before the
 separate fresh focused/full/M6/citation/size gates and independent close.
 Release remains82; S07 and external actions remain unopened. Review returned
 with clean source, no product/Git mutation and no running jobs.
+
+## Source-first review 02 — correction01 at89 — HOLD for proof
+
+2026-11-14. Same independent Sol6.1 High reviewer and Luna6 High implementer.
+Reviewed only immutable Git objects at commit
+`89ab9dcd90f0c8498685dba0f267a986d07ee462`, tree
+`6305ea2ee0b2b29b0a754b4641b46ea54ae247f7`, parent177, plus stable planning
+inputs. No source execution, build, live target read/import, product edit or Git
+mutation occurred. Root attested the checkout clean and froze product bytes;
+this review independently identifies the committed objects, not mutable stage.
+
+Read the complete corrected identifier module, all785 lines of the committed
+new test in bounded recovered chunks, the issued iteration01, plan v1.1,
+eight PN rows and the original complete proof table above. Checked actual
+unchanged producer interfaces and retained canonical tests where applicability
+matters. Exact correction delta is3 paths; canonical and embedded identifier
+objects share blob `822561be02effff48ecc9ac7f7a314be8619c45a`. Adjacent required
+coauthor trailers and parent/tree were inspected through Git.
+
+### Implementation fixes: source assessment
+
+| Finding | Immutable identifier.js source | Source-first assessment |
+| --- | --- | --- |
+| F1 | sourceAtomText183–187; physicalIdentifierKeys190–198; emitted collector228–241 | Actual shared member normalization precedes decoding; legacy whole/colon spellings remain conservative; emitted text is not normalized again. Correct selected repair. |
+| F2 | raw/Surface step selection205–224 and owning census269–272 | Four raw heads and both Surface node types reserve scalar/keyword-headed member text during complete-input traversal. Ordinary literal/data keywords remain skipped. Correct selected repair. |
+| F3 | generic payload traversal273–285 | Actual value fields and object entries in names/key arrays are now visited; metadata/private callbacks and traversal-local visits remain. Correct selected repair. |
+| F4 | per-next rejected Set294–308 | Nonadjacent raw repeat is detected without a small retry cap; accepted candidate keys insert once and original value returns. Correct selected repair. |
+| F5 | bounded braced scan148–163 | At most6 hex-digit inspections and immediate brace check per escape; failed cases advance. No suffix-wide search remains. Correct selected repair. |
+
+No new implementation defect or necessary source-path expansion was identified.
+The new exact decoder/candidate/Surface tests at128–277 are materially stronger:
+they assert actual tokens/text, both-direction normalized/escaped candidates,
+original atom identity, rejected A/B/A count3, actual classified value/names/
+thread fields, data skips and repeated traversal of a mutated container.
+This is source assessment; none was independently executed in this phase.
+
+### Remaining mandatory proof repairs — existing test only
+
+The following are still required by issued iteration01 and the original proof
+table. Focused42 green or a milestone description does not fill these omissions.
+All fit the same test file/eight groups; no implementation change is requested.
+
+| ID | Actual committed evidence/gap | Required bounded opposition |
+| --- | --- | --- |
+| P1 | No actual leading-hyphen Dissoc, keyword-thread/control, keyword-headed or nested enclosing-result runtime witness occurs anywhere in the785-line file. G1 checks helper/Surface fields; its leading-text assertion only checks raw compiler output. | Execute the retained original `leading-hyphen-review`, `keyword-thread-review02`, opposing control and `keyword-enclosing-result-review` Source consumers through reset-controlled public compilation: JSON keep7,7,7,7 with empty stderr. Include the issued keyword-headed layout and raw ->/->> nested typed role case. The nested result consumer must fail if reservation is patched only at threading emission. These are supplied admitted specimens, not new exploratory cases. |
+| P2 | Direct group resets at502 only. Its fragment allocates t1 after rejecting t0, leaving counter2. Single518 therefore chooses result2, sole-Multi525 chooses result3, Match530 chooses target4; later yield/statement builders also allocate higher suffixes while their inputs all name suffix0/1. Runtime success does not oppose bypassed standalone allocation. | Reset immediately before EACH independent direct builder/instrumenter construction. Use known candidate0 references for Single, sole-Multi, direct Genfunc, direct instrumentYields and value Match, execute outputs, and control target/matched order separately for statement Match. Preserve the valid self-contained fragment test503–508. Do not route ordinary direct cases through new private finalization. |
+| P3 | Statement Source385–395 names target0 and matched1 together. Rejecting target0 consumes0 and accepts target1; matched candidate is then2, so matched1 never collides. No Match :when guard with side-effect ordering occurs in the new file. | Isolate matched1 with target0 accepted, or deliberately name matched2 after a target0 rejection; state the chosen stream. Include an actual guarded statement/value consumer whose guard mutates a trace once and whose body observes the opposing outer name. Ordinary unguarded value/target tests do not prove this requirement. |
+| P4 | Dissoc398–401 has only record/drop/keep; it opposes neither alias nor rest storage. | P1 supplies the alias ___gensym0 opposition. Add a distinct rest fixture with alias0 accepted and rest candidate1 opposed, e.g. a string-key global rest__gensym1 holding a child record, then dissoc of rest__gensym1.child; expected keep7. Do not combine it with an alias0 rejection and keep pretending the rest candidate remains1. |
+| P5 | G1 advances a factory callback, but no advancing injected h.gensym ever lowers and executes a Surface consumer; the only h callback586–595 is intentionally uncalled. | Actual classified SomeThread with an input t__custom0, h.gensym returning original atoms t__custom0 then t__custom1, should execute7+99=106 and consume exactly2 callback calls. This distinguishes correct standalone helper wiring from a factory-only test. |
+| P6 | Legacy reset/probe checks597–601 and interleaved runtime/stream tests618–631 are useful. There is no explicit same-Source early-producer reset-to-identical-code assertion. Existing ICU recovery equality concerns a local late allocator, not this stream. | Compile the same actual early-producer Source after explicit resets and compare its generated code. Keep raw lifecycle calls unwrapped in compileFresh; the new reentry634–655 and failure-after-allocation603–615 are source-correct decisive cases and need no replacement. |
+| P7 | Raw ICU726–730 now executes the dotted baseline; its runtime never contains escaped/computed Identifier text. G1's computed AST shape and escaped pure keys do not prove late allocator wiring. | Execute raw compile/read ICU with actual escaped `_v0` root and a separate computed `_v0[_v1]` selector operand, expected5 items, through actual emitted Identifier storage. Existing repeated-kwarg and selector/hoist tests can retain once-only/repeated-allocation proof; no duplicate broad ICU matrix is needed. |
+| P8 | Browser calls768–770 follow two compileFresh calls and raw compilation without resetting the shared stream. The typed/thread inputs name candidate0 but browser allocates later suffixes. | Reset the browser legacy stream immediately before each typed7/thread106 baseline. ICU local allocation remains separately exercised. JSON round-trip/imported namespace772–782 is now real execution and is useful; preserve it. |
+| P9 | executeFailure97 checks substring `${expectedClass}:`. Expected Error therefore accepts TypeError or RangeError containing the same message. The post-condition failure control444–452 could pass the wrong error class. | Match the actual error class token exactly, alongside intended message and SyntaxError exclusion. A small credible negative assertion showing TypeError cannot satisfy expected Error is sufficient; no new diagnostic parser/framework. |
+
+Original nested array/object/default leaf coverage is only partially explicit:
+object/default328–332 and nested-function335–342 execute, but no colliding
+array parameter leaf is present. Where this obligation is not discharged by a
+specific existing applicability row, one admitted `(array :number
+result__gensym0)` typed-parameter consumer with argument99/result100 completes
+that original leaf requirement; this is not an expanded destructuring matrix.
+
+### Preservation versus newly missing composition
+
+Do not require fictional capture inside the closed private rest loop or async
+getter. The existing `discard-bindings.test.js:133–178` executes scalar/nested
+rest values and TypeError labels including `rest arg '_'`; its97–120 exercises
+private names/identities and generated-name source opposition. These remain
+applicable because rest preparation, labels and finalizer identity protocol
+were not rewritten. Fresh focused/full execution of those canonical cases can
+retain their value/check/label composition without duplicating them here.
+The new late typed-discard/completion consumers661–685 now exercise actual F1
+Source failures; they remain valid public-owned private lowering cases.
+
+`host-reference-lowering.test.js:49–76` retains a genuinely shared host-reference
+atom across two calls and checks one alias plus real Symbol identity; its90+
+guard/no-match shadowing tests preserve intrinsic selection and error semantics.
+`icu-generated-names.test.js:69–128,152–180` retains hoist/selector collisions,
+repeated kwargs/once-only effects and recovery;183–208 retains exact raw anchors
+under both Reflect branches. `lazy-protected-invocation.test.js:55–142` retains
+no-request, malformed/duplicate/orphan/incomplete and cleanup proof. Those
+address unchanged protocols, not P7's new escaped/computed late composition.
+
+The corrected test has actual yielded values and named-generator construction/
+advancement effects405–475, real async Promise identity/value and closed getter
+presence476–498, new late private/intrinsic cases661–685, exact raw lazy foreign
+113/helper1 case710–724, expanded getter/argument/receiver trace732–751 and real
+post-JSON namespace772–782. Preserve these improvements. A new duplicate
+private-rest/negative-protocol/identity matrix is optional, not a blocker when
+the stated retained cases are explicitly mapped and freshly run.
+
+### Criterion and gate disposition at89
+
+| Row | Source-first disposition |
+| --- | --- |
+| PN-01 | F1/F5 source fixes and exact helper assertions assessed; P1/P7 consumer composition still required. No runtime acceptance. |
+| PN-02 | F2/F3 source fixes assessed; P1–P4 and controlled direct/array-leaf consumers remain. HOLD for proof. |
+| PN-03 | F4 source fix and actual failure/interleave/reentry assertions assessed; P2/P5/P6 remain. HOLD for proof. |
+| PN-04 | Actual late private/intrinsic/raw-lazy/closed-carrier source cases improved; retain named canonical protocol/identity/rest checks; P7 remains. |
+| PN-05 | Real JSON namespace now present; P8 and actual missing Source witnesses remain. P9 must make failure class assertions honest. |
+| PN-06 | Unchanged8/78/15 delivery contract; fresh successful materialized execution still pending. |
+| PN-07 | Exact3-path correction/equal identifier blobs/trailers checked; source-first proof HOLD and full required gates remain. |
+| PN-08 | Independent final gates, accurate CC close/history and root closing metadata/routing remain pending. |
+
+Root reported stopping further full attempts after a TMPDIR-missing failure
+(86 passes/13 failures before M6); this reviewer did not inspect mutable running
+logs or reproduce it. Preserve actual receipts and the previously reported
+stale-stage37/5 and discarded ad-hoc-eval violation, with their limits. A claimed
+keyword/Dissoc Source consumer in a milestone must be reconciled against the
+actual committed test above; descriptions cannot substitute for missing source.
+No intent attribution is made. Code stays frozen89, release82 and S07 unopened.
+
+**Verdict: HOLD for mandatory test proof, not a newly demonstrated implementation
+defect.** Root may author the bounded test-only correction; no helper/module/
+native/policy scope expansion is needed. This source-only review created no
+jobs and returns control without executing or importing the mutable stage.

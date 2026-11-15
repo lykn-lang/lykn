@@ -3,11 +3,22 @@ project: project03-language-evolution
 arc: arc05-binding-semantics-and-hygienic-emission
 slice: slice06-public-generated-name-hygiene
 status: active
-version: "1.1"
+version: "1.2"
 depends-on: [slice03-public-binding-discards, slice05-native-generated-name-hygiene]
 ---
 
 # Public compiler-generated name hygiene
+
+Current2026-11-14: correction01 source89ab9dcd/tree6305ea2e fixes F1–F5 on
+independent immutable source inspection. Acceptance remains [HELD for proof](cdc-verification.md#source-first-review-02--correction01-at89--hold-for-proof):
+nine specific P1–P9 cases/counter/error oracles and one array leaf remain.
+Correction02 prepares exactly the existing test plus a comment-only Source
+contract clarification in identifier.js and its mirror, no algorithm change.
+Original15/eight rows/eight groups/M678/15 remain. Formal2/5 only on dispatch.
+Root verified the prior interrupted session closed and no matching compiler/
+test processes remain. Root owns source/build during preparation. The new
+internal sequence is focused→commit→independent proof review→CC full→fresh CDC
+full; no mandatory gate is waived. Release remains82; later gates stay open.
 
 Current2026-11-14: candidate17791f24/tree792fd424 is independently
 [HELD](cdc-verification.md#source-first-review-01--hold) for F1–F5 and the
@@ -287,6 +298,10 @@ exception. The named JS/Rust PRODUCT compiler/test deliverables, delivery mirror
 runtime clients are allowed; this is not permission for JS evidence tools.
 
 ## Version history
+
+- 2026-11-14 v1.2: retain F1–F5 source fixes at89, source02 proof HOLD and
+  P1–P9/array-leaf completion, correct one helper comment, verify stopped jobs
+  and require source-proof PASS before further full retries in correction02.
 
 - 2026-11-14 v1.1: independent source-first F1–F5 HOLD and original proof gaps;
   clarify executable keyword roles, real Surface fields, normalize-before-decode,
