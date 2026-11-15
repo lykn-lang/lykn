@@ -2,7 +2,7 @@
 project: project03-language-evolution
 arc: arc05-binding-semantics-and-hygienic-emission
 status: active
-version: "0.17"
+version: "0.18"
 planned-release: unassigned
 depends-on: []
 related: [arc04-qualified-adts, arc06-adt-modules-and-library-integration]
@@ -11,6 +11,17 @@ related: [arc04-qualified-adts, arc06-adt-modules-and-library-integration]
 # Binding semantics and hygienic emission
 
 ## Authority and outcome
+
+Current S06 correction2026-11-14: initial17791f24 is independently
+[HELD](slice06-public-generated-name-hygiene/cdc-verification.md) for five
+physical-name/keyword/Surface/callback/decoder defects and original proof gaps.
+Green CC full1586/docs482/M678/15 does not establish acceptance. Root completed
+v1.1 design and actual late consumers; separate correction readiness PASS
+precedes issued [correction01](slice06-public-generated-name-hygiene/cc-prompt-iteration01.md).
+Exact3 repair paths within original15, same8PN/BS-06 open,1/5 formal refinements
+on dispatch. Luna owns task source/build after committed handoff; Sol may inspect
+only the immutable committed source during frozen-byte full builds, then fresh
+execution after handback. Release stays82, later owners/remote gates stay open.
 
 Current S06 issue2026-11-14: [public generated-name hygiene](slice06-public-generated-name-hygiene/slice-plan.md)
 opens from accepted release/task82. Root executed three actual public baseline

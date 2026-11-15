@@ -1,0 +1,5 @@
+error: Uncaught (in promise) TypeError: observe: return value expected number, got number
+    throw new lyknIntrinsicTypeError0("observe: return value expected number, got " + typeof result__gensym0);
+          ^
+    at observe (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/lykn/arc05-s06-root/host-review.mjs:12:11)
+    at file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/lykn/arc05-s06-root/host-review.mjs:16:13

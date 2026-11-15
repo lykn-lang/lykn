@@ -1,0 +1,3 @@
+(set-symbol! globalThis "discardValue__gensym0" (obj :child 99))
+(func observe :args (:number _) :body discard-value__gensym0.child)
+(console:log (observe 7))

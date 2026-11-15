@@ -1,7 +1,7 @@
 ---
 project: project03-language-evolution
 status: research
-version: "1.71"
+version: "1.72"
 planned-release: "0.7.0"
 depends-on: ["project02-language-toolchain-alignment"]
 blocks: []
@@ -11,6 +11,14 @@ related: ["project04-c-lang", "project07-core-library-research"]
 # Language evolution
 
 ## Current approved structure —2026-11-13
+
+Current2026-11-14: Arc05 S06 candidate17791f24 is independently held for
+five shared occupancy/lifecycle defects and concrete proof gaps. Source-grounded
+[correction01](arc05-binding-semantics-and-hygienic-emission/slice06-public-generated-name-hygiene/cc-prompt-iteration01.md)
+is issued after separate readiness PASS; same15-path/eight-row delivery,
+three repair files, Luna6 High CC/Sol6.1 High CDC,1/5 formal refinements.
+All8PN/BS-06/P-BIND/P-QADT remain open. Release82 acceptance stands; S07 and
+research/library/qualified/book/human/remote gates remain unopened.
 
 Current2026-11-14: the authorized [release82 integration](arc05-binding-semantics-and-hygienic-emission/slice05-native-generated-name-hygiene/artifacts/release-integration-82f1b65b.md)
 is independently accepted, RI-01–03 done. Release/0.6.x stays clean82f1b65b.
@@ -1121,6 +1129,10 @@ with their source and status distinctions. A future
 implementation definition of done is not established by this migration.
 
 ## Version history
+
+- 2026-11-14 v1.72: Preserve S06 initial177 source-first HOLD, concrete witness
+  evidence and separately ready consolidated correction01 without accepting
+  green doer tests or advancing later binding/qualified/library gates.
 
 - 2026-11-14 v1.71: Record independently accepted release82 integration and
   issued Arc05 S06 public generated-name implementation, exact15 path delivery

@@ -1,0 +1,5 @@
+error: Uncaught (in promise) TypeError: t__gensym0.child[t__gensym0] is not a function
+  return t__gensym0.child[t__gensym0]();
+                                     ^
+    at file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/lykn/arc05-s06-root/cdc-keyword-review02.mjs:9:38
+    at file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/lykn/arc05-s06-root/cdc-keyword-review02.mjs:10:3

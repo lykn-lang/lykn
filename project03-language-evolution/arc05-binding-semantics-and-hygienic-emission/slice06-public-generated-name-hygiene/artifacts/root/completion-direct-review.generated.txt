@@ -1,0 +1,16 @@
+globalThis["completionValue__gensym0"] = {
+  child: 99
+};
+function observe() {
+  let completionValue__gensym0;
+  {
+    {
+      console.log("effect");
+      completionValue__gensym0 = completionValue__gensym0.child;
+    }
+  }
+  const result = completionValue__gensym0;
+  return result;
+}
+console.log(observe());
+

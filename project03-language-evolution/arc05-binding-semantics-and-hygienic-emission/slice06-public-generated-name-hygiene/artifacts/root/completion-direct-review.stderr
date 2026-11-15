@@ -1,0 +1,5 @@
+error: Uncaught (in promise) TypeError: Cannot read properties of undefined (reading 'child')
+      completionValue__gensym0 = completionValue__gensym0.child;
+                                                          ^
+    at observe (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/lykn/arc05-s06-root/completion-direct-review.mjs:9:59)
+    at file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/lykn/arc05-s06-root/completion-direct-review.mjs:15:13

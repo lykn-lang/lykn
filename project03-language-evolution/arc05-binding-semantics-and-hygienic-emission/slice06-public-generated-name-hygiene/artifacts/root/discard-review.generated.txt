@@ -1,0 +1,13 @@
+const lyknIntrinsicNumberIsNaN0 = Number.isNaN;
+const lyknIntrinsicTypeError0 = TypeError;
+globalThis["discardValue__gensym0"] = {
+  child: 99
+};
+function observe(discardValue__gensym0) {
+  if (typeof discardValue__gensym0 !== "number" || lyknIntrinsicNumberIsNaN0(discardValue__gensym0)) {
+    throw new lyknIntrinsicTypeError0("observe: arg '_' expected number, got " + typeof discardValue__gensym0);
+  }
+  return discardValue__gensym0.child;
+}
+console.log(observe(7));
+

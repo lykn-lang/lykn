@@ -1,0 +1,17 @@
+const lyknIntrinsicNumberIsNaN0 = Number.isNaN;
+const lyknIntrinsicTypeError0 = TypeError;
+globalThis["lyknIntrinsicNumberIsNaN0"] = {
+  child: 99
+};
+function observe(value) {
+  if (typeof value !== "number" || lyknIntrinsicNumberIsNaN0(value)) {
+    throw new lyknIntrinsicTypeError0("observe: arg 'value' expected number, got " + typeof value);
+  }
+  const result__gensym0 = value + lyknIntrinsicNumberIsNaN0.child;
+  if (typeof result__gensym0 !== "number" || lyknIntrinsicNumberIsNaN0(result__gensym0)) {
+    throw new lyknIntrinsicTypeError0("observe: return value expected number, got " + typeof result__gensym0);
+  }
+  return result__gensym0;
+}
+console.log(observe(7));
+

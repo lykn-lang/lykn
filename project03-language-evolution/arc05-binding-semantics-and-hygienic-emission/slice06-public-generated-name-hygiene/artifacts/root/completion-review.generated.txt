@@ -1,0 +1,9 @@
+globalThis["completionValue__gensym0"] = {
+  child: 99
+};
+const result = (() => {
+  console.log("effect");
+  return completionValue__gensym0.child;
+})();
+console.log(result);
+

@@ -1,0 +1,6 @@
+error: Uncaught (in promise) ReferenceError: Cannot access 'result__gensym0' before initialization
+    return t__gensym1.child[result__gensym0]();
+                            ^
+    at file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/lykn/arc05-s06-root/cdc-keyword-enclosing-review.mjs:12:29
+    at pick (file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/lykn/arc05-s06-root/cdc-keyword-enclosing-review.mjs:13:5)
+    at file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/target/lykn/arc05-s06-root/cdc-keyword-enclosing-review.mjs:19:13

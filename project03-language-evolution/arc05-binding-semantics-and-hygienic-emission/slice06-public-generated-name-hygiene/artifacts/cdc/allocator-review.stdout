@@ -1,0 +1,8 @@
+(reset! holder t__gensym0) t__gensym0
+(set! holder:value t__gensym0) t__gensym0
+(set-symbol! holder "value" t__gensym0) t__gensym0
+(cell t__gensym0) t__gensym0
+(assoc holder :field t__gensym0) t__gensym0
+(exports t__gensym0) t__gensym0
+bounded callback tripwire 4
+false false true

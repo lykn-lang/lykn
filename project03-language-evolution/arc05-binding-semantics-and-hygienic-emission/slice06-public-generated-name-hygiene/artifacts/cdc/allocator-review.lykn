@@ -1,0 +1,40 @@
+(import "file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/identifier.js"
+  (createGeneratedNameAllocator physicalIdentifierKeys emittedIdentifierKeys toJsIdentifierParts))
+(import "file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/classifier.js"
+  (classifySurfaceForm))
+(import "file:///Users/oubiwann/lab/lykn/lang/.worktrees/contract-predicate-lowering/packages/lang/reader.js" (read))
+
+(func next-name :args (:any prefix) :body (get (read "t__gensym0") 0))
+(func show-node :args (:string source) :body
+  (bind form (get (read source) 0))
+  (bind head (get form:values 0))
+  (bind node (classifySurfaceForm head:value (form:values:slice 1)))
+  (bind allocator (createGeneratedNameAllocator next-name))
+  (allocator:reserveSyntax node)
+  (try
+    (console:log source (get (allocator:next "t") "value"))
+    (catch error (console:log source error:message))))
+
+(show-node "(reset! holder t__gensym0)")
+(show-node "(set! holder:value t__gensym0)")
+(show-node "(set-symbol! holder \"value\" t__gensym0)")
+(show-node "(cell t__gensym0)")
+(show-node "(assoc holder :field t__gensym0)")
+(show-node "(exports t__gensym0)")
+
+(set-symbol! globalThis "reviewCalls" 0)
+(bind cycling (createGeneratedNameAllocator
+  (fn (:any prefix)
+    (set-symbol! globalThis "reviewCalls" (+ globalThis:reviewCalls 1))
+    (if (> globalThis:reviewCalls 3) (throw (new Error "bounded callback tripwire")))
+    (? (= (% globalThis:reviewCalls 2) 1) "A" "B"))))
+(cycling:reserveSyntax (read "A B"))
+(try
+  (cycling:next "g")
+  (catch error (console:log error:message globalThis:reviewCalls)))
+
+(bind leading-keys (physicalIdentifierKeys "---gensym0.child"))
+(bind escaped-keys (physicalIdentifierKeys "a-\\u0062"))
+(bind escaped-part (get (toJsIdentifierParts "a-\\u0062") 0))
+(bind emitted-keys (emittedIdentifierKeys escaped-part:name))
+(console:log (leading-keys:has "___gensym0") (escaped-keys:has "ab") (emitted-keys:has "ab"))

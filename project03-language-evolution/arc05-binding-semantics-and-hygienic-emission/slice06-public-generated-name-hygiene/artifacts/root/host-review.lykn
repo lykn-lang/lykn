@@ -1,0 +1,3 @@
+(set-symbol! globalThis "lyknIntrinsicNumberIsNaN0" (obj :child 99))
+(func observe :args (:number value) :returns :number :body (+ value lykn-intrinsic-number-is-na-n0.child))
+(console:log (observe 7))

@@ -1,5 +1,11 @@
 # project03-language-evolution ledger
 
+Current2026-11-14: Arc05 S06 initial177 source is independently HELD despite
+green CC gates. [Correction01](arc05-binding-semantics-and-hygienic-emission/slice06-public-generated-name-hygiene/cc-prompt-iteration01.md)
+consolidates five defects and missing original proof after source readiness
+PASS,1/5 formal refinements. All8PN/BS-06/P-BIND/P-QADT stay open; release82
+acceptance and unopened later work stay unchanged.
+
 Current2026-11-14: authorized release82 integration is independently accepted,
 RI-01–03 done. [Arc05 S06](arc05-binding-semantics-and-hygienic-emission/slice06-public-generated-name-hygiene/slice-plan.md)
 is issued from82 after actual public baseline and separate readiness PASS;

@@ -1,0 +1,12 @@
+7:29: warning: unused binding 'prefix'
+  suggestion: prefix with underscore: _prefix
+26:1: warning: unused binding 'cycling'
+  suggestion: prefix with underscore: _cycling
+38:1: warning: unused binding 'escaped-part'
+  suggestion: prefix with underscore: _escaped-part
+36:1: warning: unused binding 'leading-keys'
+  suggestion: prefix with underscore: _leading-keys
+37:1: warning: unused binding 'escaped-keys'
+  suggestion: prefix with underscore: _escaped-keys
+39:1: warning: unused binding 'emitted-keys'
+  suggestion: prefix with underscore: _emitted-keys

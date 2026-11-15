@@ -1,0 +1,4 @@
+(set-symbol! globalThis "result__gensym0" 0)
+(func pick :args () :returns :number :body
+  (some-> (obj :child (array (fn () 7))) :child[result__gensym0]))
+(console:log (pick))

@@ -1,0 +1,2 @@
+(set-symbol! globalThis "___gensym0" (obj :child (obj :drop 99 :keep 7)))
+(console:log (JSON:stringify (dissoc ---gensym0.child :drop)))

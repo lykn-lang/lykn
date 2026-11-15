@@ -1,0 +1,12 @@
+globalThis["t__gensym0"] = 0;
+const observedIndex = t__gensym0;
+console.log((() => {
+  const t__gensym1 = {
+    child: [() => 7]
+  };
+  if (t__gensym1 == null) {
+    return t__gensym1;
+  }
+  return t__gensym1.child[t__gensym0]();
+})());
+

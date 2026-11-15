@@ -3,11 +3,19 @@ project: project03-language-evolution
 arc: arc05-binding-semantics-and-hygienic-emission
 slice: slice06-public-generated-name-hygiene
 status: active
-version: "1.0"
+version: "1.1"
 depends-on: [slice03-public-binding-discards, slice05-native-generated-name-hygiene]
 ---
 
 # Public compiler-generated name hygiene
+
+Current2026-11-14: candidate17791f24/tree792fd424 is independently
+[HELD](cdc-verification.md#source-first-review-01--hold) for F1–F5 and the
+consolidated original proof gaps. CC's42/full1586/docs482/M678/15 pass does
+not supersede actual Source captures. Correction01 is prepared in exactly
+identifier.js, its tracked mirror and public-generated-names.test.js; original
+fifteen-path/eight-row/eight-group scope stays. Root owns source/build during
+preparation; 1/5 refinements only upon committed dispatch. Release stays82.
 
 2026-11-14: operator authorizes release82 FF/validation/review, then S06 if
 green. RI-01–03 independently ACCEPT the clean release82 baseline. Root now
@@ -167,6 +175,48 @@ Raw compile/compileExpr do not acquire Source binding resolution guarantees.
 
 ## Exact product scope and delivery
 
+### Correction01 clarifications from actual source
+
+The five fixes and eight-group proof-gap table in cdc-verification.md are
+binding initial-scope completion. No original proof obligation is dropped.
+The initial blanket keyword/literal statement above means DATA roles: raw
+threading heads ->/->>/some->/some->> and Surface Thread/SomeThread scalar or
+keyword-headed steps reconstruct executable member atom text. Reserve that
+text during COMPLETE owning-input seeding, before any enclosing typed result
+producer. Do not wait until the threading producer has already allocated.
+Other literal/data keywords and strings stay excluded; no lexical binding or
+macro authority is inferred. A conservative raw syntactic-head census is
+occupancy only, including when the source head will later resolve differently.
+
+After atom/literal handling, Surface value fields are executable containers,
+not metadata. Traverse real Reset/SetProp/SetSymbol/Cell and Assoc/Obj pair.value;
+keys/names/fieldNames arrays reserve string entries AND visit object entries
+(actual Exports.names contains atom nodes). Keep traversal-local visits and
+existing compiler-private skip callbacks, not generic cloning.
+
+Source physical keys must normalize actual shared member parts FIRST, then
+decode/extract emitted keys. A private sourceAtomText helper may join normalized
+parts using dot/private syntax; it need not add an export. Preserve legacy
+whole-normalized and colon-part occupancy by routing their NORMALIZED text
+through emittedIdentifierKeys. Never normalize decoded/already-emitted text
+again. The current decode-first source implementation is not compatibility to
+preserve; it was introduced only by this unaccepted candidate.
+
+Decoder braced scan examines at most six hex digits and the immediate closing
+brace, stops incrementally on invalid/overlong/unterminated text and advances
+without suffix-wide indexOf/find/slice. Rejected raw callback names use a local
+Set for the current next() call, not just one preceding name. No arbitrary cap.
+Keep all five existing new module exports, generatedNames options and package
+entrypoint boundary; accurate API audit is required.
+
+Counter-controlled tests isolate EACH collision fixture with explicit reset;
+lifecycle/reentry tests deliberately call the raw APIs without auto-reset helpers.
+Actual runtime/static field and Unicode oppositions replace vacuous nonempty-
+set/head/string-presence claims. Existing source/runtime/protocol tests may
+preserve unchanged behavior with an applicability map; they do not substitute
+for newly changed mapping/counter/caller proofs. The original eight-group/M678
+population remains. Correction edits only the three named product files.
+
 Nine logical product paths plus six tracked byte-identical delivery mirrors,
 fifteen committed paths only:
 1. packages/lang/identifier.js
@@ -237,6 +287,10 @@ exception. The named JS/Rust PRODUCT compiler/test deliverables, delivery mirror
 runtime clients are allowed; this is not permission for JS evidence tools.
 
 ## Version history
+
+- 2026-11-14 v1.1: independent source-first F1–F5 HOLD and original proof gaps;
+  clarify executable keyword roles, real Surface fields, normalize-before-decode,
+  bounded scanner and rejected-name Set, same scope; prepare correction01.
 
 - 2026-11-14 v0.1: source-grounded S06 preparation after independent release82
   integration; nine logical paths plus six tracked delivery mirrors/eight rows/

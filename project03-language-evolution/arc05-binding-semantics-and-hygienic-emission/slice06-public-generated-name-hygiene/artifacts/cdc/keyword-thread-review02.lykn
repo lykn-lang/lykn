@@ -1,0 +1,2 @@
+(set-symbol! globalThis "t__gensym0" 0)
+(console:log (some-> (obj :child (array (fn () 7))) :child[t__gensym0]))

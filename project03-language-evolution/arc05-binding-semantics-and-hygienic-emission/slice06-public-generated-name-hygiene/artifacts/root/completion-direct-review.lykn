@@ -1,0 +1,5 @@
+(set-symbol! globalThis "completionValue__gensym0" (obj :child 99))
+(func observe :args () :body
+  (bind result (do (console:log "effect") completion-value__gensym0.child))
+  result)
+(console:log (observe))
